@@ -1,0 +1,1167 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Beginner: Read and Display A K2 Target Pixel File &#8212; MAST Notebook Repository</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Beginner: Read and Display a K2 Full Frame Image" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html" />
+    <link rel="prev" title="Beginner: Read and Plot A K2 Light Curve File" href="../K2_Lightcurve/K2_Lightcurve.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Astroquery
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+   Beginner: Searching MAST using astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
+   Large Downloads in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     astroquery.mast
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  HSC
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+   Hubble Catalog of Variables Notebook (API version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">
+   Hubble Catalog of Variables Notebook (CasJobs version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+   Hubble Source Catalog API Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+   MAST Table Access Protocol Hubble Source Catalog Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  JWST
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+   Accessing JWST Proposal Data in astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler K2
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../K2_Lightcurve/K2_Lightcurve.html">
+   Beginner: Read and Plot A K2 Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Beginner: Read and Display A K2 Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a K2 Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+   Removing Instrumental Noise from
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Light Curves Using Pixel Level Decorrelation (PLD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+   Read and Plot A Kepler Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+   Plotting a Catalog over a Kepler Full Frame Image File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+   Using Kepler Data to Plot a Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+   Plotting Images from Kepler Target Pixel Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+   Combining Multiple Quarters of
+   <em>
+    Kepler
+   </em>
+   Data with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+   Creating Periodograms and Identifying Significant Peaks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+   Creating Your Own Light Curves using Custom Aperture Photometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+   How to Estimate a Star’s Mass and Radius Using Asteroseismology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+   Identifying Transiting Planet Signals in a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #1: Data Gaps and Quality Flags
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #2: Spurious Signals and Time Sampling Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #3: Seasonal and Detector Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #4: Electronic Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+   Interactively Inspecting Target Pixel Files and Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+   Plotting
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+   Searching for
+   <em>
+    Kepler
+   </em>
+   /
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Data Products Using Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Light Curve Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+   Verifying the Location of a Signal in
+   <em>
+    Kepler
+   </em>
+   Pixel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+   Visualizing Periodic Signals Using a River Plot
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  PanSTARRS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  TESS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">
+   Beginner: Retrieve TESS Data Validation Products with Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+   Beginner: Read and Plot A TESS Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a TESS Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+   Beginner: Read and Plot A TESS Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+   Beginner: Read and Display A TESS Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">
+   Exoplanet Data and TESS Light Curves Using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">
+   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+   Beginner: Search The TESS Input Catalog Centered On HD 209458.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+   Intermediate:  Search and Download GI Program Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+   Intermediate: Retrieve TESS Pixel Response Function Images
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+   Intermediate: Create TESS FFI Cutout using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast//issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/K2/K2_TPF/K2_TPF.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/notebooks/MAST/K2/K2_TPF/K2_TPF.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#obtaining-the-target-pixel-file">
+   Obtaining The Target Pixel File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-the-target-pixel-file-structure">
+   Understanding The Target Pixel File Structure
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-the-timestamps-and-fluxes">
+   Reading the timestamps and fluxes.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#show-the-calibrated-pixel-values">
+   Show the calibrated pixel values.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#displaying-the-aperture-pixel-information">
+   Displaying The Aperture Pixel Information
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-the-aperture-pixel-values">
+   Understanding The Aperture Pixel Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#marking-all-pixels-used-in-the-photometric-aperture">
+   Marking All Pixels Used In The Photometric Aperture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Beginner: Read and Display A K2 Target Pixel File</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#obtaining-the-target-pixel-file">
+   Obtaining The Target Pixel File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-the-target-pixel-file-structure">
+   Understanding The Target Pixel File Structure
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-the-timestamps-and-fluxes">
+   Reading the timestamps and fluxes.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#show-the-calibrated-pixel-values">
+   Show the calibrated pixel values.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#displaying-the-aperture-pixel-information">
+   Displaying The Aperture Pixel Information
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-the-aperture-pixel-values">
+   Understanding The Aperture Pixel Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#marking-all-pixels-used-in-the-photometric-aperture">
+   Marking All Pixels Used In The Photometric Aperture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a id="title_ID"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="beginner-read-and-display-a-k2-target-pixel-file">
+<h1>Beginner: Read and Display A K2 Target Pixel File<a class="headerlink" href="#beginner-read-and-display-a-k2-target-pixel-file" title="Permalink to this headline">#</a></h1>
+<p>This notebook tutorial demonstrates how to load and display the contents of a K2 target pixel (tp) file.  We will display the flux values from a given cadence, and identify the pixels used in the photometric aperture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>A target pixel file contains the raw and calibrated fluxes for the pixels downloaded at either 1-minute (short) or 30-minute (long) cadence.  It also contains information about the aperture, including which pixels were used to calculate the total flux, which pixels were used to estimate the background flux, and which pixels were used to calculate the flux weighted or pixel response function centroids.  The data shown here will be for the star TRAPPIST-1 (the standard readout is EPIC 246199087, a larger readout for this star was also obtained with a K2 ID of EPIC 200164267), which is known to host a system of seven Earth-sized planets.</p>
+<p>This tutorial will refer to a couple TESS-related terms that we define here.</p>
+<ul class="simple">
+<li><p>Campaign = During the K2 mission, the Kepler telescope observed the sky in a given pointing along the ecliptic plane for approximately 80 days at a time. Each of these regions is referred to as a “Campaign”, starting with Campaign 0 and ending with Campaign 19. There was also a special “Engineering” Campaign before Campaign 0 that lasted ~10 days.</p></li>
+<li><p>HDU = Header Data Unit.  A FITS file is made up of HDUs that contain data and metadata relating to the file. The first HDU is called the primary HDU, and anything that follows is considered an “extension”, e.g., “the first FITS extension”, “the second FITS extension”, etc.</p></li>
+<li><p>BJD = Barycentric Julian Date, the Julian Date that has been corrected for differences in the Earth’s position with respect to the Solar System center of mass.</p></li>
+<li><p>BKJD = Barycentric Kepler Julian Date, the timestamp measured in BJD, but offset by 2454833.0. I.e., BKJD = BJD - 2454833.0</p></li>
+<li><p>Cadence = The interval between flux measurements, either one minute for short cadence or 30 minutes for long cadence.</p></li>
+</ul>
+</section>
+<section id="obtaining-the-target-pixel-file">
+<h2>Obtaining The Target Pixel File<a class="headerlink" href="#obtaining-the-target-pixel-file" title="Permalink to this headline">#</a></h2>
+<p>We will read the target pixel file from Campaign 12 using the MAST URL location.  So that we can get started with understanding the file contents without reviewing how to automatically search for and retrieve K2 files, we won’t show how to search and retrieve K2 target pixel files in this tutorial.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
+<span class="n">fits_file</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/k2/target_pixel_files/c12/246100000/99000/ktwo246199087-c12_lpd-targ.fits.gz&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="understanding-the-target-pixel-file-structure">
+<h2>Understanding The Target Pixel File Structure<a class="headerlink" href="#understanding-the-target-pixel-file-structure" title="Permalink to this headline">#</a></h2>
+<p>The K2 target pixel files contain a primary HDU with metadata stored in the header.  The first extension HDU contains more metadata in the header and stores arrays of data in a binary FITS table, which include the timestamps, fluxes, and background fluxes for each cadence of the pixels read out and downloaded by the spacecraft.  The second extension HDU contains an image that stores the pixels that were read out, and records information such as which pixels were used in the optimal photometric aperture to create the SAP fluxes.  Let’s examine the structure of the FITS file using the astropy.fits <code class="docutils literal notranslate"><span class="pre">info</span></code> function, which shows the FITS file format in more detail.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/47bb25d51087d32336d703fd535e2ea2/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      55   ()      
+  1  TARGETTABLES    1 BinTableHDU    288   3862R x 13C   [D, E, J, 90J, 90E, 90E, 90E, 90E, 90E, J, E, E, 45E]   
+  2  APERTURE      1 ImageHDU        49   (10, 9)   int32   
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s examine the binary table in the first FITS extension, since that contains the arrays of timestamps and fluxes for each cadence.  We will use the astropy.fits <code class="docutils literal notranslate"><span class="pre">getdata</span></code> function to access the table from the first extension HDU, and then show the columns of the table.  We can see included in the table are columns for the timestamps in K2 BJD format (<strong>TIME</strong>), raw counts (<strong>RAW_CNTS</strong>), and calibrated fluxes (<strong>FLUX</strong>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
+    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2454833&#39;; disp = &#39;D14.7&#39;
+    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
+    name = &#39;RAW_CNTS&#39;; format = &#39;90J&#39;; unit = &#39;count&#39;; null = -1; disp = &#39;I8&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX_ERR&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX_BKG&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX_BKG_ERR&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;COSMIC_RAYS&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B24.24&#39;
+    name = &#39;POS_CORR1&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;POS_CORR2&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;RB_LEVEL&#39;; format = &#39;45E&#39;; unit = &#39;sigma&#39;; disp = &#39;E14.7&#39;; dim = &#39;(5,9)&#39;
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you examine the structure of the data, the table is more complicated than just rows and columns of values.  You can see the dimensions of the raw counts, flux, flux errors, flux backgrounds, and flux background errors are 9x10 (the size of the pixel stamp read out for this particular target).  We’ll show how to examine the fluxes from a particular cadence below.</p>
+</section>
+<section id="reading-the-timestamps-and-fluxes">
+<h2>Reading the timestamps and fluxes.<a class="headerlink" href="#reading-the-timestamps-and-fluxes" title="Permalink to this headline">#</a></h2>
+<p>Now that we have the target pixel file, let’s store the timestamps and fluxes for use later.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+    <span class="n">k2_bjds</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
+    <span class="n">raw_counts</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;RAW_CNTS&#39;</span><span class="p">]</span>
+    <span class="n">calibrated_fluxes</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s examine one of these to see how Python stores the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">calibrated_fluxes</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calibrated_fluxes</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;numpy.ndarray&#39;&gt;
+(3862, 9, 10)
+</pre></div>
+</div>
+</div>
+</div>
+<p>So these data are stored as a numpy array.  The first dimension is the number of cadences, followed by the size of the readout.  Thus, accessing <code class="docutils literal notranslate"><span class="pre">calibrated_fluxes[4,:,:]</span></code> should return to us the 9x10 grid of pixels from the <strong>fifth</strong> cadence (remember Python is zero-indexed, so the first cadence is stored in the zeroth index, the second in the first index, etc.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calibrated_fluxes</span><span class="p">[</span><span class="mi">4</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(9, 10)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="show-the-calibrated-pixel-values">
+<h2>Show the calibrated pixel values.<a class="headerlink" href="#show-the-calibrated-pixel-values" title="Permalink to this headline">#</a></h2>
+<p>Let’s display the calibrated fluxes for one of the cadences in our target pixel file.  For now, we’ll pick the fifth cadence (index number 4).  You could of course decide to look at multiple cadences by looping over each index in the first dimension of the structure (e.g., loop over <code class="docutils literal notranslate"><span class="pre">calibrated_fluxes[i,:,:]</span></code>).  You could even make an animated .gif of the fluxes and see how they change from cadence to cadence.  To get you started though, let’s just display one of the cadence’s flux values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">)</span>
+
+<span class="c1"># Display the calibrated fluxes as an image for the fifth cadence.</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">calibrated_fluxes</span><span class="p">[</span><span class="mi">4</span><span class="p">,:,:],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s define a title for the figure.</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;TRAPPIST-1 Calibrated Fluxes - Campaign 12, Fifth Cadence&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add a color bar.</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../../_images/K2_TPF_17_0.png" src="../../../../_images/K2_TPF_17_0.png" />
+</div>
+</div>
+</section>
+<section id="displaying-the-aperture-pixel-information">
+<h2>Displaying The Aperture Pixel Information<a class="headerlink" href="#displaying-the-aperture-pixel-information" title="Permalink to this headline">#</a></h2>
+<p>Let’s read in the second FITS extension HDU to display the aperture information.  First, let’s read in the aperture pixels from the HDU.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+    <span class="n">aperture</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the pixels as an image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">)</span>
+
+<span class="c1"># Display the pixels as an image.</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">aperture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add a color bar.</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax</span><span class="p">)</span>
+
+<span class="c1"># Add a title to the plot.</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;TRAPPIST-1 Aperture - Campaign 12&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../../_images/K2_TPF_21_0.png" src="../../../../_images/K2_TPF_21_0.png" />
+</div>
+</div>
+</section>
+<section id="understanding-the-aperture-pixel-values">
+<h2>Understanding The Aperture Pixel Values<a class="headerlink" href="#understanding-the-aperture-pixel-values" title="Permalink to this headline">#</a></h2>
+<p>We see the pixel values are integers, but what do they mean?  The pixels are bitmasks that encode information about each pixel.  You can find a summary of what the different values mean <a class="reference external" href="https://archive.stsci.edu/kepler/manuals/archive_manual.pdf#page=20">here</a>.  For example, a pixel in the aperture that might have a value of 15 can be broken down into power of 2 like: 8+4+2+1 = 15.  Referencing the table of values, this means this particular pixel was in was used to calculate the Pixel Response Function (PRF) centroid, was used to calculate the flux weighted centroid, was part of the optimal photometric aperture, and was collected by the spacecraft.  Numpy has a bulit-in function that can convert an integer into a binary bit mask.  Let’s use that now one one of the common values we see in our displayed image above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Break down a pixel value of 3 (yellow pixels displayed above) into its constituent bits.</span>
+<span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11
+</pre></div>
+</div>
+</div>
+</div>
+<p>Binary bits start from the right and end at the left, so the bit farthest on the right is the Least Significant Bit (LSB, equal to 2^0 = 1), the second from the right is 2^1=2, the third from the right is 2^2=4, etc. This bit mask has bit values of 1 (2^0) and 2 (2^1) set. From our look-up table, these values mean the pixels have been: collected by the spacecraft (value = 1) and used in the optimal photometric aperture (value = 2), so these pixels were used from this cadence to create the flux measurement in the mission-produced light curve files.</p>
+</section>
+<section id="marking-all-pixels-used-in-the-photometric-aperture">
+<h2>Marking All Pixels Used In The Photometric Aperture<a class="headerlink" href="#marking-all-pixels-used-in-the-photometric-aperture" title="Permalink to this headline">#</a></h2>
+<p>Let’s display the pixels in the aperture FITS extension again, but this time, let’s only mark those that are used in the optimal photometric aperture (bit mask value of 2 set).  While it is possible to do this in fewer lines, we’ll show more of the steps involved for clarity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array that will keep track of which pixels have a bitmask</span>
+<span class="c1"># value of 2 set. To start, everything is set to 0 = not set.  We make it</span>
+<span class="c1"># the same dimension as the aperture pixel table, for clarity.</span>
+<span class="n">bitmask2_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">aperture</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Identify which pixels have the bit mask value of 2 set.  We&#39;ll first</span>
+<span class="c1"># loop over each row (i) in the 9x10 table, and then each column (j).</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">aperture</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">pix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+
+        <span class="c1"># Get the bitmask as a string of zeros and ones.</span>
+        <span class="n">this_bitmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">pix</span><span class="p">)</span>
+
+        <span class="c1"># Is the bitmask value of 2 set?  If so, the 2nd integer from the</span>
+        <span class="c1"># right should be set to 1.  We&#39;ll use Python negative indexes to</span>
+        <span class="c1"># access the second integer from the right. But, we also need to</span>
+        <span class="c1"># check that the length of the returned string is at least two!</span>
+        <span class="c1"># If the pixel mask is 0 or 1 then it won&#39;t even have two digits</span>
+        <span class="c1"># to check, and would result in an error.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">this_bitmask</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">this_bitmask</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                <span class="c1"># Then record this pixel as having a bitmask value of 2 set.</span>
+                <span class="n">bitmask2_set</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can display the aperture, but this time we will only display the bitmask2_set table we’ve created, where a zero means the bitmask value of 2 is NOT set (thus these pixels aren’t used in the optimal photometric aperture) and a one means the bitmask value of 2 is set (and thus these pixels were used in the optimal photometric aperture).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">)</span>
+
+<span class="c1"># Display, as an image, the 11x11 table that records the bitmask value of 2 being set.</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">bitmask2_set</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add a color bar.</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax</span><span class="p">)</span>
+
+<span class="c1"># Add a title to the plot.</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;TRAPPIST-1 Aperture - Campaign 12 - Pixels Used In Phot. Ap.&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../../_images/K2_TPF_28_0.png" src="../../../../_images/K2_TPF_28_0.png" />
+</div>
+</div>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this headline">#</a></h2>
+<p><strong>Author:</strong> Scott W. Fleming, STScI Archive Scientist</p>
+<p><strong>Updated On:</strong> 2019-02-01</p>
+<p><a class="reference external" href="#title_ID">Top of Page</a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "TheRealZoidberg/mast",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/MAST/K2/K2_TPF"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../K2_Lightcurve/K2_Lightcurve.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Beginner: Read and Plot A K2 Light Curve File</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beginner: Read and Display a K2 Full Frame Image</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By STScI<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

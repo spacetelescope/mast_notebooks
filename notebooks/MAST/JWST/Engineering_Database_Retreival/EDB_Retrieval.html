@@ -1,0 +1,1774 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>JWST Engineering Data Retrieval &#8212; MAST Notebook Repository</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Beginner: Read and Plot A K2 Light Curve File" href="../../K2/K2_Lightcurve/K2_Lightcurve.html" />
+    <link rel="prev" title="Accessing JWST Proposal Data in astroquery.mast" href="../download_by_program_id/download_by_program_id.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Astroquery
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+   Beginner: Searching MAST using astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
+   Large Downloads in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     astroquery.mast
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  HSC
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+   Hubble Catalog of Variables Notebook (API version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">
+   Hubble Catalog of Variables Notebook (CasJobs version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+   Hubble Source Catalog API Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+   MAST Table Access Protocol Hubble Source Catalog Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  JWST
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../download_by_program_id/download_by_program_id.html">
+   Accessing JWST Proposal Data in astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler K2
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+   Beginner: Read and Plot A K2 Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">
+   Beginner: Read and Display A K2 Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a K2 Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+   Removing Instrumental Noise from
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Light Curves Using Pixel Level Decorrelation (PLD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+   Read and Plot A Kepler Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+   Plotting a Catalog over a Kepler Full Frame Image File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+   Using Kepler Data to Plot a Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+   Plotting Images from Kepler Target Pixel Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+   Combining Multiple Quarters of
+   <em>
+    Kepler
+   </em>
+   Data with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+   Creating Periodograms and Identifying Significant Peaks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+   Creating Your Own Light Curves using Custom Aperture Photometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+   How to Estimate a Star’s Mass and Radius Using Asteroseismology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+   Identifying Transiting Planet Signals in a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #1: Data Gaps and Quality Flags
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #2: Spurious Signals and Time Sampling Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #3: Seasonal and Detector Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #4: Electronic Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+   Interactively Inspecting Target Pixel Files and Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+   Plotting
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+   Searching for
+   <em>
+    Kepler
+   </em>
+   /
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Data Products Using Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Light Curve Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+   Verifying the Location of a Signal in
+   <em>
+    Kepler
+   </em>
+   Pixel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+   Visualizing Periodic Signals Using a River Plot
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  PanSTARRS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  TESS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">
+   Beginner: Retrieve TESS Data Validation Products with Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+   Beginner: Read and Plot A TESS Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a TESS Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+   Beginner: Read and Plot A TESS Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+   Beginner: Read and Display A TESS Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">
+   Exoplanet Data and TESS Light Curves Using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">
+   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+   Beginner: Search The TESS Input Catalog Centered On HD 209458.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+   Intermediate:  Search and Download GI Program Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+   Intermediate: Retrieve TESS Pixel Response Function Images
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+   Intermediate: Create TESS FFI Cutout using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast//issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/JWST/Engineering_Database_Retreival/EDB_Retrieval.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/notebooks/MAST/JWST/Engineering_Database_Retreival/EDB_Retrieval.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#downloading-data">
+   Downloading Data
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#define-mnemonic-parameters">
+     Define Mnemonic Parameters
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#construct-file-names">
+     Construct File Names
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#call-the-webservice">
+     Call the Webservice
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prepare-the-data-for-analysis">
+     Prepare the Data for Analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualize-the-data-tuple">
+   Visualize the Data Tuple
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#identify-subseries-in-the-data">
+     Identify Subseries in the Data
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-segmented-timeseries">
+     Plot the Segmented Timeseries
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional Resources
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>JWST Engineering Data Retrieval</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#downloading-data">
+   Downloading Data
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#define-mnemonic-parameters">
+     Define Mnemonic Parameters
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#construct-file-names">
+     Construct File Names
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#call-the-webservice">
+     Call the Webservice
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prepare-the-data-for-analysis">
+     Prepare the Data for Analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualize-the-data-tuple">
+   Visualize the Data Tuple
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#identify-subseries-in-the-data">
+     Identify Subseries in the Data
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-segmented-timeseries">
+     Plot the Segmented Timeseries
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional Resources
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="jwst-engineering-data-retrieval">
+<h1>JWST Engineering Data Retrieval<a class="headerlink" href="#jwst-engineering-data-retrieval" title="Permalink to this headline">#</a></h1>
+<p>This tutorial will show you how to retrieve JWST engineeering data and use it in the context of a Python session. The <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Engineering+Data">Engineering Data</a> chapter of the <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/JWST+Archive+Manual">JWST Archive Manual</a> describes how data from thousands of engineering telemetry points on JWST are stored in the Engineering Database in the form of timeseries. These data may be searched by means of an identifier, or <strong>mnenomic</strong>.</p>
+<p>Some quantities of interest require more than one mnemonic (a <em>tuple</em>) for meaningful analysis. This tutorial illustrates how to retrieve a tuple of mnenomics and visualize the result. In the following example, timeseries will be retrieved for mnemonics: <code class="docutils literal notranslate"><span class="pre">SA_ZADUCMDX</span></code> and <code class="docutils literal notranslate"><span class="pre">SA_ZADUCMDY</span></code> which are the <em>x-</em> and <em>y-</em> angles on the sky of the JWST <a class="reference external" href="https://jwst-docs.stsci.edu/jwst-observatory-hardware/jwst-telescope">Fine Steering Mirror</a> (FSM). For more details on constructing a mnemonic, see the <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Engineering+Data">Engineering Data</a> page.</p>
+<p>Note that this folder includes a companion script; after completing the tutorial, this offers a compact, customizable way to download the data.</p>
+<p>The workflow consists of:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="#Setup">Setup</a></p></li>
+<li><p><a class="reference external" href="#Downloading-Data">Downloading Data</a></p>
+<ul>
+<li><p><a class="reference external" href="#Define-Mnemonic-Parameters">Define the attributes for the mnemonics of interest</a></p></li>
+<li><p><a class="reference external" href="#Construct-File-Names">Construct the filenames to contain the mnemonic timeseries</a></p></li>
+<li><p><a class="reference external" href="#Call-the-Webservice">Call the web service to fetch the data and return files containing the timeseries</a></p></li>
+<li><p><a class="reference external" href="#Prepare-the-Data-for-Analysis">Prepare the data for analysis</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="#Visualize-the-Data-Tuple">Visualize the data</a></p>
+<ul>
+<li><p><a class="reference external" href="#Identify-Subseries-in-the-Data">Split the data into mini-series at time boundaries</a></p></li>
+<li><p><a class="reference external" href="#Plot-the-Segmented-Timeseries">Plot the timeseries</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="#Additional-Resources">Additional resources</a></p></li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h1>
+<p>Begin by importing the relevant Python libraries to retrieve data.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">os</span></code> for handling file separators, i.e. “/” on Unix-like machines and “&quot; on Windows</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">urllib</span></code> to complete the web request</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pathlib</span></code> to create a directory for the downloaded files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> for convenient data manipulation</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">urllib.error</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is a function to connect to the EDB web service and retrieve the data files. It will be used later in this tutorial.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">download_edb_datafiles</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Download filenames to directory</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filenames : iterable</span>
+<span class="sd">        List of string-valued file names to contain the desired mnemonic timeseries</span>
+<span class="sd">    folder: str</span>
+<span class="sd">        Directory (relative to cwd) in which to write output files</span>
+<span class="sd">    prefix: str</span>
+<span class="sd">        Prefix in MAST server URL (blank except for developer testing)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">       Success status for each mnemonic retrieval</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+            
+    <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">urlStr</span> <span class="o">=</span> <span class="s2">&quot;https://mast.stsci.edu</span><span class="si">{}</span><span class="s2">/api/v0.1/Download/file?uri=mast:jwstedb/</span><span class="si">{}</span><span class="s2">&quot;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Downloading File: mast:jwstedb/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot; To: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urlStr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span><span class="n">fname</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ***Error downloading file***&quot;</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">status</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="downloading-data">
+<h1>Downloading Data<a class="headerlink" href="#downloading-data" title="Permalink to this headline">#</a></h1>
+<p>To download data, you’ll need to format the request correctly. That requires defining nmemonics, naming files to match, and then calling the webservice to begin the download.</p>
+<section id="define-mnemonic-parameters">
+<h2>Define Mnemonic Parameters<a class="headerlink" href="#define-mnemonic-parameters" title="Permalink to this headline">#</a></h2>
+<p>Next, define the parameters of each mnemonic of interest. The parameters are:</p>
+<ul class="simple">
+<li><p>The mnenomic name</p></li>
+<li><p>Start time</p></li>
+<li><p>End time</p></li>
+</ul>
+<p>The start and end times are in UTC and have a “compact” ISO-8601 formatting: <code class="docutils literal notranslate"><span class="pre">yyyymmddThhmmss</span></code>, where the <strong>T</strong> is a literal character. The definitions can be stored in multiple ways: here they will be stored in a Python dictionary, which could be stored in an external <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file. In the companion script they are stored in an external <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file.</p>
+<p>Since the mnemonics of interest are a tuple, the start/end times are the same: from 0:00 to 06:00 on 2022 June 01. Define these times first, followed by the full parameter dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="p">{</span> 
+         <span class="s1">&#39;t_start&#39;</span><span class="p">:</span> <span class="s1">&#39;20220701T000000&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;t_end&#39;</span><span class="p">:</span>   <span class="s1">&#39;20220701T030000&#39;</span>
+        <span class="p">}</span>
+<span class="n">mnemonics</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;SA_ZADUCMDX&#39;</span><span class="p">:</span> <span class="n">times</span><span class="p">,</span>
+            <span class="s1">&#39;SA_ZADUCMDY&#39;</span><span class="p">:</span> <span class="n">times</span>
+           <span class="p">}</span>
+<span class="k">for</span> <span class="n">m</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">mnemonics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SA_ZADUCMDX {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39;20220701T030000&#39;}
+SA_ZADUCMDY {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39;20220701T030000&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="construct-file-names">
+<h2>Construct File Names<a class="headerlink" href="#construct-file-names" title="Permalink to this headline">#</a></h2>
+<p>The key to fetching data from the web service is to construct file names to contain the data for each mnemonic. The web service will parse the file names to determine how to query the engineering database and retrieve the timeseries of interest.</p>
+<p>The file names have the form:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>`&lt;mnemonic_name&gt;-&lt;t_start&gt;-&lt;t_end&gt;.csv`
+</pre></div>
+</div>
+<p>Use a dictionary comprehension to construct a list of file names; these will be passed to the webservice calling function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t_start&#39;</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t_end&#39;</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">mnemonics</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fnames</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;SA_ZADUCMDX-20220701T000000-20220701T030000.csv&#39;, &#39;SA_ZADUCMDY-20220701T000000-20220701T030000.csv&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="call-the-webservice">
+<h2>Call the Webservice<a class="headerlink" href="#call-the-webservice" title="Permalink to this headline">#</a></h2>
+<p>Set the (optional) output folder name prior to the webservice call.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sub-directory where the data files will be written:</span>
+<span class="n">subdir</span> <span class="o">=</span> <span class="s1">&#39;edb-data&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now call the EDB web service. The files containing data will be written to your local storage, in the specified subdirectory.</p>
+<div class="alert alert-block alert-info">
+<span style="color:black">
+    The webservice may take a long time (or timeout), depending upon the quantity of data in the timeseries within the chosen date range. The three-hour time interval in this example returns over 40,000 rows.  
+</span>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">status</span> <span class="o">=</span> <span class="n">download_edb_datafiles</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="n">subdir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading File: mast:jwstedb/SA_ZADUCMDX-20220701T000000-20220701T030000.csv
+  To: edb-data/SA_ZADUCMDX-20220701T000000-20220701T030000.csv
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading File: mast:jwstedb/SA_ZADUCMDY-20220701T000000-20220701T030000.csv
+  To: edb-data/SA_ZADUCMDY-20220701T000000-20220701T030000.csv
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="prepare-the-data-for-analysis">
+<h2>Prepare the Data for Analysis<a class="headerlink" href="#prepare-the-data-for-analysis" title="Permalink to this headline">#</a></h2>
+<p>Create a list of Pandas dataframes from the mnemonics data that were just written to disk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">subdir</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make sure the sizes of the dataframes are equal, and take a look at the first dataframe.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dataframes have the same size? </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+<span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataframes have the same size? True
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>theTime</th>
+      <th>MJD</th>
+      <th>euvalue</th>
+      <th>sqldataType</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2022-06-30 23:59:59.839000</td>
+      <td>59760.999998</td>
+      <td>0.151660</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2022-07-01 00:00:00.095000</td>
+      <td>59761.000001</td>
+      <td>0.150761</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2022-07-01 00:00:00.351000</td>
+      <td>59761.000004</td>
+      <td>0.150312</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2022-07-01 00:00:00.607000</td>
+      <td>59761.000007</td>
+      <td>0.149759</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2022-07-01 00:00:00.863000</td>
+      <td>59761.000010</td>
+      <td>0.148798</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>42185</th>
+      <td>2022-07-01 02:59:59.189000</td>
+      <td>59761.124991</td>
+      <td>0.140328</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>42186</th>
+      <td>2022-07-01 02:59:59.445000</td>
+      <td>59761.124994</td>
+      <td>0.139679</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>42187</th>
+      <td>2022-07-01 02:59:59.701000</td>
+      <td>59761.124997</td>
+      <td>0.139530</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>42188</th>
+      <td>2022-07-01 02:59:59.957000</td>
+      <td>59761.125000</td>
+      <td>0.138832</td>
+      <td>float</td>
+    </tr>
+    <tr>
+      <th>42189</th>
+      <td>2022-07-01 03:00:00.213000</td>
+      <td>59761.125002</td>
+      <td>0.138384</td>
+      <td>float</td>
+    </tr>
+  </tbody>
+</table>
+<p>42190 rows × 4 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="visualize-the-data-tuple">
+<h1>Visualize the Data Tuple<a class="headerlink" href="#visualize-the-data-tuple" title="Permalink to this headline">#</a></h1>
+<p>Create an x-y plot for analysis. This is easy to do by plotting the Pandas dataframes. It is more interesting to add color to indicate successive moves of the FSM. Begin by loading a numeric and some Bokeh plotting libraries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="kn">import</span> <span class="n">output_notebook</span>
+<span class="kn">import</span> <span class="nn">bokeh.plotting</span> <span class="k">as</span> <span class="nn">bp</span>
+<span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">ColorBar</span><span class="p">,</span> <span class="n">SingleIntervalTicker</span><span class="p">,</span> <span class="n">FixedTicker</span><span class="p">,</span> <span class="n">Range1d</span><span class="p">,</span> <span class="n">Span</span>
+<span class="kn">from</span> <span class="nn">bokeh.palettes</span> <span class="kn">import</span> <span class="n">Spectral10</span> <span class="k">as</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">bokeh.transform</span> <span class="kn">import</span> <span class="n">linear_cmap</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># The following method is needed for bokeh display in a Notebook.</span>
+<span class="c1"># Note that it does not activate the display. This happens in the &#39;Plot Timeseries&#39; section.</span>
+<span class="n">output_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+        .bk-notebook-logo {
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAOkSURBVDiNjZRtaJVlGMd/1/08zzln5zjP1LWcU9N0NkN8m2CYjpgQYQXqSs0I84OLIC0hkEKoPtiH3gmKoiJDU7QpLgoLjLIQCpEsNJ1vqUOdO7ppbuec5+V+rj4ctwzd8IIbbi6u+8f1539dt3A78eXC7QizUF7gyV1fD1Yqg4JWz84yffhm0qkFqBogB9rM8tZdtwVsPUhWhGcFJngGeWrPzHm5oaMmkfEg1usvLFyc8jLRqDOMru7AyC8saQr7GG7f5fvDeH7Ej8CM66nIF+8yngt6HWaKh7k49Soy9nXurCi1o3qUbS3zWfrYeQDTB/Qj6kX6Ybhw4B+bOYoLKCC9H3Nu/leUTZ1JdRWkkn2ldcCamzrcf47KKXdAJllSlxAOkRgyHsGC/zRday5Qld9DyoM4/q/rUoy/CXh3jzOu3bHUVZeU+DEn8FInkPBFlu3+nW3Nw0mk6vCDiWg8CeJaxEwuHS3+z5RgY+YBR6V1Z1nxSOfoaPa4LASWxxdNp+VWTk7+4vzaou8v8PN+xo+KY2xsw6une2frhw05CTYOmQvsEhjhWjn0bmXPjpE1+kplmmkP3suftwTubK9Vq22qKmrBhpY4jvd5afdRA3wGjFAgcnTK2s4hY0/GPNIb0nErGMCRxWOOX64Z8RAC4oCXdklmEvcL8o0BfkNK4lUg9HTl+oPlQxdNo3Mg4Nv175e/1LDGzZen30MEjRUtmXSfiTVu1kK8W4txyV6BMKlbgk3lMwYCiusNy9fVfvvwMxv8Ynl6vxoByANLTWplvuj/nF9m2+PDtt1eiHPBr1oIfhCChQMBw6Aw0UulqTKZdfVvfG7VcfIqLG9bcldL/+pdWTLxLUy8Qq38heUIjh4XlzZxzQm19lLFlr8vdQ97rjZVOLf8nclzckbcD4wxXMidpX30sFd37Fv/GtwwhzhxGVAprjbg0gCAEeIgwCZyTV2Z1REEW8O4py0wsjeloKoMr6iCY6dP92H6Vw/oTyICIthibxjm/DfN9lVz8IqtqKYLUXfoKVMVQVVJOElGjrnnUt9T9wbgp8AyYKaGlqingHZU/uG2NTZSVqwHQTWkx9hxjkpWDaCg6Ckj5qebgBVbT3V3NNXMSiWSDdGV3hrtzla7J+duwPOToIg42ChPQOQjspnSlp1V+Gjdged7+8UN5CRAV7a5EdFNwCjEaBR27b3W890TE7g24NAP/mMDXRWrGoFPQI9ls/MWO2dWFAar/xcOIImbbpA3zgAAAABJRU5ErkJggg==);
+        }
+    </style>
+    <div>
+        <a href="https://bokeh.org" target="_blank" class="bk-notebook-logo"></a>
+        <span id="p1001">Loading BokehJS ...</span>
+    </div>
+</div><script type="application/javascript">(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  const force = true;
+
+  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+const JS_MIME_TYPE = 'application/javascript';
+  const HTML_MIME_TYPE = 'text/html';
+  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  const CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    const script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    const cell = handle.cell;
+
+    const id = cell.output_area._bokeh_element_id;
+    const server_id = cell.output_area._bokeh_server_id;
+    // Clean up Bokeh references
+    if (id != null && id in Bokeh.index) {
+      Bokeh.index[id].model.document.clear();
+      delete Bokeh.index[id];
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      const cmd_clean = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd_clean, {
+        iopub: {
+          output: function(msg) {
+            const id = msg.content.text.trim();
+            if (id in Bokeh.index) {
+              Bokeh.index[id].model.document.clear();
+              delete Bokeh.index[id];
+            }
+          }
+        }
+      });
+      // Destroy server and session
+      const cmd_destroy = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd_destroy);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    const output_area = handle.output_area;
+    const output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {
+      return
+    }
+
+    const toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      const bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      const script_attrs = bk_div.children[0].attributes;
+      for (let i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      const toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    const events = require('base/js/events');
+    const OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  const NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded() {
+    const el = document.getElementById("p1001");
+    if (el != null) {
+      el.textContent = "BokehJS is loading...";
+    }
+    if (root.Bokeh !== undefined) {
+      if (el != null) {
+        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(display_loaded, 100)
+    }
+  }
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) {
+        if (callback != null)
+          callback();
+      });
+    } finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.debug("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(css_urls, js_urls, callback) {
+    if (css_urls == null) css_urls = [];
+    if (js_urls == null) js_urls = [];
+
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = css_urls.length + js_urls.length;
+
+    function on_load() {
+      root._bokeh_is_loading--;
+      if (root._bokeh_is_loading === 0) {
+        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
+        run_callbacks()
+      }
+    }
+
+    function on_error(url) {
+      console.error("failed to load " + url);
+    }
+
+    for (let i = 0; i < css_urls.length; i++) {
+      const url = css_urls[i];
+      const element = document.createElement("link");
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.rel = "stylesheet";
+      element.type = "text/css";
+      element.href = url;
+      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
+      document.body.appendChild(element);
+    }
+
+    for (let i = 0; i < js_urls.length; i++) {
+      const url = js_urls[i];
+      const element = document.createElement('script');
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.async = false;
+      element.src = url;
+      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.head.appendChild(element);
+    }
+  };
+
+  function inject_raw_css(css) {
+    const element = document.createElement("style");
+    element.appendChild(document.createTextNode(css));
+    document.body.appendChild(element);
+  }
+
+  const js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-3.0.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.0.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.0.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.0.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.0.3.min.js"];
+  const css_urls = [];
+
+  const inline_js = [    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+function(Bokeh) {
+    }
+  ];
+
+  function run_inline_js() {
+    if (root.Bokeh !== undefined || force === true) {
+          for (let i = 0; i < inline_js.length; i++) {
+      inline_js[i].call(root, root.Bokeh);
+    }
+if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      const cell = $(document.getElementById("p1001")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(css_urls, js_urls, function() {
+      console.debug("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));</script></div>
+</div>
+<section id="identify-subseries-in-the-data">
+<h2>Identify Subseries in the Data<a class="headerlink" href="#identify-subseries-in-the-data" title="Permalink to this headline">#</a></h2>
+<p>Engineering data may contain periods of sampling between observations where the returned values do not change. The following function attempts to break up the timeseries by looking for these stretches of unchanging values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_breaks</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">max_flats</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_data : pandas.DataFrame</span>
+<span class="sd">        X-axis timeseries data.</span>
+<span class="sd">    y_data : pandas.DataFrame </span>
+<span class="sd">        Y-axis timeseries data.</span>
+<span class="sd">    max_flats : int, default=5</span>
+<span class="sd">        After this many data points with unchanging values, timeseries data will be broken up.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of pandas.DataFrame</span>
+<span class="sd">        Each DataFrame contains a continuous set of changing EDB timeseries data with X/Y-paired values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Get the MJD and position values out of the DataFrames.</span>
+    <span class="n">x_vals</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;euvalue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">x_dates</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y_vals</span> <span class="o">=</span> <span class="n">y_data</span><span class="p">[</span><span class="s1">&#39;euvalue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y_dates</span> <span class="o">=</span> <span class="n">y_data</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># Combine the x and y data into a single DataFrame.</span>
+    <span class="n">xy_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">x_dates</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">])</span>
+    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;theTime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">&#39;x_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_vals</span>
+    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">&#39;y_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_vals</span>
+    
+    <span class="c1"># Scan the timeseries data to look for flat periods of no reading change.</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">flat</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">recording</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)):</span>
+        
+        <span class="c1"># Make sure the x and y timestamps match.</span>
+        <span class="k">if</span> <span class="n">x_dates</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="n">y_dates</span><span class="p">[</span><span class="n">n</span><span class="p">]:</span>
+            
+            <span class="c1"># Calculate the distance from the current positions to the following.</span>
+            <span class="n">x_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_vals</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_vals</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+            <span class="n">y_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_vals</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_vals</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+            
+            <span class="c1"># Multiple points with no change will stop recording and store the current series.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x_diff</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y_diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">flat</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">recording</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">flat</span> <span class="o">&gt;=</span> <span class="n">max_flats</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">max_flats</span><span class="p">)</span> <span class="o">-</span> <span class="n">m</span>
+                    <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xy_frame</span><span class="p">[</span><span class="n">m</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="p">(</span><span class="n">max_flats</span><span class="p">)])</span>
+                    <span class="n">recording</span> <span class="o">=</span> <span class="kc">False</span>
+                    
+            <span class="c1"># Start recording if changes detected.</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">x_diff</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">y_diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">recording</span><span class="p">:</span>
+                <span class="n">flat</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">n</span>
+                <span class="n">recording</span> <span class="o">=</span> <span class="kc">True</span>
+    
+        <span class="c1"># Capture the final series if still recording.</span>
+        <span class="k">if</span> <span class="n">recording</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xy_frame</span><span class="p">[</span><span class="n">m</span><span class="p">:])</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;returning </span><span class="si">{}</span><span class="s2"> timeseries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)))</span>
+    
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Report the start/end times of each identified subseries. Since there are many of them, we print only the last result as a sample.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">split_series</span> <span class="o">=</span> <span class="n">find_breaks</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">max_flats</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="n">split_series</span><span class="p">:</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">ss</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Inserting this print statement into the for loop will print all 37,000 timeseries</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">{0}</span><span class="s2"> - </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>returning 37145 timeseries
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    2022-07-01 02:57:26.101000 - 2022-07-01 03:00:00.213000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-segmented-timeseries">
+<h2>Plot the Segmented Timeseries<a class="headerlink" href="#plot-the-segmented-timeseries" title="Permalink to this headline">#</a></h2>
+<p>The following function plots a single subseries of the x/y paired data and applies a color gradiant based on the associated time stamps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_x_v_y_color</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot x-versus-y timeseries data with color mapping based on the timing.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pandas.DataFrame</span>
+<span class="sd">        A combined x &amp; y timeseries data set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">mjd</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">]</span>
+    <span class="n">n_ticks</span> <span class="o">=</span> <span class="mi">10</span>
+    
+    <span class="c1"># Create a bokeh.plotting figure object.</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">plot_height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">plot_width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">match_aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Set up a linear color map based on the MJD data.</span>
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">linear_cmap</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;MJD&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">cm</span> <span class="p">,</span><span class="n">low</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span> <span class="p">,</span><span class="n">high</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">mjd</span><span class="p">))</span>
+    
+    <span class="c1"># Add lines to make 0 axis a bit more obvious.</span>
+    <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.3</span>
+    <span class="n">vline</span> <span class="o">=</span> <span class="n">Span</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+    <span class="n">hline</span> <span class="o">=</span> <span class="n">Span</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">vline</span><span class="p">,</span> <span class="n">hline</span><span class="p">])</span>
+    
+    <span class="c1"># Add a circle plot of x vs y with the color map applied.</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x_value&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y_value&#39;</span><span class="p">,</span> <span class="n">fill_alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="n">mapper</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    
+    <span class="c1"># Translate legend values from MJD to time stamps.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mjd</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span><span class="o">/</span><span class="n">n_ticks</span><span class="p">)))</span>
+    <span class="n">tick_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">mjd</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">}</span>
+    <span class="n">ticks</span> <span class="o">=</span> <span class="n">FixedTicker</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">tick_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    
+    <span class="c1"># Add some labels to our axes</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="s2">&quot;FSM x-axis commanded angle (arcsec)&quot;</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="s2">&quot;FSM y-axis commanded angle (arcsec)&quot;</span>
+    
+    <span class="c1"># Add a color bar legend for the MJD data.</span>
+    <span class="n">color_bar</span> <span class="o">=</span> <span class="n">ColorBar</span><span class="p">(</span><span class="n">color_mapper</span><span class="o">=</span><span class="n">mapper</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">],</span> 
+                         <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                         <span class="n">ticker</span><span class="o">=</span><span class="n">ticks</span><span class="p">,</span>
+                         <span class="n">major_label_overrides</span><span class="o">=</span><span class="n">tick_dict</span><span class="p">,</span>
+                         <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> 
+                         <span class="n">label_standoff</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+                         <span class="p">)</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">color_bar</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Display the figure.</span>
+    <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the following command you can update the index to change which split timeseries you are plotting. Once the plot renders, use the plot control tools in the upper right to pan, zoom, and save the plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_x_v_y_color</span><span class="p">(</span><span class="n">split_series</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">plot_x_v_y_color</span><span class="p">(</span><span class="n">split_series</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nn">Cell In[12], line 15,</span> in <span class="ni">plot_x_v_y_color</span><span class="nt">(data)</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">n_ticks</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># Create a bokeh.plotting figure object.</span>
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">n</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">plot_height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">plot_width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">match_aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Set up a linear color map based on the MJD data.</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">mapper</span> <span class="o">=</span> <span class="n">linear_cmap</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;MJD&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">cm</span> <span class="p">,</span><span class="n">low</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span> <span class="p">,</span><span class="n">high</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">mjd</span><span class="p">))</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/bokeh/plotting/_figure.py:190,</span> in <span class="ni">figure.__init__</span><span class="nt">(self, *arg, **kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">189</span>     <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">190</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_raise_attribute_error_with_matches</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">names</span> <span class="o">|</span> <span class="n">opts</span><span class="o">.</span><span class="n">properties</span><span class="p">())</span>
+<span class="g g-Whitespace">    </span><span class="mi">192</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">194</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span> <span class="o">=</span> <span class="n">get_range</span><span class="p">(</span><span class="n">opts</span><span class="o">.</span><span class="n">x_range</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/bokeh/core/has_props.py:368,</span> in <span class="ni">HasProps._raise_attribute_error_with_matches</span><span class="nt">(self, name, properties)</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span>     <span class="n">matches</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">properties</span><span class="p">),</span> <span class="s2">&quot;possible&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">368</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unexpected attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2"> attributes are </span><span class="si">{</span><span class="n">nice_join</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="ne">AttributeError</span>: unexpected attribute &#39;plot_height&#39; to figure, similar attributes are outer_height, height or min_height
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="additional-resources">
+<h1>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>The <a class="reference external" href="https://mast.stsci.edu/portal_jwst/Mashup/Clients/jwstedb/jwstedb.html">JWST Engineering Database Portal</a></p></li>
+<li><p>The <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Engineering+Data">Engineering Data</a> chapter of the JWST Archive Manual.</p></li>
+<li><p>For more information about retreiving parameter metadata, see the <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/API+for+JWST+Metadata">API for JWST Metadata Page</a>. As an example, you might run a query to confirm the units on the above figure should be in arcseconds.</p></li>
+</ul>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this headline">#</a></h2>
+<p>This notebook was developed by MAST staff, chiefly Dick Shaw, Peter Forshay, and Bernie Shiao. Additional editing was provided by Thomas Dutkiewicz.</p>
+<p><strong>Last updated:</strong> July 2022 <br>
+<strong>Next review:</strong> Jan 2023</p>
+<p>For support, please contact the Archive HelpDesk at archive&#64;stsci.edu.</p>
+<hr class="docutils" />
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a>
+<p><a class="reference external" href="#JWST-Engineering-Data-Retrieval">Return to top of page</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "TheRealZoidberg/mast",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/MAST/JWST/Engineering_Database_Retreival"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../download_by_program_id/download_by_program_id.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Accessing JWST Proposal Data in astroquery.mast</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../../K2/K2_Lightcurve/K2_Lightcurve.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beginner: Read and Plot A K2 Light Curve File</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By STScI<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

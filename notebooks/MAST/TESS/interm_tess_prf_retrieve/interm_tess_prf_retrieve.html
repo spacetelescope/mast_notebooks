@@ -1,0 +1,1767 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Intermediate: Retrieve TESS Pixel Response Function Images &#8212; MAST Notebook Repository</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html" />
+    <link rel="prev" title="Intermediate: Finding Flares and Variable Stars in TASC Light Curves" href="../interm_tasc_lc/interm_tasc_lc.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Astroquery
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+   Beginner: Searching MAST using astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
+   Large Downloads in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     astroquery.mast
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  HSC
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+   Hubble Catalog of Variables Notebook (API version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">
+   Hubble Catalog of Variables Notebook (CasJobs version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+   Hubble Source Catalog API Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+   MAST Table Access Protocol Hubble Source Catalog Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  JWST
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+   Accessing JWST Proposal Data in astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler K2
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+   Beginner: Read and Plot A K2 Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">
+   Beginner: Read and Display A K2 Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a K2 Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+   Removing Instrumental Noise from
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Light Curves Using Pixel Level Decorrelation (PLD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+   Read and Plot A Kepler Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+   Plotting a Catalog over a Kepler Full Frame Image File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+   Using Kepler Data to Plot a Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+   Plotting Images from Kepler Target Pixel Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+   Combining Multiple Quarters of
+   <em>
+    Kepler
+   </em>
+   Data with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+   Creating Periodograms and Identifying Significant Peaks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+   Creating Your Own Light Curves using Custom Aperture Photometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+   How to Estimate a Star’s Mass and Radius Using Asteroseismology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+   Identifying Transiting Planet Signals in a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #1: Data Gaps and Quality Flags
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #2: Spurious Signals and Time Sampling Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #3: Seasonal and Detector Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #4: Electronic Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+   Interactively Inspecting Target Pixel Files and Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+   Plotting
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+   Searching for
+   <em>
+    Kepler
+   </em>
+   /
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Data Products Using Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Light Curve Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+   Verifying the Location of a Signal in
+   <em>
+    Kepler
+   </em>
+   Pixel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+   Visualizing Periodic Signals Using a River Plot
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  PanSTARRS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  TESS
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">
+   Beginner: Retrieve TESS Data Validation Products with Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+   Beginner: Read and Plot A TESS Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a TESS Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+   Beginner: Read and Plot A TESS Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+   Beginner: Read and Display A TESS Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">
+   Exoplanet Data and TESS Light Curves Using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">
+   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+   Beginner: Search The TESS Input Catalog Centered On HD 209458.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_gi_query/interm_gi_query.html">
+   Intermediate:  Search and Download GI Program Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Intermediate: Retrieve TESS Pixel Response Function Images
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+   Intermediate: Create TESS FFI Cutout using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast//issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/notebooks/MAST/TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#description-of-the-prf-retrieval-code">
+   Description of the PRF retrieval code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#required-software">
+   Required Software
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-to-retrieve-a-tess-prf-image">
+   Code to retrieve a TESS PRF image
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determine-the-name-of-the-prf-based-on-ccd-camera-and-sector">
+     Determine the name of the PRF based on ccd camera and sector
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#read-in-one-prf-fits-file">
+     Read in one PRF FITS File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-main-functions">
+   The main functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#obtain-a-prf-at-a-particular-image-location">
+   Obtain a PRF at a particular image location
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sample-of-prfs-across-the-chip">
+   Sample of PRFs across the chip
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sample-the-prf-at-sub-pixel-locations">
+   Sample the PRF at sub-pixel locations.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compare-the-prf-to-an-image">
+   Compare the PRF to an Image
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-tesscut-to-retrieve-a-13x13-square-image-from-a-calibrated-ffi">
+     Use Tesscut to retrieve a 13x13 square image from a calibrated FFI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determine-the-column-and-row-of-the-central-pixel">
+     Determine the column and row of the central pixel
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determine-the-location-of-the-star">
+     Determine the location of the star
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#look-up-sector-camera-and-ccd">
+     Look up Sector, Camera, and CCD
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-sub-pixel-prfs">
+     Plot the sub-pixel PRFs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-prf-and-ffi-cutout">
+     Compare PRF and FFI cutout
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#residuals">
+     Residuals
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#assert-statements">
+     Assert Statements
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Intermediate: Retrieve TESS Pixel Response Function Images</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#description-of-the-prf-retrieval-code">
+   Description of the PRF retrieval code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#required-software">
+   Required Software
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-to-retrieve-a-tess-prf-image">
+   Code to retrieve a TESS PRF image
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determine-the-name-of-the-prf-based-on-ccd-camera-and-sector">
+     Determine the name of the PRF based on ccd camera and sector
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#read-in-one-prf-fits-file">
+     Read in one PRF FITS File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-main-functions">
+   The main functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#obtain-a-prf-at-a-particular-image-location">
+   Obtain a PRF at a particular image location
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sample-of-prfs-across-the-chip">
+   Sample of PRFs across the chip
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sample-the-prf-at-sub-pixel-locations">
+   Sample the PRF at sub-pixel locations.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compare-the-prf-to-an-image">
+   Compare the PRF to an Image
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-tesscut-to-retrieve-a-13x13-square-image-from-a-calibrated-ffi">
+     Use Tesscut to retrieve a 13x13 square image from a calibrated FFI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determine-the-column-and-row-of-the-central-pixel">
+     Determine the column and row of the central pixel
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determine-the-location-of-the-star">
+     Determine the location of the star
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#look-up-sector-camera-and-ccd">
+     Look up Sector, Camera, and CCD
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-sub-pixel-prfs">
+     Plot the sub-pixel PRFs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-prf-and-ffi-cutout">
+     Compare PRF and FFI cutout
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#residuals">
+     Residuals
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#assert-statements">
+     Assert Statements
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="intermediate-retrieve-tess-pixel-response-function-images">
+<h1>Intermediate: Retrieve TESS Pixel Response Function Images<a class="headerlink" href="#intermediate-retrieve-tess-pixel-response-function-images" title="Permalink to this headline">#</a></h1>
+<p>The Transiting Exoplanet Survey Satelite (TESS) takes time series data with 4 cameras across much of the sky.  The mission provides a product called the Pixel Response Function (PRF). The PRF is a model that describes the image of a point source and how it varies depending on where it lands on the detector. The shape of the image comes from the optical point spread function, jitter during observations, as well as the intra-pixel location of where the light lands.  These PRFs can be used to fit the data to obtain precise locations or brightness of stars. This notebook shows you how to open the FITS-formatted PRF images and calculate a PRF model for a specific location on a detector.</p>
+<p>More information about the PRF can be found in the <a class="reference external" href="https://outerspace.stsci.edu/display/TESS/TESS+Archive+Manual">TESS Archive Manual.</a> The PRF models were created by the mission by fitting to micro-dithered data taken during PRF commissioning exercises. See the Instrument Handbook for details on the data collection.</p>
+<p>The pixel response functions in FITS or Matlab format and are available from the <a class="reference external" href="https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/">models/prf_fitsfiles</a> directory at MAST. There are 25 sub-pixel sampled PRF image for an evenly spaced grid across each of the 16 CCDs and cameras. Each CCD/camera combination is in its own subdirectory at MAST. The column and row information is specified in the file name.  A 13x13 PRF image is provided for 9x9 subpixel locations, allowing you a tenth of pixel precision without having to interpolate.  The 9x9 grid of 13x13 images are interwoven into one 117x117 image, making retrieving the exact sub-pixel location a bit tricky.</p>
+<p>There is no package to retrieve or work with the PRFs. So this tutorial starts by defining some functions to make it easier to parse the files and retrieve the PRF we are looking for. Each function is documented, but a quick overview is given below.</p>
+<p>If you just want to understand the shapes of the PRFs, skip ahead to the section <a class="reference external" href="#obtain_PRF">Obtain PRF at an image location</a>.</p>
+<section id="description-of-the-prf-retrieval-code">
+<h2>Description of the PRF retrieval code<a class="headerlink" href="#description-of-the-prf-retrieval-code" title="Permalink to this headline">#</a></h2>
+<p>The primary function (<code class="docutils literal notranslate"><span class="pre">getPrfAtColRowFits</span></code>) takes a column, row, ccd, camera and sector and returns a 13x13 image of the best PRF interpolated from the grid of PRFs provided in the files.  It uses the ccd, camera and sector information to determine the name of the relevant PRF file in <code class="docutils literal notranslate"><span class="pre">pathLookup</span></code>. Then <code class="docutils literal notranslate"><span class="pre">determineClosestTessColRow</span></code> uses the requested row and column, finds the 4 nearest positions on the detector for which the mission provided a PRF file. Open those files and pull out the appropriate sub-pixel image. Once the four 13x13 sub-pixel PRF images are extracted, <code class="docutils literal notranslate"><span class="pre">interpolatePrf</span></code> interpolates them to the specfied pixel location. The main function then returns this interpolated PRF image.</p>
+</section>
+<section id="required-software">
+<h2>Required Software<a class="headerlink" href="#required-software" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>astropy.io</p></li>
+<li><p>numpy</p></li>
+<li><p>matplotlib</p></li>
+<li><p>astroquery.mast</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="code-to-retrieve-a-tess-prf-image">
+<h2>Code to retrieve a TESS PRF image<a class="headerlink" href="#code-to-retrieve-a-tess-prf-image" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="determine-the-name-of-the-prf-based-on-ccd-camera-and-sector">
+<h3>Determine the name of the PRF based on ccd camera and sector<a class="headerlink" href="#determine-the-name-of-the-prf-based-on-ccd-camera-and-sector" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pathLookup</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the datestring and the subdirectory for the specified PRF. </span>
+<span class="sd">    The datestring and directory name can be found from the ccd, camera and sector.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    ccd</span>
+<span class="sd">        (int) number of the TESS ccd. Accepts values from 1-4.</span>
+<span class="sd">    camera</span>
+<span class="sd">        (int) number of the TESS camera. Accepts values from 1-4</span>
+<span class="sd">    sector</span>
+<span class="sd">        (int) number of the TESS sector. Accepts values of 1 and above.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    datestring</span>
+<span class="sd">        (str) Date string used in the TESS prf files name.</span>
+<span class="sd">    add_path</span>
+<span class="sd">        (str) Directory name where the TESS PRF is stored. (e.g. &quot;/start_s0001/&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">if</span> <span class="n">sector</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sector must be greater than 0.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">camera</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">ccd</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Camera or CCD is larger than 4.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sector</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">add_path</span> <span class="o">=</span> <span class="s2">&quot;/start_s0001/&quot;</span>
+        <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2018243163600&quot;</span>
+
+        <span class="k">if</span> <span class="n">camera</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2018243163601&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">camera</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ccd</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2018243163601&quot;</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">add_path</span> <span class="o">=</span> <span class="s2">&quot;/start_s0004/&quot;</span>
+        <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2019107181900&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">camera</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ccd</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2019107181901&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">camera</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2019107181901&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">camera</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ccd</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2019107181902&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">camera</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">datestring</span> <span class="o">=</span> <span class="s2">&quot;2019107181902&quot;</span>
+
+    <span class="k">return</span> <span class="n">datestring</span><span class="p">,</span> <span class="n">add_path</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-in-one-prf-fits-file">
+<h3>Read in one PRF FITS File<a class="headerlink" href="#read-in-one-prf-fits-file" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    reads in the full, interleaved prf Array for a single row,col,ccd,camera location.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    ccd</span>
+<span class="sd">        (int) CCD number</span>
+<span class="sd">    camera</span>
+<span class="sd">        (int) Camera number</span>
+<span class="sd">    col</span>
+<span class="sd">        (float) Specific column where the PRF was sampled.</span>
+<span class="sd">    row</span>
+<span class="sd">        (float) Specific row where the PRF was sampled.</span>
+<span class="sd">    path</span>
+<span class="sd">        (string) The full path of the data file. Can be the MAST Web address</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">    prfArray</span>
+<span class="sd">        (np array) Full 117 x 117 interleaved prf Array for the requested file.      </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;cam</span><span class="si">%u</span><span class="s2">_ccd</span><span class="si">%u</span><span class="s2">/tess</span><span class="si">%13s</span><span class="s2">-prf-</span><span class="si">%1u</span><span class="s2">-</span><span class="si">%1u</span><span class="s2">-row</span><span class="si">%04u</span><span class="s2">-col</span><span class="si">%04u</span><span class="s2">.fits&quot;</span> <span class="o">%</span> \
+        <span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">datestring</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+    <span class="n">hdulistObj</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="n">prfArray</span> <span class="o">=</span> <span class="n">hdulistObj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">return</span> <span class="n">prfArray</span>
+
+<span class="k">def</span> <span class="nf">determineFourClosestPrfLoc</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the four pairs of col,row positions of your target. </span>
+<span class="sd">    These are specific to TESS and where they chose to report their PRFs.</span>
+<span class="sd">    Inputs</span>
+<span class="sd">    ------</span>
+<span class="sd">    col</span>
+<span class="sd">        (float) Column position</span>
+<span class="sd">    row</span>
+<span class="sd">        (float) Row position.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    imagePos</span>
+<span class="sd">        (list) A list of (col,row) pairs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">posRows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">513</span><span class="p">,</span> <span class="mi">1025</span><span class="p">,</span> <span class="mi">1536</span><span class="p">,</span> <span class="mi">2048</span><span class="p">])</span>
+    <span class="n">posCols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">45</span><span class="p">,</span> <span class="mi">557</span><span class="p">,</span> <span class="mi">1069</span><span class="p">,</span> <span class="mi">1580</span><span class="p">,</span><span class="mi">2092</span><span class="p">])</span>
+
+    <span class="n">difcol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">posCols</span> <span class="o">-</span> <span class="n">col</span><span class="p">)</span>
+    <span class="n">difrow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">posRows</span> <span class="o">-</span> <span class="n">row</span><span class="p">)</span>
+
+    <span class="c1"># Expand out to the four image position to interpolate between,</span>
+    <span class="c1"># Return as a list of tuples.</span>
+    <span class="n">imagePos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">posRows</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">difrow</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]]:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">posCols</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">difcol</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]]:</span>
+            <span class="n">imagePos</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">c</span><span class="p">,</span><span class="n">r</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">imagePos</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getOffsetsFromPixelFractions</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine just the fractional part (the intra-pixel part) of the col,row position.  </span>
+<span class="sd">    For example, if (col, row) = (123.4, 987.6), then</span>
+<span class="sd">    (colFrac, rowFrac) = (.4, .6). </span>
+<span class="sd">    </span>
+<span class="sd">    Function then returns the offset necessary for addressing the interleaved PRF array.</span>
+<span class="sd">    to ensure you get the location appropriate for your sub-pixel values.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    ------</span>
+<span class="sd">    col</span>
+<span class="sd">        (float) Column position</span>
+<span class="sd">    row</span>
+<span class="sd">        (float) Row position.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">    (colFrac, rowFrac)</span>
+<span class="sd">       (int, int) offset necessary for addressing the interleaved PRF array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gridSize</span> <span class="o">=</span> <span class="mi">9</span>
+
+    <span class="n">colFrac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">col</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">rowFrac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">colOffset</span> <span class="o">=</span> <span class="n">gridSize</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">gridSize</span> <span class="o">*</span> <span class="n">colFrac</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">rowOffset</span> <span class="o">=</span> <span class="n">gridSize</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">gridSize</span> <span class="o">*</span> <span class="n">rowFrac</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">colOffset</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">rowOffset</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The 13x13 pixel PRFs on at each grid location are sampled at a 9x9 intra-pixel grid, to</span>
+<span class="sd">    describe how the PRF changes as the star moves by a fraction of a pixel in row or column.</span>
+<span class="sd">    To extract out a single PRF, you need to address the 117x117 array in a funny way</span>
+<span class="sd">    (117 = 13x9). Essentially you need to pull out every 9th element in the array, i.e.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        img = array[ [colOffset, colOffset+9, colOffset+18, ...],</span>
+<span class="sd">                     [rowOffset, rowOffset+9, ...] ]</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    ------</span>
+<span class="sd">    prfArray</span>
+<span class="sd">        117x117 interleaved PRF array</span>
+<span class="sd">    colOffset, rowOffset</span>
+<span class="sd">        The offset used to address the column and row in the interleaved PRF</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">    prf</span>
+<span class="sd">        13x13 PRF image for the specified column and row offset</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gridSize</span> <span class="o">=</span> <span class="mi">9</span>
+
+    <span class="k">assert</span> <span class="n">colOffset</span> <span class="o">&lt;</span> <span class="n">gridSize</span>
+    <span class="k">assert</span> <span class="n">rowOffset</span> <span class="o">&lt;</span> <span class="n">gridSize</span>
+
+    <span class="c1"># Number of pixels in regularly sampled PRF. Should be 13x13</span>
+    <span class="n">nColOut</span><span class="p">,</span> <span class="n">nRowOut</span> <span class="o">=</span> <span class="n">prfArray</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">nColOut</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gridSize</span><span class="p">)</span>
+    <span class="n">nRowOut</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gridSize</span><span class="p">)</span>
+
+    <span class="n">iCol</span> <span class="o">=</span> <span class="n">colOffset</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nColOut</span><span class="p">)</span> <span class="o">*</span> <span class="n">gridSize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">iRow</span> <span class="o">=</span> <span class="n">rowOffset</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nRowOut</span><span class="p">)</span> <span class="o">*</span> <span class="n">gridSize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">prfArray</span><span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">prf</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[:,</span><span class="n">iCol</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">prf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">interpolatePrf</span><span class="p">(</span><span class="n">regPrfArray</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">imagePos</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Interpolate between 4 images to find the best PRF at the specified column and row.</span>
+<span class="sd">    This is a simple linear interpolation.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    regPrfArray </span>
+<span class="sd">        13x13x4 prf image array of the four nearby locations.</span>
+<span class="sd">        </span>
+<span class="sd">    col and row </span>
+<span class="sd">        (float) the location to interpolate to.</span>
+<span class="sd">        </span>
+<span class="sd">    imagePos</span>
+<span class="sd">        (list) 4 floating point (col, row) locations</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----</span>
+<span class="sd">    Single interpolated PRF image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p11</span><span class="p">,</span> <span class="n">p21</span><span class="p">,</span> <span class="n">p12</span><span class="p">,</span> <span class="n">p22</span> <span class="o">=</span> <span class="n">regPrfArray</span>
+    <span class="n">c0</span> <span class="o">=</span> <span class="n">imagePos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">imagePos</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">r0</span> <span class="o">=</span> <span class="n">imagePos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">imagePos</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">assert</span> <span class="n">c0</span> <span class="o">!=</span> <span class="n">c1</span>
+    <span class="k">assert</span> <span class="n">r0</span> <span class="o">!=</span> <span class="n">r1</span>
+
+    <span class="n">dCol</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span><span class="o">-</span><span class="n">c0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c1</span><span class="o">-</span><span class="n">c0</span><span class="p">)</span>
+    <span class="n">dRow</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="o">-</span><span class="n">r0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r0</span><span class="p">)</span>
+
+    <span class="c1"># Intpolate across the rows</span>
+    <span class="n">tmp1</span> <span class="o">=</span> <span class="n">p11</span> <span class="o">+</span> <span class="p">(</span><span class="n">p21</span> <span class="o">-</span> <span class="n">p11</span><span class="p">)</span> <span class="o">*</span> <span class="n">dCol</span>
+    <span class="n">tmp2</span> <span class="o">=</span> <span class="n">p12</span> <span class="o">+</span> <span class="p">(</span><span class="n">p22</span> <span class="o">-</span> <span class="n">p12</span><span class="p">)</span> <span class="o">*</span> <span class="n">dCol</span>
+
+    <span class="c1"># Interpolate across the columns</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tmp1</span> <span class="o">+</span> <span class="p">(</span><span class="n">tmp2</span><span class="o">-</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dRow</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="the-main-functions">
+<h2>The main functions<a class="headerlink" href="#the-main-functions" title="Permalink to this headline">#</a></h2>
+<p>We define two main functions.  The first, <code class="docutils literal notranslate"><span class="pre">getNearestPrfFits</span></code>, returns only the PRF in the grid of 25x25 PRF locations provided by the mission that is nearest to the (column, row) location specified.  The second, <code class="docutils literal notranslate"><span class="pre">getPrfAtColRowFits</span></code>, does a linear interpolation between the four PRFs nearest to the location specified and returns that PRF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getNearestPrfFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main Function</span>
+<span class="sd">    Return a 13x13 PRF image for a single location. No interpolation</span>
+<span class="sd">    </span>
+<span class="sd">    This function is identical to getPrfAtColRowFits except it does not perform the interpolation step.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    ---------</span>
+<span class="sd">    col, row</span>
+<span class="sd">        (floats) Location on CCD to lookup. The origin of the CCD is the bottom left.</span>
+<span class="sd">        Increasing column increases the &quot;x-direction&quot;, and row increases the &quot;y-direction&quot;</span>
+<span class="sd">        The column coordinate system starts at column 45.</span>
+<span class="sd">    ccd</span>
+<span class="sd">        (int) CCD number. There are 4 CCDs per camera</span>
+<span class="sd">    camera</span>
+<span class="sd">        (int) Camera number. The instrument has 4 cameras</span>
+<span class="sd">    sector</span>
+<span class="sd">        (int)  Sector number, greater than or equal to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    A 13x13 numpy image array of the nearest PRF to the specifed column and row.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">prfImages</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Determine a datestring in the file name and the path based on ccd/camer/sector</span>
+    <span class="n">datestring</span><span class="p">,</span> <span class="n">addPath</span> <span class="o">=</span> <span class="n">pathLookup</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="n">addPath</span>
+    
+    <span class="c1"># Convert the fractional pixels to the offset required for the interleaved pixels.</span>
+    <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span> <span class="o">=</span> <span class="n">getOffsetsFromPixelFractions</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+    
+    <span class="c1"># Determine the 4 (col,row) locations with exact PRF measurements.</span>
+    <span class="n">imagePos</span> <span class="o">=</span> <span class="n">determineFourClosestPrfLoc</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+    <span class="n">bestPos</span> <span class="o">=</span> <span class="n">imagePos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">prfArray</span> <span class="o">=</span> <span class="n">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">bestPos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bestPos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">)</span>
+            
+    <span class="n">prfImage</span> <span class="o">=</span> <span class="n">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">)</span>       
+
+    <span class="k">return</span> <span class="n">prfImage</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main Function</span>
+<span class="sd">    Lookup a 13x13 PRF image for a single location</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs</span>
+<span class="sd">    ---------</span>
+<span class="sd">    col, row</span>
+<span class="sd">        (floats) Location on CCD to lookup. The origin of the CCD is the bottom left.</span>
+<span class="sd">        Increasing column increases the &quot;x-direction&quot;, and row increases the &quot;y-direction&quot;</span>
+<span class="sd">        The column coordinate system starts at column 45.</span>
+<span class="sd">    ccd</span>
+<span class="sd">        (int) CCD number. There are 4 CCDs per camera</span>
+<span class="sd">    camera</span>
+<span class="sd">        (int) Camera number. The instrument has 4 cameras</span>
+<span class="sd">    sector</span>
+<span class="sd">        (int)  Sector number, greater than or equal to 1.</span>
+<span class="sd">    path</span>
+<span class="sd">        (str) Directory or URL where the PRF fits files are located</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    A 13x13 numpy image array of the interpolated PRF.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">prfImages</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Determine a datestring in the file name and the path based on ccd/camera/sector</span>
+    <span class="n">datestring</span><span class="p">,</span> <span class="n">subDirectory</span> <span class="o">=</span> <span class="n">pathLookup</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="n">subDirectory</span>
+    
+    <span class="c1"># Convert the fractional pixels to the offset required for the interleaved pixels.</span>
+    <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span> <span class="o">=</span> <span class="n">getOffsetsFromPixelFractions</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+    
+    <span class="c1"># Determine the 4 (col,row) locations with exact PRF measurements.</span>
+    <span class="n">imagePos</span> <span class="o">=</span> <span class="n">determineFourClosestPrfLoc</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+
+    <span class="c1"># Loop over the 4 locations and read in each file and extract the sub-pixel location.</span>
+    <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">imagePos</span><span class="p">:</span>
+            <span class="n">prfArray</span> <span class="o">=</span> <span class="n">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">)</span>
+            
+            <span class="n">img</span> <span class="o">=</span> <span class="n">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">)</span>       
+            <span class="n">prfImages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="c1"># Simple linear interpolate across the 4 locations.</span>
+    <span class="n">interpolatedPrf</span> <span class="o">=</span> <span class="n">interpolatePrf</span><span class="p">(</span><span class="n">prfImages</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">imagePos</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">interpolatedPrf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p><a id="obtain_PRF"></a></p>
+</section>
+<section id="obtain-a-prf-at-a-particular-image-location">
+<h2>Obtain a PRF at a particular image location<a class="headerlink" href="#obtain-a-prf-at-a-particular-image-location" title="Permalink to this headline">#</a></h2>
+<p>Notice that both of our main functions can accept either a path to the location on your local machine where the PRF fits files are stored, or a URL pointing to the same directory at MAST.  We recommend downloading the PRF fits files if you expect to use them frequently. Here we use the URL for the PRFs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the location for which we want to retrieve the PRF.</span>
+<span class="n">col</span> <span class="o">=</span> <span class="mf">125.2</span>
+<span class="n">row</span> <span class="o">=</span> <span class="mf">544.1</span>
+<span class="n">ccd</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">camera</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">sector</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># This is the directory where MAST stores the prf FITS files.</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span>
+
+<span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<span class="n">closestPrf</span> <span class="o">=</span> <span class="n">getNearestPrfFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># This is the directory where MAST stores the prf FITS files.</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">closestPrf</span> <span class="o">=</span> <span class="n">getNearestPrfFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+<span class="nn">Cell In[7], line 43,</span> in <span class="ni">getPrfAtColRowFits</span><span class="nt">(col, row, ccd, camera, sector, path)</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">imagePos</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span>         <span class="n">prfArray</span> <span class="o">=</span> <span class="n">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">43</span>         <span class="n">img</span> <span class="o">=</span> <span class="n">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">)</span>       
+<span class="g g-Whitespace">     </span><span class="mi">44</span>         <span class="n">prfImages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="c1"># Simple linear interpolate across the 4 locations.</span>
+
+<span class="nn">Cell In[4], line 67,</span> in <span class="ni">getRegSampledPrfFitsByOffset</span><span class="nt">(prfArray, colOffset, rowOffset)</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span> <span class="n">nColOut</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gridSize</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="n">nRowOut</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gridSize</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">67</span> <span class="n">iCol</span> <span class="o">=</span> <span class="n">colOffset</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nColOut</span><span class="p">)</span> <span class="o">*</span> <span class="n">gridSize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">68</span> <span class="n">iRow</span> <span class="o">=</span> <span class="n">rowOffset</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nRowOut</span><span class="p">)</span> <span class="o">*</span> <span class="n">gridSize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">prfArray</span><span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/__init__.py:284,</span> in <span class="ni">__getattr__</span><span class="nt">(attr)</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span>     <span class="kn">from</span> <span class="nn">.testing</span> <span class="kn">import</span> <span class="n">Tester</span>
+<span class="g g-Whitespace">    </span><span class="mi">282</span>     <span class="k">return</span> <span class="n">Tester</span>
+<span class="ne">--&gt; </span><span class="mi">284</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;module </span><span class="si">{!r}</span><span class="s2"> has no attribute &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">285</span>                      <span class="s2">&quot;</span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+
+<span class="ne">AttributeError</span>: module &#39;numpy&#39; has no attribute &#39;int&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is the code to plot both the closest PRF and a PRF derived from a linear interpolation between the 4 nearest PRFs provided in the file.  They are plotted with a log scale in order to let you really see the full extent of the PRFs.  Also, we show the difference between the two.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Commands to make the plots looks a bit nicer.</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;origin&#39;</span><span class="p">:</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;interpolation&#39;</span><span class="p">:</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="s1">&#39;cmap&#39;</span><span class="p">:</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">}</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">closestPrf</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Closest PRF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">prf</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Interpolated PRF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+
+<span class="n">diff</span> <span class="o">=</span> <span class="n">closestPrf</span> <span class="o">-</span> <span class="n">prf</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">diff</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clim</span><span class="p">(</span><span class="o">-</span><span class="n">mx</span><span class="p">,</span> <span class="n">mx</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Difference&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-of-prfs-across-the-chip">
+<h2>Sample of PRFs across the chip<a class="headerlink" href="#sample-of-prfs-across-the-chip" title="Permalink to this headline">#</a></h2>
+<p>Let’s plot the PRF across a single CCD to show how it varies. The PRF images are plotted using a log scale to see the difference in the wings of the PRF.</p>
+<p>Notice that the nice round PRF shape is in the corner of our grid, near (1850,1850).  This is because there are 4 CCDs for each camera and so this location is nearest to the center of the focal plane and has the least optical distortion.  Note that the read-out direction of the CCDs is different for each CCD. See Figure 2.6 of the <a class="reference external" href="http://archive.stsci.edu/files/live/sites/mast/files/home/missions-and-data/active-missions/tess/_documents/TESS_Instrument_Handbook_v0.1.pdf#page=16">Instrument Manual</a> to determine the actual orientation of each CCD.</p>
+<p>As an experiment you should change the ccd value see how it varies from one CCD to another across the TESS field-of-view.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the CCD for which we want to retrieve the PRFs</span>
+<span class="n">sector</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1">#Values 1 - 13</span>
+<span class="n">camera</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1">#values 1 - 4</span>
+<span class="n">ccd</span> <span class="o">=</span> <span class="mi">1</span>      <span class="c1">#Values 1 - 4</span>
+
+<span class="c1"># Create plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Intra Pixel PRF&quot;</span><span class="p">)</span>
+
+<span class="c1"># Loop over the 25 different locations</span>
+<span class="n">nplot</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1851</span><span class="p">,</span> <span class="mi">600</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1851</span><span class="p">,</span> <span class="mi">600</span><span class="p">):</span>
+        <span class="n">nplot</span><span class="o">=</span><span class="n">nplot</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">nplot</span><span class="p">)</span>
+        <span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mf">.5</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mf">.5</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">prf</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">, </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-the-prf-at-sub-pixel-locations">
+<h2>Sample the PRF at sub-pixel locations.<a class="headerlink" href="#sample-the-prf-at-sub-pixel-locations" title="Permalink to this headline">#</a></h2>
+<p>The PRF varies quite a bit depending on where on the pixel the star’s light falls.  As a result it is instructive to plot the PRF for one pixel at various intrapixel locations.  In the following we show a 5x5 grid of the prf above. Note that there are actually 9 different intra-pixel locations provided in the TESS Mission PRFs.  Here we plot them on a linear scale because most of the variation is in the brightest pixels of the PRF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the location for which we want to retrieve the PRF.</span>
+<span class="n">col</span> <span class="o">=</span> <span class="mf">125.0</span>
+<span class="n">row</span> <span class="o">=</span> <span class="mf">1044.0</span>
+<span class="n">ccd</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">camera</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">sector</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># This is the directory where MAST stores the prf FITS files.</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span>
+
+<span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;vmax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.2</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+
+<span class="c1"># Loop over the 5 different locations</span>
+<span class="n">nplot</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">row_add</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">.2</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col_add</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">):</span>
+        <span class="n">nplot</span><span class="o">=</span><span class="n">nplot</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">nplot</span><span class="p">)</span>
+        <span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="n">col_add</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="n">row_add</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prf</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">, </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">col_add</span><span class="p">,</span> <span class="n">row_add</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        
+<span class="n">_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;vmax&#39;</span><span class="p">)</span>  <span class="c1">#unset vmax</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compare-the-prf-to-an-image">
+<h2>Compare the PRF to an Image<a class="headerlink" href="#compare-the-prf-to-an-image" title="Permalink to this headline">#</a></h2>
+<p>In the following we pull down the image of a star observed by TESS. We do this using TessCut and Catalogs, both are packages available through astroquery.mast. MAST maintains a separate tutorial on how to use these tools. Tesscut cuts out a timeseries of a subsection of the TESS FFIs.  We plot that image and attmept to estimate a PRF for that star. This examples is done for TIC 307214209. It is chosen because it is relatively isolated in the field, making it easier to match the PRFs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Tesscut</span>
+<span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Catalogs</span>
+
+<span class="n">ticid</span> <span class="o">=</span> <span class="mi">307214209</span>
+<span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;TIC </span><span class="si">%u</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ticid</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">13</span>
+
+<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">catalog</span> <span class="o">=</span> <span class="s2">&quot;Tic&quot;</span><span class="p">,</span> <span class="n">ID</span> <span class="o">=</span> <span class="n">ticid</span><span class="p">)</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span>
+
+<span class="n">coord</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="use-tesscut-to-retrieve-a-13x13-square-image-from-a-calibrated-ffi">
+<h3>Use Tesscut to retrieve a 13x13 square image from a calibrated FFI<a class="headerlink" href="#use-tesscut-to-retrieve-a-13x13-square-image-from-a-calibrated-ffi" title="Permalink to this headline">#</a></h3>
+<p>TESScut requires a string containing the RA and Dec of the location and a size for how big the cutout should be. I then take the median of all the images in the stack for comparison to the PRF.  The Header contains information about the location of the pixels on the original calibrated FFI. 1CRV4P and 2CRV4P provide the column and row of the center of the cutout in the original physical coordinate system of the FFI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># There is more than one sector, we chose the second one</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="determine-the-column-and-row-of-the-central-pixel">
+<h3>Determine the column and row of the central pixel<a class="headerlink" href="#determine-the-column-and-row-of-the-central-pixel" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull out the location of the middle of the CCD from the Physics WCS in the header.</span>
+<span class="n">image_head</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">prime_head</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">ap_head</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">col_center</span> <span class="o">=</span> <span class="n">image_head</span><span class="p">[</span><span class="s1">&#39;1CRV4P&#39;</span><span class="p">]</span>
+<span class="n">row_center</span> <span class="o">=</span> <span class="n">image_head</span><span class="p">[</span><span class="s1">&#39;2CRV4P&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Header col,row: </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">col_center</span><span class="p">,</span> <span class="n">row_center</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="determine-the-location-of-the-star">
+<h3>Determine the location of the star<a class="headerlink" href="#determine-the-location-of-the-star" title="Permalink to this headline">#</a></h3>
+<p>Usually, if the TIC is accurate, the location of the star will be right in the center. In case it is not, we look for the brightest pixel in the median of our time series of images and request our PRF for that location. In this case, we end up with the central pixel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the image of the median of the time series.</span>
+<span class="n">image_array</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span>
+<span class="n">image_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">image_array</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">sortedindex</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">image_stack</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">13</span><span class="p">)))</span>
+<span class="n">brightest</span> <span class="o">=</span> <span class="n">sortedindex</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">bright_col</span> <span class="o">=</span> <span class="n">brightest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">6</span> <span class="o">+</span> <span class="n">col_center</span>
+<span class="n">bright_row</span> <span class="o">=</span> <span class="n">brightest</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">6</span> <span class="o">+</span> <span class="n">row_center</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bright star col,row: </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bright_col</span><span class="p">,</span> <span class="n">bright_row</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="look-up-sector-camera-and-ccd">
+<h3>Look up Sector, Camera, and CCD<a class="headerlink" href="#look-up-sector-camera-and-ccd" title="Permalink to this headline">#</a></h3>
+<p>Use the TessCut header to determine the sector, camera, and ccd of the image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">camera</span> <span class="o">=</span> <span class="n">prime_head</span><span class="p">[</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">]</span>
+<span class="n">ccd</span> <span class="o">=</span> <span class="n">prime_head</span><span class="p">[</span><span class="s1">&#39;CCD&#39;</span><span class="p">]</span>
+<span class="n">sector</span> <span class="o">=</span> <span class="n">prime_head</span><span class="p">[</span><span class="s1">&#39;SECTOR&#39;</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span>
+<span class="n">prf_col_offset</span> <span class="o">=</span> <span class="mi">44</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-sub-pixel-prfs">
+<h3>Plot the sub-pixel PRFs<a class="headerlink" href="#plot-the-sub-pixel-prfs" title="Permalink to this headline">#</a></h3>
+<p>Below we compare the image from the FFI to the various sub-pixel locations to choose the one that looks most like the image. For most use cases, you would most likely want to perform a fit, but for our purposes of understanding the PRFs, this will be sufficient.</p>
+<p>Notice we define an arbitrary offset above, prf_col_offset. We need to add a 44 pixel offset to the column in the PRF request.  This is because the PRF request uses a different physical coordinate system than our calibrated FFIs. They use 45 as their first column but the calibrated FFIs use 1 as the first column.</p>
+<p>First we plot an image of the median of all the images in the pixel time series returned by TESScut.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_stack</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a 5x5 grid showing the PRF as it would look if it fell on different parts of the pixel. A quick chi-by-eye tells me that (0.7,0.9) is a pretty good match.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop over the 5 different locations</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="n">nplot</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">row_add</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">.2</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col_add</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">.2</span><span class="p">):</span>
+        <span class="n">nplot</span><span class="o">=</span><span class="n">nplot</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">nplot</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">bright_col</span> <span class="o">+</span> <span class="n">col_add</span> <span class="o">+</span> <span class="n">prf_col_offset</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">bright_row</span> <span class="o">+</span> <span class="n">row_add</span>
+        <span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prf</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">, </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">col_add</span><span class="p">,</span> <span class="n">row_add</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">11</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we obtain the interpolated PRF for our image given the column and row we determinted, including the subpixel information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># offsets from the corner of the pixel.</span>
+<span class="n">offcol</span> <span class="o">=</span> <span class="mf">.7</span>
+<span class="n">offrow</span> <span class="o">=</span> <span class="mf">.9</span>
+
+<span class="c1"># Retrieve the PRF using our functions above.</span>
+<span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">bright_col</span> <span class="o">+</span> <span class="n">offcol</span> <span class="o">+</span> <span class="n">prf_col_offset</span><span class="p">,</span> <span class="n">bright_row</span> <span class="o">+</span> <span class="n">offrow</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compare-prf-and-ffi-cutout">
+<h3>Compare PRF and FFI cutout<a class="headerlink" href="#compare-prf-and-ffi-cutout" title="Permalink to this headline">#</a></h3>
+<p>Here we look at the difference between our actual image and the PRF we requested. To do this well we need to subtact the background from the image and then we need to scale up the PRF to match the flux of our star. We finish by plotting the background subtracted image, the flux-scaled PRF, and the significance of the difference (assuming Poisson statistics in the image).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># estimate background using median</span>
+<span class="n">image_subbkg</span> <span class="o">=</span>  <span class="n">image_stack</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">image_stack</span><span class="p">)</span>
+<span class="c1"># Scaling based on brightest pixels.</span>
+<span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">image_subbkg</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">prf</span><span class="p">)</span>
+<span class="c1"># Take the difference</span>
+<span class="n">diff</span> <span class="o">=</span>  <span class="n">image_subbkg</span> <span class="o">-</span> <span class="n">prf</span> <span class="o">*</span> <span class="n">scale</span> 
+
+<span class="c1"># Estimate the signficance of the residuals</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">image_subbkg</span><span class="p">))</span> <span class="o">+</span> <span class="mf">.05</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+<span class="n">vm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">image_subbkg</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_stack</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vm</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Target Pixel File&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prf</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">vm</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;PRF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="n">interpolation</span> <span class="o">=</span> <span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;RdBu&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Significance of Residuals&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="residuals">
+<h3>Residuals<a class="headerlink" href="#residuals" title="Permalink to this headline">#</a></h3>
+<p>This is not an optimal fit. By playing around with <code class="docutils literal notranslate"><span class="pre">offcol</span></code> and <code class="docutils literal notranslate"><span class="pre">offrow</span></code> above, you will be able to find a slightly better fit than the one shown above.  (Hint, try (0.8, 0.9) for the column and row offsets.)</p>
+<p>We also did not account for all the stars in our image. We picked a rather isolated, 8th magnitude star, but there is still another 10th magnitude star about 7 pixels away, and a 15th magnitude star about 5 pixels away from our star (both are towards the upper left in our image). A good PRF fit will include all of this information. Both of these can be seen clearly in the residuals. We also see some residual signal from our primary star that hopefully a better fit that properly scales the PRF to the flux of the star will remove more cleanly.</p>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h3>
+<p>This notebook provided you with code to open the PRFs and retrieve one that matches the physical location of a star on a real TESS image.  You learned that the PRF depends not only on the location of the star on the chip, but also varies significantly by the sub-pixel location.  The wings of the PRFs depend strongly on the location of the star on the chip with the most circular shapes near the center of the image. The shape of the bright central peak of the PRF depends strongly on the sub-pixel location.</p>
+<p><a id="about_ID"></a></p>
+</section>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this headline">#</a></h2>
+<p><strong>Authors:</strong>
+<br>Susan E. Mullally, STScI
+<br>Fergal Mullally
+<br><strong>Updated On:</strong> 2019-06-13</p>
+<p><a class="reference external" href="#title_ID">Top of Page</a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+<section id="assert-statements">
+<h3>Assert Statements<a class="headerlink" href="#assert-statements" title="Permalink to this headline">#</a></h3>
+<p>Test to check that the code is returning the correct PRFs. Do not edit the following lines.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assert statements to ensure that the PRFs are being calculated correctly</span>
+<span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="mf">120.1</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prf</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.00023311895</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">2e-10</span>
+
+<span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="mf">1000.1</span><span class="p">,</span> <span class="mf">1500.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prf</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.0001082187719</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">2e-10</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prf</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.00013416155932937155</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">2e-10</span>
+
+<span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="mf">1000.1</span><span class="p">,</span> <span class="mf">1500.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prf</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.00019209127583606498</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">2e-10</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "TheRealZoidberg/mast",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/MAST/TESS/interm_tess_prf_retrieve"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../interm_tasc_lc/interm_tasc_lc.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Intermediate: Finding Flares and Variable Stars in TASC Light Curves</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By STScI<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

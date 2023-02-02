@@ -1,0 +1,1068 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Beginner: Read and Display a TESS Full Frame Image &#8212; MAST Notebook Repository</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Beginner: Read and Plot A TESS Light Curve File" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html" />
+    <link rel="prev" title="Beginner: Read and Plot A TESS Data Validation Timeseries File" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Astroquery
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+   Beginner: Searching MAST using astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
+   Large Downloads in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     astroquery.mast
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  HSC
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+   Hubble Catalog of Variables Notebook (API version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">
+   Hubble Catalog of Variables Notebook (CasJobs version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+   Hubble Source Catalog API Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+   MAST Table Access Protocol Hubble Source Catalog Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  JWST
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+   Accessing JWST Proposal Data in astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler K2
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+   Beginner: Read and Plot A K2 Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">
+   Beginner: Read and Display A K2 Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a K2 Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+   Removing Instrumental Noise from
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Light Curves Using Pixel Level Decorrelation (PLD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+   Read and Plot A Kepler Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+   Plotting a Catalog over a Kepler Full Frame Image File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+   Using Kepler Data to Plot a Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+   Plotting Images from Kepler Target Pixel Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+   Combining Multiple Quarters of
+   <em>
+    Kepler
+   </em>
+   Data with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+   Creating Periodograms and Identifying Significant Peaks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+   Creating Your Own Light Curves using Custom Aperture Photometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+   How to Estimate a Star’s Mass and Radius Using Asteroseismology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+   Identifying Transiting Planet Signals in a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #1: Data Gaps and Quality Flags
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #2: Spurious Signals and Time Sampling Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #3: Seasonal and Detector Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #4: Electronic Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+   Interactively Inspecting Target Pixel Files and Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+   Plotting
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+   Searching for
+   <em>
+    Kepler
+   </em>
+   /
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Data Products Using Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Light Curve Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+   Verifying the Location of a Signal in
+   <em>
+    Kepler
+   </em>
+   Pixel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+   Visualizing Periodic Signals Using a River Plot
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  PanSTARRS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  TESS
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">
+   Beginner: Retrieve TESS Data Validation Products with Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+   Beginner: Read and Plot A TESS Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Beginner: Read and Display a TESS Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+   Beginner: Read and Plot A TESS Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+   Beginner: Read and Display A TESS Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">
+   Exoplanet Data and TESS Light Curves Using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">
+   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+   Beginner: Search The TESS Input Catalog Centered On HD 209458.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_gi_query/interm_gi_query.html">
+   Intermediate:  Search and Download GI Program Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+   Intermediate: Retrieve TESS Pixel Response Function Images
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+   Intermediate: Create TESS FFI Cutout using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast//issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/notebooks/MAST/TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-statements">
+   Import Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#obtaining-the-full-frame-image">
+   Obtaining The Full Frame Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-the-ffi-fits-file-structure">
+   Understanding The FFI FITS File Structure
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-the-wcs-and-calibrated-image">
+   Reading the WCS and Calibrated Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#display-the-image">
+   Display the Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-few-image-details">
+   A Few Image Details
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leading-and-trailing-black">
+     Leading and Trailing Black
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#virtual-smear-and-buffer">
+     Virtual, Smear and Buffer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bright-area-on-left">
+     Bright Area on Left
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Beginner: Read and Display a TESS Full Frame Image</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-statements">
+   Import Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#obtaining-the-full-frame-image">
+   Obtaining The Full Frame Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-the-ffi-fits-file-structure">
+   Understanding The FFI FITS File Structure
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-the-wcs-and-calibrated-image">
+   Reading the WCS and Calibrated Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#display-the-image">
+   Display the Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-few-image-details">
+   A Few Image Details
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leading-and-trailing-black">
+     Leading and Trailing Black
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#virtual-smear-and-buffer">
+     Virtual, Smear and Buffer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bright-area-on-left">
+     Bright Area on Left
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a id="title_ID"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="beginner-read-and-display-a-tess-full-frame-image">
+<h1>Beginner: Read and Display a TESS Full Frame Image<a class="headerlink" href="#beginner-read-and-display-a-tess-full-frame-image" title="Permalink to this headline">#</a></h1>
+<p>This notebook tutorial demonstrates how to load and display a TESS full frame image (FFI).  We will display the image with the world coordinate system (WCS) overlayed on top.</p>
+<hr class="docutils" />
+<section id="import-statements">
+<h2>Import Statements<a class="headerlink" href="#import-statements" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><strong>astropy.io.fits</strong> allows us to interact with the FITS files.</p></li>
+<li><p><strong>astropy.wcs.WCS</strong> allows us to interpret the world coordinate system.</p></li>
+<li><p><strong>matplotlib.pyplot</strong> is used to display the image.</p></li>
+<li><p><strong>numpy</strong> is used for array manipulation.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">astropy.wcs</span> <span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>TESS periodically reads out the entire frame of all four cameras, nominally every 30 minutes, and stores them as full frame images.  Each camera covers ~24x24 degrees on the sky.  These images can be used to construct light curves at 30-minute cadence for any object within the camera’s field of view, in contrast to the subset of targets chosen by the mission to be read-out at shorter cadence (nominally two minutes) that receive mission-produced light curves.</p>
+<p>This tutorial will refer to a couple TESS-related terms that we define here.</p>
+<ul class="simple">
+<li><p>Sector = TESS observes the sky in regions of 24x96 degrees for approximately 1 month at a time.  Each of these regions is referred to as a “sector”, starting with Sector 1.</p></li>
+<li><p>HDU = Header Data Unit.  A FITS file is made up of HDUs that contain data and metadata relating to the file. The first HDU is called the primary HDU, and anything that follows is considered an “extension”, e.g., “the first FITS extension”, “the second FITS extension”, etc.</p></li>
+<li><p>BJD = Barycentric Julian Date, the Julian Date that has been corrected for differences in the Earth’s position with respect to the Solar System center of mass.</p></li>
+<li><p>BTJD =  Barycentric TESS Julian Date, the timestamp measured in BJD, but offset by 2457000.0.  I.e., BTJD = BJD - 2457000.0</p></li>
+<li><p>WCS = World Coordinate System, A FITS convention used to store coordinate information inside FITS headers.  For TESS full frame images, it is used to provide the translation needed to go from pixel coordinates to celestial coordinates in right ascension and declination.</p></li>
+</ul>
+</section>
+<section id="obtaining-the-full-frame-image">
+<h2>Obtaining The Full Frame Image<a class="headerlink" href="#obtaining-the-full-frame-image" title="Permalink to this headline">#</a></h2>
+<p>We will read the full frame image from Sector 1 using the MAST URL location.  So that we can get started with understanding the file contents without reviewing how to automatically search for and retrieve TESS files, we won’t show how to search and retrieve TESS FFIs in this tutorial.  Consult other TESS tutorials <a class="reference external" href="https://outerspace.stsci.edu/display/TESS/6.0+-+Data+Search+Tutorials">in the TESS Archive Handbook</a> for much more information on how to search for TESS data using MAST services.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
+<span class="n">fits_file</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/ffi/s0001/2018/206/4-2/tess2018206192942-s0001-4-2-0120-s_ffic.fits&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="understanding-the-ffi-fits-file-structure">
+<h2>Understanding The FFI FITS File Structure<a class="headerlink" href="#understanding-the-ffi-fits-file-structure" title="Permalink to this headline">#</a></h2>
+<p>TESS FFI FITS files contain a primary HDU with metadata stored in the header.  The first extension HDU contains more metadata in the header, and stores the full frame image.  The second extension HDU contains the uncertainty values for the image.  Let’s examine the structure of the FITS file using the astropy.fits <code class="docutils literal notranslate"><span class="pre">info</span></code> function, which shows the FITS file format in more detail.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/a51c8b26d6282cb93bccee1b4aa329a3/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      30   ()      
+  1  CAMERA.CCD 4.2 cal    1 ImageHDU       183   (2136, 2078)   float32   
+  2  CAMERA.CCD 4.2 uncert    1 ImageHDU       183   (2136, 2078)   float32   
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-the-wcs-and-calibrated-image">
+<h2>Reading the WCS and Calibrated Image<a class="headerlink" href="#reading-the-wcs-and-calibrated-image" title="Permalink to this headline">#</a></h2>
+<p>Now that we have the file, let’s store the world coordinate system information for use later.  We can use the astropy.wcs <code class="docutils literal notranslate"><span class="pre">WCS</span></code> function to store the information from the image extension HDU’s header.</p>
+<p>The following command opens the file, extracts the WCS and Image data and then closes the file. Note this file is quite large and may take a few moments to dowload.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+    <span class="n">wcs_info</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">cal_image</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: FITSFixedWarning: &#39;datfix&#39; made the change &#39;Set MJD-OBS to 58324.813044 from DATE-OBS.
+Set MJD-END to 58324.833877 from DATE-END&#39;. [astropy.wcs.wcs]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the header to determine the mid-point of the exposure time for this FFI.</span>
+<span class="n">mid_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTOP&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTART&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="display-the-image">
+<h2>Display the Image<a class="headerlink" href="#display-the-image" title="Permalink to this headline">#</a></h2>
+<p>We show the 2048x2048 image, adjusting the scale so that we can see more of the stars.
+We also imprint the WCS on top of the image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">wcs_info</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cal_image</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cal_image</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cal_image</span><span class="p">,</span> <span class="mi">98</span><span class="p">),</span><span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RA&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dec&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;TESS Calibrated FFI for Sector 1, Camera 4, CCD 2, Timestamp </span><span class="si">%f</span><span class="s2"> BTJD&quot;</span> <span class="o">%</span> <span class="n">mid_time</span><span class="p">)</span>
+
+<span class="n">cal_image</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2078, 2136)
+</pre></div>
+</div>
+<img alt="../../../../_images/beginner_how_to_use_ffi_13_1.png" src="../../../../_images/beginner_how_to_use_ffi_13_1.png" />
+</div>
+</div>
+</section>
+<section id="a-few-image-details">
+<h2>A Few Image Details<a class="headerlink" href="#a-few-image-details" title="Permalink to this headline">#</a></h2>
+<p>We describe some of the details you see on this FFI. For more detailed information please see the TESS Instrument Handbook (Section 4.1).  Notice that our image is (2078, 2136) in size. Calibration row and columns are read-out in addition to the image data. These rows and columns remain in the calibrated image.</p>
+<section id="leading-and-trailing-black">
+<h3>Leading and Trailing Black<a class="headerlink" href="#leading-and-trailing-black" title="Permalink to this headline">#</a></h3>
+<p>There are 4 sets of 11 columns (44 columns in total) that make up the leading and trailing black.  Each CCD is read in 4 slices and each slice has an 11 column leading black and an 11 column trailing black. All of the leading black are placed in the first 44 columns while the trailing black are the last 44 columns.</p>
+</section>
+<section id="virtual-smear-and-buffer">
+<h3>Virtual, Smear and Buffer<a class="headerlink" href="#virtual-smear-and-buffer" title="Permalink to this headline">#</a></h3>
+<p>The top 30 rows are, from the top, 10 virtual rows, 10 smear rows and 10 buffer rows.</p>
+</section>
+<section id="bright-area-on-left">
+<h3>Bright Area on Left<a class="headerlink" href="#bright-area-on-left" title="Permalink to this headline">#</a></h3>
+<p>Data annomalies are discussed in the TESS Setor 1 Data Release Notes. This bright area may be caused by some scattered light.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this headline">#</a></h2>
+<p><strong>Authors:</strong> Scott W. Fleming and Susan E. Mullally, STScI Archive Scientists</p>
+<p><strong>Updated On:</strong> 2018-12-05</p>
+<p><a class="reference external" href="#title_ID">Top of Page</a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "TheRealZoidberg/mast",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/MAST/TESS/beginner_how_to_use_ffi"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Beginner: Read and Plot A TESS Data Validation Timeseries File</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beginner: Read and Plot A TESS Light Curve File</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By STScI<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

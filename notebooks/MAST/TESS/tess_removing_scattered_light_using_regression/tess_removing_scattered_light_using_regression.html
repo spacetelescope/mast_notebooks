@@ -1,0 +1,1482 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector &#8212; MAST Notebook Repository</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="Intermediate: Create TESS FFI Cutout using Python Requests" href="../interm_tesscut_requests/interm_tesscut_requests.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Astroquery
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+   Beginner: Searching MAST using astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
+   Large Downloads in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     astroquery.mast
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  HSC
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+   Hubble Catalog of Variables Notebook (API version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">
+   Hubble Catalog of Variables Notebook (CasJobs version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+   Hubble Source Catalog API Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+   MAST Table Access Protocol Hubble Source Catalog Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  JWST
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+   Accessing JWST Proposal Data in astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler K2
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+   Beginner: Read and Plot A K2 Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">
+   Beginner: Read and Display A K2 Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a K2 Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+   Removing Instrumental Noise from
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Light Curves Using Pixel Level Decorrelation (PLD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+   Read and Plot A Kepler Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+   Plotting a Catalog over a Kepler Full Frame Image File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+   Using Kepler Data to Plot a Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+   Plotting Images from Kepler Target Pixel Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+   Combining Multiple Quarters of
+   <em>
+    Kepler
+   </em>
+   Data with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+   Creating Periodograms and Identifying Significant Peaks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+   Creating Your Own Light Curves using Custom Aperture Photometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+   How to Estimate a Star’s Mass and Radius Using Asteroseismology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+   Identifying Transiting Planet Signals in a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #1: Data Gaps and Quality Flags
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #2: Spurious Signals and Time Sampling Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #3: Seasonal and Detector Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #4: Electronic Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+   Interactively Inspecting Target Pixel Files and Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+   Plotting
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+   Searching for
+   <em>
+    Kepler
+   </em>
+   /
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Data Products Using Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Light Curve Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+   Verifying the Location of a Signal in
+   <em>
+    Kepler
+   </em>
+   Pixel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+   Visualizing Periodic Signals Using a River Plot
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  PanSTARRS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  TESS
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">
+   Beginner: Retrieve TESS Data Validation Products with Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+   Beginner: Read and Plot A TESS Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a TESS Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+   Beginner: Read and Plot A TESS Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+   Beginner: Read and Display A TESS Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">
+   Exoplanet Data and TESS Light Curves Using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">
+   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+   Beginner: Search The TESS Input Catalog Centered On HD 209458.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_gi_query/interm_gi_query.html">
+   Intermediate:  Search and Download GI Program Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+   Intermediate: Retrieve TESS Pixel Response Function Images
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+   Intermediate: Create TESS FFI Cutout using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast//issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/TESS/tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/notebooks/MAST/TESS/tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-goals">
+     Learning Goals
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imports">
+     Imports
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-regressioncorrector-on-tesscut-ffi-cutouts">
+     1. Using
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       RegressionCorrector
+      </span>
+     </code>
+     on TESSCut FFI Cutouts
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-a-designmatrix-from-pixel-regressors">
+     2. Creating a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       DesignMatrix
+      </span>
+     </code>
+     from Pixel Regressors
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removing-background-scattered-light-using-linear-regression">
+     3. Removing Background Scattered Light Using Linear Regression
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#diagnosing-the-correction">
+     4. Diagnosing the Correction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files">
+     5. Using
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       RegressionCorrector
+      </span>
+     </code>
+     on
+     <em>
+      TESS
+     </em>
+     Two-Minute Cadence Target Pixel Files
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#should-i-use-regressioncorrector-or-pldcorrector">
+     6. Should I use
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       RegressionCorrector
+      </span>
+     </code>
+     or
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       PLDCorrector
+      </span>
+     </code>
+     ?
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-lightkurve-and-its-dependencies">
+   Citing Lightkurve and its Dependencies
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-goals">
+     Learning Goals
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imports">
+     Imports
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-regressioncorrector-on-tesscut-ffi-cutouts">
+     1. Using
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       RegressionCorrector
+      </span>
+     </code>
+     on TESSCut FFI Cutouts
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-a-designmatrix-from-pixel-regressors">
+     2. Creating a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       DesignMatrix
+      </span>
+     </code>
+     from Pixel Regressors
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removing-background-scattered-light-using-linear-regression">
+     3. Removing Background Scattered Light Using Linear Regression
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#diagnosing-the-correction">
+     4. Diagnosing the Correction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files">
+     5. Using
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       RegressionCorrector
+      </span>
+     </code>
+     on
+     <em>
+      TESS
+     </em>
+     Two-Minute Cadence Target Pixel Files
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#should-i-use-regressioncorrector-or-pldcorrector">
+     6. Should I use
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       RegressionCorrector
+      </span>
+     </code>
+     or
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       PLDCorrector
+      </span>
+     </code>
+     ?
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-lightkurve-and-its-dependencies">
+   Citing Lightkurve and its Dependencies
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="removing-scattered-light-from-tess-data-using-the-lightkurve-regressioncorrector">
+<h1>Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code><a class="headerlink" href="#removing-scattered-light-from-tess-data-using-the-lightkurve-regressioncorrector" title="Permalink to this headline">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this headline">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Be familiar with the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>.</p></li>
+<li><p>Understand how to create regressors from a <code class="docutils literal notranslate"><span class="pre">TargetPixelFile</span></code> object.</p></li>
+<li><p>Be able to remove the scattered light background signal from <em>TESS</em> data.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>Lightkurve offers several tools to the community for removing instrument noise and systematics from data from the <em>Kepler</em>, <em>K2</em>, and <em>TESS</em> missions. This tutorial will demonstrate the use of Lightkurve’s <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> class to remove the scattered light and spacecraft motion noise from <em>TESS</em> Full Frame Images (FFIs).</p>
+<p><em>TESS</em> FFIs have an additive scattered light background that has not been removed by the pipeline. This scattered light must be removed by the user. This can be done in a few ways, including a basic median subtraction. In this tutorial, we’ll show you how to use Lightkurve’s corrector tools to remove the scattered light.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">#</a></h2>
+<p>This tutorial requires the <a class="reference external" href="http://docs.lightkurve.org/"><strong>Lightkurve</strong></a> package, and also makes use of <strong><a class="reference external" href="https://numpy.org/">NumPy</a></strong> and <strong><a class="reference external" href="https://matplotlib.org/">Matplotlib</a></strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="using-regressioncorrector-on-tesscut-ffi-cutouts">
+<h2>1. Using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> on TESSCut FFI Cutouts<a class="headerlink" href="#using-regressioncorrector-on-tesscut-ffi-cutouts" title="Permalink to this headline">#</a></h2>
+<p>For this tutorial we will use the <em>TESS</em> Sector 15 data of <a class="reference external" href="https://en.wikipedia.org/wiki/Tabby%27s_Star">KIC 8462852</a> (also known as Boyajian’s Star).
+We’ll start by downloading the FFI data using MAST’s TESSCut service, querying it through Lightkurve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;KIC 8462852&#39;</span>  <span class="c1"># Boyajian&#39;s Star</span>
+<span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_tesscut</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">cutout_size</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TessTargetPixelFile(TICID: KIC 8462852)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This cutout works the same as any Lightkurve target pixel file (TPF). <em>TESS</em> FFI cutouts do not have aperture masks created by the pipeline. Instead, users must create their own apertures. There are many methods we could use to do this, but for now we can create a threshold aperture, using Lightkurve’s <code class="docutils literal notranslate"><span class="pre">create_threshold_mask()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aper</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">create_threshold_mask</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the aperture to make sure it selected the star in the center and has a reasonable number of pixels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aper</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aper</span><span class="p">);</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:1165,</span> in <span class="ni">TargetPixelFile.plot</span><span class="nt">(self, ax, frame, cadenceno, bkg, column, aperture_mask, show_colorbar, mask_color, title, style, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1163</span> <span class="c1"># Overlay the aperture mask if given</span>
+<span class="g g-Whitespace">   </span><span class="mi">1164</span> <span class="k">if</span> <span class="n">aperture_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1165</span>     <span class="n">aperture_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_aperture_mask</span><span class="p">(</span><span class="n">aperture_mask</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1166</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1167</span>         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:659,</span> in <span class="ni">TargetPixelFile._parse_aperture_mask</span><span class="nt">(self, aperture_mask)</span>
+<span class="g g-Whitespace">    </span><span class="mi">653</span>     <span class="k">elif</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">654</span>         <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">655</span>         <span class="ow">and</span> <span class="p">((</span><span class="n">aperture_mask</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">656</span>     <span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">657</span>         <span class="c1"># Kepler and TESS pipeline style integer flags</span>
+<span class="g g-Whitespace">    </span><span class="mi">658</span>         <span class="n">aperture_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">aperture_mask</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="ne">--&gt; </span><span class="mi">659</span>     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)):</span>
+<span class="g g-Whitespace">    </span><span class="mi">660</span>         <span class="n">aperture_mask</span> <span class="o">=</span> <span class="n">aperture_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">661</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_aperture_mask</span> <span class="o">=</span> <span class="n">aperture_mask</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/__init__.py:284,</span> in <span class="ni">__getattr__</span><span class="nt">(attr)</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span>     <span class="kn">from</span> <span class="nn">.testing</span> <span class="kn">import</span> <span class="n">Tester</span>
+<span class="g g-Whitespace">    </span><span class="mi">282</span>     <span class="k">return</span> <span class="n">Tester</span>
+<span class="ne">--&gt; </span><span class="mi">284</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;module </span><span class="si">{!r}</span><span class="s2"> has no attribute &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">285</span>                      <span class="s2">&quot;</span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+
+<span class="ne">AttributeError</span>: module &#39;numpy&#39; has no attribute &#39;float&#39;
+</pre></div>
+</div>
+<img alt="../../../../_images/tess_removing_scattered_light_using_regression_12_1.png" src="../../../../_images/tess_removing_scattered_light_using_regression_12_1.png" />
+</div>
+</div>
+<p>Looks good. We can sum up the pixels in this aperture, and create an uncorrected light curve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncorrected_lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aper</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncorrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-a-designmatrix-from-pixel-regressors">
+<h2>2. Creating a <code class="docutils literal notranslate"><span class="pre">DesignMatrix</span></code> from Pixel Regressors<a class="headerlink" href="#creating-a-designmatrix-from-pixel-regressors" title="Permalink to this headline">#</a></h2>
+<p>The flux in the aperture appears to be dominated by scattered light. We can tell because <em>TESS</em> orbits Earth twice in each sector, thus patterns which appear twice within a sector are typically related to the <em>TESS</em> orbit (such as the scattered light effect).</p>
+<p>To remove this light, we are going to detrend the light curve against some vectors which we think are predictive of this systematic noise.</p>
+<p>In this case, we can use the <strong>pixels outside the aperture</strong> as vectors that are highly predictive of the systematic noise, that is, we will make the assumption that these pixels do not contain any flux from our target.</p>
+<p>We can select these pixels by specifying flux outside of the aperture using Python’s bitwise invert operator <code class="docutils literal notranslate"><span class="pre">~</span></code> to take the inverse of the aperture mask.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regressors</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[:,</span> <span class="o">~</span><span class="n">aper</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regressors</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">regressors</span></code> is now an array with shape <em>ntime</em> x <em>npixels outside of the aperture</em>. If we plot the first 30 of these pixels, we can see that they contain mostly scattered light, with some offset terms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">regressors</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">30</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In linear regression problems, it is common to refer to the matrix of regressors as the design matrix (also known as model matrix or regressor matrix). Lightkurve provides a convenient <code class="docutils literal notranslate"><span class="pre">DesignMatrix</span></code> class which is designed to help you work with detrending vectors.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DesignMatrix</span></code> class has several convenience functions, and can be passed into Lightkurve’s corrector objects. Please consult the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.correctors.DesignMatrix.html">DesignMatrix page</a> in the API docs for the full details on the methods and features provided by this class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">DesignMatrix</span><span class="p">(</span><span class="n">regressors</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;regressors&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As shown above, <code class="docutils literal notranslate"><span class="pre">dm</span></code> is now a design matrix with the same shape as the input pixels. Currently, we have 2,541 pixels that we are using to detrend our light curve against. Rather than using all of the pixels, we can reduce these to their principal components using Principal Component Analysis (PCA). We do this for several reasons:</p>
+<ol class="simple">
+<li><p>By reducing to a smaller number of vectors, we can remove some of the stochastic noise in our detrending vectors.</p></li>
+<li><p>By reducing to the principal components, we can avoid pixels that have intrinsic variability (for example, from astrophysical long-period variables) that can be confused with the true astrophysical signal of our target.</p></li>
+<li><p>By reducing the number of vectors, our detrending will be faster (although in this case, the detrending will still take seconds).</p></li>
+</ol>
+<p>The choice of the number of components is a tricky issue, but in general you should choose a number that is much smaller than the number of vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">pca()</span></code> method, we have now reduced the number of components in our design matrix to five. These vectors show a combination of scattered light and spacecraft motion, which makes them suited to detrend our input light curve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: the <code class="docutils literal notranslate"><span class="pre">DesignMatrix</span></code> object provides a convenient <code class="docutils literal notranslate"><span class="pre">plot()</span></code> method to visualize the vectors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now detrend the uncorrected light curve against these vectors. Lightkurve’s <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> will use linear algebra to find the combination of vectors that makes the input light curve <strong>closest to zero</strong>. To do this, we need one more component; we need an “offset” term, to be able to fit the mean level of the light curve. We can do this by appending a “constant” to our design matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">append_constant</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="removing-background-scattered-light-using-linear-regression">
+<h2>3. Removing Background Scattered Light Using Linear Regression<a class="headerlink" href="#removing-background-scattered-light-using-linear-regression" title="Permalink to this headline">#</a></h2>
+<p>Now that we have a design matrix, we only need to pass it into a <code class="docutils literal notranslate"><span class="pre">lightkurve.Corrector</span></code>. To use our design matrix, we can pass it to the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>, which will detrend the input light curve against the vectors we’ve built.</p>
+<p>Please consult the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.correctors.RegressionCorrector.html">RegressionCorrector page</a> in the API docs for the full details on the methods and features provided by this class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrector</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">RegressionCorrector</span><span class="p">(</span><span class="n">uncorrected_lc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrector</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To correct the light curve, we pass in our design matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrected_lc</span> <span class="o">=</span> <span class="n">corrector</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can plot the results:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">uncorrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original light curve&#39;</span><span class="p">)</span>
+<span class="n">corrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Corrected light curve&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As shown above, the scattered light from the background has been removed. If we want to take a more in-depth look at the correction, we can use the <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> method to see what the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> found as the best fitting solution.</p>
+</section>
+<section id="diagnosing-the-correction">
+<h2>4. Diagnosing the Correction<a class="headerlink" href="#diagnosing-the-correction" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrector</span><span class="o">.</span><span class="n">diagnose</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> has clipped out some outliers during the fit of the trend. You can read more about the outlier removal, how to pass a cadence mask, and error propagation in the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.correctors.RegressionCorrector.html#lightkurve.correctors.RegressionCorrector">docs</a>.</p>
+<p><strong>Watch Out!</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> assumes that you want to remove the trend and set the light curve to the <strong>mean</strong> level of the <strong>uncorrected light curve</strong>. This isn’t true for <em>TESS</em> scattered light. <em>TESS</em> FFI light curves have <strong>additive background</strong>, and so we want to reduce the flux to the lowest recorded level, assuming that at that point the contribution from scattered light is approximately zero.</p>
+<p>To do this, we will first need to look at the model of the background that <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> built. We can access that in the <code class="docutils literal notranslate"><span class="pre">corrector</span></code> object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrector</span><span class="o">.</span><span class="n">model_lc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">corrector</span><span class="o">.</span><span class="n">model_lc</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see above, the model drops below zero flux. This is impossible; the scattered light can’t be removing flux from our target!</p>
+<p>To rectify this, we can subtract the model flux value at the 5th percentile.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Normalize to the 5th percentile of model flux</span>
+<span class="n">model</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This looks better. Now we can remove this model from our uncorrected light curve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrected_lc</span> <span class="o">=</span> <span class="n">uncorrected_lc</span> <span class="o">-</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">uncorrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original light curve&#39;</span><span class="p">)</span>
+<span class="n">corrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Corrected light curve&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This looks great. As a final test, let’s investigate how the light curve we obtained using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> compares against a light curve obtained using a more basic median background removal method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bkg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">regressors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">bkg</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bkg</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">npix</span> <span class="o">=</span> <span class="n">aper</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">median_subtracted_lc</span> <span class="o">=</span> <span class="n">uncorrected_lc</span> <span class="o">-</span> <span class="n">npix</span> <span class="o">*</span> <span class="n">bkg</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">median_subtracted_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Median background subtraction&#39;</span><span class="p">)</span>
+<span class="n">corrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;RegressionCorrector&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lastly, let’s show how you can do all of the above in a single cell.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make an aperture mask and an uncorrected light curve</span>
+<span class="n">aper</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">create_threshold_mask</span><span class="p">()</span>
+<span class="n">uncorrected_lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aper</span><span class="p">)</span>
+
+<span class="c1"># Make a design matrix and pass it to a linear regression corrector</span>
+<span class="n">dm</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">DesignMatrix</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[:,</span> <span class="o">~</span><span class="n">aper</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;regressors&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">append_constant</span><span class="p">()</span>
+<span class="n">rc</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">RegressionCorrector</span><span class="p">(</span><span class="n">uncorrected_lc</span><span class="p">)</span>
+<span class="n">corrected_ffi_lc</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+
+<span class="c1"># Optional: Remove the scattered light, allowing for the large offset from scattered light</span>
+<span class="n">corrected_ffi_lc</span> <span class="o">=</span> <span class="n">uncorrected_lc</span> <span class="o">-</span> <span class="n">rc</span><span class="o">.</span><span class="n">model_lc</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">rc</span><span class="o">.</span><span class="n">model_lc</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">uncorrected_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original light curve&#39;</span><span class="p">)</span>
+<span class="n">corrected_ffi_lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Corrected light curve&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files">
+<h2>5. Using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> on <em>TESS</em> Two-Minute Cadence Target Pixel Files<a class="headerlink" href="#using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files" title="Permalink to this headline">#</a></h2>
+<p><em>TESS</em> releases high-time resolution TPFs of interesting targets. These higher time resolution TPFs have background removed for users by the pipeline. However, there are still common trends in TPF pixels that are not due to scattered light, but could be from, for example, spacecraft motion.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> can be used in exactly the same way to remove these common trends.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download a 2-minute cadence Target Pixel File (TPF)</span>
+<span class="n">tpf_2min</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;TESS&#39;</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf_2min</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note, unlike the FFI data, the TPF has been processed by the pipeline, and includes an aperture mask.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the pipeline aperture and an uncorrected light curve</span>
+<span class="n">aper</span> <span class="o">=</span> <span class="n">tpf_2min</span><span class="o">.</span><span class="n">pipeline_mask</span>
+<span class="n">uncorrected_lc</span> <span class="o">=</span> <span class="n">tpf_2min</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">()</span>
+
+<span class="c1"># Make a design matrix</span>
+<span class="n">dm</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">DesignMatrix</span><span class="p">(</span><span class="n">tpf_2min</span><span class="o">.</span><span class="n">flux</span><span class="p">[:,</span> <span class="o">~</span><span class="n">aper</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pixels&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">append_constant</span><span class="p">()</span>
+
+<span class="c1"># Regression Corrector Object</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">RegressionCorrector</span><span class="p">(</span><span class="n">uncorrected_lc</span><span class="p">)</span>
+<span class="n">corrected_lc</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">uncorrected_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original light curve&#39;</span><span class="p">)</span>
+<span class="n">corrected_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Corrected light curve&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, the corrected light curve has removed long-term trends and some motion noise, for example, see time around 1720 Barycentric <em>TESS</em> Julian Date (BTJD). We can use the same <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> method to understand the model that has been fit and subtracted by <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span><span class="o">.</span><span class="n">diagnose</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To show the corrected version has improved, we can use the Combined Differential Photometric Precision (CDPP) metric. As shown below, the corrected light curve has a lower CDPP, showing it is less noisy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncorrected_lc</span><span class="o">.</span><span class="n">estimate_cdpp</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corrected_lc</span><span class="o">.</span><span class="n">estimate_cdpp</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="should-i-use-regressioncorrector-or-pldcorrector">
+<h2>6. Should I use <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> or <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>?<a class="headerlink" href="#should-i-use-regressioncorrector-or-pldcorrector" title="Permalink to this headline">#</a></h2>
+<p>In addition to the corrector demonstrated in this tutorial, Lightkurve has a special case of <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> called <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>. PLD, or Pixel Level Decorrelation, is a method of removing systematic noise from light curves using linear regression, with a design matrix constructed from a combination of pixel-level light curves.</p>
+<p>For more information about the <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>, please see the tutorial specifically on removing instrumental noise from <em>K2</em> and <em>TESS</em> light curves using PLD.</p>
+<p>For <em>TESS</em>, the <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> works in a very similar way to the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>. The major difference between them is that <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> constructs its own design matrix, making it a streamlined, versatile tool to apply to any <em>TESS</em> or <em>K2</em> light curve.</p>
+<p>Here, we perform PLD and diagnose the correction in just three lines. To make a more direct comparison to the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>, we pass in arguments to set the number of components to five (as in section 2), as well as remove the spline fit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pld</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">PLDCorrector</span><span class="p">(</span><span class="n">tpf</span><span class="p">)</span>
+<span class="n">pld_corrected_lc</span> <span class="o">=</span> <span class="n">pld</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">restore_trend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pca_components</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pld</span><span class="o">.</span><span class="n">diagnose</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And there we go!</p>
+<p>Now let’s compare the performance of these two corrections.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">corrected_ffi_lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;RegressionCorrector&#39;</span><span class="p">)</span>
+<span class="n">pld_corrected_lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;PLDCorrector&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> offers an additional diagnostic plot, named <code class="docutils literal notranslate"><span class="pre">diagnose_masks</span></code>. This allows you to inspect the pixels that were used to create your design matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pld</span><span class="o">.</span><span class="n">diagnose_masks</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>While it is more convenient to apply to light curves and generally works well with default parameters, the <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> is less flexible than the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>, which allows you to create your own custom design matrix. However, the <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> also allows you to create “higher order” PLD regressors by taking the products of existing pixel regressors, which improves the performance of corrections to <em>K2</em> data (see the paper by <a class="reference external" href="https://arxiv.org/abs/1607.00524">Luger et al. 2016</a> for more information).</p>
+<p>When considering which corrector to use, remember that <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> is minimal and designed to be effective at removing both background scattered light from <em>TESS</em> and motion noise from <em>K2</em>, while <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> is flexible and gives you more control over the creation of the design matrix and the correction.</p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this headline">#</a></h2>
+<p><strong>Authors:</strong> Christina Hedges (christinalouisehedges&#64;gmail.com), Nicholas Saunders (nksaun&#64;hawaii.edu), Geert Barentsen</p>
+<p><strong>Updated On:</strong> 2020-09-28</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="citing-lightkurve-and-its-dependencies">
+<h1>Citing Lightkurve and its Dependencies<a class="headerlink" href="#citing-lightkurve-and-its-dependencies" title="Permalink to this headline">#</a></h1>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or its dependencies for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "TheRealZoidberg/mast",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/MAST/TESS/tess_removing_scattered_light_using_regression"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../interm_tesscut_requests/interm_tesscut_requests.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Intermediate: Create TESS FFI Cutout using Python Requests</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By STScI<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

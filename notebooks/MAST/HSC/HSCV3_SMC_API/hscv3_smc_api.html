@@ -1,0 +1,1493 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram &#8212; MAST Notebook Repository</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="MAST Table Access Protocol Hubble Source Catalog Demo" href="../HSC_TAP/HSC_TAP.html" />
+    <link rel="prev" title="Hubble Source Catalog API Notebook" href="../HSCV3_API/hscv3_api.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Astroquery
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+   Beginner: Searching MAST using astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
+   Large Downloads in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     astroquery.mast
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  HSC
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../HCV_API/HCV_API_demo.html">
+   Hubble Catalog of Variables Notebook (API version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../HCV_CASJOBS/HCV_casjobs_demo.html">
+   Hubble Catalog of Variables Notebook (CasJobs version)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../HSCV3_API/hscv3_api.html">
+   Hubble Source Catalog API Notebook
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../HSC_TAP/HSC_TAP.html">
+   MAST Table Access Protocol Hubble Source Catalog Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
+   Hubble Source Catalog SWEEPS Proper Motion Notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  JWST
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+   Accessing JWST Proposal Data in astroquery.mast
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+   JWST Engineering Data Retrieval
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler K2
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+   Beginner: Read and Plot A K2 Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">
+   Beginner: Read and Display A K2 Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a K2 Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+   Removing Instrumental Noise from
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Light Curves Using Pixel Level Decorrelation (PLD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Kepler
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+   Read and Plot A Kepler Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+   Plotting a Catalog over a Kepler Full Frame Image File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+   Using Kepler Data to Plot a Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+   Plotting Images from Kepler Target Pixel Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+   Combining Multiple Quarters of
+   <em>
+    Kepler
+   </em>
+   Data with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+   Creating Periodograms and Identifying Significant Peaks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+   Creating Your Own Light Curves using Custom Aperture Photometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+   How to Estimate a Star’s Mass and Radius Using Asteroseismology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+   Identifying Transiting Planet Signals in a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #1: Data Gaps and Quality Flags
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #2: Spurious Signals and Time Sampling Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #3: Seasonal and Detector Effects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+   Instrumental Noise in
+   <em>
+    Kepler
+   </em>
+   and
+   <em>
+    K2
+   </em>
+   #4: Electronic Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+   Interactively Inspecting Target Pixel Files and Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+   Plotting
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+   Searching for
+   <em>
+    Kepler
+   </em>
+   /
+   <em>
+    K2
+   </em>
+   and
+   <em>
+    TESS
+   </em>
+   Data Products Using Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Light Curve Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+   Using
+   <em>
+    Kepler
+   </em>
+   Target Pixel File Products with Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+   Verifying the Location of a Signal in
+   <em>
+    Kepler
+   </em>
+   Pixel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+   Visualizing Periodic Signals Using a River Plot
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  PanSTARRS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  TESS
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">
+   Beginner: Retrieve TESS Data Validation Products with Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+   Beginner: Read and Plot A TESS Data Validation Timeseries File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+   Beginner: Read and Display a TESS Full Frame Image
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+   Beginner: Read and Plot A TESS Light Curve File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+   Beginner: Read and Display A TESS Target Pixel File
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">
+   Exoplanet Data and TESS Light Curves Using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">
+   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+   Beginner: Search The TESS Input Catalog Centered On HD 209458.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+   Intermediate:  Search and Download GI Program Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+   Intermediate: Retrieve TESS Pixel Response Function Images
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+   Intermediate: Create TESS FFI Cutout using Python Requests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../TESS/tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+   Removing Scattered Light from
+   <em>
+    TESS
+   </em>
+   Data Using the Lightkurve
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RegressionCorrector
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/TheRealZoidberg/mast//issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/HSC/HSCV3_SMC_API/hscv3_smc_api.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/notebooks/MAST/HSC/HSCV3_SMC_API/hscv3_smc_api.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rick-white-trenton-mckinney">
+     2019 - 2022, Rick White, Trenton McKinney
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instructions">
+   Instructions:
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initialization-a-class-anchor-id-initialization-a">
+   Initialization
+   <a class="anchor" id="Initialization">
+   </a>
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#install-python-modules">
+     Install Python modules
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#useful-functions">
+     Useful functions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#helper-function-for-crowded-scatterplots">
+       Helper function for crowded scatterplots
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#find-objects-in-the-smc-a-name-smc-a">
+     Find objects in the SMC
+     <a name="smc">
+     </a>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#use-astropy-name-resolver-to-get-position-of-the-smc-a-name-resolver-a">
+       Use
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         astropy
+        </span>
+       </code>
+       name resolver to get position of the SMC
+       <a name="resolver">
+       </a>
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#select-objects-with-the-desired-magnitudes-and-colors-near-the-smc-a-name-summary-a">
+       Select objects with the desired magnitudes and colors near the SMC
+       <a name="summary">
+       </a>
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-object-positions-on-the-sky-a-name-positions-a">
+       Plot object positions on the sky
+       <a name="positions">
+       </a>
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-the-color-magnitude-diagram-a-name-cmd-a">
+       Plot the color-magnitude diagram
+       <a name="cmd">
+       </a>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rick-white-trenton-mckinney">
+     2019 - 2022, Rick White, Trenton McKinney
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instructions">
+   Instructions:
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initialization-a-class-anchor-id-initialization-a">
+   Initialization
+   <a class="anchor" id="Initialization">
+   </a>
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#install-python-modules">
+     Install Python modules
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#useful-functions">
+     Useful functions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#helper-function-for-crowded-scatterplots">
+       Helper function for crowded scatterplots
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#find-objects-in-the-smc-a-name-smc-a">
+     Find objects in the SMC
+     <a name="smc">
+     </a>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#use-astropy-name-resolver-to-get-position-of-the-smc-a-name-resolver-a">
+       Use
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         astropy
+        </span>
+       </code>
+       name resolver to get position of the SMC
+       <a name="resolver">
+       </a>
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#select-objects-with-the-desired-magnitudes-and-colors-near-the-smc-a-name-summary-a">
+       Select objects with the desired magnitudes and colors near the SMC
+       <a name="summary">
+       </a>
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-object-positions-on-the-sky-a-name-positions-a">
+       Plot object positions on the sky
+       <a name="positions">
+       </a>
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-the-color-magnitude-diagram-a-name-cmd-a">
+       Plot the color-magnitude diagram
+       <a name="cmd">
+       </a>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="hubble-source-catalog-api-notebook-smc-color-magnitude-diagram">
+<h1>Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram<a class="headerlink" href="#hubble-source-catalog-api-notebook-smc-color-magnitude-diagram" title="Permalink to this headline">#</a></h1>
+<section id="rick-white-trenton-mckinney">
+<h2>2019 - 2022, Rick White, Trenton McKinney<a class="headerlink" href="#rick-white-trenton-mckinney" title="Permalink to this headline">#</a></h2>
+<p>A <a class="reference external" href="https://catalogs.mast.stsci.edu/hsc">new MAST interface</a> supports queries to the current and previous versions of the <a class="reference external" href="https://archive.stsci.edu/hst/hsc">Hubble Source Catalog</a>. It allows searches of the summary table (with multi-filter mean photometry) and the detailed table (with all the multi-epoch measurements).  It also has an associated <a class="reference external" href="https://catalogs.mast.stsci.edu/docs/hsc.html">API</a>, which is used in this notebook.</p>
+<p>This is based on part of <a class="reference external" href="https://archive.stsci.edu/hst/hsc/help/use_case_2_v3.html">HSC Use Case #2</a>.</p>
+<ul class="simple">
+<li><p>It searches the HSC for point-like objects in the Small Magellanic Cloud (SMC) with ACS/WFC V and I band measurements,</p></li>
+<li><p>selects a subset of those objects in a V-I color range,</p></li>
+<li><p>plots the positions of the objects on the sky, and</p></li>
+<li><p>plots the color-magnitude diagram for the selected objects.</p></li>
+</ul>
+<p>The whole process takes only about 2 minutes to complete.</p>
+<p>Another <a class="reference internal" href="../HSCV3_API/hscv3_api.html"><span class="doc std std-doc">notebook</span></a> demonstrates other search capabilities of the API to find variable objects and plot their light curves. A more complex notebook that shows how to access the proper motion tables using the HSC API is also <a class="reference internal" href="../SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html"><span class="doc std std-doc">available</span></a>.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="instructions">
+<h1>Instructions:<a class="headerlink" href="#instructions" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>Complete the initialization steps <a class="reference external" href="#Initialization">described below</a>.</p></li>
+<li><p>Run the notebook.</p></li>
+</ul>
+<p>Running the notebook from top to bottom takes about 2 minutes.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="#Initialization">Initialization</a></p></li>
+<li><p><a class="reference external" href="#smc">Find variable objects the SMC</a></p>
+<ul>
+<li><p><a class="reference external" href="#resolver">Use MAST name resolver</a></p></li>
+<li><p><a class="reference external" href="#summary">Search HSC summary table</a></p></li>
+<li><p><a class="reference external" href="#positions">Show object positions on the sky</a></p></li>
+<li><p><a class="reference external" href="#cmd">Plot the color-magnitude diagram</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="initialization-a-class-anchor-id-initialization-a">
+<h1>Initialization <a class="anchor" id="Initialization"></a><a class="headerlink" href="#initialization-a-class-anchor-id-initialization-a" title="Permalink to this headline">#</a></h1>
+<section id="install-python-modules">
+<h2>Install Python modules<a class="headerlink" href="#install-python-modules" title="Permalink to this headline">#</a></h2>
+<ol class="simple">
+<li><p><em>This notebook requires the use of <strong>Python 3</strong>.</em></p></li>
+<li><p>Modules can be installed with <code class="docutils literal notranslate"><span class="pre">conda</span></code>, if using the <a class="reference external" href="https://catalogs.mast.stsci.edu/hsc">Anaconda distribution</a> of python, or with <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<ul class="simple">
+<li><p>If you are using <code class="docutils literal notranslate"><span class="pre">conda</span></code>, do not install / update / remove a module with <code class="docutils literal notranslate"><span class="pre">pip</span></code>, that exists in a <code class="docutils literal notranslate"><span class="pre">conda</span></code> <a class="reference external" href="https://archive.stsci.edu/hst/hsc">channel</a>.</p></li>
+<li><p>If a module is not available with <code class="docutils literal notranslate"><span class="pre">conda</span></code>, then it’s okay to install it with <code class="docutils literal notranslate"><span class="pre">pip</span></code></p></li>
+</ul>
+</li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+
+<span class="kn">from</span> <span class="nn">fastkde</span> <span class="kn">import</span> <span class="n">fastKDE</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
+<span class="kn">from</span> <span class="nn">astropy.modeling</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fitting</span>
+
+<span class="c1"># set width for pprint</span>
+<span class="n">astropy</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">max_width</span> <span class="o">=</span> <span class="mi">150</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set universal matplotlib parameters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="useful-functions">
+<h2>Useful functions<a class="headerlink" href="#useful-functions" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Execute HSC searches and resolve names using <a class="reference external" href="https://catalogs.mast.stsci.edu/hsc">MAST query</a>.</p></li>
+<li><p>Here we define several interrelated functions for retrieving information from the MAST API.</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">hcvcone(ra,</span> <span class="pre">dec,</span> <span class="pre">radius</span> <span class="pre">[,</span> <span class="pre">keywords])</span></code> function searches the HCV catalog near a position.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">hcvsearch()</span></code> function performs general non-positional queries.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">hcvmetadata()</span></code> function gives information about the columns available in a table.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hscapiurl</span> <span class="o">=</span> <span class="s2">&quot;https://catalogs.mast.stsci.edu/api/v0.1/hsc&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">hsccone</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="n">magtype</span><span class="o">=</span><span class="s2">&quot;magaper2&quot;</span><span class="p">,</span>
+            <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">hscapiurl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do a cone search of the HSC catalog</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ra (float): (degrees) J2000 Right Ascension</span>
+<span class="sd">    dec (float): (degrees) J2000 Declination</span>
+<span class="sd">    radius (float): (degrees) Search radius (&lt;= 0.5 degrees)</span>
+<span class="sd">    table (string): summary, detailed, propermotions, or sourcepositions</span>
+<span class="sd">    release (string): v3 or v2</span>
+<span class="sd">    magtype (string): magaper2 or magauto (only applies to summary table)</span>
+<span class="sd">    format: csv, votable, json, table</span>
+<span class="sd">    columns: list of column names to include (None means use defaults)</span>
+<span class="sd">    baseurl: base URL for the request</span>
+<span class="sd">    verbose: print info about request</span>
+<span class="sd">    **kw: other parameters (e.g., &#39;numimages.gte&#39;:2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ra</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dec</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
+    <span class="k">return</span> <span class="n">hscsearch</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="n">release</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">magtype</span><span class="o">=</span><span class="n">magtype</span><span class="p">,</span>
+                     <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">hscsearch</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">magtype</span><span class="o">=</span><span class="s2">&quot;magaper2&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span>
+              <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">hscapiurl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do a general search of the HSC catalog (possibly without ra/dec/radius)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table (string): summary, detailed, propermotions, or sourcepositions</span>
+<span class="sd">    release (string): v3 or v2</span>
+<span class="sd">    magtype (string): magaper2 or magauto (only applies to summary table)</span>
+<span class="sd">    format: csv, votable, json, table</span>
+<span class="sd">    columns: list of column names to include (None means use defaults)</span>
+<span class="sd">    baseurl: base URL for the request</span>
+<span class="sd">    verbose: print info about request</span>
+<span class="sd">    **kw: other parameters (e.g., &#39;numimages.gte&#39;:2).  Note this is required!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must specify some parameters for search&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;votable&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s1">&#39;table&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bad value for format&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
+        <span class="n">rformat</span> <span class="o">=</span> <span class="s2">&quot;csv&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rformat</span> <span class="o">=</span> <span class="nb">format</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cat2url</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="w"> </span><span class="n">release</span><span class="p">,</span><span class="w"> </span><span class="n">magtype</span><span class="p">,</span><span class="w"> </span><span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">rformat</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="c1"># check that column values are legal</span>
+        <span class="c1"># create a dictionary to speed this up</span>
+        <span class="n">dcols</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">hscmetadata</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">magtype</span><span class="p">)[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
+            <span class="n">dcols</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">badcols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dcols</span><span class="p">:</span>
+                <span class="n">badcols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">badcols</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Some columns not found in table: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">badcols</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># two different ways to specify a list of column values in the API</span>
+        <span class="c1"># data[&#39;columns&#39;] = columns</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+    <span class="c1"># either get or post works</span>
+    <span class="c1"># r = requests.post(url, data=data)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
+        <span class="c1"># use pandas to work around bug in Windows for ascii.read</span>
+        <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+
+
+<span class="k">def</span> <span class="nf">hscmetadata</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">magtype</span><span class="o">=</span><span class="s2">&quot;magaper2&quot;</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">hscapiurl</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return metadata for the specified catalog and table</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table (string): summary, detailed, propermotions, or sourcepositions</span>
+<span class="sd">    release (string): v3 or v2</span>
+<span class="sd">    magtype (string): magaper2 or magauto (only applies to summary table)</span>
+<span class="sd">    baseurl: base URL for the request</span>
+<span class="sd">    </span>
+<span class="sd">    Returns an astropy table with columns name, type, description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cat2url</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="w"> </span><span class="n">release</span><span class="p">,</span><span class="w"> </span><span class="n">magtype</span><span class="p">,</span><span class="w"> </span><span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">)</span><span class="si">}</span><span class="s2">/metadata&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="c1"># convert to astropy table</span>
+    <span class="n">tab</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="p">],</span>
+                <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tab</span>
+
+
+<span class="k">def</span> <span class="nf">cat2url</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">magtype</span><span class="o">=</span><span class="s2">&quot;magaper2&quot;</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">hscapiurl</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return URL for the specified catalog and table</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table (string): summary, detailed, propermotions, or sourcepositions</span>
+<span class="sd">    release (string): v3 or v2</span>
+<span class="sd">    magtype (string): magaper2 or magauto (only applies to summary table)</span>
+<span class="sd">    baseurl: base URL for the request</span>
+<span class="sd">    </span>
+<span class="sd">    Returns a string with the base URL for this request</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">checklegal</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">magtype</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s2">&quot;summary&quot;</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">baseurl</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">release</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">magtype</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">baseurl</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">release</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">url</span>
+
+
+<span class="k">def</span> <span class="nf">checklegal</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">magtype</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if this combination of table, release and magtype is acceptable</span>
+<span class="sd">    </span>
+<span class="sd">    Raises a ValueError exception if there is problem</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">releaselist</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;v2&quot;</span><span class="p">,</span> <span class="s2">&quot;v3&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">release</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">releaselist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bad value for release (must be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">releaselist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">release</span> <span class="o">==</span> <span class="s2">&quot;v2&quot;</span><span class="p">:</span>
+        <span class="n">tablelist</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="s2">&quot;detailed&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tablelist</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="s2">&quot;detailed&quot;</span><span class="p">,</span> <span class="s2">&quot;propermotions&quot;</span><span class="p">,</span> <span class="s2">&quot;sourcepositions&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablelist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bad value for table (for </span><span class="si">{</span><span class="n">release</span><span class="si">}</span><span class="s2"> must be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tablelist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s2">&quot;summary&quot;</span><span class="p">:</span>
+        <span class="n">magtypelist</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;magaper2&quot;</span><span class="p">,</span> <span class="s2">&quot;magauto&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">magtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">magtypelist</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bad value for magtype (must be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">magtypelist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="helper-function-for-crowded-scatterplots">
+<h3>Helper function for crowded scatterplots<a class="headerlink" href="#helper-function-for-crowded-scatterplots" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">select_subset()</span></code> selects a sample of points in crowded regions to speed up plotting. This converts the fastkde PDF values (which are probabilities per unit area using the x and y data units) to the expected number of points within a region covered by the marker on the plot.  It then picks only a few points to plot in crowded regions while selecting all the points in uncrowded regions.</p>
+<p>Inputs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zs</span></code> = array of PDF density values computed using fastkde</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">axes</span></code> = axis range tuple from fastkde</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">markersize</span></code> = matplotlib marker size (which is an area in points)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">over</span></code> = oversampling factor (empirically 5 fills in the holes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> = print additional info</p></li>
+</ul>
+<p>Returns an array of subscripts to plot from <code class="docutils literal notranslate"><span class="pre">zs</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">select_subset</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">kde_axes</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">over</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Select a subset of points in crowded regions to speed up plotting</span>
+<span class="sd">    Returns array of subscripts to plot from zs    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get figure size in points</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">get_size_inches</span><span class="p">()</span><span class="o">*</span><span class="mf">72.0</span>
+    <span class="c1"># scale factor to convert PDF values to expected number of points in the marker area</span>
+    <span class="c1"># divide ranges by 2 because fastkde pads the data ranges to allow FFTs</span>
+    <span class="n">range0</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">kde_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">kde_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">range1</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">kde_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">kde_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ss</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span> <span class="o">*</span> <span class="n">range0</span> <span class="o">*</span> <span class="n">range1</span> <span class="o">*</span> <span class="n">markersize</span> <span class="o">/</span> <span class="p">(</span><span class="n">over</span><span class="o">*</span><span class="n">figsize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">figsize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">ss</span><span class="o">*</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">wsel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">cc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+                           <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plotting </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wsel</span><span class="p">)</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="si">}</span><span class="s2"> points&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wsel</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="find-objects-in-the-smc-a-name-smc-a">
+<h2>Find objects in the SMC <a name="smc"></a><a class="headerlink" href="#find-objects-in-the-smc-a-name-smc-a" title="Permalink to this headline">#</a></h2>
+<p>This is based on <a class="reference external" href="https://archive.stsci.edu/hst/hsc/help/use_case_2_v3.html">HSC Use Case #2</a>, which includes an example of creating a color-magnitude diagram for the SMC using <a href="https://mastweb.stsci.edu/hcasjobs">MAST CasJobs</a>.  This is simple to do using the HSC API.</p>
+<section id="use-astropy-name-resolver-to-get-position-of-the-smc-a-name-resolver-a">
+<h3>Use <code class="docutils literal notranslate"><span class="pre">astropy</span></code> name resolver to get position of the SMC <a name="resolver"></a><a class="headerlink" href="#use-astropy-name-resolver-to-get-position-of-the-smc-a-name-resolver-a" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;SMC&#39;</span>
+<span class="n">coord_smc</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+<span class="n">ra_smc</span> <span class="o">=</span> <span class="n">coord_smc</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">degree</span>
+<span class="n">dec_smc</span> <span class="o">=</span> <span class="n">coord_smc</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">degree</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ra: </span><span class="si">{</span><span class="n">ra_smc</span><span class="si">}</span><span class="se">\n</span><span class="s1">dec: </span><span class="si">{</span><span class="n">dec_smc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ra: 13.15833
+dec: -72.80028
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="select-objects-with-the-desired-magnitudes-and-colors-near-the-smc-a-name-summary-a">
+<h3>Select objects with the desired magnitudes and colors near the SMC <a name="summary"></a><a class="headerlink" href="#select-objects-with-the-desired-magnitudes-and-colors-near-the-smc-a-name-summary-a" title="Permalink to this headline">#</a></h3>
+<p>This searches the summary table for objects in a 3x3 degree box centered on the galaxy that has measurements in both ACS F555W and F814W.  It computes the V-I color, and selects only objects in the range $-1.5 &lt; V-I &lt; 1.5$.</p>
+<p>This large query returns more than 700,000 objects, and <strong>takes about a minute to complete</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save typing a quoted list of columns</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;MatchID,MatchRA,MatchDec,CI,A_F555W,A_F814W&quot;&quot;&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
+
+<span class="c1"># select objects with at least one ACS F555W and ACS F814W measurement</span>
+<span class="c1"># and with concentration index 0.9 &lt; CI &lt; 1.6, consistent with point sources</span>
+<span class="c1"># search a large 3x3 degree box in RA and Dec centered on the SMC</span>
+<span class="n">ddec</span> <span class="o">=</span> <span class="mf">1.5</span>
+<span class="n">dra</span> <span class="o">=</span> <span class="n">ddec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">dec_smc</span><span class="p">))</span>
+<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A_F555W_N.gte&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;A_F814W_N.gte&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;CI.gt&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;CI.lt&#39;</span><span class="p">:</span> <span class="mf">1.6</span><span class="p">,</span>
+               <span class="s1">&#39;MatchDec.gt&#39;</span><span class="p">:</span> <span class="n">dec_smc</span><span class="o">-</span><span class="n">ddec</span><span class="p">,</span> <span class="s1">&#39;MatchDec.lt&#39;</span><span class="p">:</span> <span class="n">dec_smc</span><span class="o">+</span><span class="n">ddec</span><span class="p">,</span>
+               <span class="s1">&#39;MatchRA.gt&#39;</span><span class="p">:</span> <span class="n">ra_smc</span><span class="o">-</span><span class="n">dra</span><span class="p">,</span> <span class="s1">&#39;MatchRA.lt&#39;</span><span class="p">:</span> <span class="n">ra_smc</span><span class="o">+</span><span class="n">dra</span><span class="p">}</span>
+
+<span class="c1"># do a search with a large number of rows allowed</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tab</span> <span class="o">=</span> <span class="n">hscsearch</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">constraints</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.1f}</span><span class="s2"> s: retrieved data and converted to </span><span class="si">{}</span><span class="s2">-row astropy table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)))</span>
+
+<span class="c1"># compute color column and select for objects in more limited color range</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;V-I&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F555W&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F814W&#39;</span><span class="p">]</span>
+<span class="n">tab</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[(</span><span class="n">tab</span><span class="p">[</span><span class="s1">&#39;V-I&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tab</span><span class="p">[</span><span class="s1">&#39;V-I&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> s: selected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span><span class="si">}</span><span class="s2"> objects with -1.5 &lt; V-I &lt; 1.5&quot;</span><span class="p">)</span>
+
+<span class="c1"># clean up the output format</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F555W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F814W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;V-I&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;CI&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;MatchRA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.6f}</span><span class="s2">&quot;</span>
+<span class="n">tab</span><span class="p">[</span><span class="s1">&#39;MatchDec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.6f}</span><span class="s2">&quot;</span>
+<span class="n">tab</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://catalogs.mast.stsci.edu/api/v0.1/hsc/v3/summary/magaper2.csv?pagesize=2000000&amp;A_F555W_N.gte=1&amp;A_F814W_N.gte=1&amp;CI.gt=0.9&amp;CI.lt=1.6&amp;MatchDec.gt=-74.30028&amp;MatchDec.lt=-71.30028&amp;MatchRA.gt=8.085679185085809&amp;MatchRA.lt=18.23098081491419&amp;columns=%5BMatchID%2CMatchRA%2CMatchDec%2CCI%2CA_F555W%2CA_F814W%5D
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>29.5 s: retrieved data and converted to 764094-row astropy table
+29.5 s: selected 761835 objects with -1.5 &lt; V-I &lt; 1.5
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=761835</i>
+<table id="table140533008453488" class="table-striped table-bordered table-condensed">
+<thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>CI</th><th>A_F555W</th><th>A_F814W</th><th>V-I</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>64175656</td><td>13.443043</td><td>-72.173816</td><td>1.013</td><td>24.966</td><td>24.479</td><td>0.487</td></tr>
+<tr><td>64166217</td><td>12.428304</td><td>-73.284433</td><td>0.968</td><td>22.904</td><td>22.943</td><td>-0.039</td></tr>
+<tr><td>64151969</td><td>15.509894</td><td>-72.861896</td><td>1.052</td><td>23.171</td><td>23.005</td><td>0.166</td></tr>
+<tr><td>64150812</td><td>17.142913</td><td>-72.880186</td><td>0.995</td><td>23.514</td><td>23.253</td><td>0.261</td></tr>
+<tr><td>58410925</td><td>17.122872</td><td>-72.876159</td><td>0.939</td><td>23.687</td><td>23.503</td><td>0.184</td></tr>
+<tr><td>58292295</td><td>15.372029</td><td>-72.877561</td><td>1.243</td><td>25.165</td><td>24.520</td><td>0.645</td></tr>
+<tr><td>58276908</td><td>14.892046</td><td>-72.540275</td><td>1.184</td><td>25.675</td><td>25.233</td><td>0.443</td></tr>
+<tr><td>58272071</td><td>16.910265</td><td>-72.346933</td><td>1.021</td><td>23.548</td><td>23.260</td><td>0.288</td></tr>
+<tr><td>58261096</td><td>12.482054</td><td>-73.265930</td><td>1.059</td><td>24.048</td><td>23.771</td><td>0.277</td></tr>
+<tr><td>58259138</td><td>12.861988</td><td>-72.261236</td><td>1.046</td><td>24.170</td><td>23.978</td><td>0.191</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>42355247</td><td>14.767688</td><td>-72.149811</td><td>1.324</td><td>24.175</td><td>23.793</td><td>0.382</td></tr>
+<tr><td>42349820</td><td>12.021969</td><td>-73.374422</td><td>1.049</td><td>24.664</td><td>24.397</td><td>0.267</td></tr>
+<tr><td>42345987</td><td>13.184323</td><td>-73.048533</td><td>1.076</td><td>22.806</td><td>22.776</td><td>0.030</td></tr>
+<tr><td>42344445</td><td>16.920513</td><td>-72.332826</td><td>0.982</td><td>23.883</td><td>23.691</td><td>0.192</td></tr>
+<tr><td>42343286</td><td>16.108470</td><td>-72.839574</td><td>0.972</td><td>24.954</td><td>24.479</td><td>0.474</td></tr>
+<tr><td>42341343</td><td>12.848115</td><td>-73.091507</td><td>0.983</td><td>23.354</td><td>23.226</td><td>0.127</td></tr>
+<tr><td>42336753</td><td>13.870924</td><td>-72.860829</td><td>1.066</td><td>24.197</td><td>24.229</td><td>-0.031</td></tr>
+<tr><td>42333638</td><td>12.830760</td><td>-73.186782</td><td>0.914</td><td>24.449</td><td>24.052</td><td>0.398</td></tr>
+<tr><td>42333276</td><td>15.905755</td><td>-72.822778</td><td>1.007</td><td>24.262</td><td>23.925</td><td>0.338</td></tr>
+<tr><td>42331750</td><td>12.938488</td><td>-73.117291</td><td>1.470</td><td>24.430</td><td>24.469</td><td>-0.038</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="plot-object-positions-on-the-sky-a-name-positions-a">
+<h3>Plot object positions on the sky <a name="positions"></a><a class="headerlink" href="#plot-object-positions-on-the-sky-a-name-positions-a" title="Permalink to this headline">#</a></h3>
+<p>We mark the galaxy center as well.  These fields are sprinkled all over the galaxy (as determined by the HST proposals).</p>
+<p>Note there are 761835 observations in <code class="docutils literal notranslate"><span class="pre">tab</span></code>. Each observation is plotted as a small point (<code class="docutils literal notranslate"><span class="pre">.</span></code>), so the fields in the plot represent thousands of observations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># convert to pandas for easier manipulation</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[[</span><span class="s1">&#39;MatchRA&#39;</span><span class="p">,</span> <span class="s1">&#39;MatchDec&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="c1"># round</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">MatchRA</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">MatchRA</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">MatchDec</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">MatchDec</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># get the value counts, to &quot;roughly&quot; demonstrate the observations per plotted square cluster</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MatchRA  MatchDec
+13.0     -73.10      14552
+         -73.09      13337
+15.0     -72.16      11778
+         -72.15      11527
+13.0     -73.11      11149
+                     ...  
+         -73.03          9
+12.0     -72.56          9
+15.0     -73.22          7
+14.0     -72.53          6
+12.0     -72.54          2
+Length: 214, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="c1"># adjust markersize (0-1) and alpha (0-1) as desired</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;MatchRA&#39;</span><span class="p">,</span> <span class="s1">&#39;MatchDec&#39;</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tab</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span><span class="si">}</span><span class="s1"> HSC measurements&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ra_smc</span><span class="p">,</span> <span class="n">dec_smc</span><span class="p">,</span> <span class="s1">&#39;rx&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_xaxis</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">dec_smc</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;RA [deg]&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Dec [deg]&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd0640ae320&gt;
+</pre></div>
+</div>
+<img alt="../../../../_images/hscv3_smc_api_18_1.png" src="../../../../_images/hscv3_smc_api_18_1.png" />
+</div>
+</div>
+</section>
+<section id="plot-the-color-magnitude-diagram-a-name-cmd-a">
+<h3>Plot the color-magnitude diagram <a name="cmd"></a><a class="headerlink" href="#plot-the-color-magnitude-diagram-a-name-cmd-a" title="Permalink to this headline">#</a></h3>
+<p>This uses the <code class="docutils literal notranslate"><span class="pre">fastkde</span></code> module to get a kernel density estimate in order to plot a dense scatterplot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the point density</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;V-I&#39;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F555W&#39;</span><span class="p">]</span>
+<span class="n">myPDF</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">fastKDE</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">numPoints</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kde took </span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> sec for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2"> points&quot;</span><span class="p">)</span>
+
+<span class="c1"># interpolate to get z values at points</span>
+<span class="n">finterp</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">myPDF</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">finterp</span><span class="p">((</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="c1"># Sort the points by density, so that the densest points are plotted last</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+<span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kde took 3.2 sec for 761835 points
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># select a subset of points to plot</span>
+<span class="n">wsel</span> <span class="o">=</span> <span class="n">select_subset</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">sc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">wsel</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="n">wsel</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">zs</span><span class="p">[</span><span class="n">wsel</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;V - I [mag]&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;V [mag]&#39;</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> stars in the Small Magellanic Cloud&#39;</span><span class="p">,</span>
+       <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">27</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting 208665 of 761835 points
+</pre></div>
+</div>
+<img alt="../../../../_images/hscv3_smc_api_21_1.png" src="../../../../_images/hscv3_smc_api_21_1.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "TheRealZoidberg/mast",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/MAST/HSC/HSCV3_SMC_API"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../HSCV3_API/hscv3_api.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Hubble Source Catalog API Notebook</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../HSC_TAP/HSC_TAP.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MAST Table Access Protocol Hubble Source Catalog Demo</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By STScI<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

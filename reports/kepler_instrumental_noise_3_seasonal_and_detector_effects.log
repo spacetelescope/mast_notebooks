@@ -1,0 +1,99 @@
+Traceback (most recent call last):
+  File "/usr/share/miniconda/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/usr/share/miniconda/lib/python3.10/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/usr/share/miniconda/lib/python3.10/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/usr/share/miniconda/lib/python3.10/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/share/miniconda/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/usr/share/miniconda/lib/python3.10/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/usr/share/miniconda/lib/python3.10/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/share/miniconda/lib/python3.10/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+lc = lk.search_lightcurve('KIC 2437394', mission='Kepler', author='Kepler', cadence='long').download_all().stitch().remove_outliers()
+
+ax = lc.plot()
+quarterlines = [120, 131, 169, 259, 351, 442, 538, 629, 734, 808, 906, 1000, 1098, 1182, 1273, 1372, 1471, 1558]
+for i, q in enumerate(quarterlines):
+    ax.axvline(q, c='r', ls='--', alpha=0.5)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[5], line 1[0m
+[0;32m----> 1[0m lc [38;5;241m=[39m [43mlk[49m[38;5;241;43m.[39;49m[43msearch_lightcurve[49m[43m([49m[38;5;124;43m'[39;49m[38;5;124;43mKIC 2437394[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mmission[49m[38;5;241;43m=[39;49m[38;5;124;43m'[39;49m[38;5;124;43mKepler[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mauthor[49m[38;5;241;43m=[39;49m[38;5;124;43m'[39;49m[38;5;124;43mKepler[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mcadence[49m[38;5;241;43m=[39;49m[38;5;124;43m'[39;49m[38;5;124;43mlong[39;49m[38;5;124;43m'[39;49m[43m)[49m[38;5;241;43m.[39;49m[43mdownload_all[49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[43mstitch[49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[43mremove_outliers[49m[43m([49m[43m)[49m
+[1;32m      3[0m ax [38;5;241m=[39m lc[38;5;241m.[39mplot()
+[1;32m      4[0m quarterlines [38;5;241m=[39m [[38;5;241m120[39m, [38;5;241m131[39m, [38;5;241m169[39m, [38;5;241m259[39m, [38;5;241m351[39m, [38;5;241m442[39m, [38;5;241m538[39m, [38;5;241m629[39m, [38;5;241m734[39m, [38;5;241m808[39m, [38;5;241m906[39m, [38;5;241m1000[39m, [38;5;241m1098[39m, [38;5;241m1182[39m, [38;5;241m1273[39m, [38;5;241m1372[39m, [38;5;241m1471[39m, [38;5;241m1558[39m]
+
+File [0;32m/usr/share/miniconda/lib/python3.10/site-packages/lightkurve/lightcurve.py:1381[0m, in [0;36mLightCurve.remove_outliers[0;34m(self, sigma, sigma_lower, sigma_upper, return_mask, **kwargs)[0m
+[1;32m   1379[0m [38;5;28;01mwith[39;00m warnings[38;5;241m.[39mcatch_warnings():  [38;5;66;03m# Ignore warnings due to NaNs or Infs[39;00m
+[1;32m   1380[0m     warnings[38;5;241m.[39msimplefilter([38;5;124m"[39m[38;5;124mignore[39m[38;5;124m"[39m)
+[0;32m-> 1381[0m     outlier_mask [38;5;241m=[39m [43msigma_clip[49m[43m([49m
+[1;32m   1382[0m [43m        [49m[43mdata[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mflux[49m[43m,[49m
+[1;32m   1383[0m [43m        [49m[43msigma[49m[38;5;241;43m=[39;49m[43msigma[49m[43m,[49m
+[1;32m   1384[0m [43m        [49m[43msigma_lower[49m[38;5;241;43m=[39;49m[43msigma_lower[49m[43m,[49m
+[1;32m   1385[0m [43m        [49m[43msigma_upper[49m[38;5;241;43m=[39;49m[43msigma_upper[49m[43m,[49m
+[1;32m   1386[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+[1;32m   1387[0m [43m    [49m[43m)[49m[38;5;241m.[39mmask
+[1;32m   1388[0m [38;5;66;03m# Second, we return the masked light curve and optionally the mask itself[39;00m
+[1;32m   1389[0m [38;5;28;01mif[39;00m return_mask:
+
+File [0;32m/usr/share/miniconda/lib/python3.10/site-packages/astropy/stats/sigma_clipping.py:890[0m, in [0;36msigma_clip[0;34m(data, sigma, sigma_lower, sigma_upper, maxiters, cenfunc, stdfunc, axis, masked, return_bounds, copy, grow)[0m
+[1;32m    699[0m [38;5;250m[39m[38;5;124;03m"""[39;00m
+[1;32m    700[0m [38;5;124;03mPerform sigma-clipping on the provided data.[39;00m
+[1;32m    701[0m 
+[0;32m   (...)[0m
+[1;32m    878[0m [38;5;124;03mstandard deviation is higher.[39;00m
+[1;32m    879[0m [38;5;124;03m"""[39;00m
+[1;32m    880[0m sigclip [38;5;241m=[39m SigmaClip(
+[1;32m    881[0m     sigma[38;5;241m=[39msigma,
+[1;32m    882[0m     sigma_lower[38;5;241m=[39msigma_lower,
+[0;32m   (...)[0m
+[1;32m    887[0m     grow[38;5;241m=[39mgrow,
+[1;32m    888[0m )
+[0;32m--> 890[0m [38;5;28;01mreturn[39;00m [43msigclip[49m[43m([49m
+[1;32m    891[0m [43m    [49m[43mdata[49m[43m,[49m[43m [49m[43maxis[49m[38;5;241;43m=[39;49m[43maxis[49m[43m,[49m[43m [49m[43mmasked[49m[38;5;241;43m=[39;49m[43mmasked[49m[43m,[49m[43m [49m[43mreturn_bounds[49m[38;5;241;43m=[39;49m[43mreturn_bounds[49m[43m,[49m[43m [49m[43mcopy[49m[38;5;241;43m=[39;49m[43mcopy[49m
+[1;32m    892[0m [43m[49m[43m)[49m
+
+File [0;32m/usr/share/miniconda/lib/python3.10/site-packages/astropy/stats/sigma_clipping.py:676[0m, in [0;36mSigmaClip.__call__[0;34m(self, data, axis, masked, return_bounds, copy)[0m
+[1;32m    671[0m [38;5;66;03m# These two cases are treated separately because when[39;00m
+[1;32m    672[0m [38;5;66;03m# ``axis=None`` we can simply remove clipped values from the[39;00m
+[1;32m    673[0m [38;5;66;03m# array. This is not possible when ``axis`` or ``grow`` is[39;00m
+[1;32m    674[0m [38;5;66;03m# specified.[39;00m
+[1;32m    675[0m [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m[38;5;241m.[39mgrow:
+[0;32m--> 676[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_sigmaclip_noaxis[49m[43m([49m
+[1;32m    677[0m [43m        [49m[43mdata[49m[43m,[49m[43m [49m[43mmasked[49m[38;5;241;43m=[39;49m[43mmasked[49m[43m,[49m[43m [49m[43mreturn_bounds[49m[38;5;241;43m=[39;49m[43mreturn_bounds[49m[43m,[49m[43m [49m[43mcopy[49m[38;5;241;43m=[39;49m[43mcopy[49m
+[1;32m    678[0m [43m    [49m[43m)[49m
+[1;32m    679[0m [38;5;28;01melse[39;00m:
+[1;32m    680[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39m_sigmaclip_withaxis(
+[1;32m    681[0m         data, axis[38;5;241m=[39maxis, masked[38;5;241m=[39mmasked, return_bounds[38;5;241m=[39mreturn_bounds, copy[38;5;241m=[39mcopy
+[1;32m    682[0m     )
+
+File [0;32m/usr/share/miniconda/lib/python3.10/site-packages/astropy/stats/sigma_clipping.py:463[0m, in [0;36mSigmaClip._sigmaclip_noaxis[0;34m(self, data, masked, return_bounds, copy)[0m
+[1;32m    460[0m     [38;5;66;03m# update the mask in place, ignoring RuntimeWarnings for[39;00m
+[1;32m    461[0m     [38;5;66;03m# comparisons with NaN data values[39;00m
+[1;32m    462[0m     [38;5;28;01mwith[39;00m np[38;5;241m.[39merrstate(invalid[38;5;241m=[39m[38;5;124m"[39m[38;5;124mignore[39m[38;5;124m"[39m):
+[0;32m--> 463[0m         filtered_data[38;5;241m.[39mmask [38;5;241m|[39m[38;5;241m=[39m np[38;5;241m.[39mlogical_or(
+[1;32m    464[0m             data [38;5;241m<[39m [38;5;28mself[39m[38;5;241m.[39m_min_value, data [38;5;241m>[39m [38;5;28mself[39m[38;5;241m.[39m_max_value
+[1;32m    465[0m         )
+[1;32m    467[0m [38;5;28;01mif[39;00m return_bounds:
+[1;32m    468[0m     [38;5;28;01mreturn[39;00m filtered_data, [38;5;28mself[39m[38;5;241m.[39m_min_value, [38;5;28mself[39m[38;5;241m.[39m_max_value
+
+File [0;32m/usr/share/miniconda/lib/python3.10/site-packages/astropy/utils/masked/core.py:700[0m, in [0;36mMaskedNDArray.__array_ufunc__[0;34m(self, ufunc, method, *inputs, **kwargs)[0m
+[1;32m    697[0m [38;5;28;01mif[39;00m m [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    698[0m     [38;5;66;03m# TODO: allow writing to unmasked output if nothing is masked?[39;00m
+[1;32m    699[0m     [38;5;28;01mif[39;00m d [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[0;32m--> 700[0m         [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m([38;5;124m"[39m[38;5;124mcannot write to unmasked output[39m[38;5;124m"[39m)
+[1;32m    701[0m [38;5;28;01melif[39;00m out_mask [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    702[0m     out_mask [38;5;241m=[39m m
+
+[0;31mTypeError[0m: cannot write to unmasked output
+TypeError: cannot write to unmasked output
+
