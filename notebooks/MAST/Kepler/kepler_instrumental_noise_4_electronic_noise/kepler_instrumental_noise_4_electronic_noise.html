@@ -967,67 +967,78 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">tpf_rbs</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">target_mask</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="mi">960</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">(),</span> <span class="mi">3306</span><span class="p">,</span> <span class="mi">3311</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+Cell In[7], line 1
+----&gt; 1 ax = tpf_rbs.to_lightcurve(aperture_mask=target_mask).plot()
+      2 ax.set_ylim(360, 960)
+      3 ax.fill_betweenx(ax.get_ylim(), 3306, 3311, facecolor=&#39;r&#39;, alpha=0.3)
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:571,</span> in <span class="ni">TargetPixelFile.to_lightcurve</span><span class="nt">(self, method, corrector, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">569</span> <span class="n">method</span> <span class="o">=</span> <span class="n">validate_method</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">supported_methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;aperture&quot;</span><span class="p">,</span> <span class="s2">&quot;prf&quot;</span><span class="p">,</span> <span class="s2">&quot;sap&quot;</span><span class="p">,</span> <span class="s2">&quot;sff&quot;</span><span class="p">,</span> <span class="s2">&quot;cbv&quot;</span><span class="p">,</span> <span class="s2">&quot;pld&quot;</span><span class="p">])</span>
-<span class="g g-Whitespace">    </span><span class="mi">570</span> <span class="k">if</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;aperture&quot;</span><span class="p">,</span> <span class="s2">&quot;sap&quot;</span><span class="p">]:</span>
-<span class="ne">--&gt; </span><span class="mi">571</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_aperture_photometry</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">572</span> <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;prf&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">573</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prf_lightcurve</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:571, in TargetPixelFile.to_lightcurve(self, method, corrector, **kwargs)
+    569 method = validate_method(method, supported_methods=[&quot;aperture&quot;, &quot;prf&quot;, &quot;sap&quot;, &quot;sff&quot;, &quot;cbv&quot;, &quot;pld&quot;])
+    570 if method in [&quot;aperture&quot;, &quot;sap&quot;]:
+--&gt; 571     return self.extract_aperture_photometry(**kwargs)
+    572 elif method == &quot;prf&quot;:
+    573     return self.prf_lightcurve(**kwargs)
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:2172,</span> in <span class="ni">KeplerTargetPixelFile.extract_aperture_photometry</span><span class="nt">(self, aperture_mask, flux_method, centroid_method)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2168</span> <span class="c1"># explicitly resolve default, so that the aperture_mask set in meta</span>
-<span class="g g-Whitespace">   </span><span class="mi">2169</span> <span class="c1"># later will be the resolved one</span>
-<span class="g g-Whitespace">   </span><span class="mi">2170</span> <span class="n">aperture_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_default_aperture_mask</span><span class="p">(</span><span class="n">aperture_mask</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">2172</span> <span class="n">flux</span><span class="p">,</span> <span class="n">flux_err</span><span class="p">,</span> <span class="n">centroid_col</span><span class="p">,</span> <span class="n">centroid_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aperture_photometry</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2173</span>     <span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2174</span>     <span class="n">flux_method</span><span class="o">=</span><span class="n">flux_method</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2175</span>     <span class="n">centroid_method</span><span class="o">=</span><span class="n">centroid_method</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2176</span> <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2177</span> <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span>
-<span class="g g-Whitespace">   </span><span class="mi">2178</span>     <span class="s2">&quot;centroid_col&quot;</span><span class="p">:</span> <span class="n">centroid_col</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2179</span>     <span class="s2">&quot;centroid_row&quot;</span><span class="p">:</span> <span class="n">centroid_row</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2189</span>     <span class="s2">&quot;targetid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetid</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2190</span> <span class="p">}</span>
-<span class="g g-Whitespace">   </span><span class="mi">2191</span> <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;APERTURE_MASK&quot;</span><span class="p">:</span> <span class="n">aperture_mask</span><span class="p">}</span>
+File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:2172, in KeplerTargetPixelFile.extract_aperture_photometry(self, aperture_mask, flux_method, centroid_method)
+   2168 # explicitly resolve default, so that the aperture_mask set in meta
+   2169 # later will be the resolved one
+   2170 aperture_mask = self._resolve_default_aperture_mask(aperture_mask)
+-&gt; 2172 flux, flux_err, centroid_col, centroid_row = self._aperture_photometry(
+   2173     aperture_mask=aperture_mask,
+   2174     flux_method=flux_method,
+   2175     centroid_method=centroid_method,
+   2176 )
+   2177 keys = {
+   2178     &quot;centroid_col&quot;: centroid_col,
+   2179     &quot;centroid_row&quot;: centroid_row,
+   (...)
+   2189     &quot;targetid&quot;: self.targetid,
+   2190 }
+   2191 meta = {&quot;APERTURE_MASK&quot;: aperture_mask}
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:862,</span> in <span class="ni">TargetPixelFile._aperture_photometry</span><span class="nt">(self, aperture_mask, flux_method, centroid_method)</span>
-<span class="g g-Whitespace">    </span><span class="mi">855</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Helper method for ``extract_aperture photometry``.</span>
-<span class="g g-Whitespace">    </span><span class="mi">856</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">857</span><span class="sd"> Returns</span>
-<span class="g g-Whitespace">    </span><span class="mi">858</span><span class="sd"> -------</span>
-<span class="g g-Whitespace">    </span><span class="mi">859</span><span class="sd"> flux, flux_err, centroid_col, centroid_row</span>
-<span class="g g-Whitespace">    </span><span class="mi">860</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">861</span> <span class="c1"># Validate the aperture mask</span>
-<span class="ne">--&gt; </span><span class="mi">862</span> <span class="n">apmask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_aperture_mask</span><span class="p">(</span><span class="n">aperture_mask</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">863</span> <span class="k">if</span> <span class="n">apmask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">864</span>     <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Warning: aperture mask contains zero pixels.&quot;</span><span class="p">)</span>
+File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:862, in TargetPixelFile._aperture_photometry(self, aperture_mask, flux_method, centroid_method)
+    855 &quot;&quot;&quot;Helper method for ``extract_aperture photometry``.
+    856 
+    857 Returns
+    858 -------
+    859 flux, flux_err, centroid_col, centroid_row
+    860 &quot;&quot;&quot;
+    861 # Validate the aperture mask
+--&gt; 862 apmask = self._parse_aperture_mask(aperture_mask)
+    863 if apmask.sum() == 0:
+    864     log.warning(&quot;Warning: aperture mask contains zero pixels.&quot;)
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:659,</span> in <span class="ni">TargetPixelFile._parse_aperture_mask</span><span class="nt">(self, aperture_mask)</span>
-<span class="g g-Whitespace">    </span><span class="mi">653</span>     <span class="k">elif</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">654</span>         <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">655</span>         <span class="ow">and</span> <span class="p">((</span><span class="n">aperture_mask</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">656</span>     <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">657</span>         <span class="c1"># Kepler and TESS pipeline style integer flags</span>
-<span class="g g-Whitespace">    </span><span class="mi">658</span>         <span class="n">aperture_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">aperture_mask</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-<span class="ne">--&gt; </span><span class="mi">659</span>     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)):</span>
-<span class="g g-Whitespace">    </span><span class="mi">660</span>         <span class="n">aperture_mask</span> <span class="o">=</span> <span class="n">aperture_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">661</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_aperture_mask</span> <span class="o">=</span> <span class="n">aperture_mask</span>
+File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:659, in TargetPixelFile._parse_aperture_mask(self, aperture_mask)
+    653     elif (
+    654         np.issubdtype(aperture_mask.dtype, np.integer)
+    655         and ((aperture_mask &amp; 2) == 2).any()
+    656     ):
+    657         # Kepler and TESS pipeline style integer flags
+    658         aperture_mask = (aperture_mask &amp; 2) == 2
+--&gt; 659     elif isinstance(aperture_mask.flat[0], (np.integer, np.float)):
+    660         aperture_mask = aperture_mask.astype(bool)
+    661 self._last_aperture_mask = aperture_mask
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/__init__.py:284,</span> in <span class="ni">__getattr__</span><span class="nt">(attr)</span>
-<span class="g g-Whitespace">    </span><span class="mi">281</span>     <span class="kn">from</span> <span class="nn">.testing</span> <span class="kn">import</span> <span class="n">Tester</span>
-<span class="g g-Whitespace">    </span><span class="mi">282</span>     <span class="k">return</span> <span class="n">Tester</span>
-<span class="ne">--&gt; </span><span class="mi">284</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;module </span><span class="si">{!r}</span><span class="s2"> has no attribute &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">285</span>                      <span class="s2">&quot;</span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+File /usr/share/miniconda/lib/python3.10/site-packages/numpy/__init__.py:305, in __getattr__(attr)
+    300     warnings.warn(
+    301         f&quot;In the future `np.{attr}` will be defined as the &quot;
+    302         &quot;corresponding NumPy scalar.&quot;, FutureWarning, stacklevel=2)
+    304 if attr in __former_attrs__:
+--&gt; 305     raise AttributeError(__former_attrs__[attr])
+    307 # Importing Tester requires importing all of UnitTest which is not a
+    308 # cheap import Since it is mainly used in test suits, we lazy import it
+    309 # here to save on the order of 10 ms of import time for most users
+    310 #
+    311 # The previous way Tester was imported also had a side effect of adding
+    312 # the full `numpy.testing` namespace
+    313 if attr == &#39;testing&#39;:
 
-<span class="ne">AttributeError</span>: module &#39;numpy&#39; has no attribute &#39;float&#39;
+AttributeError: module &#39;numpy&#39; has no attribute &#39;float&#39;.
+`np.float` was a deprecated alias for the builtin `float`. To avoid this error in existing code, use `float` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.float64` here.
+The aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original release note at:
+    https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
 </pre></div>
 </div>
 </div>

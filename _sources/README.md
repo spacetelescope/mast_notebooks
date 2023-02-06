@@ -1,4 +1,5 @@
-[![ci_validation](https://github.com/TheRealZoidberg/demoTest/workflows/ci_validation/badge.svg)](https://github.com/TheRealZoidberg/demoTest/actions?query=workflow%3Aci_validation)
+[![Notebook Execution and Validation](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_runner.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_runner.yml)
+[![Scheduled Notebook Execution](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_scheduled.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_scheduled.yml)
+[![Build HTML](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_html_build.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_html_build.yml)
+# MAST Notebooks
 
-# notebook_ci_template
-Structural template for notebook CI system

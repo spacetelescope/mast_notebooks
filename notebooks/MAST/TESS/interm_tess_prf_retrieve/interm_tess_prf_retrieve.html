@@ -1365,35 +1365,46 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># This is the directory where MAST stores the prf FITS files.</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;</span>
-<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">prf</span> <span class="o">=</span> <span class="n">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">closestPrf</span> <span class="o">=</span> <span class="n">getNearestPrfFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+Cell In[8], line 11
+      8 # This is the directory where MAST stores the prf FITS files.
+      9 path = &quot;https://archive.stsci.edu/missions/tess/models/prf_fitsfiles/&quot;
+---&gt; 11 prf = getPrfAtColRowFits(col, row, ccd, camera, sector, path)
+     12 closestPrf = getNearestPrfFits(col, row, ccd, camera, sector, path)
 
-<span class="nn">Cell In[7], line 43,</span> in <span class="ni">getPrfAtColRowFits</span><span class="nt">(col, row, ccd, camera, sector, path)</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">imagePos</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span>         <span class="n">prfArray</span> <span class="o">=</span> <span class="n">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">43</span>         <span class="n">img</span> <span class="o">=</span> <span class="n">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">)</span>       
-<span class="g g-Whitespace">     </span><span class="mi">44</span>         <span class="n">prfImages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="c1"># Simple linear interpolate across the 4 locations.</span>
+Cell In[7], line 43, in getPrfAtColRowFits(col, row, ccd, camera, sector, path)
+     40 for pos in imagePos:
+     41         prfArray = readOnePrfFitsFile(ccd, camera, pos[0], pos[1], path, datestring)
+---&gt; 43         img = getRegSampledPrfFitsByOffset(prfArray, colOffset, rowOffset)       
+     44         prfImages.append(img)
+     46 # Simple linear interpolate across the 4 locations.
 
-<span class="nn">Cell In[4], line 67,</span> in <span class="ni">getRegSampledPrfFitsByOffset</span><span class="nt">(prfArray, colOffset, rowOffset)</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span> <span class="n">nColOut</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gridSize</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="n">nRowOut</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gridSize</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">67</span> <span class="n">iCol</span> <span class="o">=</span> <span class="n">colOffset</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nColOut</span><span class="p">)</span> <span class="o">*</span> <span class="n">gridSize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">68</span> <span class="n">iRow</span> <span class="o">=</span> <span class="n">rowOffset</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nRowOut</span><span class="p">)</span> <span class="o">*</span> <span class="n">gridSize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">prfArray</span><span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="p">:]</span>
+Cell In[4], line 67, in getRegSampledPrfFitsByOffset(prfArray, colOffset, rowOffset)
+     64 nColOut /= float(gridSize)
+     65 nRowOut /= float(gridSize)
+---&gt; 67 iCol = colOffset + (np.arange(nColOut) * gridSize).astype(np.int)
+     68 iRow = rowOffset + (np.arange(nRowOut) * gridSize).astype(np.int)
+     70 tmp = prfArray[iRow, :]
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/__init__.py:284,</span> in <span class="ni">__getattr__</span><span class="nt">(attr)</span>
-<span class="g g-Whitespace">    </span><span class="mi">281</span>     <span class="kn">from</span> <span class="nn">.testing</span> <span class="kn">import</span> <span class="n">Tester</span>
-<span class="g g-Whitespace">    </span><span class="mi">282</span>     <span class="k">return</span> <span class="n">Tester</span>
-<span class="ne">--&gt; </span><span class="mi">284</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;module </span><span class="si">{!r}</span><span class="s2"> has no attribute &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">285</span>                      <span class="s2">&quot;</span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+File /usr/share/miniconda/lib/python3.10/site-packages/numpy/__init__.py:305, in __getattr__(attr)
+    300     warnings.warn(
+    301         f&quot;In the future `np.{attr}` will be defined as the &quot;
+    302         &quot;corresponding NumPy scalar.&quot;, FutureWarning, stacklevel=2)
+    304 if attr in __former_attrs__:
+--&gt; 305     raise AttributeError(__former_attrs__[attr])
+    307 # Importing Tester requires importing all of UnitTest which is not a
+    308 # cheap import Since it is mainly used in test suits, we lazy import it
+    309 # here to save on the order of 10 ms of import time for most users
+    310 #
+    311 # The previous way Tester was imported also had a side effect of adding
+    312 # the full `numpy.testing` namespace
+    313 if attr == &#39;testing&#39;:
 
-<span class="ne">AttributeError</span>: module &#39;numpy&#39; has no attribute &#39;int&#39;
+AttributeError: module &#39;numpy&#39; has no attribute &#39;int&#39;.
+`np.int` was a deprecated alias for the builtin `int`. To avoid this error in existing code, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+The aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original release note at:
+    https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
 </pre></div>
 </div>
 </div>
