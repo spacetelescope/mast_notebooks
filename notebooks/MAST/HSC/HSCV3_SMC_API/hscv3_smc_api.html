@@ -1280,36 +1280,104 @@ dec: -72.80028
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://catalogs.mast.stsci.edu/api/v0.1/hsc/v3/summary/magaper2.csv?pagesize=2000000&amp;A_F555W_N.gte=1&amp;A_F814W_N.gte=1&amp;CI.gt=0.9&amp;CI.lt=1.6&amp;MatchDec.gt=-74.30028&amp;MatchDec.lt=-71.30028&amp;MatchRA.gt=8.085679185085809&amp;MatchRA.lt=18.23098081491419&amp;columns=%5BMatchID%2CMatchRA%2CMatchDec%2CCI%2CA_F555W%2CA_F814W%5D
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>26.8 s: retrieved data and converted to 764094-row astropy table
-26.9 s: selected 761835 objects with -1.5 &lt; V-I &lt; 1.5
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">17</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="c1"># do a search with a large number of rows allowed</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="ne">---&gt; </span><span class="mi">17</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">hscsearch</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">constraints</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.1f}</span><span class="s2"> s: retrieved data and converted to </span><span class="si">{}</span><span class="s2">-row astropy table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)))</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="c1"># compute color column and select for objects in more limited color range</span>
+
+<span class="nn">Cell In[3], line 84,</span> in <span class="ni">hscsearch</span><span class="nt">(table, release, magtype, format, columns, baseurl, verbose, **kw)</span>
+<span class="g g-Whitespace">     </span><span class="mi">81</span>     <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">82</span> <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">83</span>     <span class="c1"># use pandas to work around bug in Windows for ascii.read</span>
+<span class="ne">---&gt; </span><span class="mi">84</span>     <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)))</span>
+<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">86</span>     <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/util/_decorators.py:211,</span> in <span class="ni">deprecate_kwarg.&lt;locals&gt;._deprecate_kwarg.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">209</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">210</span>         <span class="n">kwargs</span><span class="p">[</span><span class="n">new_arg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_arg_value</span>
+<span class="ne">--&gt; </span><span class="mi">211</span> <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/util/_decorators.py:331,</span> in <span class="ni">deprecate_nonkeyword_arguments.&lt;locals&gt;.decorate.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">325</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">num_allow_args</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">326</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">327</span>         <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arguments</span><span class="o">=</span><span class="n">_format_argument_list</span><span class="p">(</span><span class="n">allow_args</span><span class="p">)),</span>
+<span class="g g-Whitespace">    </span><span class="mi">328</span>         <span class="ne">FutureWarning</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">329</span>         <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">(),</span>
+<span class="g g-Whitespace">    </span><span class="mi">330</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">331</span> <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/io/parsers/readers.py:950,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, error_bad_lines, warn_bad_lines, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">936</span>     <span class="n">dialect</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">937</span>     <span class="n">delimiter</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span>     <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">},</span>
+<span class="g g-Whitespace">    </span><span class="mi">947</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">950</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/io/parsers/readers.py:611,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">608</span>     <span class="k">return</span> <span class="n">parser</span>
+<span class="g g-Whitespace">    </span><span class="mi">610</span> <span class="k">with</span> <span class="n">parser</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">611</span>     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrows</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/io/parsers/readers.py:1778,</span> in <span class="ni">TextFileReader.read</span><span class="nt">(self, nrows)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1771</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">validate_integer</span><span class="p">(</span><span class="s2">&quot;nrows&quot;</span><span class="p">,</span> <span class="n">nrows</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1772</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1773</span>     <span class="c1"># error: &quot;ParserBase&quot; has no attribute &quot;read&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1774</span>     <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1775</span>         <span class="n">index</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1776</span>         <span class="n">columns</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1777</span>         <span class="n">col_dict</span><span class="p">,</span>
+<span class="ne">-&gt; </span><span class="mi">1778</span>     <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>  <span class="c1"># type: ignore[attr-defined]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1779</span>         <span class="n">nrows</span>
+<span class="g g-Whitespace">   </span><span class="mi">1780</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1781</span> <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1782</span>     <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/io/parsers/c_parser_wrapper.py:230,</span> in <span class="ni">CParserWrapper.read</span><span class="nt">(self, nrows)</span>
+<span class="g g-Whitespace">    </span><span class="mi">228</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_memory</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">230</span>         <span class="n">chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">read_low_memory</span><span class="p">(</span><span class="n">nrows</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span>         <span class="c1"># destructive to chunks</span>
+<span class="g g-Whitespace">    </span><span class="mi">232</span>         <span class="n">data</span> <span class="o">=</span> <span class="n">_concatenate_chunks</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/_libs/parsers.pyx:808,</span> in <span class="ni">pandas._libs.parsers.TextReader.read_low_memory</span><span class="nt">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/_libs/parsers.pyx:890,</span> in <span class="ni">pandas._libs.parsers.TextReader._read_rows</span><span class="nt">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/_libs/parsers.pyx:1037,</span> in <span class="ni">pandas._libs.parsers.TextReader._convert_column_data</span><span class="nt">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/_libs/parsers.pyx:1083,</span> in <span class="ni">pandas._libs.parsers.TextReader._convert_tokens</span><span class="nt">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/_libs/parsers.pyx:1158,</span> in <span class="ni">pandas._libs.parsers.TextReader._convert_with_dtype</span><span class="nt">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/pandas/core/dtypes/common.py:1433,</span> in <span class="ni">is_extension_array_dtype</span><span class="nt">(arr_or_dtype)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1424</span>     <span class="c1"># Note: if other EA dtypes are ever held in HybridBlock, exclude those</span>
+<span class="g g-Whitespace">   </span><span class="mi">1425</span>     <span class="c1">#  here too.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1426</span>     <span class="c1"># NB: need to check DatetimeTZDtype and not is_datetime64tz_dtype</span>
+<span class="g g-Whitespace">   </span><span class="mi">1427</span>     <span class="c1">#  to exclude ArrowTimestampUSDtype</span>
+<span class="g g-Whitespace">   </span><span class="mi">1428</span>     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">ExtensionDtype</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1429</span>         <span class="n">dtype</span><span class="p">,</span> <span class="p">(</span><span class="n">DatetimeTZDtype</span><span class="p">,</span> <span class="n">PeriodDtype</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1430</span>     <span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1433</span> <span class="k">def</span> <span class="nf">is_extension_array_dtype</span><span class="p">(</span><span class="n">arr_or_dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1434</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1435</span><span class="sd">     Check if an object is a pandas extension array type.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1436</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1476</span><span class="sd">     False</span>
+<span class="g g-Whitespace">   </span><span class="mi">1477</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1478</span>     <span class="n">dtype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">arr_or_dtype</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">arr_or_dtype</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
-<div class="output text_html"><div><i>Table length=761835</i>
-<table id="table140374501345696" class="table-striped table-bordered table-condensed">
-<thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>CI</th><th>A_F555W</th><th>A_F814W</th><th>V-I</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>50080563</td><td>12.341207</td><td>-73.242657</td><td>0.989</td><td>25.110</td><td>24.831</td><td>0.279</td></tr>
-<tr><td>50080588</td><td>15.147479</td><td>-73.197009</td><td>0.952</td><td>24.048</td><td>23.829</td><td>0.219</td></tr>
-<tr><td>49918802</td><td>13.938565</td><td>-72.854951</td><td>1.014</td><td>24.474</td><td>24.141</td><td>0.333</td></tr>
-<tr><td>49871014</td><td>17.050361</td><td>-72.356379</td><td>0.973</td><td>23.181</td><td>23.002</td><td>0.179</td></tr>
-<tr><td>49870439</td><td>11.779774</td><td>-73.497588</td><td>0.976</td><td>24.318</td><td>23.972</td><td>0.346</td></tr>
-<tr><td>49866009</td><td>14.690176</td><td>-72.166020</td><td>1.051</td><td>25.133</td><td>24.717</td><td>0.416</td></tr>
-<tr><td>49852119</td><td>12.067295</td><td>-73.371448</td><td>1.169</td><td>23.988</td><td>23.772</td><td>0.215</td></tr>
-<tr><td>49810740</td><td>15.108385</td><td>-73.213507</td><td>1.044</td><td>26.242</td><td>25.779</td><td>0.463</td></tr>
-<tr><td>49796286</td><td>17.133550</td><td>-72.849353</td><td>1.095</td><td>18.331</td><td>17.913</td><td>0.418</td></tr>
-<tr><td>49772987</td><td>11.965274</td><td>-73.374401</td><td>1.119</td><td>24.004</td><td>23.772</td><td>0.232</td></tr>
-<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>2728010</td><td>12.901038</td><td>-73.166791</td><td>0.965</td><td>22.833</td><td>22.743</td><td>0.090</td></tr>
-<tr><td>2727220</td><td>13.135010</td><td>-73.091367</td><td>1.146</td><td>25.185</td><td>24.725</td><td>0.460</td></tr>
-<tr><td>2726435</td><td>12.795593</td><td>-72.257020</td><td>0.959</td><td>24.095</td><td>23.878</td><td>0.217</td></tr>
-<tr><td>2725300</td><td>12.848164</td><td>-72.225291</td><td>0.917</td><td>25.833</td><td>25.310</td><td>0.523</td></tr>
-<tr><td>2722584</td><td>12.909795</td><td>-72.265029</td><td>0.964</td><td>25.843</td><td>25.271</td><td>0.572</td></tr>
-<tr><td>2722216</td><td>12.003101</td><td>-73.338494</td><td>1.191</td><td>24.447</td><td>24.248</td><td>0.199</td></tr>
-<tr><td>2719521</td><td>14.714960</td><td>-72.206162</td><td>1.044</td><td>24.381</td><td>24.061</td><td>0.320</td></tr>
-<tr><td>2718799</td><td>11.884175</td><td>-73.499597</td><td>0.995</td><td>22.597</td><td>22.549</td><td>0.048</td></tr>
-<tr><td>2716430</td><td>14.993014</td><td>-72.527830</td><td>0.976</td><td>21.628</td><td>21.628</td><td>-0.000</td></tr>
-<tr><td>2716082</td><td>11.753074</td><td>-73.493123</td><td>1.125</td><td>25.219</td><td>24.750</td><td>0.469</td></tr>
-</table></div></div></div>
+</div>
 </div>
 </section>
 <section id="plot-object-positions-on-the-sky-a-name-positions-a">
@@ -1330,23 +1398,6 @@ dec: -72.80028
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MatchRA  MatchDec
-13.0     -73.10      14552
-         -73.09      13337
-15.0     -72.16      11778
-         -72.15      11527
-13.0     -73.11      11149
-                     ...  
-         -73.03          9
-12.0     -72.56          9
-15.0     -73.22          7
-14.0     -72.53          6
-12.0     -72.54          2
-Length: 214, dtype: int64
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1360,12 +1411,6 @@ Length: 214, dtype: int64
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fab7c4a5d80&gt;
-</pre></div>
-</div>
-<img alt="../../../../_images/hscv3_smc_api_18_1.png" src="../../../../_images/hscv3_smc_api_18_1.png" />
 </div>
 </div>
 </section>
@@ -1391,11 +1436,6 @@ Length: 214, dtype: int64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kde took 3.7 sec for 761835 points
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1412,12 +1452,6 @@ Length: 214, dtype: int64
 <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting 208665 of 761835 points
-</pre></div>
-</div>
-<img alt="../../../../_images/hscv3_smc_api_21_1.png" src="../../../../_images/hscv3_smc_api_21_1.png" />
 </div>
 </div>
 </section>
@@ -1436,7 +1470,7 @@ Length: 214, dtype: int64
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/MAST/HSC/HSCV3_SMC_API"
         },
         predefinedOutput: true

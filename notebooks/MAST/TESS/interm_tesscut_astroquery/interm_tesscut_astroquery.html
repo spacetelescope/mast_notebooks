@@ -1023,6 +1023,21 @@ For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><stro
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/models.py:932,</span> in <span class="ni">Response.text</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">932</span>     <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span> <span class="k">except</span> <span class="p">(</span><span class="ne">LookupError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>     <span class="c1"># A LookupError is raised if the encoding was not found which could</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span>     <span class="c1"># indicate a misspelling or similar mistake.</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">938</span>     <span class="c1">#</span>
+<span class="g g-Whitespace">    </span><span class="mi">939</span>     <span class="c1"># So we try blindly encoding.</span>
+
+<span class="ne">TypeError</span>: str() argument &#39;encoding&#39; must be str, not None
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -1102,7 +1117,7 @@ For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><stro
 <span class="g g-Whitespace">     </span><span class="mi">31</span>     <span class="k">if</span> <span class="n">_hook_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">32</span>         <span class="n">hook_data</span> <span class="o">=</span> <span class="n">_hook_data</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:213,</span> in <span class="ni">BaseQuery._response_hook</span><span class="nt">(self, response, *args, **kwargs)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:218,</span> in <span class="ni">BaseQuery._response_hook</span><span class="nt">(self, response, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">206</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">207</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">208</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -1110,24 +1125,25 @@ For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><stro
 <span class="g g-Whitespace">    </span><span class="mi">210</span>         <span class="s2">&quot;Streaming Data</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">211</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">212</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">213</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">213</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">214</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">215</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">216</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response_hdrs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">217</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">218</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">218</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">219</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">220</span> <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;HTTP response</span><span class="se">\n</span><span class="si">{</span><span class="n">response_log</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/textwrap.py:488,</span> in <span class="ni">indent</span><span class="nt">(text, prefix, predicate)</span>
-<span class="g g-Whitespace">    </span><span class="mi">486</span>     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">487</span>         <span class="k">yield</span> <span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">line</span> <span class="k">if</span> <span class="n">predicate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">else</span> <span class="n">line</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">488</span> <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prefixed_lines</span><span class="p">())</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/textwrap.py:486,</span> in <span class="ni">indent.&lt;locals&gt;.prefixed_lines</span><span class="nt">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">485</span> <span class="k">def</span> <span class="nf">prefixed_lines</span><span class="p">():</span>
-<span class="ne">--&gt; </span><span class="mi">486</span>     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">487</span>         <span class="k">yield</span> <span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">line</span> <span class="k">if</span> <span class="n">predicate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">else</span> <span class="n">line</span><span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/models.py:940,</span> in <span class="ni">Response.text</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">932</span>     <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span> <span class="k">except</span> <span class="p">(</span><span class="ne">LookupError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>     <span class="c1"># A LookupError is raised if the encoding was not found which could</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span>     <span class="c1"># indicate a misspelling or similar mistake.</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">938</span>     <span class="c1">#</span>
+<span class="g g-Whitespace">    </span><span class="mi">939</span>     <span class="c1"># So we try blindly encoding.</span>
+<span class="ne">--&gt; </span><span class="mi">940</span>     <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">942</span> <span class="k">return</span> <span class="n">content</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
@@ -1350,7 +1366,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/MAST/TESS/interm_tesscut_astroquery"
         },
         predefinedOutput: true

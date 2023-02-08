@@ -32,11 +32,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-results = HSC_service.run_async("""
-SELECT TOP 10 MatchRA, MatchDec, TargetName, StartTime, StopTime
-FROM dbo.SumMagAper2CatView
-WHERE CONTAINS(POINT('ICRS', MatchRA, MatchDec),CIRCLE('ICRS',129.23,7.95,0.1))=1
-  """)
-results.to_table()
+['# save typing a quoted list of columns', 'columns = """MatchID,MatchRA,MatchDec,CI,A_F555W,A_F814W""".split(",")', 'columns = [x.strip() for x in columns]', "columns = [x for x in columns if x and not x.startswith('#')]", '']
+...
+['tab[\'V-I\'].format = "{:.3f}"', 'tab[\'CI\'].format = "{:.3f}"', 'tab[\'MatchRA\'].format = "{:.6f}"', 'tab[\'MatchDec\'].format = "{:.6f}"', 'tab']
 -------------------
 
