@@ -6,7 +6,11 @@ This is a collection of Jupyter Notebooks, written in Python, that demonstrate m
 
 For full details about missions, including links to relevant documentation, please see the 'intro' file in the mission subfolders. Acronyms are defined here to eliminate any ambiguity or confusion.
 
+<<<<<<< HEAD
 | Mission, Catalog, or Service  |  Description                                                                                                                             |
+=======
+| Mission        | Description                                                                                                                                             |
+>>>>>>> b725cf971b48d9223a8fa295b78db24f27e2a470
 |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **astroquery** | `astroquery.mast` is a Python module that provides quick access to data from the MAST Archive.                                                          |
 | **HSC**        | Hubble Source Catalog, a collection intended to maximize the scientific productivity of the Hubble Telescope by creating a list of visit-based sources. |
