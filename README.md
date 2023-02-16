@@ -9,3 +9,7 @@ These notebooks are produced and maintained by the team at MAST, the [Mikulski A
 Our Notebooks are mostly categorized by mission, such as JWST or TESS. In some cases, you may see a folder for a catalog or a MAST service, like PanSTARRS or astroquery.
 
 Each mission folder contains subfolders, one for each notebook. These subfolders make it easy to provide supplemental files and help to keep your workflow tidy.
+
+## Contributing
+
+For information on contributing - including a style guide and Notebook template - please see the 'contributing' folder.
