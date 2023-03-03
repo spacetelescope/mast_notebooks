@@ -1,50 +1,58 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Intermediate: Create TESS FFI Cutout using Python Requests &#8212; MAST Notebook Repository</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
-    
-  <link rel="stylesheet"
-    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
-    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,63 +60,956 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/MAST/TESS/interm_tesscut_requests/interm_tesscut_requests';</script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html" />
     <link rel="prev" title="Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../../../index.html">
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+<form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
         
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+                        Beginner: Searching MAST using astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/large_downloads/large_downloads.html">
+                        Large Downloads in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+                        Hubble Catalog of Variables Notebook (API version)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+                        Hubble Source Catalog API Notebook
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+                        Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+                        MAST Table Access Protocol Hubble Source Catalog Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+                        Hubble Source Catalog SWEEPS Proper Motion Notebook
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+                        JWST Engineering Data Retrieval
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+                        Beginner: Read and Plot A K2 Light Curve File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/K2_TPF/K2_TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+                        Read and Plot A Kepler Data Validation Timeseries File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+                        Plotting a Catalog over a Kepler Full Frame Image File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+                        Using Kepler Data to Plot a Light Curve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+                        Plotting Images from Kepler Target Pixel Files
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+                        Combining Multiple Quarters of Kepler Data with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+                        Creating Periodograms and Identifying Significant Peaks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+                        Creating Your Own Light Curves using Custom Aperture Photometry
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+                        How to Estimate a Star’s Mass and Radius Using Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+                        How to Understand and Manipulate the Periodogram of an Oscillating Star
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+                        Identifying Transiting Planet Signals in a Kepler Light Curve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+                        Instrumental Noise in Kepler and K2 #1: Data Gaps and Quality Flags
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+                        Instrumental Noise in Kepler and K2 #2: Spurious Signals and Time Sampling Effects
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+                        Instrumental Noise in Kepler and K2 #3: Seasonal and Detector Effects
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+                        Instrumental Noise in Kepler and K2 #4: Electronic Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+                        Interactively Inspecting Target Pixel Files and Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+                        Measuring and Removing a Rotation Period Signal from a Kepler Light Curve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+                        Plotting Kepler Target Pixel File Products with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+                        Searching for Kepler/K2 and TESS Data Products Using Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+                        Using Kepler Light Curve Products with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+                        Using Kepler Target Pixel File Products with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+                        Verifying the Location of a Signal in Kepler Pixel Data
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+                        Visualizing Periodic Signals Using a River Plot
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">
+                        Beginner: Retrieve TESS Data Validation Products with Astroquery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+                        Beginner: Read and Plot A TESS Data Validation Timeseries File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a TESS Full Frame Image
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+                        Beginner: Read and Plot A TESS Light Curve File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+                        Beginner: Read and Display A TESS Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">
+                        Exoplanet Data and TESS Light Curves Using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">
+                        Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+                        Beginner: Search The TESS Input Catalog Centered On HD 209458.
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+                        Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+                        Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
       
       
-      <img src="../../../../_static/mastlogo.png" class="logo" alt="logo">
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
       
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
       
-      <h1 class="site-logo" id="site-title">MAST Notebook Repository</h1>
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
+                        Beginner: Searching MAST using astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/large_downloads/large_downloads.html">
+                        Large Downloads in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HCV_API/HCV_API_demo.html">
+                        Hubble Catalog of Variables Notebook (API version)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HSCV3_API/hscv3_api.html">
+                        Hubble Source Catalog API Notebook
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
+                        Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
+                        MAST Table Access Protocol Hubble Source Catalog Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
+                        Hubble Source Catalog SWEEPS Proper Motion Notebook
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
+                        JWST Engineering Data Retrieval
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
+                        Beginner: Read and Plot A K2 Light Curve File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/K2_TPF/K2_TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
+                        Read and Plot A Kepler Data Validation Timeseries File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
+                        Plotting a Catalog over a Kepler Full Frame Image File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
+                        Using Kepler Data to Plot a Light Curve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
+                        Plotting Images from Kepler Target Pixel Files
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
+                        Combining Multiple Quarters of Kepler Data with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
+                        Creating Periodograms and Identifying Significant Peaks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
+                        Creating Your Own Light Curves using Custom Aperture Photometry
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
+                        How to Estimate a Star’s Mass and Radius Using Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
+                        How to Understand and Manipulate the Periodogram of an Oscillating Star
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
+                        Identifying Transiting Planet Signals in a Kepler Light Curve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
+                        Instrumental Noise in Kepler and K2 #1: Data Gaps and Quality Flags
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
+                        Instrumental Noise in Kepler and K2 #2: Spurious Signals and Time Sampling Effects
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
+                        Instrumental Noise in Kepler and K2 #3: Seasonal and Detector Effects
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
+                        Instrumental Noise in Kepler and K2 #4: Electronic Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
+                        Interactively Inspecting Target Pixel Files and Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
+                        Measuring and Removing a Rotation Period Signal from a Kepler Light Curve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
+                        Plotting Kepler Target Pixel File Products with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
+                        Searching for Kepler/K2 and TESS Data Products Using Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
+                        Using Kepler Light Curve Products with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
+                        Using Kepler Target Pixel File Products with Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
+                        Verifying the Location of a Signal in Kepler Pixel Data
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
+                        Visualizing Periodic Signals Using a River Plot
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">
+                        Beginner: Retrieve TESS Data Validation Products with Astroquery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
+                        Beginner: Read and Plot A TESS Data Validation Timeseries File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a TESS Full Frame Image
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">
+                        Beginner: Read and Plot A TESS Light Curve File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">
+                        Beginner: Read and Display A TESS Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">
+                        Exoplanet Data and TESS Light Curves Using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">
+                        Download MAST TESS Light Curves Within an FFI Footprint Using TAP
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
+                        Beginner: Search The TESS Input Catalog Centered On HD 209458.
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">
+                        Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">
+                        Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
@@ -117,758 +1018,375 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Astroquery
- </span>
-</p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Astroquery</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">
-   Beginner: Searching MAST using astroquery.mast
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">
-   Large Downloads in
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     astroquery.mast
-    </span>
-   </code>
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/beginner_search_astroquery/beginner_search_astroquery.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  HSC
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">
-   Hubble Catalog of Variables Notebook (API version)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">
-   Hubble Catalog of Variables Notebook (CasJobs version)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">
-   Hubble Source Catalog API Notebook
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">
-   Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">
-   MAST Table Access Protocol Hubble Source Catalog Demo
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">
-   Hubble Source Catalog SWEEPS Proper Motion Notebook
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">
-   Hubble Source Catalog SWEEPS Proper Motion Notebook
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion Notebook</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  JWST
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
-   Accessing JWST Proposal Data in astroquery.mast
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">
-   JWST Engineering Data Retrieval
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Kepler K2
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler K2</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">
-   Beginner: Read and Plot A K2 Light Curve File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">
-   Beginner: Read and Display A K2 Target Pixel File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
-   Beginner: Read and Display a K2 Full Frame Image
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">
-   Removing Instrumental Noise from
-   <em>
-    K2
-   </em>
-   and
-   <em>
-    TESS
-   </em>
-   Light Curves Using Pixel Level Decorrelation (PLD)
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/K2_Lightcurve/K2_Lightcurve.html">Beginner: Read and Plot A K2 Light Curve File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/K2_TPF/K2_TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/k2_removing_instrumental_noise_using_pld/k2_removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Kepler
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">
-   Read and Plot A Kepler Data Validation Timeseries File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">
-   Plotting a Catalog over a Kepler Full Frame Image File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">
-   Using Kepler Data to Plot a Light Curve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">
-   Plotting Images from Kepler Target Pixel Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">
-   Combining Multiple Quarters of
-   <em>
-    Kepler
-   </em>
-   Data with Lightkurve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">
-   Creating Periodograms and Identifying Significant Peaks
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">
-   Creating Your Own Light Curves using Custom Aperture Photometry
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">
-   How to Estimate a Star’s Mass and Radius Using Asteroseismology
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">
-   How to Understand and Manipulate the Periodogram of an Oscillating Star
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">
-   Identifying Transiting Planet Signals in a
-   <em>
-    Kepler
-   </em>
-   Light Curve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">
-   Instrumental Noise in
-   <em>
-    Kepler
-   </em>
-   and
-   <em>
-    K2
-   </em>
-   #1: Data Gaps and Quality Flags
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">
-   Instrumental Noise in
-   <em>
-    Kepler
-   </em>
-   and
-   <em>
-    K2
-   </em>
-   #2: Spurious Signals and Time Sampling Effects
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">
-   Instrumental Noise in
-   <em>
-    Kepler
-   </em>
-   and
-   <em>
-    K2
-   </em>
-   #3: Seasonal and Detector Effects
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">
-   Instrumental Noise in
-   <em>
-    Kepler
-   </em>
-   and
-   <em>
-    K2
-   </em>
-   #4: Electronic Noise
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">
-   Interactively Inspecting Target Pixel Files and Light Curves
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">
-   Measuring and Removing a Rotation Period Signal from a
-   <em>
-    Kepler
-   </em>
-   Light Curve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">
-   Plotting
-   <em>
-    Kepler
-   </em>
-   Target Pixel File Products with Lightkurve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">
-   Searching for
-   <em>
-    Kepler
-   </em>
-   /
-   <em>
-    K2
-   </em>
-   and
-   <em>
-    TESS
-   </em>
-   Data Products Using Lightkurve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">
-   Using
-   <em>
-    Kepler
-   </em>
-   Light Curve Products with Lightkurve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">
-   Using
-   <em>
-    Kepler
-   </em>
-   Target Pixel File Products with Lightkurve
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">
-   Verifying the Location of a Signal in
-   <em>
-    Kepler
-   </em>
-   Pixel Data
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">
-   Visualizing Periodic Signals Using a River Plot
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/Kepler_DVT/Kepler_DVT.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/Kepler_FFI/kepler_ffi.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/Kepler_Lightcurve/kepler_lightcurve.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/Kepler_TPF/kepler_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_combining_multiple_quarters/kepler_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_creating_periodograms/kepler_creating_periodograms.html">Creating Periodograms and Identifying Significant Peaks</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_creating_your_own_light_curves/kepler_creating_your_own_light_curves.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/kepler_how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/kepler_how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_identifying_transiting_planet_signals/kepler_identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_instrumental_noise_1_data_gaps_and_quality_flags/kepler_instrumental_noise_1_data_gaps_and_quality_flags.html">Instrumental Noise in <em>Kepler</em> and <em>K2</em> #1: Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects/kepler_instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Instrumental Noise in <em>Kepler</em> and <em>K2</em> #2: Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_instrumental_noise_3_seasonal_and_detector_effects/kepler_instrumental_noise_3_seasonal_and_detector_effects.html">Instrumental Noise in <em>Kepler</em> and <em>K2</em> #3: Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_instrumental_noise_4_electronic_noise/kepler_instrumental_noise_4_electronic_noise.html">Instrumental Noise in <em>Kepler</em> and <em>K2</em> #4: Electronic Noise</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_interactively_inspecting_target_pixel_files_and_light_curves/kepler_interactively_inspecting_target_pixel_files_and_light_curves.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_measuring_a_rotation_period/kepler_measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_plotting_target_pixel_files/kepler_plotting_target_pixel_files.html">Plotting <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_searching_for_data_products/kepler_searching_for_data_products.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_using_light_curve_products_with_lightkurve/kepler_using_light_curve_products_with_lightkurve.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_using_target_pixel_file_products_with_lightkurve/kepler_using_target_pixel_file_products_with_lightkurve.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_verifying_the_location_of_a_signal/kepler_verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../Kepler/kepler_visualizing_periodic_signals_using_a_river_plot/kepler_visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  PanSTARRS
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
-   MAST Table Access Protocol PanSTARRS 1 DR2 Demo
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  TESS
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">
-   Beginner: Retrieve TESS Data Validation Products with Astroquery
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">
-   Beginner: Read and Plot A TESS Data Validation Timeseries File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
-   Beginner: Read and Display a TESS Full Frame Image
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">
-   Beginner: Read and Plot A TESS Light Curve File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">
-   Beginner: Read and Display A TESS Target Pixel File
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">
-   Exoplanet Data and TESS Light Curves Using Python Requests
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">
-   Download MAST TESS Light Curves Within an FFI Footprint Using TAP
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">
-   Beginner: Search The TESS Input Catalog Centered On HD 209458.
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">
-   Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../interm_gi_query/interm_gi_query.html">
-   Intermediate:  Search and Download GI Program Light Curves
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">
-   Intermediate: Finding Flares and Variable Stars in TASC Light Curves
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
-   Intermediate: Retrieve TESS Pixel Response Function Images
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">
-   Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
-   Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Intermediate: Create TESS FFI Cutout using Python Requests
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">
-   Removing Scattered Light from
-   <em>
-    TESS
-   </em>
-   Data Using the Lightkurve
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     RegressionCorrector
-    </span>
-   </code>
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">Beginner: Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Beginner: Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">Beginner: Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">Beginner: Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Beginner: Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">Beginnner: A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">Intermediate: Finding Flares and Variable Stars in TASC Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tesscut_astroquery/interm_tesscut_astroquery.html">Beginner: Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
 </ul>
 
     </div>
-</nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
+</nav>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
+  </div>
+  
 
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
 
-          
+  
+  <div id="rtd-footer-container"></div>
 
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
+      </div>
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
 
 
 
 <div class="col py-1 d-flex header-article-main">
     <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
     </div>
     <div class="header-article__right">
 <button onclick="toggleFullScreen()"
-  class="headerbtn"
+  class="btn btn-sm"
   data-toggle="tooltip"
 data-placement="bottom"
 title="Fullscreen mode"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/spacetelescope/mast_notebooks"
-   class="headerbtn"
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm dropdown-item"
    data-toggle="tooltip"
 data-placement="left"
 title="Source repository"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
-<span class="headerbtn__text-container">repository</span>
+<span class="btn__text-container">repository</span>
 </a>
-
-      </li>
+</a>
       
-      <li>
-        <a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/TESS/interm_tesscut_requests/interm_tesscut_requests.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/MAST/TESS/interm_tesscut_requests/interm_tesscut_requests.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
    data-toggle="tooltip"
 data-placement="left"
 title="Open an issue"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-lightbulb"></i>
   </span>
-<span class="headerbtn__text-container">open issue</span>
+<span class="btn__text-container">open issue</span>
 </a>
-
-      </li>
+</a>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../../../_sources/notebooks/MAST/TESS/interm_tesscut_requests/interm_tesscut_requests.ipynb"
-   class="headerbtn"
+  <ul class="dropdown-menu">
+      <li><a href="../../../../_sources/notebooks/MAST/TESS/interm_tesscut_requests/interm_tesscut_requests.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
    data-toggle="tooltip"
 data-placement="left"
 title="Download source file"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</a>
       
       <li>
-        
 <button onclick="printPdf(this)"
-  class="headerbtn"
+  class="btn btn-sm dropdown-item"
   data-toggle="tooltip"
 data-placement="left"
 title="Print to PDF"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</a>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
     </div>
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#table-of-contents">
-   Table of Contents
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#import-statements">
-   Import Statements
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#get-ra-and-dec-of-your-target-using-astroquery-catalogs">
-   Get RA and Dec of your Target Using Astroquery Catalogs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#perform-a-sector-query">
-   Perform a Sector Query
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#request-a-ffi-cutout-with-astrocut">
-   Request a FFI Cutout with Astrocut
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#open-the-zip-file-so-we-can-get-at-the-file">
-     Open the zip file so we can get at the file.
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#inspect-the-contents-of-the-file">
-     Inspect the contents of the file.
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-the-first-image-of-the-time-series">
-   Plot the First Image of the Time Series
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars">
-     Add a WCS to the image and mark the requested star as well as nearby stars.
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#additional-resources">
-   Additional Resources
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#about-this-notebook">
-   About this Notebook
-  </a>
- </li>
-</ul>
-
-    </nav>
-</div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Intermediate: Create TESS FFI Cutout using Python Requests</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#table-of-contents">
-   Table of Contents
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#import-statements">
-   Import Statements
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#get-ra-and-dec-of-your-target-using-astroquery-catalogs">
-   Get RA and Dec of your Target Using Astroquery Catalogs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#perform-a-sector-query">
-   Perform a Sector Query
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#request-a-ffi-cutout-with-astrocut">
-   Request a FFI Cutout with Astrocut
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#open-the-zip-file-so-we-can-get-at-the-file">
-     Open the zip file so we can get at the file.
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#inspect-the-contents-of-the-file">
-     Inspect the contents of the file.
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-the-first-image-of-the-time-series">
-   Plot the First Image of the Time Series
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars">
-     Add a WCS to the image and mark the requested star as well as nearby stars.
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#additional-resources">
-   Additional Resources
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#about-this-notebook">
-   About this Notebook
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
             </div>
-            <main id="main-content" role="main">
-                
-              <div>
-                
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Intermediate: Create TESS FFI Cutout using Python Requests</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-statements">
+   Import Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-ra-and-dec-of-your-target-using-astroquery-catalogs">
+   Get RA and Dec of your Target Using Astroquery Catalogs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#perform-a-sector-query">
+   Perform a Sector Query
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#request-a-ffi-cutout-with-astrocut">
+   Request a FFI Cutout with Astrocut
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-the-zip-file-so-we-can-get-at-the-file">
+     Open the zip file so we can get at the file.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inspect-the-contents-of-the-file">
+     Inspect the contents of the file.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-the-first-image-of-the-time-series">
+   Plot the First Image of the Time Series
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars">
+     Add a WCS to the image and mark the requested star as well as nearby stars.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional Resources
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
   <p><a id="title_ID"></a></p>
-<section class="tex2jax_ignore mathjax_ignore" id="intermediate-create-tess-ffi-cutout-using-python-requests">
-<h1>Intermediate: Create TESS FFI Cutout using Python Requests<a class="headerlink" href="#intermediate-create-tess-ffi-cutout-using-python-requests" title="Permalink to this headline">#</a></h1>
+<section id="intermediate-create-tess-ffi-cutout-using-python-requests">
+<h1>Intermediate: Create TESS FFI Cutout using Python Requests<a class="headerlink" href="#intermediate-create-tess-ffi-cutout-using-python-requests" title="Permalink to this heading">#</a></h1>
 <p>This notebook shows the user how to use the MAST programmatic interface to create a cutout of a small section of the TESS FFIs. For this example we will determine the RA and Dec for TIC ID = 261136679, Pi Mensae. We then perform a query to determine which sectors contain this RA and Dec, peform a cutout of the FFI timeseries, open the resulting target pixel files, and plot the first image.</p>
 <p>This tutorial shows the users how to do the following: use astroquery.catalogs to query the TIC, use the python requests module to query the available sectors, and use python requests to obtain an FFI cutout with astrocut.</p>
 <p>The online version of Tesscut, as well as links to the documentation can be found here, https://mast.stsci.edu/tesscut/.</p>
 <section id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="#catalog_ID">Astroquery Search of the TIC</a> <br>
-<a class="reference external" href="#tesscut_ID">Request a FFI Cutout</a> <br>
-<a class="reference external" href="#resources_ID">Additional Resources</a> <br>
-<a class="reference external" href="#about_ID">About this Notebook</a></p>
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<p><span class="xref myst">Astroquery Search of the TIC</span> <br>
+<span class="xref myst">Request a FFI Cutout</span> <br>
+<span class="xref myst">Additional Resources</span> <br>
+<span class="xref myst">About this Notebook</span></p>
 </section>
 <hr class="docutils" />
 <section id="import-statements">
-<h2>Import Statements<a class="headerlink" href="#import-statements" title="Permalink to this headline">#</a></h2>
+<h2>Import Statements<a class="headerlink" href="#import-statements" title="Permalink to this heading">#</a></h2>
 <p><a id="imports_ID"></a></p>
 <p>We start with a few import statements.</p>
 <ul class="simple">
@@ -900,7 +1418,7 @@ title="Print to PDF"
 <p><a id="catalog_ID"></a></p>
 </section>
 <section id="get-ra-and-dec-of-your-target-using-astroquery-catalogs">
-<h2>Get RA and Dec of your Target Using Astroquery Catalogs<a class="headerlink" href="#get-ra-and-dec-of-your-target-using-astroquery-catalogs" title="Permalink to this headline">#</a></h2>
+<h2>Get RA and Dec of your Target Using Astroquery Catalogs<a class="headerlink" href="#get-ra-and-dec-of-your-target-using-astroquery-catalogs" title="Permalink to this heading">#</a></h2>
 <p>Here we do a cone search using <code class="docutils literal notranslate"><span class="pre">Catalogs.query_object</span></code> on the TIC catalog around our desired TIC ID. The advantage of doing this is that it gives us the nearby stars as well as the star we are looking for. The resulting table is sorted by distance from the requested object. We print out the ID and a few other TIC quantities to ensure we found the star we were looking for.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -950,7 +1468,7 @@ title="Print to PDF"
 </section>
 <hr class="docutils" />
 <section id="perform-a-sector-query">
-<h2>Perform a Sector Query<a class="headerlink" href="#perform-a-sector-query" title="Permalink to this headline">#</a></h2>
+<h2>Perform a Sector Query<a class="headerlink" href="#perform-a-sector-query" title="Permalink to this heading">#</a></h2>
 <p><a id="catalog_ID"></a>
 Using the TESS sector information service, we make a request to determine which sectors/cameras/CCDs contain data for this target. Remember that there is a set of FFIs for each TESS sector and those are broken up into 4 cameras which each have 4 CCDs.  We will do this with a radius=0 cone search to find only those FFI sets that contain the star of interest. You can also make the query using a larger radius, which may be important if the star is near the edge of one of the CCDs.</p>
 <p>
@@ -990,7 +1508,7 @@ Note, the request is returned in a json format. The 'results' key contains an ar
 <p><a id="tesscut_ID"></a></p>
 </section>
 <section id="request-a-ffi-cutout-with-astrocut">
-<h2>Request a FFI Cutout with Astrocut<a class="headerlink" href="#request-a-ffi-cutout-with-astrocut" title="Permalink to this headline">#</a></h2>
+<h2>Request a FFI Cutout with Astrocut<a class="headerlink" href="#request-a-ffi-cutout-with-astrocut" title="Permalink to this heading">#</a></h2>
 <p>Astrocut is the tool that runs the cutout service around the RA and Dec that were requested. It delivers a zipped file containing a cutout for each set of FFIs as listed above. It is also possible to request only one sector using the “sector” parameter,which we will do here.  For tesscut x refers to the CCD columns and y refers to the CCD rows. Distance can be input in a variety of units, I picked pixels (“px”).</p>
 <p>&lt; Response [200] &gt; means that your request succeeded.</p>
 <div class="cell docutils container">
@@ -1028,7 +1546,7 @@ application/zip
 </div>
 </div>
 <section id="open-the-zip-file-so-we-can-get-at-the-file">
-<h3>Open the zip file so we can get at the file.<a class="headerlink" href="#open-the-zip-file-so-we-can-get-at-the-file" title="Permalink to this headline">#</a></h3>
+<h3>Open the zip file so we can get at the file.<a class="headerlink" href="#open-the-zip-file-so-we-can-get-at-the-file" title="Permalink to this heading">#</a></h3>
 <p>We use python’s zipfile to unzip the file, but this could also be done using unzip from the command line. In many cases you will get more than one file, one for each sector that observed the star.  If you ask for a large cutout, you might also get more than one because the pixels are on more than one CCD.  In this case, we got back one file. The name contains the RA and Dec as well as the sector number, camera and chip.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1050,7 +1568,7 @@ application/zip
 </div>
 </section>
 <section id="inspect-the-contents-of-the-file">
-<h3>Inspect the contents of the file.<a class="headerlink" href="#inspect-the-contents-of-the-file" title="Permalink to this headline">#</a></h3>
+<h3>Inspect the contents of the file.<a class="headerlink" href="#inspect-the-contents-of-the-file" title="Permalink to this heading">#</a></h3>
 <p>Use the fits.info function to see the contents of the file. It has three extensions just like a normal target pixel file. Most of the interesting information is in the PIXELS extension.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1062,9 +1580,9 @@ application/zip
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: tess-s0001-4-2_84.291188_-80.469120_35x45_astrocut.fits
 No.    Name      Ver    Type      Cards   Dimensions   Format
-  0  PRIMARY       1 PrimaryHDU      56   ()      
-  1  PIXELS        1 BinTableHDU    280   1282R x 12C   [D, E, J, 1575J, 1575E, 1575E, 1575E, 1575E, J, E, E, 38A]   
-  2  APERTURE      1 ImageHDU        81   (35, 45)   int32   
+  0  PRIMARY       1 PrimaryHDU      57   ()      
+  1  PIXELS        1 BinTableHDU    281   1282R x 12C   [D, E, J, 1575J, 1575E, 1575E, 1575E, 1575E, J, E, E, 38A]   
+  2  APERTURE      1 ImageHDU        82   (35, 45)   int32   
 </pre></div>
 </div>
 </div>
@@ -1095,12 +1613,12 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 </div>
 </div>
-<p><a class="reference external" href="#title_ID">Top of Page</a></p>
+<p><span class="xref myst">Top of Page</span></p>
 <p><a id="plot_image"></a></p>
 </section>
 </section>
 <section id="plot-the-first-image-of-the-time-series">
-<h2>Plot the First Image of the Time Series<a class="headerlink" href="#plot-the-first-image-of-the-time-series" title="Permalink to this headline">#</a></h2>
+<h2>Plot the First Image of the Time Series<a class="headerlink" href="#plot-the-first-image-of-the-time-series" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">firstImage</span> <span class="o">=</span> <span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -1114,11 +1632,11 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../../_images/interm_tesscut_requests_24_0.png" src="../../../../_images/interm_tesscut_requests_24_0.png" />
+<img alt="../../../../_images/1114e7f43fe91990379505e127b255101adec6984440ddbead7e7c8a751da9db.png" src="../../../../_images/1114e7f43fe91990379505e127b255101adec6984440ddbead7e7c8a751da9db.png" />
 </div>
 </div>
 <section id="add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars">
-<h3>Add a WCS to the image and mark the requested star as well as nearby stars.<a class="headerlink" href="#add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars" title="Permalink to this headline">#</a></h3>
+<h3>Add a WCS to the image and mark the requested star as well as nearby stars.<a class="headerlink" href="#add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars" title="Permalink to this heading">#</a></h3>
 <p>We use the WCS in the header to place a red dot on the image for the catalog position of the star on the figure as a demonstration of the WCS. The orange dots are the nearby stars found in the cone search done above.</p>
 <p><strong>Note. The WCS is based on the WCS stored in the FFI file for the central part of the time series and there can be some motion during the sector that is not captured.</strong></p>
 <div class="cell docutils container">
@@ -1144,17 +1662,17 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f44e6bb3fa0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f6e6f277580&gt;
 </pre></div>
 </div>
-<img alt="../../../../_images/interm_tesscut_requests_26_1.png" src="../../../../_images/interm_tesscut_requests_26_1.png" />
+<img alt="../../../../_images/11c0a137e522860663c01af55700d5c1c68b9f7b74af6750c5d2415fcc8ff822.png" src="../../../../_images/11c0a137e522860663c01af55700d5c1c68b9f7b74af6750c5d2415fcc8ff822.png" />
 </div>
 </div>
 <p><a id="resources_ID"></a></p>
 </section>
 </section>
 <section id="additional-resources">
-<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">#</a></h2>
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
 <p><a class="reference external" href="https://mast.stsci.edu/tesscut/">TESScut API Documentation</a><br>
 <a class="reference external" href="https://astrocut.readthedocs.io/en/latest/">Astrocut Documentation</a><br>
 <a class="reference external" href="https://archive.stsci.edu/tess">TESS Homepage</a><br>
@@ -1162,10 +1680,10 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <p><a id="about_ID"></a></p>
 </section>
 <section id="about-this-notebook">
-<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this headline">#</a></h2>
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
 <p><strong>Author:</strong> Susan E. Mullally, STScI Archive Scientist
 <br><strong>Updated On:</strong> 2019-12-6</p>
-<p><a class="reference external" href="#title_ID">Top of Page</a>
+<p><span class="xref myst">Top of Page</span>
 <a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
 </section>
 </section>
@@ -1190,50 +1708,159 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
-              
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
+  <a class='left-prev' id="prev-link" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../tess_removing_scattered_light_using_regression/tess_removing_scattered_light_using_regression.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
 </div>
             </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
   
-    By STScI<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
-    
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-statements">
+   Import Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-ra-and-dec-of-your-target-using-astroquery-catalogs">
+   Get RA and Dec of your Target Using Astroquery Catalogs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#perform-a-sector-query">
+   Perform a Sector Query
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#request-a-ffi-cutout-with-astrocut">
+   Request a FFI Cutout with Astrocut
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-the-zip-file-so-we-can-get-at-the-file">
+     Open the zip file so we can get at the file.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inspect-the-contents-of-the-file">
+     Inspect the contents of the file.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-the-first-image-of-the-time-series">
+   Plot the First Image of the Time Series
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars">
+     Add a WCS to the image and mark the requested star as well as nearby stars.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional Resources
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+</nav>
 </div>
 
-
-      </div>
-    </div>
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
   
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   </body>
 </html>
