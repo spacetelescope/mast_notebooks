@@ -1,0 +1,1597 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Intermediate: Create TESS FFI Cutout using Python Requests" href="../interm_tesscut_requests/interm_tesscut_requests.html" />
+    <link rel="prev" title="Intermediate: Retrieve TESS Pixel Response Function Images" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Astroquery</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/intro.html">Intro</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../astroquery/nb.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">Intermediate: Finding Flares and Variable Stars in TASC Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+
+    </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
+    </div>
+    <div class="header-article__right">
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://mybinder.org/v2/gh/spacetelescope/mast_notebooks/main?urlpath=tree/notebooks/notebooks/TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</a>
+      
+      <li><a href="https://colab.research.google.com/github/spacetelescope/mast_notebooks/blob/main/notebooks/notebooks/TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">repository</span>
+</a>
+</a>
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">open issue</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="../../../_sources/notebooks/TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</a>
+      
+      <li>
+<button onclick="printPdf(this)"
+  class="btn btn-sm dropdown-item"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</a>
+      
+  </ul>
+</div>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
+    </div>
+</div>
+            </div>
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tesscut-overlay-with-dss">
+   TESSCut Overlay with DSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-statements">
+   Import Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-a-custom-tess-cutout-target-pixel-file">
+   Getting a Custom TESS Cutout Target Pixel File
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-astroquery-to-retrieve-the-tesscut-image">
+     Use Astroquery to retrieve the TESSCut image
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-a-target-pixel-file">
+     Open a Target Pixel File
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-and-display-a-gif-of-the-custom-tpf">
+     Create and display a GIF of the custom TPF
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#find-targets-within-tpf-fov-in-tess-input-catalog">
+     Find targets within TPF FOV in TESS Input Catalog
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-static-tpf-image-and-overlay-tic-catalog">
+     Plot static TPF image and overlay TIC catalog
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retrieve-the-dss-image-of-the-region">
+   Retrieve the DSS image of the region
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overlay-the-tesscut-image">
+   Overlay the TessCut Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional Resources
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
+  <p><a id="title_ID"></a></p>
+<section id="intermediate-overlay-a-cutout-of-the-tess-ffis-with-dss-imaging">
+<h1>Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging<a class="headerlink" href="#intermediate-overlay-a-cutout-of-the-tess-ffis-with-dss-imaging" title="Permalink to this heading">#</a></h1>
+<p>This notebook shows the user how to use the MAST programmatic interface to create a cutout of the small section of the TESS FFIs. For this example we will determine the RA and Dec for TIC 261105201. We then perform a query to determine which sectors contain this RA and Dec, peform a cutout of the FFI time series, open the resulting target pixel files, and plot the first image of each file with the WCS overlayed on the image. Finally we will create a light curve from the resulting image by creating a photometric aperture and summing the light in our pixels.</p>
+<p>This tutorial shows the users how to do the following: use <code class="docutils literal notranslate"><span class="pre">astroquery.catalogs</span></code> to query the TIC, use astroquery Tesscut to determine the number of sectors that contain our target and download a FFI cutout.</p>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<p><span class="xref myst">Get Tesscut with Astroquery</span> <br></p>
+<ul class="simple">
+<li><p><span class="xref myst">Download Tesscut</span><br></p></li>
+<li><p><span class="xref myst">Make Kepler TPF</span><br></p></li>
+<li><p><span class="xref myst">Make GIF</span><br></p></li>
+<li><p><span class="xref myst">Find TIC objects</span><br></p></li>
+<li><p><span class="xref myst">Overlay TessCut and TIC</span><br></p></li>
+</ul>
+<p><span class="xref myst">Get DSS image</span> <br>
+<span class="xref myst">Overlay Tesscut and DSS</span> <br>
+<span class="xref myst">Additional Resources</span> <br>
+<span class="xref myst">About this Notebook</span></p>
+</section>
+<section id="tesscut-overlay-with-dss">
+<h2>TESSCut Overlay with DSS<a class="headerlink" href="#tesscut-overlay-with-dss" title="Permalink to this heading">#</a></h2>
+<p>This notebook is an example of accessing and displaying a TESS FFI Cutout using the MAST TessCut service built into astroquery.  It uses astroquery to retrieve the related objects from the Tess Input Catalog (TIC). We then grab the related DSS image and overlay the TIC objects and the TESSCut image altogether.</p>
+<p>This notebook uses several base packages but requires the following additional packages:</p>
+<ul class="simple">
+<li><p>astropy</p></li>
+<li><p>astroquery &gt; 0.3.9</p></li>
+<li><p>k2flix</p></li>
+<li><p>ipython &gt; 7.2</p></li>
+<li><p>ipywidgets &gt; 7.4.2</p></li>
+<li><p>reproject</p></li>
+</ul>
+</section>
+<section id="import-statements">
+<h2>Import Statements<a class="headerlink" href="#import-statements" title="Permalink to this heading">#</a></h2>
+<p><a id="imports_ID"></a></p>
+<p>We start with a few import statements.</p>
+<ul class="simple">
+<li><p><em>os</em> to handle path and file operations</p></li>
+<li><p><em>requests</em> to handle HTTP get requests</p></li>
+<li><p><em>numpy</em> to handle array functions</p></li>
+<li><p><em>matplotlib.pyplot</em> for plotting the data</p></li>
+<li><p><em>k2flix</em> to load and create a Target Pixel File object and make GIFs</p></li>
+<li><p><em>astroquery.mast</em> for the Catalogs and for Tesscut.</p></li>
+<li><p><em>astropy.units</em> for using proper astronomy units</p></li>
+<li><p><em>astropy.io fits</em> for accessing FITS files</p></li>
+<li><p><em>astropy.wcs WCS</em> to interpret the World Coordinate Systems</p></li>
+<li><p><em>astropy.coordinates SkyCoord</em> for creating an on-sky coordinate</p></li>
+<li><p><em>astropy.visualizaton simple_norm</em> for normalizing data for plots</p></li>
+<li><p><em>reproject reproject_interp</em> for reprojecting images from one WCS coordinate system into another</p></li>
+<li><p><em>IPython.display Image</em> for loading a GIF image in the notebook</p></li>
+<li><p><em>ipywidgets</em> to create an interactive plot with widget slider</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the packages we need</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">k2flix</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># astroquery</span>
+<span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Tesscut</span>
+<span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Catalogs</span>
+
+<span class="c1"># Astropy</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">astropy.wcs</span> <span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span> <span class="nn">astropy.visualization</span> <span class="kn">import</span> <span class="n">simple_norm</span>
+
+<span class="kn">from</span> <span class="nn">reproject</span> <span class="kn">import</span> <span class="n">reproject_interp</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">interact_manual</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="get_tesscut"></a></p>
+</section>
+<section id="getting-a-custom-tess-cutout-target-pixel-file">
+<h2>Getting a Custom TESS Cutout Target Pixel File<a class="headerlink" href="#getting-a-custom-tess-cutout-target-pixel-file" title="Permalink to this heading">#</a></h2>
+<p>The first step is to get the Target Pixel File.  We can download a custom target pixel file using the <strong>Astroquery</strong> python package. In particular we will use the <code class="docutils literal notranslate"><span class="pre">download_tesscut</span></code> method from the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html#tesscut">Tesscut</a> module.  Let’s create a Tess cutout centered on RA, Dec = 66.582618, -67.806508 in a 11x11 pixel window.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># select a target and cutout size in pixels</span>
+<span class="n">ra</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="mf">66.582618</span><span class="p">,</span> <span class="o">-</span><span class="mf">67.806508</span>
+<span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">11</span>
+
+<span class="c1"># set local file path to current working directory</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="download_tesscut"></a></p>
+<section id="use-astroquery-to-retrieve-the-tesscut-image">
+<h3>Use Astroquery to retrieve the TESSCut image<a class="headerlink" href="#use-astroquery-to-retrieve-the-tesscut-image" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">download_cutouts</span></code> method requires as input an Astropy SkyCoord object, a cutout size in pixels and optionally accepts a download path.  This will download the custom cutout into the specified path and returns and Astropy table object with the paths to all the downloaded files.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a sky coordinate object</span>
+<span class="n">cutout_coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+    
+<span class="c1"># download the files and get the list of local paths</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">download_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">cutout_coords</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: Could not download cutouts: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="make_tpf"></a></p>
+</section>
+<section id="open-a-target-pixel-file">
+<h3>Open a Target Pixel File<a class="headerlink" href="#open-a-target-pixel-file" title="Permalink to this heading">#</a></h3>
+<p>We’ll be using Kepler’s <a class="reference external" href="https://barentsen.github.io/k2flix/">k2flix</a> Python package to open and access the file, using the <code class="docutils literal notranslate"><span class="pre">TargetPixelFile</span></code> class.  This is a convenience class that allows use to easily create a GIF.  Kepler provides a range of <a class="reference external" href="https://keplerscience.arc.nasa.gov/software.html">software tools</a> that should also work with TESS data. We instantiate a new object and print some basic information about the custom TPF.  We need the WCS of the new TESS cutout, so we use Astropy WCS to define and create the wcs using the APERTURE extension of the cutout file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># grab the first file in the list</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># create the TargetPixelFile instance</span>
+<span class="n">tpf</span> <span class="o">=</span> <span class="n">k2flix</span><span class="o">.</span><span class="n">TargetPixelFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="c1"># get number of pixels in flux array </span>
+<span class="n">n_pix</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># compute field of view in degrees</span>
+<span class="n">res</span> <span class="o">=</span> <span class="mf">21.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">pixel</span><span class="p">)</span>
+<span class="n">area</span> <span class="o">=</span> <span class="n">res</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_pix</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">pixel</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<span class="n">fov</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">value</span> 
+
+<span class="c1"># compute the wcs of the image</span>
+<span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">hdulist</span><span class="p">[</span><span class="s1">&#39;APERTURE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+
+<span class="c1"># print some info</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Target TPF&#39;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Field of View [degrees]&#39;</span><span class="p">,</span> <span class="n">fov</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number pixels&#39;</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="make_gif"></a></p>
+</section>
+<section id="create-and-display-a-gif-of-the-custom-tpf">
+<h3>Create and display a GIF of the custom TPF<a class="headerlink" href="#create-and-display-a-gif-of-the-custom-tpf" title="Permalink to this heading">#</a></h3>
+<p>Using k2flix and the TPF instance, we can create a GIF of the time-series data in the cutout with the <code class="docutils literal notranslate"><span class="pre">save_movie</span></code> method.  Once it’s generated, we use the IPython Image class to display the gif in the notebook cell.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the gif</span>
+<span class="n">gif</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.fits&#39;</span><span class="p">,</span> <span class="s1">&#39;.gif&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">gif</span><span class="p">):</span>
+    <span class="n">tpf</span><span class="o">.</span><span class="n">save_movie</span><span class="p">(</span><span class="n">gif</span><span class="p">,</span> <span class="n">show_flags</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display the gif</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">gif</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No gif found. Cannot display gif of time-series.&quot;</span><span class="p">)</span>
+
+<span class="n">Image</span><span class="p">(</span><span class="n">gif</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="find_tic"></a></p>
+</section>
+<section id="find-targets-within-tpf-fov-in-tess-input-catalog">
+<h3>Find targets within TPF FOV in TESS Input Catalog<a class="headerlink" href="#find-targets-within-tpf-fov-in-tess-input-catalog" title="Permalink to this heading">#</a></h3>
+<p>We also want to retrieve all objects from the TESS Input Catalog that are within the custom TESS cutout field of view.  We can use <strong>Astroquery</strong> <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html#catalog-queries">Catalogs.query_region</a> to do this.  This takes a string input of RA, Dec, and a search radius in degrees, and which catalog to search on.  Since our fov is the total width/height of the cutout, we use <code class="docutils literal notranslate"><span class="pre">fov/2.</span></code> to get a radius.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">fov</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s2">&quot;Tic&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;n_targets&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">catalogData</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;example rows:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="plot_tpf_tic"></a></p>
+</section>
+<section id="plot-static-tpf-image-and-overlay-tic-catalog">
+<h3>Plot static TPF image and overlay TIC catalog<a class="headerlink" href="#plot-static-tpf-image-and-overlay-tic-catalog" title="Permalink to this heading">#</a></h3>
+<p>Let’s overylay the catalog search results with the custom TESS cutout.  We first need to convert the RA, Dec of all the catalog objects into pixel coordinates on the TESS cutout image.  We can do this using the <a class="reference external" href="http://docs.astropy.org/en/stable/wcs/">Astropy WCS</a> object, with the <code class="docutils literal notranslate"><span class="pre">all_world2pix</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get RA and Dec coords of catalog data</span>
+<span class="n">tic_ra</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span>
+<span class="n">tic_dec</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span>
+
+<span class="c1"># get pixel coordinates of RA and Dec </span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tic_ra</span><span class="p">,</span> <span class="n">tic_dec</span><span class="p">)),</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xc</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">]</span>
+<span class="n">yc</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s use matplotlib to plot the first frame in the time-series of the cutout.  We use <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.imshow</span></code>.  Now that we have the catalog object positions in pixel coordinates, we can overlay them as a scatter plot with <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.scatter</span></code>.  We’ve optionally included a <code class="docutils literal notranslate"><span class="pre">use_wcs</span></code> flag to create the plot using the WCS.  See <a class="reference external" href="http://docs.astropy.org/en/stable/wcs/#matplotlib-plots-with-correct-wcs-projection">Matplotlib Plots With WCS</a> for more details.  We can pass a WCS object as a matplotlib axis projection.  Try setting <code class="docutils literal notranslate"><span class="pre">use_wcs</span> <span class="pre">=</span> <span class="pre">True</span></code>.  This will create the plot using the World Coordinates as the x,y axes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get first frame of flux from TPF</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">hdulist</span><span class="p">[</span><span class="s1">&#39;PIXELS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;FLUX&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">,:,:]</span>
+
+<span class="c1"># use log image normalization</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">simple_norm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot with wcs or not</span>
+<span class="n">use_wcs</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># plot image and overlay TIC points</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">wcs</span> <span class="k">if</span> <span class="n">use_wcs</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="c1">#ax.scatter(tic_ra, tic_dec, transform=ax.get_transform(&#39;world&#39;), s=20, facecolor=&#39;red&#39;, edgecolor=&#39;white&#39;)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># deal with axes</span>
+<span class="k">if</span> <span class="n">use_wcs</span><span class="p">:</span>
+    <span class="n">xax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">yax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">xax</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mf">1.</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcmin</span><span class="p">)</span>
+    <span class="n">yax</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span><span class="p">)</span>
+    <span class="n">xax</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s1">&#39;Right Ascension&#39;</span><span class="p">)</span>
+    <span class="n">yax</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s1">&#39;Declination&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x pixel&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y pixel&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The TESS FFI images currently have an issue with its WCS that shift transformations by ~1 pixel.  To illustrate this point, we’ll compare the TESS cutout overlay with the TIC objects in pixel coordinates and world coordinates.  The left panel plots the cutout with the correct overlay of TIC objects.  The right panel plots the cutout using its WCS transformation.  The TIC objects are shifted by about a pixel relative to the underlying cutout.  This issue will present itself when using the WCS to overlay the cutout onto other data or vice versa.  The underlying cause of this issue is still being explored.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pixel plot</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>  <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TessCut-Pixel&#39;</span><span class="p">)</span>
+
+<span class="c1"># WCS plot</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>  <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s1">&#39;Right Ascension&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s1">&#39;Declination&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">tic_ra</span><span class="p">,</span> <span class="n">tic_dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax2</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TessCut-WCS&#39;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="get_dss"></a></p>
+</section>
+</section>
+<section id="retrieve-the-dss-image-of-the-region">
+<h2>Retrieve the DSS image of the region<a class="headerlink" href="#retrieve-the-dss-image-of-the-region" title="Permalink to this heading">#</a></h2>
+<p>To overlay the TESSCut image against the DSS image, we need to query the STScI DSS Cutout Image service.  First we define a custom function, <code class="docutils literal notranslate"><span class="pre">getdss</span></code>, to perform call.  This performs a basic http GET request to the given url and retrieves a DSS image cutout given some input parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/cgi-bin/dss_search&quot;</span>
+<span class="n">plateDict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="p">:</span> <span class="s2">&quot;2r&quot;</span><span class="p">,</span> 
+             <span class="s2">&quot;blue&quot;</span><span class="p">:</span> <span class="s2">&quot;2b&quot;</span><span class="p">,</span> 
+             <span class="s2">&quot;ukred&quot;</span><span class="p">:</span> <span class="s2">&quot;poss2ukstu_red&quot;</span><span class="p">,</span> 
+             <span class="s2">&quot;ukblue&quot;</span><span class="p">:</span> <span class="s2">&quot;poss2ukstu_blue&quot;</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">getdss</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">plate</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+           <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract DSS image at position and write a FITS file</span>
+<span class="sd">    </span>
+<span class="sd">    ra, dec are J2000 coordinates in degrees</span>
+<span class="sd">    plate can be &quot;red&quot;, &quot;blue&quot;, &quot;ukred&quot;, or &quot;ukblue&quot;</span>
+<span class="sd">    height and width are in arcmin, default = 7.0.  Image is square if only one is specified.</span>
+<span class="sd">    filename specifies name for output file (default=&quot;dss_{plate}_{ra}_{dec}.fits&quot;)</span>
+<span class="sd">    directory is location for output file (default is current directory)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns the name of the file that was written</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># set defaults for height &amp; width</span>
+    <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="mf">7.0</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="mf">7.0</span>
+    <span class="k">elif</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">height</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">vplate</span> <span class="o">=</span> <span class="n">plateDict</span><span class="p">[</span><span class="n">plate</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Illegal plate value &#39;</span><span class="si">{}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">Should be one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">plate</span><span class="p">,</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plateDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+
+    <span class="c1"># construct filename</span>
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;dss_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{:.6f}</span><span class="s2">_</span><span class="si">{:.6f}</span><span class="s2">.fits&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plate</span><span class="p">,</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">directory</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="n">ra</span><span class="p">,</span>
+            <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">dec</span><span class="p">,</span>
+            <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">vplate</span><span class="p">,</span>
+            <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;J2000&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span>
+            <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span>
+            <span class="s2">&quot;f&quot;</span><span class="p">:</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;c&quot;</span><span class="p">:</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># read and format the output</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;SIMPLE  =&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No FITS file returned for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="n">fhout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+    <span class="n">fhout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">fhout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">filename</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We pass in our target RA and Dec, along with the desired image size in arcminutes, and an optional download path.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute the pixel area in arcmin</span>
+<span class="n">arcmin</span> <span class="o">=</span> <span class="n">area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">arcmin</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+
+<span class="c1"># retrieve the DSS file</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="n">getdss</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">arcmin</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">arcmin</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;DSS Image:&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s display the DSS image and overlay the TIC catalog objects as a sanity check.  We use the same matplotlib plotting methods as before.  As before, this uses <a class="reference external" href="http://docs.astropy.org/en/stable/visualization/wcsaxes/index.html#wcsaxes">WCSAxes</a> from Astropy to create a plot with correct WCS and overlay coordinate objects.  This time we create a DSS WCS object and use that when creating the plot.  We can also directly pass into a coordinate list of RA, Dec and transform the coordinates into the proper pixels using the DSS WCS.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dss</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="c1"># get the data and WCS for the DSS image</span>
+<span class="n">dss_data</span> <span class="o">=</span> <span class="n">dss</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">dss_wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">dss</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+
+<span class="c1"># display the DSS image and overlay the TIC objects</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">dss_wcs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dss_data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">tic_ra</span><span class="p">,</span> <span class="n">tic_dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Right Ascension&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Declination&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="overlay_images"></a></p>
+</section>
+<section id="overlay-the-tesscut-image">
+<h2>Overlay the TessCut Image<a class="headerlink" href="#overlay-the-tesscut-image" title="Permalink to this heading">#</a></h2>
+<p>To overlay the TESS Cutout against the DSS, we need to reproject the WCS of the TESS cutout onto the WCS of the DSS image, and the <a class="reference external" href="https://reproject.readthedocs.io/en/stable/index.html">reproject</a> package.  We use the <a class="reference external" href="https://reproject.readthedocs.io/en/stable/api/reproject.reproject_interp.html#reproject.reproject_interp">reproject_interp</a> method.  See <a class="reference external" href="https://reproject.readthedocs.io/en/stable/celestial.html">here</a> for more details.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reproject_interp</span></code> takes two basic inputs.</p>
+<ul class="simple">
+<li><p>input data+WCS we want to project from</p></li>
+<li><p>output WCS we want to project onto.</p></li>
+</ul>
+<p>We want to project our TESS cutout and its WCS into the coordinate frame of the DSS image, using the DSS WCS.  Our input is a tuple of the custom TESS cutout data and wcs, i.e. <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">wcs)</span></code>.  The desired coordinate frame is the WCS we want to project onto, i.e. <code class="docutils literal notranslate"><span class="pre">dss_wcs</span></code>.  We also need to provide the shape of the DSS data, with <code class="docutils literal notranslate"><span class="pre">shape_out</span></code>.  Finally we need to provide an interpolation method.  We use a <code class="docutils literal notranslate"><span class="pre">nearest-neighbor</span></code> interpolation, which is the lowest order possible.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reproject_interp</span></code> will take the input 11x11 pixel TESS cutout data, convert it to world coordinates using the TESS WCS, interpolate it into the shape of the DSS image (229x229) using the DSS WCS, and convert the data into DSS pixel coordinates.</p>
+<p>The final output is the reprojected TESS cutout data (<code class="docutils literal notranslate"><span class="pre">reproj_tesscut</span></code>) and the overlapping footprint of the input data in the output data (<code class="docutils literal notranslate"><span class="pre">footprint</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># reproject the tesscut onto dss</span>
+<span class="n">reproj_tesscut</span><span class="p">,</span> <span class="n">footprint</span> <span class="o">=</span> <span class="n">reproject_interp</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="n">wcs</span><span class="p">,),</span> <span class="n">dss_wcs</span><span class="p">,</span> <span class="n">shape_out</span><span class="o">=</span><span class="n">dss_data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;nearest-neighbor&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once reprojected, we can properly overly the DSS and TESSCut images.  We can add a slider for the opacity of the overlay using ipywidgets.  First we make a <code class="docutils literal notranslate"><span class="pre">create_plot</span></code> function which accepts all the inputs we need to display the DSS image, and overlay the TESS cutout image and TIC objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the function to overlay dss + tesscut + tic catalog</span>
+<span class="k">def</span> <span class="nf">create_plot</span><span class="p">(</span><span class="n">background_img</span><span class="p">,</span> <span class="n">foreground_img</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">wcs</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; create an interactive matplotlib image plot</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        background_img (ndarray):</span>
+<span class="sd">            The background image data to show</span>
+<span class="sd">        foreground_img (ndarray):</span>
+<span class="sd">            The foreground image data to overplot. </span>
+<span class="sd">        alpha (tuple):</span>
+<span class="sd">            A tuple of min, max for the interactive slider.  </span>
+<span class="sd">        norm:</span>
+<span class="sd">            The image normalization to use for the overlaid image.</span>
+<span class="sd">        wcs (astropy.wcs.wcs.WCS):</span>
+<span class="sd">            The WCS of the background image</span>
+<span class="sd">        ra (list):</span>
+<span class="sd">            A list of RA coordinate objects</span>
+<span class="sd">        dec (list):</span>
+<span class="sd">            A list of Dec coordinate objects</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># create plot</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+
+    <span class="c1"># show image 1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">background_img</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+
+    <span class="c1"># overlay image 2</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">foreground_img</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+
+    <span class="c1"># overlay a list of objects</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add axis labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Right Ascension&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Declination&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use ipywidgets to create an interactive slider widget for the alpha/opacity of the TESS cutout image.  We use the <a class="reference external" href="https://ipywidgets.readthedocs.io/en/stable/examples/Using%20Interact.html#interactive">interactive</a> function to produce an interactive widget.  It takes as input the main function we want to make interactive, in our case, <code class="docutils literal notranslate"><span class="pre">create_plot</span></code>.  You also need to pass in all the inputs to your custom function.</p>
+<p>To create a slider for alpha we pass in a tuple of <strong>(min, max)</strong> representing the minimum and maximum slider ranges.  All other inputs to our <code class="docutils literal notranslate"><span class="pre">create_plot</span></code> function should be fixed.  We do not want interaction on these elements.  So we wrap all other inputs in the <a class="reference external" href="https://ipywidgets.readthedocs.io/en/stable/examples/Using%20Interact.html#Fixing-arguments-using-fixed">fixed</a> function from <code class="docutils literal notranslate"><span class="pre">ipywidgets</span></code>.  This tells ipywidgets to use fix those inputs.</p>
+<p>Our input background data is the DSS image data, <code class="docutils literal notranslate"><span class="pre">dss_data</span></code>.  The input image to overlay on top is the reprojected TESS data, <code class="docutils literal notranslate"><span class="pre">reproj_tesscut</span></code>.  We also pass in <code class="docutils literal notranslate"><span class="pre">norm</span></code>, the TESS cutout image normalization from before, as well as DSS wcs (<code class="docutils literal notranslate"><span class="pre">dss_wcs</span></code>), and the list of RA and Dec of the TIC objects, <code class="docutils literal notranslate"><span class="pre">tic_ra,</span> <span class="pre">tic_dec</span></code>.</p>
+<p>Try moving the slider back and forth to control the opacity of the TESS cutout image against the DSS image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create an interactive ipywidget plot for the opacity of tesscut</span>
+<span class="n">interactive_plot</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">create_plot</span><span class="p">,</span> <span class="n">background_img</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">dss_data</span><span class="p">),</span> <span class="n">foreground_img</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">reproj_tesscut</span><span class="p">),</span> 
+                               <span class="n">alpha</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">norm</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">norm</span><span class="p">),</span> <span class="n">wcs</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">dss_wcs</span><span class="p">),</span> 
+                               <span class="n">ra</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">tic_ra</span><span class="p">),</span> <span class="n">dec</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">tic_dec</span><span class="p">))</span>
+<span class="c1"># display the plot</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">interactive_plot</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">output</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;500px&#39;</span>
+<span class="n">interactive_plot</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="resources"></a></p>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://mast.stsci.edu/tesscut/">TESScut API Documentation</a><br>
+<a class="reference external" href="https://astrocut.readthedocs.io/en/latest/">Astrocut Documentation</a><br>
+<a class="reference external" href="https://archive.stsci.edu/tess">TESS Homepage</a><br>
+<a class="reference external" href="https://outerspace.stsci.edu/display/TESS/TESS+Archive+Manual">TESS Archive Manual</a></p>
+<p><a id="about_ID"></a></p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Author:</strong> Brian Cherinka, STScI Archive Scientist
+<br><strong>Updated On:</strong> 2019-01-28</p>
+<p><span class="xref myst">Top of Page</span>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/TESS/interm_tesscut_dss_overlay"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Intermediate: Retrieve TESS Pixel Response Function Images</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../interm_tesscut_requests/interm_tesscut_requests.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Intermediate: Create TESS FFI Cutout using Python Requests</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tesscut-overlay-with-dss">
+   TESSCut Overlay with DSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-statements">
+   Import Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-a-custom-tess-cutout-target-pixel-file">
+   Getting a Custom TESS Cutout Target Pixel File
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-astroquery-to-retrieve-the-tesscut-image">
+     Use Astroquery to retrieve the TESSCut image
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-a-target-pixel-file">
+     Open a Target Pixel File
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-and-display-a-gif-of-the-custom-tpf">
+     Create and display a GIF of the custom TPF
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#find-targets-within-tpf-fov-in-tess-input-catalog">
+     Find targets within TPF FOV in TESS Input Catalog
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-static-tpf-image-and-overlay-tic-catalog">
+     Plot static TPF image and overlay TIC catalog
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retrieve-the-dss-image-of-the-region">
+   Retrieve the DSS image of the region
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overlay-the-tesscut-image">
+   Overlay the TessCut Image
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional Resources
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  </body>
+</html>

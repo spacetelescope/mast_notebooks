@@ -1,0 +1,1302 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>How to Understand and Manipulate the Periodogram of an Oscillating Star &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="How to Estimate a Star’s Mass and Radius Using Asteroseismology" href="../how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html" />
+    <link rel="prev" title="Creating Periodograms" href="../creating_periodograms/creating_periodograms.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Astroquery</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/intro.html">Intro</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../astroquery/nb.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inst_noise.html">Instrumental Noise</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../signals.html">Identifying Periodic Signals</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../periodograms.html">Periodograms &amp; Asteroseismology</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">Intermediate: Finding Flares and Variable Stars in TASC Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+
+    </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">repository</span>
+</a>
+</a>
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">open issue</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="../../../_sources/notebooks/Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</a>
+      
+      <li>
+<button onclick="printPdf(this)"
+  class="btn btn-sm dropdown-item"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</a>
+      
+  </ul>
+</div>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
+    </div>
+</div>
+            </div>
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>How to Understand and Manipulate the Periodogram of an Oscillating Star</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-goals">
+     Learning Goals
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imports">
+     Imports
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exploring-the-frequency-spectrum-of-a-delta-scuti-oscillator">
+     1. Exploring the Frequency Spectrum of a $\delta$ Scuti Oscillator
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exploring-the-frequency-spectrum-of-a-solar-like-oscillator">
+     2. Exploring the Frequency Spectrum of a Solar-Like Oscillator
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-smooth-and-detrend-a-periodogram">
+     3. How to Smooth and Detrend a Periodogram
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#the-box-kernel-filter">
+       3.1. The box kernel filter
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#the-log-median-filter">
+       3.2. The log median filter
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#flattening">
+       3.3. Flattening
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#closing-comments">
+     4. Closing Comments
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">
+   Citing Lightkurve and Astropy
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
+  <section id="how-to-understand-and-manipulate-the-periodogram-of-an-oscillating-star">
+<h1>How to Understand and Manipulate the Periodogram of an Oscillating Star<a class="headerlink" href="#how-to-understand-and-manipulate-the-periodogram-of-an-oscillating-star" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this tutorial you will:</p>
+<ul class="simple">
+<li><p>Understand the key features of periodograms of oscillating stars.</p></li>
+<li><p>Understand how these features change depending on the type of star being studied.</p></li>
+<li><p>Be able to manipulate the periodogram to focus in on areas you’re interested in.</p></li>
+<li><p>Be able to smooth a periodogram.</p></li>
+<li><p>Be able to remove features such as the convective background in solar-like oscillators.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>The brightnesses of stars can oscillate — that is, vary over time — for many different reasons. For example, in the companion tutorials we explored light curves that oscillated due to an eclipsing binary pair transiting in front of one another, and we looked at a star that showed variability due to star spots on its surface rotating in and out of view.</p>
+<p>In this tutorial, we will focus on <em>intrinsic</em> oscillators: stars that exhibit variability due to processes inside the stars. For example, one of these internal processes is the presence of standing waves trapped in the interior. When the light curve of a star is transformed into the frequency domain, such waves can be observed as distinct peaks in the frequency spectrum of the star. The branch of astronomy that focuses on studying these signals is called <a class="reference external" href="https://en.wikipedia.org/wiki/Asteroseismology"><em>asteroseismology</em></a>.</p>
+<p>Asteroseismology is an important tool because it allows intrinsic properties of a star, such as its mass and radius, to be estimated from the light curve alone. The only requirement is that the quality of the light curve — its duration, sampling, and precision — must be good enough to provide a high-resolution view of the star in the frequency domain. <em>Kepler</em> data is particularly well-suited for this purpose.</p>
+<p>In this tutorial, we will explore two types of intrinsic oscillators that are commonly studied by asteroseismologists:</p>
+<ol class="arabic simple">
+<li><p><strong>$\delta$ Scuti stars</strong>: a class of oscillating stars typically 1.5 to 2.5 times as massive as the Sun, which oscillate due to fluctuations in the opacity of the outer layers of the star.</p></li>
+<li><p><strong>Solar-Like Oscillators</strong>: a class that includes all stars that oscillate in the same manner as the Sun, namely due to turbulent motion in the convective outer layers of their atmospheres. This includes both main sequence stars as well as red giant stars.</p></li>
+</ol>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<p>This tutorial only requires <strong><a class="reference external" href="https://docs.lightkurve.org">Lightkurve</a></strong>, which in turn uses <strong><a class="reference external" href="https://matplotlib.org/">Matplotlib</a></strong> for plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exploring-the-frequency-spectrum-of-a-delta-scuti-oscillator">
+<h2>1. Exploring the Frequency Spectrum of a $\delta$ Scuti Oscillator<a class="headerlink" href="#exploring-the-frequency-spectrum-of-a-delta-scuti-oscillator" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Delta_Scuti_variable">$\delta$ Scuti stars</a> are stars roughly 1.5 to 2.5 as massive as the Sun, and oscillate due to fluctuations in the opacity of the outer layers of the star (<a class="reference external" href="https://en.wikipedia.org/wiki/Kappa%E2%80%93mechanism">known as the Kappa mechanism</a>), alternately appearing brighter and fainter.</p>
+<p>An example star of this type is HD 42608, which was recently observed by the <em>TESS</em> space telescope. We can search for these data using Lightkurve:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;HD 42608&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;TESS&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Success! A light curve for the object appears to be available in the data archive. Let’s go ahead and download the data and convert it straight to a <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.Periodogram.html"><code class="docutils literal notranslate"><span class="pre">periodogram</span></code></a> using the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html#lightkurve.lightcurve.KeplerLightCurve.to_periodogram"><code class="docutils literal notranslate"><span class="pre">to_periodogram()</span></code></a> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;HD 42608&#39;</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">()</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that there is a strong power excess around 50 cycles per day. These indicate stellar oscillations.</p>
+<p>To study these peaks in more detail, we can zoom in by recreating the periodogram using the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.LombScarglePeriodogram.html#lightkurve.periodogram.LombScarglePeriodogram.from_lightcurve"><code class="docutils literal notranslate"><span class="pre">minimum_frequency</span></code></a> and <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.LombScarglePeriodogram.html#lightkurve.periodogram.LombScarglePeriodogram.from_lightcurve"><code class="docutils literal notranslate"><span class="pre">maximum_frequency</span></code></a> keywords:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">minimum_frequency</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+                                   <span class="n">maximum_frequency</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is much clearer!</p>
+<p>Stars of this type are known to display multiple types of oscillation, including:</p>
+<ul class="simple">
+<li><p><strong>Radial Oscillations</strong>: caused by the star shrinking and expanding radially. Also called a “breathing mode.”</p></li>
+<li><p><strong>Dipole Oscillations</strong>: caused by the star’s hemispheres shrinking and expanding alternately.</p></li>
+</ul>
+<p>Both types of oscillations are on display in the figure above. Identifying exactly what type of oscillation a given peak represents is challenging. Fortunately, this star (HD 42608) is part of a set of stars for which the oscillations have been analyzed in detail in a research paper by <a class="reference external" href="https://arxiv.org/pdf/2005.06157.pdf">Bedding et al. (2020)</a>, so you can consult that paper to learn more about the details.</p>
+<p>Note that the modes of oscillation are very “sharp” in the figure above. This is because $\delta$ Scuti oscillations are <em>coherent</em>, which is a term astronomers in the field use for signals that have long lifetimes and are not heavily damped. Because of this, their exact oscillation frequencies can be observed in a fairly straightforward way. This sets $\delta$ Scuti stars apart from solar-like oscillators, which are damped. Let’s look at an example of such a star next.</p>
+</section>
+<section id="exploring-the-frequency-spectrum-of-a-solar-like-oscillator">
+<h2>2. Exploring the Frequency Spectrum of a Solar-Like Oscillator<a class="headerlink" href="#exploring-the-frequency-spectrum-of-a-solar-like-oscillator" title="Permalink to this heading">#</a></h2>
+<p>Solar-like oscillators exhibit variability driven by a different mechanism than $\delta$ Scuti stars. They encompass the class of stars that <a class="reference external" href="https://en.wikipedia.org/wiki/Helioseismology">oscillate in the same manner as the Sun</a>. Because they have lower masses than $\delta$ Scuti stars, solar-like oscillators have convective outer envelopes. The turbulent motion of these envelopes excites standing waves inside the stars which cause brightness changes on the surface. Unlike $\delta$ Scuti stars however, these waves are not coherent. Instead, these waves are stochastic and damped, which means that the lifetimes and amplitudes of the waves are limited and variable.</p>
+<p>While the name might imply that only stars like the Sun are solar-like oscillators, this is not true. All stars with convective outer layers can exhibit solar-like oscillations, including red giant stars!</p>
+<p>Let’s have a look at the Sun-like star KIC 10963065 (<a class="reference external" href="https://arxiv.org/pdf/1612.00436.pdf">also known as Rudy</a>), observed with <em>Kepler</em>. Because solar-like oscillation amplitudes are low, we will need to combine multiple quarters of data to improve our signal-to-noise.</p>
+<p>We can list the available data sets as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 10963065&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span>
+<span class="n">search_result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To create and plot this periodogram, we will apply a few common practices in the field:</p>
+<ul class="simple">
+<li><p>We will combine multiple quarters to improve the frequency resolution.</p></li>
+<li><p>We will <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.LightCurve.html#lightkurve.lightcurve.LightCurve.normalize"><code class="docutils literal notranslate"><span class="pre">normalize</span></code></a> the light curve to parts per million (<code class="docutils literal notranslate"><span class="pre">ppm</span></code>).</p></li>
+<li><p>We will use the <code class="docutils literal notranslate"><span class="pre">psd</span></code> normalization option when calling <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html#lightkurve.lightcurve.KeplerLightCurve.to_periodogram"><code class="docutils literal notranslate"><span class="pre">to_periodogram</span></code></a>, which sets the units of frequency to microhertz, and normalizes the power using the spacing between bins of frequency.</p></li>
+</ul>
+<p>We’ll also plot the resulting figure in log-log space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">search_result</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+<span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ppm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">normalization</span><span class="o">=</span><span class="s1">&#39;psd&#39;</span><span class="p">)</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This periodogram looks very different to that of the $\delta$ Scuti star above. There is a lot of power excess at low frequencies: this is what we call the <em>convective background</em>, which is additional noise contributed by the convective surface of the star constantly changing. We do not see any clear peaks like we did for the $\delta$ Scuti oscillator however.</p>
+<p>There is a good reason for this: this main sequence star oscillates at frequencies too large to be seen on this periodogram, lying above the periodogram’s <a class="reference external" href="https://en.wikipedia.org/wiki/Nyquist_frequency">Nyquist frequency</a>.</p>
+<p>The Nyquist frequency is a property of a time series that describes the maximum frequency that can be reliably determined in a periodogram. It stems from the assumption that you need a minimum of two observations per oscillation period to observe a pattern (one observation on the “up,” and one on the “down” oscillation). It is defined as follows:</p>
+<p>$\nu_{\rm nyq} = \frac{1}{2\Delta t}$ ,</p>
+<p>where $\Delta t$ is the observing cadence.</p>
+<p>The reason that we can’t see Rudy’s oscillations in the periodogram above is because we constructed this periodogram using the <em>Kepler</em> 30-minute Long Cadence data. Solar-like oscillators on the main sequence typically oscillate on the order of minutes (five minutes for the Sun), at frequencies much higher than will be visible on this periodogram. To see Rudy’s oscillations, we will need to use the <em>Kepler</em> Short Cadence (SC) observations, which used a time sampling of one minute.  We can obtain these data as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 10963065&#39;</span><span class="p">,</span>
+                                     <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span>
+                                     <span class="n">cadence</span><span class="o">=</span><span class="s1">&#39;short&#39;</span><span class="p">)</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">search_result</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+<span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ppm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">normalization</span><span class="o">=</span><span class="s1">&#39;psd&#39;</span><span class="p">)</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can see a power excess near $2000, \mu\rm{Hz}$. This frequency is almost 10 times higher than we could view using the Long Cadence data alone. Let’s zoom in on this region so we can look at the signals in more detail, like we did for the $\delta$ Scuti star.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">zoom_pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ppm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">normalization</span><span class="o">=</span><span class="s1">&#39;psd&#39;</span><span class="p">,</span>
+                                                  <span class="n">minimum_frequency</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span>
+                                                  <span class="n">maximum_frequency</span><span class="o">=</span><span class="mi">2700</span><span class="p">)</span>
+<span class="n">zoom_pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compared to the $\delta$ Scuti, the modes of oscillation in the figure above are less sharp, even though we used much more data to create the periodogram. This is because the modes in solar-like oscillators are damped due to the turbulent motion of the convective envelope. This lowers their amplitudes and also causes the lifetimes of the oscillations to be short. The short lifetimes create some uncertainty around the exact oscillation frequency, and so the peaks that appear in the periodogram are a little broader (usually Lorentzian-like in shape). This may not be immediately apparant from these figures, but is much clearer if you zoom in on an individual mode.</p>
+</section>
+<section id="how-to-smooth-and-detrend-a-periodogram">
+<h2>3. How to Smooth and Detrend a Periodogram<a class="headerlink" href="#how-to-smooth-and-detrend-a-periodogram" title="Permalink to this heading">#</a></h2>
+<section id="the-box-kernel-filter">
+<h3>3.1. The box kernel filter<a class="headerlink" href="#the-box-kernel-filter" title="Permalink to this heading">#</a></h3>
+<p>To further explore the oscillation modes, we will demonstrate some of Lightkurve’s smoothing tools. There are two types of smoothing functions we can call through the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.Periodogram.html#lightkurve.periodogram.Periodogram.smooth"><code class="docutils literal notranslate"><span class="pre">smooth()</span></code></a> function. Let’s start with a basic “moving median,” also known as a 1D box kernel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">smooth_pg</span> <span class="o">=</span> <span class="n">zoom_pg</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;boxkernel&#39;</span><span class="p">,</span> <span class="n">filter_width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">zoom_pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">smooth_pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Smoothed&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the figure above, the smoothed periodogram is plotted over the top of the original periodogram. In this case we have used the <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.convolution.Box1DKernel.html">Astropy <code class="docutils literal notranslate"><span class="pre">Box1DKernel</span></code></a> filter, with a filter width of $0.5, \mu \rm{Hz}$. The filter takes the median value of power in a region $0.5, \mu \rm{Hz}$ around a data point, and replaces that point with the median value. It then moves on to the next data point. This creates a smoothed periodogram of the same length as the original. Because the power values are now correlated, these smoothed periodograms usually aren’t used for computational analysis, but they can aid visual explorations of the location of the oscillation modes.</p>
+</section>
+<section id="the-log-median-filter">
+<h3>3.2. The log median filter<a class="headerlink" href="#the-log-median-filter" title="Permalink to this heading">#</a></h3>
+<p>While the <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.convolution.Box1DKernel.html"><code class="docutils literal notranslate"><span class="pre">Box1DKernel</span></code></a> filter can be used to help identify modes of oscillation in the presence of noise, it is mostly good for smoothing on small scales. For large scales, we can instead use Lightkurve’s log median filter.</p>
+<p>As we saw above, solar-like oscillators exhibit a large power excess at low frequencies due to the turbulent convection visible near the stellar surface. When studying modes of oscillation, we typically aren’t interested in the convective background, and prefer to remove it.</p>
+<p>The log median filter performs a similar operation to the  <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.convolution.Box1DKernel.html"><code class="docutils literal notranslate"><span class="pre">Box1DKernel</span></code></a>  filter, but does so in log space. This means that at low frequencies the number of frequency bins of which the median is taken is small, and that at high frequencies many frequency bins are included in the median calculation. As a result, the log median filter smooths over the convection background but ignores the modes of oscillation at high frequencies.</p>
+<p>The result of applying a log median filter is demonstrated using the red line in the figure below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">smooth_pg</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;logmedian&#39;</span><span class="p">,</span> <span class="n">filter_width</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">smooth_pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Smoothed&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="flattening">
+<h3>3.3. Flattening<a class="headerlink" href="#flattening" title="Permalink to this heading">#</a></h3>
+<p>When studying modes of oscillation, it is typically preferred to remove the convective background. In a detailed analysis this would involve fitting a model to the background. As can be seen in the figure above, however, Lightkurve’s log median <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.LombScarglePeriodogram.html#lightkurve.periodogram.LombScarglePeriodogram.smooth"><code class="docutils literal notranslate"><span class="pre">smooth()</span></code></a> method provides a useful first-order approximation of the background without the need for a model.</p>
+<p>To divide the power spectrum by the background, we can use Lightkurve’s <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.LombScarglePeriodogram.html#lightkurve.periodogram.LombScarglePeriodogram.flatten"><code class="docutils literal notranslate"><span class="pre">flatten()</span></code></a> method. This function uses the log median smoothing method to determine the background, and returns a new <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.Periodogram.html"><code class="docutils literal notranslate"><span class="pre">periodogram</span></code></a> object in which the background has been divided out.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snrpg</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">snrpg</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The periodogram obtained by dividing by the noise in this way is commonly called a Signal-to-Noise periodogram (<code class="docutils literal notranslate"><span class="pre">SNRPeriodogram</span></code>), because the noise, in the form of the convective background, has been removed. This is a little bit of a misnomer, because there is still noise present in the periodogram.</p>
+<p>We plot the <code class="docutils literal notranslate"><span class="pre">SNRPeriodogram</span></code> below, and see that the modes of oscillation stick out from the noise much more clearly now that the convective background has been removed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snrpg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="closing-comments">
+<h2>4. Closing Comments<a class="headerlink" href="#closing-comments" title="Permalink to this heading">#</a></h2>
+<p>In this tutorial, we explored two common types of oscillating stars, and demonstrated how Lightkurve can be used to study their power specta. In the accompanying tutorials, you can learn how to use these tools to extract more detailed information from them, including the radius and mass of a star!</p>
+<p>For further reading on $\delta$ Scuti stars, solar-like oscillators, and Fourier Transforms, we recommend you consult the following papers:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://arxiv.org/pdf/1703.09824.pdf">Vanderplas (2017)</a> – A detailed paper on Fourier Transforms and Lomb-Scargle Periodograms.</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/pdf/2005.06157.pdf">Bedding et al. (2020)</a> – A demonstration of mode identification in $\delta$ Scuti stars.</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/pdf/1303.1957.pdf">Chaplin &amp; Miglio (2013)</a> – A review paper on asteroseismology of solar-like oscillators with <em>Kepler</em>.</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/pdf/1912.12300.pdf">Aerts (2019)</a> – A comprehensive review that covers asteroseismology of a wide range of oscillating stars, including solar-like oscillators and $\delta$ Scutis.</p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Authors</strong>: Oliver Hall (oliver.hall&#64;esa.int), Geert Barentsen</p>
+<p><strong>Updated On</strong>: 2020-09-29</p>
+</section>
+</section>
+<section id="citing-lightkurve-and-astropy">
+<h1>Citing Lightkurve and Astropy<a class="headerlink" href="#citing-lightkurve-and-astropy" title="Permalink to this heading">#</a></h1>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../creating_periodograms/creating_periodograms.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Creating Periodograms</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">How to Estimate a Star’s Mass and Radius Using Asteroseismology</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   How to Understand and Manipulate the Periodogram of an Oscillating Star
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-goals">
+     Learning Goals
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imports">
+     Imports
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exploring-the-frequency-spectrum-of-a-delta-scuti-oscillator">
+     1. Exploring the Frequency Spectrum of a $\delta$ Scuti Oscillator
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exploring-the-frequency-spectrum-of-a-solar-like-oscillator">
+     2. Exploring the Frequency Spectrum of a Solar-Like Oscillator
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-smooth-and-detrend-a-periodogram">
+     3. How to Smooth and Detrend a Periodogram
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#the-box-kernel-filter">
+       3.1. The box kernel filter
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#the-log-median-filter">
+       3.2. The log median filter
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#flattening">
+       3.3. Flattening
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#closing-comments">
+     4. Closing Comments
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">
+   Citing Lightkurve and Astropy
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  </body>
+</html>

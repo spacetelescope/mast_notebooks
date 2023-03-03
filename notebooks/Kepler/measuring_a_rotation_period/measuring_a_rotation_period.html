@@ -1,0 +1,1241 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Measuring and Removing a Rotation Period Signal from a Kepler Light Curve &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Kepler/measuring_a_rotation_period/measuring_a_rotation_period';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Visualizing Periodic Signals Using a River Plot" href="../visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html" />
+    <link rel="prev" title="Identifying Transiting Planet Signals in a Kepler Light Curve" href="../identifying_transiting_planet_signals/identifying_transiting_planet_signals.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Astroquery</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/intro.html">Intro</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../astroquery/nb.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inst_noise.html">Instrumental Noise</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../signals.html">Identifying Periodic Signals</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../periodograms.html">Periodograms &amp; Asteroseismology</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tasc_lc/interm_tasc_lc.html">Intermediate: Finding Flares and Variable Stars in TASC Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+
+    </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">repository</span>
+</a>
+</a>
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">open issue</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="../../../_sources/notebooks/Kepler/measuring_a_rotation_period/measuring_a_rotation_period.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</a>
+      
+      <li>
+<button onclick="printPdf(this)"
+  class="btn btn-sm dropdown-item"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</a>
+      
+  </ul>
+</div>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
+    </div>
+</div>
+            </div>
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Measuring and Removing a Rotation Period Signal from a Kepler Light Curve</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-goals">
+     Learning Goals
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imports">
+     Imports
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-are-rotation-signals">
+     1. What are Rotation Signals?
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-the-light-curve-of-a-rotating-star">
+     2. Plotting the Light Curve of a Rotating Star
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-the-periodogram-of-a-rotating-star">
+     3. Plotting the Periodogram of a Rotating Star
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-the-lomb-scargle-method-to-model-the-rotation-signal">
+     4. Using the Lomb-Scargle Method to Model the Rotation Signal
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removing-periodic-signals-using-iterative-sine-fitting">
+     5. Removing Periodic Signals Using Iterative Sine Fitting
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">
+   Citing Lightkurve and Astropy
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
+  <section id="measuring-and-removing-a-rotation-period-signal-from-a-kepler-light-curve">
+<h1>Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve<a class="headerlink" href="#measuring-and-removing-a-rotation-period-signal-from-a-kepler-light-curve" title="Permalink to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Learn what the light curve and periodogram of a rotating star looks like.</p></li>
+<li><p>Be able to estimate a rotation period using a Lomb-Scargle periodogram.</p></li>
+<li><p>Be able to use the Lomb-Scargle method to model and remove the rotation signal.</p></li>
+<li><p>Understand how <em>iterative sine fitting</em> works.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>A light curve from a star often has many oscillating signals. For some people, this is useful data, and for others this is annoying noise. In this tutorial, we will look at how a Lomb-Scargle periodogram can be used to extract models of sinusoidal variation from light curves, and how those can be used to detect and remove signals.</p>
+<p>If you find this tutorial difficult to follow, we recommend consulting the companion tutorials, which explain the basics of <em>Kepler</em> light curves and periodograms.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<p>This tutorial only requires <strong><a class="reference external" href="https://docs.lightkurve.org">Lightkurve</a></strong> and <strong><a class="reference external" href="https://numpy.org/">NumPy</a></strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-are-rotation-signals">
+<h2>1. What are Rotation Signals?<a class="headerlink" href="#what-are-rotation-signals" title="Permalink to this heading">#</a></h2>
+<p>Many different types of stars exhibit oscillations in their brightnesses over time. By studying these changes in brightness, we can derive interesting properties from these stars. One example of such a property is a star’s rotation rate.</p>
+<p>For stars like the Sun, magnetic activity on their surface will cause <a class="reference external" href="https://en.wikipedia.org/wiki/Sunspot">star spots</a> to appear. These are areas of the star that are temporarily cooler, and therefore appear darker, than the surrounding regions. As these spots rotate in and out of our view, the star’s brightness will increase and decrease. This is often referred to as a <em>rotation signal</em>.</p>
+<p>A periodogram will show this brightness oscillation as a peak in the frequency domain. In what follows, we will look at how to extract this periodic frequency from the periodogram using Lightkurve’s tools.</p>
+</section>
+<section id="plotting-the-light-curve-of-a-rotating-star">
+<h2>2. Plotting the Light Curve of a Rotating Star<a class="headerlink" href="#plotting-the-light-curve-of-a-rotating-star" title="Permalink to this heading">#</a></h2>
+<p>In an accompanying tutorial, we looked at an eclipsing binary system, in which two stars eclipsed each other periodically. Now, let’s look at a different kind of oscillator — a rotating star — and see how that signal appears in the time series brightness data.</p>
+<p>We’re going to explore a star named KIC 2157356, which is part of the cohort of rotating stars that were studied by <em>Kepler</em> and analyzed in a research paper by <a class="reference external" href="https://arxiv.org/abs/1402.5694">McQuillan et al. (2014)</a>.</p>
+<p>Because rotation variability tends to happen on relatively long time scales (for instance, the Sun rotates every 25 days), we will start by downloading three ~90-day long quarters of <em>Kepler</em> data and then combine them using Lightkurve’s <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html#lightkurve.collections.LightCurveCollection.stitch"><code class="docutils literal notranslate"><span class="pre">stitch()</span></code></a> feature.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search Kepler data for Quarters 6, 7, and 8.</span>
+<span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 2157356&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="c1"># Download and stitch the data together</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+<span class="c1"># Plot the resulting light curve</span>
+<span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This looks quite different from the light curve we studied in the eclipsing binary tutorial. Here, the brightness modulation from the spots rotating in and out of view is significantly larger, with an overall $2%$ change in the brightness of the star! Compare this with asteroseismic oscillations (see the accompanying tutorials), which occur on the parts per million scale instead. (Note: 1 part per million equals 0.0001%).</p>
+</section>
+<section id="plotting-the-periodogram-of-a-rotating-star">
+<h2>3. Plotting the Periodogram of a Rotating Star<a class="headerlink" href="#plotting-the-periodogram-of-a-rotating-star" title="Permalink to this heading">#</a></h2>
+<p>Next, we’ll convert the light curve to the frequency domain. Based on the plot we created above, we expect to see a high-power peak associated with the rotation period. We may also expect to see some smaller peaks, such as alias harmonics.</p>
+<p>For clarity, we will truncate the periodogram to <code class="docutils literal notranslate"><span class="pre">maximum_period=100</span></code>, because we can infer from the light curve that the rotation period is much shorter than that. We also set <code class="docutils literal notranslate"><span class="pre">view=period</span></code> to make sure the x-axis uses period rather than frequency units. This is helpful because it is more natural to think about rotation rates in units of <em>days</em> rather than <em>Hertz</em> (1/s).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">maximum_period</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">view</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we can see a strong peak near 13 days, which is consistent with the sinusoidal trend we saw in the time-domain plot earlier. The reason there are so few aliases in this periodogram is most likely because the star we’ve chosen has a variability that is very close to sinusoidal, which is not always the case.</p>
+<p>To obtain an estimate of the rotation period, we can now access the <code class="docutils literal notranslate"><span class="pre">period_at_max_power</span></code> property:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Success!  We established that the highest peak in the periodogram appears to align with the expected rotation signal in our time series, and we used a periodogram to obtain an estimate of the rotation period.</p>
+<p>Next, we will use additional features of the Lomb-Scargle periodogram to model the rotational signal in the time domain.</p>
+</section>
+<section id="using-the-lomb-scargle-method-to-model-the-rotation-signal">
+<h2>4. Using the Lomb-Scargle Method to Model the Rotation Signal<a class="headerlink" href="#using-the-lomb-scargle-method-to-model-the-rotation-signal" title="Permalink to this heading">#</a></h2>
+<p>Lightkurve uses the Lomb-Scargle method to make periodograms. For more information on Lomb-Scargle periodograms, read <a class="reference external" href="https://arxiv.org/pdf/1703.09824.pdf">Vanderplas (2017)</a>. Without delving into the fine details here, Lomb-Scargle works by fitting a sinusoidal curve at each of the frequencies in the periodogram, and uses this fit to determine the value of power each frequency has in the periodogram. These model fits are stored in the periodogram object and can be extracted.</p>
+<p>In the graph below, we visualize the Lomb-Scargle model associated with the highest peak by extracting it and then plotting it on top of our time series data. We need to pass in the <code class="docutils literal notranslate"><span class="pre">time</span></code> range we want the model for, as well as the specific <code class="docutils literal notranslate"><span class="pre">frequency</span></code> for which we want the model returned.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a model light curve for the highest peak in the periodogram</span>
+<span class="n">lc_model</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">frequency_at_max_power</span><span class="p">)</span>
+<span class="c1"># Plot the light curve</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="c1"># Plot the model light curve on top</span>
+<span class="n">lc_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Looking at the plot above, we can see that the Lomb-Scargle model fits the rotation signal relatively well. This is expected; it corresponds to the highest peak in the periodogram, after all. It is not perfect, however. There are deviations in amplitude, and also in phase towards the right hand side of the graph.</p>
+<p>The periodogram will only ever be able to approximate the exact oscillation frequency, and there will always be some associated error (in fact if you look at the periodogram higher up, you’ll see that the peak is relatively broad). This uncertainty reflects the fact that the rotation signal is <em>not</em> a perfect sinusoid, and that there is additional noise from the star to deal with on top of that. It’s for this reason that studies of stellar rotation often use multiple independent methods to estimate a rotation period.</p>
+</section>
+<section id="removing-periodic-signals-using-iterative-sine-fitting">
+<h2>5. Removing Periodic Signals Using Iterative Sine Fitting<a class="headerlink" href="#removing-periodic-signals-using-iterative-sine-fitting" title="Permalink to this heading">#</a></h2>
+<p>We’re not always interested in the rotation signal — sometimes, we want it removed! This is the case, for example, when studying the small signals of a transiting planet in a star which also shows a strong rotation signal. Using the tools we described above, we can model and remove the rotation signal from the time series to help us study the planet transits.</p>
+<p>This process, called <em>iterative sine fitting</em>, has a limited range of applications, but is useful to know for quick analysis. Let’s apply it to KIC 8197761, a star known to host a planet embedded within stellar noise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download the light curve data</span>
+<span class="n">search</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 8197761&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+
+<span class="c1"># Fold the light curve at the known planet period</span>
+<span class="n">planet_period</span> <span class="o">=</span> <span class="mf">9.8686667</span>
+<span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_period</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Despite these data being folded on the period of a known planet, we are unable to see the planet transits within the noise. Let’s have a look at the periodogram.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">()</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see in this periodogram, the star appears to include multiple high-amplitude oscillation signals. Using the Lomb-Scargle <code class="docutils literal notranslate"><span class="pre">model()</span></code> method we used earlier, we can remove these signals from the time series data. We’ll do this as follows:</p>
+<ol class="arabic simple">
+<li><p>Calculate a periodogram.</p></li>
+<li><p>Calculate the Lomb-Scargle <code class="docutils literal notranslate"><span class="pre">model()</span></code> for the highest peak.</p></li>
+<li><p>Divide the light curve by the model to remove the signal.</p></li>
+<li><p>Repeat using the new light curve.</p></li>
+</ol>
+<p>In this example, we will apply this procedure 50 times, that is, we’re going to remove the signals associated with the 50 highest peaks in the periodogram from the time series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove the signals associated with the 50 highest peaks</span>
+<span class="n">newlc</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+  <span class="n">pg</span> <span class="o">=</span> <span class="n">newlc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">()</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">newlc</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">frequency_at_max_power</span><span class="p">)</span>
+  <span class="n">newlc</span><span class="o">.</span><span class="n">flux</span> <span class="o">=</span> <span class="n">newlc</span><span class="o">.</span><span class="n">flux</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">flux</span>
+
+<span class="c1"># Plot the new light curve on top of the original one</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">);</span>
+<span class="n">newlc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;New&#39;</span><span class="p">);</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the graph above, we can observe that the new light curve displays less variations. Let’s go ahead and fold it to find out if we can see the planet transit this time around. We’ll also plot a binned version of our reduced light curve on top, just to make things clearer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">newlc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_period</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Unbinned&#39;</span><span class="p">)</span>
+<span class="n">newlc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_period</span><span class="p">)</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Binned&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can see that a “dip” consistent with a planet transit has appeared, which makes it clearer to study!</p>
+<p>It is important to note here that iterative sine fitting, as used in this tutorial, is a pragmatic method with a few drawbacks. The most important drawback is that the 50 signals we have attempted to remove were probably not perfectly sinusoidal in shape. This means that we have likely introduced complicated new residual patterns into the light curve, and introduced spurious new peaks in the periodogram. It is important to be very careful when using light curves to which complicated and imperfect data manipulation operations have been applied.</p>
+<p>For new developments on how to extract rotation using advanced methods such as Gaussian Processes or asteroseismology, read, for example, <a class="reference external" href="https://arxiv.org/abs/1706.05459">Angus et al. (2017)</a> and <a class="reference external" href="https://arxiv.org/abs/1411.1359">Davies et al. (2015)</a>.</p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Authors</strong>: Oliver Hall (oliver.hall&#64;esa.int), Geert Barentsen</p>
+<p><strong>Updated On</strong>: 2020-09-15</p>
+</section>
+</section>
+<section id="citing-lightkurve-and-astropy">
+<h1>Citing Lightkurve and Astropy<a class="headerlink" href="#citing-lightkurve-and-astropy" title="Permalink to this heading">#</a></h1>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/Kepler/measuring_a_rotation_period"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../identifying_transiting_planet_signals/identifying_transiting_planet_signals.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Visualizing Periodic Signals Using a River Plot</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Measuring and Removing a Rotation Period Signal from a
+   <em>
+    Kepler
+   </em>
+   Light Curve
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-goals">
+     Learning Goals
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imports">
+     Imports
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-are-rotation-signals">
+     1. What are Rotation Signals?
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-the-light-curve-of-a-rotating-star">
+     2. Plotting the Light Curve of a Rotating Star
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-the-periodogram-of-a-rotating-star">
+     3. Plotting the Periodogram of a Rotating Star
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-the-lomb-scargle-method-to-model-the-rotation-signal">
+     4. Using the Lomb-Scargle Method to Model the Rotation Signal
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removing-periodic-signals-using-iterative-sine-fitting">
+     5. Removing Periodic Signals Using Iterative Sine Fitting
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#about-this-notebook">
+     About this Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">
+   Citing Lightkurve and Astropy
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  </body>
+</html>

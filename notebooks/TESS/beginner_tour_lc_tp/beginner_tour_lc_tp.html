@@ -1,0 +1,1655 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>A Tour of the Contents of the TESS 2-minute Cadence Data &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/TESS/beginner_tour_lc_tp/beginner_tour_lc_tp';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Cutout of the TESS FFIs using Astrocut and Astroquery" href="../beginner_tesscut_astroquery/beginner_tesscut_astroquery.html" />
+    <link rel="prev" title="Search The TESS Input Catalog Centered On HD 209458." href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/intro.html">
+                        Intro
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../astroquery/nb.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../JWST/download_by_program_id/download_by_program_id.html">
+                        Accessing JWST Proposal Data in astroquery.mast
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/TPF/TPF.html">
+                        Beginner: Read and Display A K2 Target Pixel File
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">
+                        Beginner: Read and Display a K2 Full Frame Image
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">
+                        Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/lightkurve.html">
+                        Lightkurve
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/inst_noise.html">
+                        Instrumental Noise
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/signals.html">
+                        Identifying Periodic Signals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../Kepler/periodograms.html">
+                        Periodograms & Asteroseismology
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">
+                        MAST Table Access Protocol PanSTARRS 1 DR2 Demo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../beginner.html">
+                        Beginner Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_gi_query/interm_gi_query.html">
+                        Intermediate:  Search and Download GI Program Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tasc_lc/interm_tasc_lc.html">
+                        Intermediate: Finding Flares and Variable Stars in TASC Light Curves
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">
+                        Intermediate: Retrieve TESS Pixel Response Function Images
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">
+                        Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">
+                        Intermediate: Create TESS FFI Cutout using Python Requests
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">
+                        Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../../../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Astroquery</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/intro.html">Intro</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../astroquery/nb.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tasc_lc/interm_tasc_lc.html">Intermediate: Finding Flares and Variable Stars in TASC Light Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+
+    </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
+    </div>
+    <div class="header-article__right">
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://mybinder.org/v2/gh/spacetelescope/mast_notebooks/main?urlpath=tree/notebooks/notebooks/TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</a>
+      
+      <li><a href="https://colab.research.google.com/github/spacetelescope/mast_notebooks/blob/main/notebooks/notebooks/TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">repository</span>
+</a>
+</a>
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">open issue</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="../../../_sources/notebooks/TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</a>
+      
+      <li>
+<button onclick="printPdf(this)"
+  class="btn btn-sm dropdown-item"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</a>
+      
+  </ul>
+</div>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
+    </div>
+</div>
+            </div>
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>A Tour of the Contents of the TESS 2-minute Cadence Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imports">
+   Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-the-data">
+   Getting the Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contents-of-target-pixel-file">
+   Contents of Target Pixel File
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-usage-of-target-pixel-file">
+     Example Usage of Target Pixel File
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-1-create-the-optimal-aperture-light-curve-from-the-pixels">
+     Example 1. Create the optimal aperture light curve from the pixels.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-2-create-a-light-curve-of-the-background-flux-that-was-subtracted">
+     Example 2. Create a light curve of the background flux that was subtracted.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contents-of-the-light-curve-file">
+   Contents of the Light Curve File
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-usage-of-the-light-curve-file">
+     Example Usage of the Light Curve File.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-3-compare-the-sap-flux-and-pdcsap-flux-light-curves">
+     Example 3. Compare the SAP_FLUX and PDCSAP_FLUX light curves.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-4-plot-the-spacecraft-motion">
+     Example 4.  Plot the spacecraft motion.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-5-compare-light-curves">
+     Example 5. Compare Light Curves
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-for-the-reader">
+     Exercise for the Reader
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aditional-resources">
+   Aditional Resources
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
+  <p><a id="title_ID"></a></p>
+<section id="a-tour-of-the-contents-of-the-tess-2-minute-cadence-data">
+<h1>A Tour of the Contents of the TESS 2-minute Cadence Data<a class="headerlink" href="#a-tour-of-the-contents-of-the-tess-2-minute-cadence-data" title="Permalink to this heading">#</a></h1>
+<br>
+This notebook tutorial gives a brief tour of the contents of the TESS (Transiting Exoplanet Survey Satelite) 2-minute cadence data products. The tour will demonstrate how to extract the most useful data from these data files. This notebook assumes basic understanding of the FITS file format and basic python proficiency. The notebook uses examples to describe some of the information that is contained in the TESS file types.
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<p><br> <span class="xref myst">Introduction</span> <br> <span class="xref myst">Imports</span> <br> <span class="xref myst">Getting the Data</span> <br> <span class="xref myst">Contents of Target Pixel Files</span> <br> <span class="xref myst">Example Usage of TPF</span> <br> <span class="xref myst">Contents of Light Curve Files</span> <br> <span class="xref myst">Additional Resources</span> <br> <span class="xref myst">About this Notebook</span></p>
+<hr class="docutils" />
+<p><a id="intro_ID"></a></p>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>TESS  only downloads select portions of the sky at a 2-minute cadence. The pixels collected around chosen targets are packaged in a file called the Target Pixel file. Light curve files contain the time series photometry that is derived from those pixels for each target. Each target pixel file packages these pixels as a time series of images in a binary FITS table. These files can then be used to measure the relative photometry of the observed star.  TESS also produces full frame images at a 30-minute cadence. We do not discuss those in this notebook.</p>
+<p>For more information about the TESS mission and collected data, visit the <a class="reference external" href="http://archive.stsci.edu/tess/">MAST’s TESS homepage</a>. To read more details about TESS Data Products, look in the <a class="reference external" href="https://archive.stsci.edu/missions/tess/doc/EXP-TESS-ARC-ICD-TM-0014.pdf">TESS Science Product Description Document</a>. Once users understand the TESS data, a convenient software package to work with that data is called <a class="reference external" href="https://docs.lightkurve.org/">lightkurve</a>. However, we do not use it below in order to clearly show how the data in the files are organized.</p>
+<p><span class="xref myst">Top of Page</span></p>
+<hr class="docutils" />
+<p><a id="imports_ID"></a></p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<p>Let’s start by importing some libraries to the environment:</p>
+<ul class="simple">
+<li><p><em>numpy</em> to handle array functions</p></li>
+<li><p><em>astropy.io fits</em> for accessing FITS files</p></li>
+<li><p><em>astropy.wcs WCS</em> for World Coordinate Systems</p></li>
+<li><p><em>matplotlib.pyplot</em> for plotting data</p></li>
+</ul>
+<p>Note, <em>%matplotlib inline</em> allows us to see our plots in the notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">astropy.wcs</span> <span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="xref myst">Top of Page</span></p>
+<hr class="docutils" />
+<p><a id="data_ID"></a></p>
+</section>
+<section id="getting-the-data">
+<h2>Getting the Data<a class="headerlink" href="#getting-the-data" title="Permalink to this heading">#</a></h2>
+<p>Some of the TESS pipeline data is stored as a high-level science product called <a class="reference external" href="https://archive.stsci.edu/prepds/tess-data-alerts/">tess-data-alerts</a>.  We use this data set as an example since it has the same format as the light curve and target pixel files available directly from the TESS project.  This tuorial should work with any TESS light curve and target pixel file from the same target and sector. We are using the following files:</p>
+<ul class="simple">
+<li><p>Lightcurve file: hlsp_tess-data-alerts_tess_phot_00025155310-s01_tess_v1_lc.fits</p></li>
+<li><p>Target Pixel file: hlsp_tess-data-alerts_tess_phot_00025155310-s01_tess_v1_tp.fits</p></li>
+</ul>
+<p>This notebook is using a direct link to the data product online at MAST.  However, if you have the files locally, you could just substitute that link with the local file location.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Here is the online directory location for our files. If files are local, change this to your local path.</span>
+<span class="n">ddir</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/hlsps/tess-data-alerts/&quot;</span>
+
+<span class="n">lcfile</span> <span class="o">=</span> <span class="n">ddir</span> <span class="o">+</span> <span class="s2">&quot;hlsp_tess-data-alerts_tess_phot_00025155310-s01_tess_v1_lc.fits&quot;</span>
+<span class="n">tpfile</span> <span class="o">=</span> <span class="n">ddir</span> <span class="o">+</span> <span class="s2">&quot;hlsp_tess-data-alerts_tess_phot_00025155310-s01_tess_v1_tp.fits&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="xref myst">Top of Page</span></p>
+<hr class="docutils" />
+<p><a id="TPF_ID"></a></p>
+</section>
+<section id="contents-of-target-pixel-file">
+<h2>Contents of Target Pixel File<a class="headerlink" href="#contents-of-target-pixel-file" title="Permalink to this heading">#</a></h2>
+<p>Now that we have the file, we can now explore its contents.
+The target pixel file contains 4 extensions: a primary header, a PIXELS extension, an APERTURE extension and a Target Cosmic Ray extension.</p>
+<ul class="simple">
+<li><p><strong>No. 0 (Primary):</strong>
+<br>This HDU contains meta-data related to the entire file.</p></li>
+<li><p><strong>No. 1 (Pixels):</strong>
+<br>This HDU contains a binary table that has 11 columns containing a time series of either scalar values or images.</p></li>
+<li><p><strong>No. 2 (Aperture):</strong>
+<br>This HDU contains an image that gives information about each pixel and how it was used by ther TESS pipeline in the data processing.</p></li>
+<li><p><strong>No. 3 (Target Cosmic Ray):</strong>
+<br> This HDU is new in the TESS target pixel files and describes the cosmic rays that were identified and subtracted from the target pixels. These cosmic ray corrections are only available if the TESS Pipeline cosmic ray correction algorithm was enabled during processing.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">tpfile</span><span class="p">)</span>
+<span class="n">tphdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tpfile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="TPF_ID"></a>
+<strong>Contents of the PIXELS extension.</strong>
+The pixels extension contains raw and calibrated pixels collected by the spacecraft at a 2-minute cadence. Here is a sumary of the columns available in that extension.</p>
+<ul class="simple">
+<li><p>TIME: Time of mid-cadence stored in BJD-2457000.0.</p></li>
+<li><p>CADENCENO: Cadence number</p></li>
+<li><p>RAW_CNTS: The raw counts per pixel before any processing.</p></li>
+<li><p>FLUX: The calibrated, background subtracted pixels for each cadence.</p></li>
+<li><p>FLUX_BKG: The background measured and removed for these pixels.</p></li>
+<li><p>QUALITY: Quality flags.</p></li>
+<li><p>POS_CORR1 &amp; POS_CORR2: The (column,row) local motion of the star calculated from the motion polynomials. Motion polynomials are calculated from the PSF centroids of select stars on each CCD.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tphdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Show First Calibrated Image.</strong> Note that the RAW_CNTS, FLUX and FLUX_BKG columns contain images. We will use the World Coordinate System information in the APERTURE extension header to overlay the RA and Dec on the image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Plot the first image of the FLUX Column with WCS overlay.</span>
+<span class="n">tpf_data</span> <span class="o">=</span> <span class="n">tphdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">first_image</span> <span class="o">=</span> <span class="n">tpf_data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">#The aperture extension header contains the same WCS as that in the Pixels extension.</span>
+<span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">tphdu</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+
+<span class="c1">#Plot the first image in the file.</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">wcs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">first_image</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dec&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="xref myst">Top of Page</span></p>
+<p><a id="TPFUsage_ID"></a></p>
+<section id="example-usage-of-target-pixel-file">
+<h3>Example Usage of Target Pixel File<a class="headerlink" href="#example-usage-of-target-pixel-file" title="Permalink to this heading">#</a></h3>
+<p>The most common usage of this file is to create a light curve from the pixels stored in the PIXELS HDU.  We will show how to make the exact light curve found in the light curve SAP_FLUX column and then highlight some of the other information in this file.</p>
+</section>
+<section id="example-1-create-the-optimal-aperture-light-curve-from-the-pixels">
+<h3>Example 1. Create the optimal aperture light curve from the pixels.<a class="headerlink" href="#example-1-create-the-optimal-aperture-light-curve-from-the-pixels" title="Permalink to this heading">#</a></h3>
+<p><strong>Step 1. Read in the Aperture information from the third extension.</strong>
+Each pixel in the aperture extension image is an integer that represents a set of binary flags.  The entire set of flags and what they mean can be found in the TESS Archive Manual.  Of interest to us in this exersize is which pixels belong to the “optimal aperture” used to create this target’s light curve. This is the second bit of this set of binary flags. To determine which pixels are in the optimal aperture we need to do a bitwise AND between the pixel value and the value 2. (Similarly, if you wanted to determine which pixels were used to calculate the flux-weighted centroid, you would use the 4th bit which has a value of  2^(4-1)=8.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ap_image</span> <span class="o">=</span> <span class="p">(</span><span class="n">tphdu</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">ap_want</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_and</span><span class="p">(</span><span class="n">ap_image</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ap_want</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2. Create time series photometry using these pixels</strong> For each cadence we will sum the values in the FLUX column associated with those pixels that show a ‘1’ above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#define a simple aperture function to sum-up specified pixels for one cadence</span>
+<span class="k">def</span> <span class="nf">aperture_phot</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">aperture</span><span class="p">):</span>
+    
+    <span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">aperture</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">flux</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Use the map lambda functions to apply that function to all cadences</span>
+<span class="n">opap_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">aperture_phot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">ap_want</span><span class="p">),</span> <span class="n">tpf_data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">opap_flux</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3. Extract the Array of Times from the FLUX Extension.</strong> The resulting plot will be better understood if we extract the Barycentric Julian Dates from the file. Times in TESS are all offset by a value that is stored in the header under BJDREFI + BJDREFF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_bjd</span> <span class="o">=</span> <span class="n">tpf_data</span><span class="p">[</span><span class="s2">&quot;TIME&quot;</span><span class="p">]</span>
+<span class="n">tpf_head</span> <span class="o">=</span> <span class="n">tphdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">bjd_ref</span> <span class="o">=</span> <span class="n">tpf_head</span><span class="p">[</span><span class="s1">&#39;BJDREFI&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">tpf_head</span><span class="p">[</span><span class="s1">&#39;BJDREFF&#39;</span><span class="p">]</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">time_bjd</span> <span class="o">+</span> <span class="n">bjd_ref</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TESS JD Offset is: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">bjd_ref</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4. Plot the resulting light curve.</strong>  Plot the time vs optimal aperture flux.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_bjd</span><span class="p">,</span> <span class="n">opap_flux</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Optimal Aperture&#39;</span><span class="p">,</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (BJD)&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (e-/s)&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">7000</span><span class="p">,</span><span class="mi">8210</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;TESS Lightcurve Derived from Calibrated Pixels.&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2-create-a-light-curve-of-the-background-flux-that-was-subtracted">
+<h3>Example 2. Create a light curve of the background flux that was subtracted.<a class="headerlink" href="#example-2-create-a-light-curve-of-the-background-flux-that-was-subtracted" title="Permalink to this heading">#</a></h3>
+<p>This is very similar to the steps above, except that we want to apply the aperture to the background flux estimated for this part of the sky. This information is stored as images in the FLUX_BKG extension.  Note that this background has already been subtracted from the flux values provided in the FLUX column.
+<br><br>
+<strong>Step 1. Determine the flux from the background in the optimal aperture.</strong>
+This is done using that same aperture_phot function we wrote above. And we are using the same optimal aperture we defined above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">back_im</span> <span class="o">=</span> <span class="n">tpf_data</span><span class="p">[</span><span class="s1">&#39;FLUX_BKG&#39;</span><span class="p">]</span>
+<span class="n">back_opap_flux</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">aperture_phot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">ap_want</span><span class="p">),</span> <span class="n">back_im</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2. Plot this background flux against the time.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_bjd</span><span class="p">,</span><span class="n">back_opap_flux</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Background in Optimal Aperture&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (BJD)&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Background Flux (e-/s)&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;TESS Background Lightcurve from Target Pixel File.&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that TESS orbits the earth approximately every 2 weeks. We can see that the background flux changes signficantly depending on where the spacecraft is in its orbit.</p>
+<p><span class="xref myst">Top of Page</span></p>
+<hr class="docutils" />
+<p><a id="LCF_ID"></a></p>
+</section>
+</section>
+<section id="contents-of-the-light-curve-file">
+<h2>Contents of the Light Curve File<a class="headerlink" href="#contents-of-the-light-curve-file" title="Permalink to this heading">#</a></h2>
+<p>The light curve file uses the information from the pixels to determine time series photometry. It also contains a host of information regarding the quality of each cadence, the observed motion of the star and how the light curve was extracted.  The extensions available in these data files are as follows.</p>
+<ul class="simple">
+<li><p><strong>No. 0 (Primary):</strong>
+<br>This HDU contains meta-data related to the entire file.</p></li>
+<li><p><strong>No. 1 (Lightcurve):</strong>
+<br>This HDU contains a binary table that has 11 columns containing a time series of either scalar values or images.</p></li>
+<li><p><strong>No. 2 (Aperture):</strong>
+<br>This HDU contains an image that gives information about each pixel and how it was used by ther TESS pipeline in the data processing. This is the same as the target pixel file.</p></li>
+</ul>
+<p>Recall that we defined lcfile above to point to the file hlsp_tess-data-alerts_tess_phot_00025155310-s01_tess_v1_lc.fits.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lchdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">lcfile</span><span class="p">)</span>
+<span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">lcfile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Lighturve Extension.</strong> The lightcurve extension contains most of the data in this type of file. Let’s list the columns available in this extension. Unlike the target pixel file, all these data are simply arrays instead of images. Here is a quick run down of the most important inormation in this file.</p>
+<ul class="simple">
+<li><p>TIME: stored in BJD-2457000</p></li>
+<li><p>CADENCENO: Cadence number</p></li>
+<li><p>SAP_FLUX: Simple aperture photometry flux. (This is what we calculated above.)</p></li>
+<li><p>SAP_BKG: Background flux that has already been removed from SAP_FLUX.</p></li>
+<li><p>PDCSAP_FLUX: Systematics corrected photometry using cotrending basis vectors.</p></li>
+<li><p>QUALITY: Quality flags</p></li>
+<li><p>PSF_CENTR1 &amp; PSF_CENTR2: The (column,row) position of the star measured using PSF photometry.</p></li>
+<li><p>MOM_CENTR1 &amp; MOM_CENTR2: The (column,row) position of the star measured using flux weighted centroids.</p></li>
+<li><p>POS_CORR1 &amp; POS_CORR2: The (column,row) local motion of the star calculated from the motion polynomials. Motion polynomials are calculated from the PSF centroids of select stars on each CCD.</p></li>
+</ul>
+<p>Note, while there is a WCS in the header of these files, it refers to one cadence near the middle of sector. The POS_CORR columns provide information about small changes to that WCS.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Open and view columns in lightcurve extension</span>
+<span class="n">lcdata</span> <span class="o">=</span> <span class="n">lchdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">lchdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="xref myst">Top of Page</span></p>
+<hr class="docutils" />
+<section id="example-usage-of-the-light-curve-file">
+<h3>Example Usage of the Light Curve File.<a class="headerlink" href="#example-usage-of-the-light-curve-file" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="example-3-compare-the-sap-flux-and-pdcsap-flux-light-curves">
+<h3>Example 3. Compare the SAP_FLUX and PDCSAP_FLUX light curves.<a class="headerlink" href="#example-3-compare-the-sap-flux-and-pdcsap-flux-light-curves" title="Permalink to this heading">#</a></h3>
+<p>We will also mark bad cadences using the quality flag column.</p>
+<p><strong>Step 1. Plot both types of fluxes against time.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sapflux</span> <span class="o">=</span> <span class="n">lcdata</span><span class="p">[</span><span class="s1">&#39;SAP_FLUX&#39;</span><span class="p">]</span>
+<span class="n">pdcflux</span> <span class="o">=</span> <span class="n">lcdata</span><span class="p">[</span><span class="s1">&#39;PDCSAP_FLUX&#39;</span><span class="p">]</span>
+<span class="n">quality</span> <span class="o">=</span> <span class="n">lcdata</span><span class="p">[</span><span class="s1">&#39;QUALITY&#39;</span><span class="p">]</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">lcdata</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">sapflux</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;SAP&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">6000</span><span class="p">,</span><span class="mi">8210</span><span class="p">)</span>  <span class="c1">#Zoom in</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">pdcflux</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;PDC&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">8500</span><span class="p">,</span><span class="mi">9510</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>A few things to notice here.</strong> The PDC light curve is created by fitting basis vectors to the time series that are created from all the stars on the same CCD.  That fit is used to detrend the SAPFLUX timeseries and create the PDCSAP_FLUX time series.  In this way, those anomalies that are common to all stars are removed. PDC also gaps cadences, which is why many of the highly scattered points are not present in the PDC light curve.</p>
+<p><strong>Step 2. Clean-up both plots by removing cadences flagged as anomalous.</strong> The Quality column contains integers that act as binary flags identified in the TESS data. We are going to remove the data that has been flagged by one of the following flags:</p>
+<ul class="simple">
+<li><p>Bit 1. Attitude Tweak</p></li>
+<li><p>Bit 2. Safe Mode</p></li>
+<li><p>Bit 3. Coarse Point</p></li>
+<li><p>Bit 4. Earth Point</p></li>
+<li><p>Bit 5. Argabrightening Event (Sudden brightening across the CCD.)</p></li>
+<li><p>Bit 6. Reaction Wheel Desaturation</p></li>
+<li><p>Bit 8. Manual Exclude</p></li>
+<li><p>Bit 10. Impulsive outlier</p></li>
+<li><p>Bit 12. Straylight detected</p></li>
+</ul>
+<p>The other flags are informational and do not necessarily indicate that the cadence should not be used. However, you may have scientifically valid reasons for removing those cadences as well, so it is worth learning about them. See the <a class="reference external" href="https://outerspace.stsci.edu/display/TESS/TESS+Archive+Manual">archive manual</a> for a full listing of the flags.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bad_bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">])</span>
+<span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">bad_bits</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">v</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="n">bad_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_and</span><span class="p">(</span><span class="n">quality</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">bad_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3. Create the same plot as before now removing the flagged data columns.</strong> Notice how well it cleans up the data and the plot now autoscales so we can see the transits of TESS Object of Interest TOI-114.01.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Same plot as before with flagged data removed.</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="n">sapflux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;SAP&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="n">pdcflux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;PDC&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="example-4-plot-the-spacecraft-motion">
+<h3>Example 4.  Plot the spacecraft motion.<a class="headerlink" href="#example-4-plot-the-spacecraft-motion" title="Permalink to this heading">#</a></h3>
+<p>We will plot the measured (col,row) position of the star as measured from the flux weighted centroids. The spacecraft dumps the momentum gathered in its wheels every once and a while. We can mark when that happens by using the quality flags (bit 6, see above).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fluxcent_col</span> <span class="o">=</span> <span class="n">lcdata</span><span class="p">[</span><span class="s1">&#39;MOM_CENTR1&#39;</span><span class="p">]</span>
+<span class="n">fluxcent_row</span> <span class="o">=</span> <span class="n">lcdata</span><span class="p">[</span><span class="s1">&#39;MOM_CENTR2&#39;</span><span class="p">]</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="p">((</span><span class="n">fluxcent_col</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">fluxcent_col</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">fluxcent_row</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">fluxcent_row</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">mom_dump</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_and</span><span class="p">(</span><span class="n">quality</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> 
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="n">distance</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;mom_centr distance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">mom_dump</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span><span class="mf">.1</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Momentum Dump&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME(BTKD)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the momentum dumps are correlated with reduced scatter in the motion. Also notice that the time of large scatter in our photometry is correlated with the large scatter in the motion.</p>
+<p><span class="xref myst">Top of Page</span></p>
+</section>
+<hr class="docutils" />
+<section id="example-5-compare-light-curves">
+<h3>Example 5. Compare Light Curves<a class="headerlink" href="#example-5-compare-light-curves" title="Permalink to this heading">#</a></h3>
+<p>Now that we have a SAP_FLUX light curve and and the light curve we calculated with the target pixel files (opap_flux), we can show that indeed the data is the same by plotting the two light curves on top of each other. The lower subplot shows the difference. The small scatter in the residuals is caused by rounding error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sapflux is the photometry calculated by the pipeline.</span>
+<span class="c1"># opap_flux is the photometry we calculated from the pixels.</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="n">sapflux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="s1">&#39;r.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;SAP_FLUX&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="n">opap_flux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="s1">&#39;b.&#39;</span><span class="p">,</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Target Pixel Op. Aperture&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (BTJD)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Flux (e-/s)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1326</span><span class="p">,</span><span class="mi">1330</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">7955</span><span class="p">,</span><span class="mi">8090</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="n">opap_flux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">]</span><span class="o">-</span><span class="n">sapflux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">],</span> <span class="s1">&#39;m.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;difference&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">.01</span><span class="p">,</span><span class="mf">.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1326</span><span class="p">,</span><span class="mi">1330</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="xref myst">Top of Page</span></p>
+</section>
+<hr class="docutils" />
+<section id="exercise-for-the-reader">
+<h3>Exercise for the Reader<a class="headerlink" href="#exercise-for-the-reader" title="Permalink to this heading">#</a></h3>
+<p>a) The “rain plot” was used in the early days of Kepler to see if there are potential shifts in the flux-weighted centroids of the star during the transits. This can be an indication that there is a background eclipsing binary causing the transit-like shape, though the evidence is not definitive.  Can you plot the motion of the star on the detector (separately in row and column) as a function of flux? Bonus points if you normalize the flux first.</p>
+<p>b) Determine which pixels were used by the pipeline to calculate the flux-weighted centroids?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Place your answer here</span>
+<span class="c1">#(a)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#(b)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Solution to (a)</span>
+<span class="c1">#Here we choose do a simple normalization by subtracting off the median.</span>
+<span class="n">normflux</span> <span class="o">=</span> <span class="n">pdcflux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">pdcflux</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">])</span>
+<span class="n">fwNorm_row</span> <span class="o">=</span> <span class="n">fluxcent_row</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">fluxcent_row</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">])</span>
+<span class="n">fwNorm_col</span> <span class="o">=</span> <span class="n">fluxcent_col</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">fluxcent_col</span><span class="p">[</span><span class="o">~</span><span class="n">bad_data</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fwNorm_row</span><span class="p">,</span><span class="n">normflux</span><span class="p">,</span><span class="s1">&#39;b+&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;change in row(pixels)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;change in flux&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fwNorm_col</span><span class="p">,</span><span class="n">normflux</span><span class="p">,</span><span class="s1">&#39;r+&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;column&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;change in column (pixels)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;change in flux&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Interpretation.</strong> No motion is correlated with the flux according to the flux weighted centroids. However there is apparently some significant motion along the CCD rows through-out the observations.</p>
+<p><span class="xref myst">Top of Page</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Solution to (b)</span>
+<span class="c1">#Let&#39;s display those pixels used in the flux-weighted centroid, we need to consider bit 4 of the aperture extension.</span>
+<span class="n">ap_image</span> <span class="o">=</span> <span class="p">(</span><span class="n">tphdu</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">ap_want</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_and</span><span class="p">(</span><span class="n">ap_image</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>  <span class="o">&gt;</span><span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ap_want</span><span class="p">)</span>
+<span class="c1">#Notice that it is the same as the optimal aperture. This may not always be the case.</span>
+
+<span class="c1">#If we set all other pixels to 0 we can plot just those pixels in this aperture from the third cadence.</span>
+<span class="n">one_image</span> <span class="o">=</span> <span class="n">tpf_data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">fw_first</span> <span class="o">=</span> <span class="n">one_image</span>
+<span class="n">fw_first</span><span class="p">[</span><span class="o">~</span><span class="n">ap_want</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fw_first</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;column&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;row&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Close the FITS files for good practice.</span>
+<span class="n">lchdu</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">tphdu</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="resources_ID"></a></p>
+</section>
+</section>
+<section id="aditional-resources">
+<h2>Aditional Resources<a class="headerlink" href="#aditional-resources" title="Permalink to this heading">#</a></h2>
+<p>For more information about the MAST archive and details about mission data:
+<br>
+<br><a class="reference external" href="https://mast.stsci.edu/api/v0/index.html">MAST API</a>
+<br><a class="reference external" href="https://archive.stsci.edu/tess">TESS Archive Page (MAST)</a>
+<br><a class="reference external" href="https://outerspace.stsci.edu/display/TESS/TESS+Archive+Manual">TESS Archive Manual</a>
+<br><a class="reference external" href="https://exo.mast.stsci.edu/exo/ExoMast/html/exomast.html">Exo.MAST website</a></p>
+<hr class="docutils" />
+<p><a id="about_ID"></a></p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Author:</strong> Susan E. Mullally, STScI Archive Scientist
+<br><strong>Updated On:</strong> 2018-11-28</p>
+<hr class="docutils" />
+<p><span class="xref myst">Top of Page</span>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/TESS/beginner_tour_lc_tp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Search The TESS Input Catalog Centered On HD 209458.</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../beginner_tesscut_astroquery/beginner_tesscut_astroquery.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Cutout of the TESS FFIs using Astrocut and Astroquery</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imports">
+   Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-the-data">
+   Getting the Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contents-of-target-pixel-file">
+   Contents of Target Pixel File
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-usage-of-target-pixel-file">
+     Example Usage of Target Pixel File
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-1-create-the-optimal-aperture-light-curve-from-the-pixels">
+     Example 1. Create the optimal aperture light curve from the pixels.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-2-create-a-light-curve-of-the-background-flux-that-was-subtracted">
+     Example 2. Create a light curve of the background flux that was subtracted.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contents-of-the-light-curve-file">
+   Contents of the Light Curve File
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-usage-of-the-light-curve-file">
+     Example Usage of the Light Curve File.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-3-compare-the-sap-flux-and-pdcsap-flux-light-curves">
+     Example 3. Compare the SAP_FLUX and PDCSAP_FLUX light curves.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-4-plot-the-spacecraft-motion">
+     Example 4.  Plot the spacecraft motion.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-5-compare-light-curves">
+     Example 5. Compare Light Curves
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-for-the-reader">
+     Exercise for the Reader
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aditional-resources">
+   Aditional Resources
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#about-this-notebook">
+   About this Notebook
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  </body>
+</html>
