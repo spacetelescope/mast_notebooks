@@ -585,7 +585,7 @@ document.write(`
 <p>This notebook tutorial demonstrates how to load and display the contents of a K2 target pixel (tp) file.  We will display the flux values from a given cadence, and identify the pixels used in the photometric aperture.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -610,7 +610,7 @@ document.write(`
 <p>We will read the target pixel file from Campaign 12 using the MAST URL location.  So that we can get started with understanding the file contents without reviewing how to automatically search for and retrieve K2 files, we won’t show how to search and retrieve K2 target pixel files in this tutorial.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
 <span class="n">fits_file</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/k2/target_pixel_files/c12/246100000/99000/ktwo246199087-c12_lpd-targ.fits.gz&quot;</span>
 </pre></div>
 </div>
@@ -622,7 +622,16 @@ document.write(`
 <p>The K2 target pixel files contain a primary HDU with metadata stored in the header.  The first extension HDU contains more metadata in the header and stores arrays of data in a binary FITS table, which include the timestamps, fluxes, and background fluxes for each cadence of the pixels read out and downloaded by the spacecraft.  The second extension HDU contains an image that stores the pixels that were read out, and records information such as which pixels were used in the optimal photometric aperture to create the SAP fluxes.  Let’s examine the structure of the FITS file using the astropy.fits <code class="docutils literal notranslate"><span class="pre">info</span></code> function, which shows the FITS file format in more detail.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/47bb25d51087d32336d703fd535e2ea2/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      55   ()      
+  1  TARGETTABLES    1 BinTableHDU    288   3862R x 13C   [D, E, J, 90J, 90E, 90E, 90E, 90E, 90E, J, E, E, 45E]   
+  2  APERTURE      1 ImageHDU        49   (10, 9)   int32   
 </pre></div>
 </div>
 </div>
@@ -630,7 +639,26 @@ document.write(`
 <p>Let’s examine the binary table in the first FITS extension, since that contains the arrays of timestamps and fluxes for each cadence.  We will use the astropy.fits <code class="docutils literal notranslate"><span class="pre">getdata</span></code> function to access the table from the first extension HDU, and then show the columns of the table.  We can see included in the table are columns for the timestamps in K2 BJD format (<strong>TIME</strong>), raw counts (<strong>RAW_CNTS</strong>), and calibrated fluxes (<strong>FLUX</strong>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
+    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2454833&#39;; disp = &#39;D14.7&#39;
+    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
+    name = &#39;RAW_CNTS&#39;; format = &#39;90J&#39;; unit = &#39;count&#39;; null = -1; disp = &#39;I8&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX_ERR&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX_BKG&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;FLUX_BKG_ERR&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;COSMIC_RAYS&#39;; format = &#39;90E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,9)&#39;
+    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B24.24&#39;
+    name = &#39;POS_CORR1&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;POS_CORR2&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;RB_LEVEL&#39;; format = &#39;45E&#39;; unit = &#39;sigma&#39;; disp = &#39;E14.7&#39;; dim = &#39;(5,9)&#39;
+)
 </pre></div>
 </div>
 </div>
@@ -642,7 +670,7 @@ document.write(`
 <p>Now that we have the target pixel file, let’s store the timestamps and fluxes for use later.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
     <span class="n">k2_bjds</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
     <span class="n">raw_counts</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;RAW_CNTS&#39;</span><span class="p">]</span>
     <span class="n">calibrated_fluxes</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span>
@@ -653,8 +681,14 @@ document.write(`
 <p>Let’s examine one of these to see how Python stores the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">calibrated_fluxes</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">calibrated_fluxes</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">calibrated_fluxes</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;numpy.ndarray&#39;&gt;
+(3862, 9, 10)
 </pre></div>
 </div>
 </div>
@@ -662,7 +696,12 @@ document.write(`
 <p>So these data are stored as a numpy array.  The first dimension is the number of cadences, followed by the size of the readout.  Thus, accessing <code class="docutils literal notranslate"><span class="pre">calibrated_fluxes[4,:,:]</span></code> should return to us the 9x10 grid of pixels from the <strong>fifth</strong> cadence (remember Python is zero-indexed, so the first cadence is stored in the zeroth index, the second in the first index, etc.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">calibrated_fluxes</span><span class="p">[</span><span class="mi">4</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calibrated_fluxes</span><span class="p">[</span><span class="mi">4</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(9, 10)
 </pre></div>
 </div>
 </div>
@@ -673,7 +712,7 @@ document.write(`
 <p>Let’s display the calibrated fluxes for one of the cadences in our target pixel file.  For now, we’ll pick the fifth cadence (index number 4).  You could of course decide to look at multiple cadences by looping over each index in the first dimension of the structure (e.g., loop over <code class="docutils literal notranslate"><span class="pre">calibrated_fluxes[i,:,:]</span></code>).  You could even make an animated .gif of the fluxes and see how they change from cadence to cadence.  To get you started though, let’s just display one of the cadence’s flux values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">)</span>
 
@@ -689,6 +728,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/da182a6d8b6d56472cc279165d387e93b4f10e633522083f7cf6b415a60abe18.png" src="../../../_images/da182a6d8b6d56472cc279165d387e93b4f10e633522083f7cf6b415a60abe18.png" />
+</div>
 </div>
 </section>
 <section id="displaying-the-aperture-pixel-information">
@@ -696,7 +738,7 @@ document.write(`
 <p>Let’s read in the second FITS extension HDU to display the aperture information.  First, let’s read in the aperture pixels from the HDU.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
     <span class="n">aperture</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
@@ -705,7 +747,7 @@ document.write(`
 <p>Let’s plot the pixels as an image.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">)</span>
 
@@ -721,6 +763,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/d49bebd533ac5c0b94deb3f4567b3ed8b52ae2bea151c38fa2d2abd0944e10a7.png" src="../../../_images/d49bebd533ac5c0b94deb3f4567b3ed8b52ae2bea151c38fa2d2abd0944e10a7.png" />
+</div>
 </div>
 </section>
 <section id="understanding-the-aperture-pixel-values">
@@ -728,9 +773,14 @@ document.write(`
 <p>We see the pixel values are integers, but what do they mean?  The pixels are bitmasks that encode information about each pixel.  You can find a summary of what the different values mean <a class="reference external" href="https://archive.stsci.edu/kepler/manuals/archive_manual.pdf#page=20">here</a>.  For example, a pixel in the aperture that might have a value of 15 can be broken down into power of 2 like: 8+4+2+1 = 15.  Referencing the table of values, this means this particular pixel was in was used to calculate the Pixel Response Function (PRF) centroid, was used to calculate the flux weighted centroid, was part of the optimal photometric aperture, and was collected by the spacecraft.  Numpy has a bulit-in function that can convert an integer into a binary bit mask.  Let’s use that now one one of the common values we see in our displayed image above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Break down a pixel value of 3 (yellow pixels displayed above) into its constituent bits.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Break down a pixel value of 3 (yellow pixels displayed above) into its constituent bits.</span>
 <span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11
 </pre></div>
 </div>
 </div>
@@ -742,7 +792,7 @@ document.write(`
 <p>Let’s display the pixels in the aperture FITS extension again, but this time, let’s only mark those that are used in the optimal photometric aperture (bit mask value of 2 set).  While it is possible to do this in fewer lines, we’ll show more of the steps involved for clarity.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array that will keep track of which pixels have a bitmask</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array that will keep track of which pixels have a bitmask</span>
 <span class="c1"># value of 2 set. To start, everything is set to 0 = not set.  We make it</span>
 <span class="c1"># the same dimension as the aperture pixel table, for clarity.</span>
 <span class="n">bitmask2_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">aperture</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -772,7 +822,7 @@ document.write(`
 <p>Now we can display the aperture, but this time we will only display the bitmask2_set table we’ve created, where a zero means the bitmask value of 2 is NOT set (thus these pixels aren’t used in the optimal photometric aperture) and a one means the bitmask value of 2 is set (and thus these pixels were used in the optimal photometric aperture).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start figure and axis.</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">)</span>
 
@@ -787,6 +837,9 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/2c24a6e26abf2fbc58e41b8d9dd315c754c95954129e63eebd9d5fa2caa0992b.png" src="../../../_images/2c24a6e26abf2fbc58e41b8d9dd315c754c95954129e63eebd9d5fa2caa0992b.png" />
 </div>
 </div>
 </section>

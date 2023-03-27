@@ -649,6 +649,17 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    ID      Tmag   Jmag         ra               dec        objType
+--------- ------- ------ ---------------- ----------------- -------
+261105201  8.3629   7.74 82.8273670408244 -79.0087723001529    STAR
+724151530 18.7511    nan 82.8150127457216 -79.0132058191133    STAR
+261105202 15.6838 13.738  82.807947620659 -79.0136350375361    STAR
+724151528 20.1425    nan   82.79364170498 -79.0085739998184    STAR
+724151541 19.6238    nan 82.8606445683429 -79.0110416543022    STAR
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -658,6 +669,11 @@ document.write(`
 <span class="c1"># Make it a list of Ra, Dec pairs of the bright ones. This is now a list of nearby bright stars.</span>
 <span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12
 </pre></div>
 </div>
 </div>
@@ -677,6 +693,33 @@ Using the TESS sector information service, we make a request to determine which 
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  sectorName   sector camera ccd
+-------------- ------ ------ ---
+tess-s0001-4-2      1      4   2
+tess-s0002-4-2      2      4   2
+tess-s0004-4-3      4      4   3
+tess-s0005-4-3      5      4   3
+tess-s0007-4-4      7      4   4
+tess-s0008-4-4      8      4   4
+tess-s0009-4-4      9      4   4
+tess-s0011-4-1     11      4   1
+tess-s0012-4-1     12      4   1
+tess-s0013-3-3     13      3   3
+tess-s0027-4-2     27      4   2
+tess-s0028-4-2     28      4   2
+tess-s0029-4-2     29      4   2
+tess-s0031-4-3     31      4   3
+tess-s0032-4-3     32      4   3
+tess-s0034-4-4     34      4   4
+tess-s0035-4-4     35      4   4
+tess-s0037-4-1     37      4   1
+tess-s0038-4-1     38      4   1
+tess-s0039-3-4     39      3   4
+tess-s0061-4-4     61      4   4
+</pre></div>
+</div>
+</div>
 </div>
 <p>The resulting table shows that this target was observed in two different sectors using the same camera and CCD.</p>
 <hr class="docutils" />
@@ -690,6 +733,123 @@ For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><stro
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/cutouts.py:409,</span> in <span class="ni">TesscutClass.get_cutouts</span><span class="nt">(self, coordinates, size, sector, objectname, moving_target, mt_type)</span>
+<span class="g g-Whitespace">    </span><span class="mi">406</span>     <span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">deg</span>
+<span class="g g-Whitespace">    </span><span class="mi">407</span>     <span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">deg</span>
+<span class="ne">--&gt; </span><span class="mi">409</span>     <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_api_connection</span><span class="o">.</span><span class="n">service_request_async</span><span class="p">(</span><span class="s2">&quot;astrocut&quot;</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">411</span> <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise any errors</span>
+<span class="g g-Whitespace">    </span><span class="mi">413</span> <span class="k">try</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/class_or_instance.py:25,</span> in <span class="ni">class_or_instance.__get__.&lt;locals&gt;.f</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/services.py:292,</span> in <span class="ni">ServiceAPI.service_request_async</span><span class="nt">(self, service, params, page_size, page, use_json, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span>     <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span>
+<span class="g g-Whitespace">    </span><span class="mi">291</span>     <span class="n">catalogs_request</span> <span class="o">=</span> <span class="n">params</span>
+<span class="ne">--&gt; </span><span class="mi">292</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">request_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">catalogs_request</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="n">use_json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="k">return</span> <span class="n">response</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/services.py:187,</span> in <span class="ni">ServiceAPI._request</span><span class="nt">(self, method, url, params, data, headers, files, stream, auth, cache, use_json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>                                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">187</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span>                                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span> <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Timeout limit of </span><span class="si">{}</span><span class="s2"> exceeded.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">))</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:339,</span> in <span class="ni">BaseQuery._request</span><span class="nt">(self, method, url, params, data, headers, files, save, savedir, timeout, cache, stream, auth, continuation, verify, allow_redirects, json, return_response_on_save)</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cache</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="k">with</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;cache_active&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">339</span>         <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span>                                  <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>                                  <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>                                  <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">from_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_location</span><span class="p">,</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">cache_timeout</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:74,</span> in <span class="ni">AstroQuery.request</span><span class="nt">(self, session, cache_location, stream, auth, verify, allow_redirects, json)</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">cache_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>             <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span>             <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>                            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>                            <span class="n">files</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span>                            <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span>                            <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span>                            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:587,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">587</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="k">return</span> <span class="n">resp</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:708,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span> <span class="n">r</span><span class="o">.</span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span> <span class="c1"># Response manipulation hooks</span>
+<span class="ne">--&gt; </span><span class="mi">708</span> <span class="n">r</span> <span class="o">=</span> <span class="n">dispatch_hook</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">,</span> <span class="n">hooks</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span> <span class="c1"># Persist cookies</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">history</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">712</span> 
+<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="c1"># If the hooks create history then we want those cookies too</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/hooks.py:30,</span> in <span class="ni">dispatch_hook</span><span class="nt">(key, hooks, hook_data, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>     <span class="n">hooks</span> <span class="o">=</span> <span class="p">[</span><span class="n">hooks</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span> <span class="k">for</span> <span class="n">hook</span> <span class="ow">in</span> <span class="n">hooks</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">30</span>     <span class="n">_hook_data</span> <span class="o">=</span> <span class="n">hook</span><span class="p">(</span><span class="n">hook_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>     <span class="k">if</span> <span class="n">_hook_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>         <span class="n">hook_data</span> <span class="o">=</span> <span class="n">_hook_data</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:228,</span> in <span class="ni">BaseQuery._response_hook</span><span class="nt">(self, response, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response_hdrs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>         <span class="s2">&quot;Streaming Data</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">224</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response_hdrs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">228</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;HTTP response</span><span class="se">\n</span><span class="si">{</span><span class="n">response_log</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/models.py:923,</span> in <span class="ni">Response.text</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">920</span> <span class="n">content</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">921</span> <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span>
+<span class="ne">--&gt; </span><span class="mi">923</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">924</span>     <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">926</span> <span class="c1"># Fallback to auto-detected encoding.</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/models.py:899,</span> in <span class="ni">Response.content</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">897</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">898</span>     <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">899</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">CONTENT_CHUNK_SIZE</span><span class="p">))</span> <span class="ow">or</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">901</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content_consumed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">902</span> <span class="c1"># don&#39;t need to release the connection; that&#39;s been handled by urllib3</span>
+<span class="g g-Whitespace">    </span><span class="mi">903</span> <span class="c1"># since we exhausted the data.</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>

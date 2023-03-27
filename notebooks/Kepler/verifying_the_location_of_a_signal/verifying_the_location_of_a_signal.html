@@ -613,10 +613,10 @@ document.write(`
 <p>We’ll use <a class="reference external" href="https://docs.lightkurve.org/">Lightkurve</a> for downloading and handling <em>Kepler</em> data throughout this tutorial. We’ll also use <a class="reference external" href="https://numpy.org/">NumPy</a> to handle arrays for aperture masks, and <a class="reference external" href="https://matplotlib.org">Matplotlib</a> for visualizing data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -635,18 +635,21 @@ document.write(`
 <p>KIC 2435971 is a star of <a class="reference external" href="https://keplerscience.arc.nasa.gov/the-kepler-space-telescope.html#flux-calibration"><em>Kepler</em> magnitude</a> Kp = 14.7, with a massive signal. It’s not impossible that this signal comes from the star, but KIC 2435971 is in the field of open cluster NGC 6791, which means it’s subject to a  higher level of crowding than much of the <em>Kepler</em> field. This could be a case of contamination; to be absolutely certain, we’re going to use this star for our signal verification exercise. Let’s begin by downloading a light curve; then we can produce a Lomb-Scargle Periodogram to search for repeating signals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lcs</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span>  <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcs</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span>  <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
 <span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">()</span>
 <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/9e7cb53e279c25834e6cba00eaecc644158850072faa079ec3ec87146ad534ca.png" src="../../../_images/9e7cb53e279c25834e6cba00eaecc644158850072faa079ec3ec87146ad534ca.png" />
 </div>
 </div>
 <p>These high-amplitude, narrow peaks in the periodogram suggests a compact binary star.</p>
@@ -656,16 +659,19 @@ document.write(`
 <p>Often, the identification of a much brighter target in the frame is enough to confirm contamination. Let’s begin by looking at the target pixel file (TPF) we’re going to be working with:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/fe2dff01472e0e2cd41f14b331fe3f5b9aed9baebc117ca7d7b4bf72a5c437bd.png" src="../../../_images/fe2dff01472e0e2cd41f14b331fe3f5b9aed9baebc117ca7d7b4bf72a5c437bd.png" />
 </div>
 </div>
 <p>As you can see, there’s another star very close by, at the top of the frame. This star is brighter than our target in the center, and could conceivably produce a high-amplitude periodic signal. But it’s not a huge difference in flux, so we should double-check before we go ahead and claim that this is our contaminant.</p>
@@ -673,26 +679,35 @@ document.write(`
 <p>Let’s have a look at what the function does at its most basic:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/f11da7768622293b8d939e3d37a28b1bf5c4a718bb62719356f1e50f63b8bb8f.png" src="../../../_images/f11da7768622293b8d939e3d37a28b1bf5c4a718bb62719356f1e50f63b8bb8f.png" />
 </div>
 </div>
 <p>These are the light curves in every pixel of this TPF, for Quarter 9. We can’t tell much just by looking at this, but we can give <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code> a corrector function to flatten these light curves. To create the corrector function, we use a Python construction called a <a class="reference external" href="https://docs.python.org/3/howto/functional.html#small-functions-and-the-lambda-expression">lambda function</a>. This kind of function is known as an “anonymous” function, as it has no name. Lambda functions are just one line of code, so they’re very useful for when we want a function to take another function as an argument. Here, we take a variable <code class="docutils literal notranslate"><span class="pre">x</span></code> and, assuming it’s a <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> object, we can apply methods like <code class="docutils literal notranslate"><span class="pre">.remove_outliers()</span></code> as normal.</p>
 <p>We can also overlay the TPF colors to remind us of the stars we’re looking at:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b7cffc80bc86d03e64e85490856fdd3dcf51ea3e13c5294d5eab30d4793af3be.png" src="../../../_images/b7cffc80bc86d03e64e85490856fdd3dcf51ea3e13c5294d5eab30d4793af3be.png" />
 </div>
 </div>
 <p>Looking at it like this, we can start to see some evidence of the signal from our periodogram above, but not enough to make a call. Let’s go back to <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code>: we can tell the function to compute a periodogram for each pixel, which should make it clear where the signal is strongest. This time, we’re also going to overlay the pipeline aperture, which is the selection of pixels that went into producing the light curve for this quarter of data. The pipeline aperture is shown by red boxes around all included pixels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">periodogram</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">periodogram</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/a9595241cbf04c9d6a0b2fed8ce29d7d4730416c4407fb2ae766c6cc7f14606b.png" src="../../../_images/a9595241cbf04c9d6a0b2fed8ce29d7d4730416c4407fb2ae766c6cc7f14606b.png" />
 </div>
 </div>
 <p>We can see the two high-amplitude peaks in most of the pixels in this TPF. The key feature is the ratio of that signal’s amplitude to the noise level: pixels with higher signal-to-noise ratios contain more flux from the source of the signal. This is often something we can check by eye; here, we can confirm that the signal is coming from our target star, KIC 2435971. The bright star at the top of the frame, in the yellow pixel, shows a significantly higher noise level than the green pixels below it, and the placement of the pipeline aperture reflects this.</p>
@@ -703,19 +718,25 @@ document.write(`
 <p>For this exercise, we’re going to switch to a different star. KIC 7024511 was flagged as a <em>Kepler</em> Object of Interest (KOI) in Quarter 6 of the mission, and given the designation KOI 311. This means that it’s a potential exoplanet host, based on transits detected. Let’s have a look at one quarter of data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 <span class="n">lc_koi</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/4d37a37c3a6155dd6908db5900af5fc4fef36785d9118878d3d0c8c816e12843.png" src="../../../_images/4d37a37c3a6155dd6908db5900af5fc4fef36785d9118878d3d0c8c816e12843.png" />
 </div>
 </div>
 <p>It’s hard to pick out the transits by eye, but you should be able to see one point lower than the others around 1030 BKJD (Barycentric <em>Kepler</em> Julian Date). This dip has a depth of less than 0.01%, which is consistent with the signal coming from an exoplanet. Unfortunately, it’s also consistent with the diulted signal of a nearby eclipsing binary — dilution here referring to the diffuse flux towards the edges of a star’s spread on the detector, where the amplitude of any variable signal can decrease. We can look at the TPF using <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code> to confirm whether or not this is the case:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 <span class="n">tpf_koi</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">,</span> <span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">());</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/edb5fadb1333ac10e8910b4e2afb505da60d5a1cde641845efcb4170367a05a1.png" src="../../../_images/edb5fadb1333ac10e8910b4e2afb505da60d5a1cde641845efcb4170367a05a1.png" />
 </div>
 </div>
 <p>In this case, we can clearly see an eclipse to the left of our target. The eclipsing binary is outside of the pipeline aperture, but the signal is strong enough to have contaminated it. And sure enough, if we check on the <a class="reference external" href="https://exoplanetarchive.ipac.caltech.edu/cgi-bin/DisplayOverview/nph-DisplayOverview?objname=K00311.01&amp;type=KEPLER_CANDIDATE">NASA Exoplanet Archive</a>, KOI 311 was designated a false positive in the first data release it was included in.</p>
@@ -724,7 +745,265 @@ document.write(`
 <p>Making a rough guess from the size of the TPF above, we set a search radius of 20 arcseconds. And we’re only going to search Quarter 11, as otherwise the function will return an entry for every available quarter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/memoization/caching/plain_cache.py:42,</span> in <span class="ni">get_caching_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="n">misses</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="ne">---&gt; </span><span class="mi">42</span> <span class="n">result</span> <span class="o">=</span> <span class="n">user_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">values_toolkit</span><span class="o">.</span><span class="n">make_cache_value</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ttl</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span> <span class="n">key_argument_map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/search.py:826,</span> in <span class="ni">search_lightcurve</span><span class="nt">(target, radius, exptime, cadence, mission, author, quarter, month, campaign, sector, limit)</span>
+<span class="g g-Whitespace">    </span><span class="mi">726</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Search the `MAST data archive &lt;https://archive.stsci.edu&gt;`_ for light curves.</span>
+<span class="g g-Whitespace">    </span><span class="mi">727</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">728</span><span class="sd"> This function fetches a data table that lists the Light Curve Files</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">823</span><span class="sd">     &gt;&gt;&gt; search_lightcurve(&#39;Kepler-10&#39;, radius=100, quarter=4, exptime=1800).download_all()  # doctest: +SKIP</span>
+<span class="g g-Whitespace">    </span><span class="mi">824</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">825</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">826</span>     <span class="k">return</span> <span class="n">_search_products</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">827</span>         <span class="n">target</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">828</span>         <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">829</span>         <span class="n">filetype</span><span class="o">=</span><span class="s2">&quot;Lightcurve&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">830</span>         <span class="n">exptime</span><span class="o">=</span><span class="n">exptime</span> <span class="ow">or</span> <span class="n">cadence</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">831</span>         <span class="n">mission</span><span class="o">=</span><span class="n">mission</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">832</span>         <span class="n">provenance_name</span><span class="o">=</span><span class="n">author</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">833</span>         <span class="n">quarter</span><span class="o">=</span><span class="n">quarter</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">834</span>         <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">835</span>         <span class="n">campaign</span><span class="o">=</span><span class="n">campaign</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">836</span>         <span class="n">sector</span><span class="o">=</span><span class="n">sector</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">837</span>         <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">838</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">839</span> <span class="k">except</span> <span class="n">SearchError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">840</span>     <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/search.py:974,</span> in <span class="ni">_search_products</span><span class="nt">(target, radius, filetype, mission, provenance_name, exptime, quarter, month, campaign, sector, limit, **extra_query_criteria)</span>
+<span class="g g-Whitespace">    </span><span class="mi">972</span> <span class="k">if</span> <span class="n">filetype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ffi&quot;</span> <span class="ow">and</span> <span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">973</span>     <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.0001</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+<span class="ne">--&gt; </span><span class="mi">974</span> <span class="n">observations</span> <span class="o">=</span> <span class="n">_query_mast</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">975</span>     <span class="n">target</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">976</span>     <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">977</span>     <span class="n">project</span><span class="o">=</span><span class="n">mission</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">978</span>     <span class="n">provenance_name</span><span class="o">=</span><span class="n">provenance_name</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">979</span>     <span class="n">exptime</span><span class="o">=</span><span class="n">exptime</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">980</span>     <span class="n">sequence_number</span><span class="o">=</span><span class="n">campaign</span> <span class="ow">or</span> <span class="n">sector</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">981</span>     <span class="o">**</span><span class="n">extra_query_criteria</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">982</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">983</span> <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">984</span>     <span class="s2">&quot;MAST found </span><span class="si">{}</span><span class="s2"> observations. &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">985</span>     <span class="s2">&quot;Now querying MAST for the corresponding data products.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">986</span>     <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">observations</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">987</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">988</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">observations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/search.py:1201,</span> in <span class="ni">_query_mast</span><span class="nt">(target, radius, project, provenance_name, exptime, sequence_number, **extra_query_criteria)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1199</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">NoResultsWarning</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1200</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;t_exptime is continuous&quot;</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1201</span>     <span class="n">obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">query_criteria</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1202</span> <span class="n">obs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1203</span> <span class="c1"># We use `exptime` as an alias for `t_exptime`</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/class_or_instance.py:25,</span> in <span class="ni">class_or_instance.__get__.&lt;locals&gt;.f</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/process_asyncs.py:26,</span> in <span class="ni">async_to_sync.&lt;locals&gt;.create_method.&lt;locals&gt;.newmethod</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="nd">@class_or_instance</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">newmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">verbose</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">26</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">async_method_name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>     <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;get_query_payload&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;field_help&#39;</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="k">return</span> <span class="n">response</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/class_or_instance.py:25,</span> in <span class="ni">class_or_instance.__get__.&lt;locals&gt;.f</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/observations.py:294,</span> in <span class="ni">ObservationsClass.query_criteria_async</span><span class="nt">(self, pagesize, page, **criteria)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span>     <span class="n">service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_caom_filtered</span>
+<span class="g g-Whitespace">    </span><span class="mi">291</span>     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">292</span>               <span class="s2">&quot;filters&quot;</span><span class="p">:</span> <span class="n">mashup_filters</span><span class="p">}</span>
+<span class="ne">--&gt; </span><span class="mi">294</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_portal_api_connection</span><span class="o">.</span><span class="n">service_request_async</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/class_or_instance.py:25,</span> in <span class="ni">class_or_instance.__get__.&lt;locals&gt;.f</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/discovery_portal.py:362,</span> in <span class="ni">PortalAPI.service_request_async</span><span class="nt">(self, service, params, pagesize, page, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">359</span>     <span class="n">mashup_request</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<span class="g g-Whitespace">    </span><span class="mi">361</span> <span class="n">req_string</span> <span class="o">=</span> <span class="n">_prepare_service_request_string</span><span class="p">(</span><span class="n">mashup_request</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">362</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAST_REQUEST_URL</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">req_string</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span>                          <span class="n">retrieve_all</span><span class="o">=</span><span class="n">retrieve_all</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="k">return</span> <span class="n">response</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/discovery_portal.py:181,</span> in <span class="ni">PortalAPI._request</span><span class="nt">(self, method, url, params, data, headers, files, stream, auth, retrieve_all)</span>
+<span class="g g-Whitespace">    </span><span class="mi">178</span> <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;EXECUTING&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span> <span class="k">while</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;EXECUTING&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">181</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PortalAPI</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">182</span>                                                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">183</span>                                                <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span>         <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Timeout limit of </span><span class="si">{}</span><span class="s2"> exceeded.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">))</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:339,</span> in <span class="ni">BaseQuery._request</span><span class="nt">(self, method, url, params, data, headers, files, save, savedir, timeout, cache, stream, auth, continuation, verify, allow_redirects, json, return_response_on_save)</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cache</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="k">with</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;cache_active&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">339</span>         <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span>                                  <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>                                  <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>                                  <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">from_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_location</span><span class="p">,</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">cache_timeout</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:74,</span> in <span class="ni">AstroQuery.request</span><span class="nt">(self, session, cache_location, stream, auth, verify, allow_redirects, json)</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">cache_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>             <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span>             <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>                            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>                            <span class="n">files</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span>                            <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span>                            <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span>                            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:587,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">587</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="k">return</span> <span class="n">resp</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:701,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">698</span> <span class="n">start</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span> <span class="c1"># Send the request</span>
+<span class="ne">--&gt; </span><span class="mi">701</span> <span class="n">r</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="c1"># Total elapsed time of the request (approximately)</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/adapters.py:489,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
+<span class="g g-Whitespace">    </span><span class="mi">487</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">488</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">chunked</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">489</span>         <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">490</span>             <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span>             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">492</span>             <span class="n">body</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">493</span>             <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span>             <span class="n">redirect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">495</span>             <span class="n">assert_same_host</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">496</span>             <span class="n">preload_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">497</span>             <span class="n">decode_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">498</span>             <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">499</span>             <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">500</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">502</span>     <span class="c1"># Send the request.</span>
+<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">504</span>         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;proxy_pool&quot;</span><span class="p">):</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:703,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, **response_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_proxy</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">702</span> <span class="c1"># Make the request on the httplib connection object.</span>
+<span class="ne">--&gt; </span><span class="mi">703</span> <span class="n">httplib_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="n">conn</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span>     <span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">708</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">709</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="c1"># If we&#39;re going to release the connection in ``finally:``, then</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="c1"># the response doesn&#39;t need to know about the connection. Otherwise</span>
+<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="c1"># it will also try to release it and we&#39;ll have a double-release</span>
+<span class="g g-Whitespace">    </span><span class="mi">716</span> <span class="c1"># mess.</span>
+<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="n">response_conn</span> <span class="o">=</span> <span class="n">conn</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">release_conn</span> <span class="k">else</span> <span class="kc">None</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:449,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span>             <span class="n">httplib_response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>             <span class="c1"># Remove the TypeError from the exception chain in</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>             <span class="c1"># Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>             <span class="c1"># Otherwise it looks like a bug in the code.</span>
+<span class="ne">--&gt; </span><span class="mi">449</span>             <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">450</span> <span class="k">except</span> <span class="p">(</span><span class="n">SocketTimeout</span><span class="p">,</span> <span class="n">BaseSSLError</span><span class="p">,</span> <span class="n">SocketError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">451</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_raise_timeout</span><span class="p">(</span><span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout_value</span><span class="o">=</span><span class="n">read_timeout</span><span class="p">)</span>
+
+<span class="nn">File &lt;string&gt;:3,</span> in <span class="ni">raise_from</span><span class="nt">(value, from_value)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:444,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">442</span>     <span class="c1"># Python 3</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">444</span>         <span class="n">httplib_response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>     <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>         <span class="c1"># Remove the TypeError from the exception chain in</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>         <span class="c1"># Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>         <span class="c1"># Otherwise it looks like a bug in the code.</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span>         <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:1374,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1372</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1373</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1374</span>         <span class="n">response</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1375</span>     <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1376</span>         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:318,</span> in <span class="ni">HTTPResponse.begin</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">316</span> <span class="c1"># read until we get a non-100 response</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">318</span>     <span class="n">version</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_status</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span>     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">CONTINUE</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">320</span>         <span class="k">break</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:279,</span> in <span class="ni">HTTPResponse._read_status</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span> <span class="k">def</span> <span class="nf">_read_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">279</span>     <span class="n">line</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">(</span><span class="n">_MAXLINE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;iso-8859-1&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">280</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">_MAXLINE</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span>         <span class="k">raise</span> <span class="n">LineTooLong</span><span class="p">(</span><span class="s2">&quot;status line&quot;</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/socket.py:705,</span> in <span class="ni">SocketIO.readinto</span><span class="nt">(self, b)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">705</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="k">except</span> <span class="n">timeout</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_timeout_occurred</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/ssl.py:1274,</span> in <span class="ni">SSLSocket.recv_into</span><span class="nt">(self, buffer, nbytes, flags)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1270</span>     <span class="k">if</span> <span class="n">flags</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1271</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1272</span>           <span class="s2">&quot;non-zero flags not allowed in calls to recv_into() on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="g g-Whitespace">   </span><span class="mi">1273</span>           <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1274</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nbytes</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1275</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1276</span>     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/ssl.py:1130,</span> in <span class="ni">SSLSocket.read</span><span class="nt">(self, len, buffer)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1128</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1129</span>     <span class="k">if</span> <span class="n">buffer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1130</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1131</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1132</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -732,7 +1011,7 @@ document.write(`
 <p>Sure enough, there’s a nearby target. The <strong>distance</strong> column in the search result tells us that this star is about 1.8 arcseconds away. Let’s have a look at it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc_contam</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024530&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_contam</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024530&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 <span class="n">lc_contam</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -751,7 +1030,7 @@ document.write(`
 <p>Let’s go back to KIC 2435971. We’re going to use the TPF we downloaded above for difference imaging; as it’s a pixel-level method, we can only use one quarter or campaign of <em>Kepler</em> data at a time. But for difference imaging to work well, we need as much data as possible to extract the period for differencing, so we’ll use the stitched light curve we prepared earlier. We’ve already downloaded the data above, so let’s remind ourselves of what the periodogram looks like:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -759,7 +1038,7 @@ document.write(`
 <p>From this, we can extract the period of the highest amplitude signal; you will have seen the <code class="docutils literal notranslate"><span class="pre">period_at_max_power</span></code> argument in one of the periodogram tutorials.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">peak</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">frequency_at_max_power</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">peak</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">frequency_at_max_power</span>
 <span class="n">period</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frequency: </span><span class="si">{</span><span class="n">peak</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s1">Period: </span><span class="si">{</span><span class="n">period</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
@@ -773,7 +1052,7 @@ document.write(`
 <p>Note that when we phase-fold the curve below, we use the <code class="docutils literal notranslate"><span class="pre">epoch_time</span></code> argument to shift the phase curve’s zero position. This helps us pick out the maxima and minima of the phase curve more clearly; however, it’s a matter of trial and error to choose a suitable epoch time for any given target. In many cases, it will suffice not to set the argument at all. An alternative to experimenting with the epoch time is appending the phased light curve to itself, which guarantees at least one clear maximum and one clear minimum. This is a better method for an automated difference imaging pipeline, but is more complicated to implement.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">folded</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folded</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">folded</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -782,7 +1061,7 @@ document.write(`
 <p>This looks promising, but there’s still a great deal of noise in the light curve. When we smooth the light curve by putting it into 0.001-day bins, we can see the sinusoidal trend more clearly:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">folded2</span> <span class="o">=</span> <span class="n">folded</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="n">time_bin_size</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folded2</span> <span class="o">=</span> <span class="n">folded</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="n">time_bin_size</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 <span class="n">folded2</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -793,7 +1072,7 @@ document.write(`
 <p>This next part uses some Python tricks to help us quickly determine which timestamps to use in calculating our difference image. If you find the code below unfamiliar, it might be helpful to read up on <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.where.html">NumPy <code class="docutils literal notranslate"><span class="pre">where()</span></code></a> and <a class="reference external" href="https://www.pythonforbeginners.com/basics/list-comprehensions-in-python">list comprehension</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">full_phase_range</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_phase_range</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
 <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">full_phase_range</span>
 <span class="n">min_phase</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">folded2</span><span class="o">.</span><span class="n">flux</span><span class="p">)]</span><span class="o">.</span><span class="n">value</span> 
 <span class="n">max_phase</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">folded2</span><span class="o">.</span><span class="n">flux</span><span class="p">)]</span><span class="o">.</span><span class="n">value</span>
@@ -808,7 +1087,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">one_quarter_minima</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">min_timestamps</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">one_quarter_minima</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">min_timestamps</span><span class="p">]</span>
 <span class="n">one_quarter_maxima</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">max_timestamps</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -820,7 +1099,7 @@ document.write(`
 <p>Now that we have identified the maximum and minimum phase timestamps to use, we can calculate our difference image! We’re also going to calculate an average of the whole quarter, and we can use Matplotlib to display them side by side for clear comparison. Note that we’re also flipping the images, so that they have the same orientation as the Lightkurve TPF plots.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">avg_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">avg_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">diff_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">one_quarter_maxima</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">one_quarter_minima</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -828,7 +1107,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">avg_image</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Quarter 9 average&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">diff_image</span><span class="p">))</span>
@@ -854,7 +1133,7 @@ document.write(`
 <p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
