@@ -32,8 +32,15 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['t0 = time.time()', '', 'results = HSC_service.run_async("""', 'SELECT MatchID, MatchRA, MatchDec, CI, A_F555W, A_F814W', 'FROM dbo.SumMagAper2CatView']
-...
-["    AND CONTAINS(POINT('ICRS', MatchRA, MatchDec),CIRCLE('ICRS',13.1866,-72.8286,0.25))=1", '   """)', 'HSC_results = results.to_table()', 'print("Query completed in {:.1f} sec".format(time.time()-t0))', 'HSC_results']
+results = HSC_service.run_async("""
+SELECT MatchID, MatchRA, MatchDec, TargetName, NumImages, NumVisits, A_F475W, A_F475W_MAD, A_F475W_N
+FROM dbo.SumMagAper2CatView
+WHERE 
+   A_F475W_N >= 10
+   AND
+   CONTAINS(POINT('ICRS', MatchRA, MatchDec),CIRCLE('ICRS',16.117562,2.162183,0.1))=1
+   """)
+HSC_results = results.to_table()
+HSC_results
 -------------------
 
