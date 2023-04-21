@@ -1,0 +1,1372 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/TESS/asteroid_rotation/asteroid_rotation';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TESS FFIs" href="../FFIs.html" />
+    <link rel="prev" title="Intermediate: Finding Flares and Variable Stars in TASOC Light Curves" href="../interm_tasoc_lc/interm_tasoc_lc.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Astrocut</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../astrocut/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Astroquery</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../astroquery/intro.html">Intro</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../astroquery/nb.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion Notebook</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../lc.html">Light Curves</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../FFIs.html">TESS FFIs</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../noise.html">Instrumental Noise</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/spacetelescope/mast_notebooks/main?urlpath=tree/notebooks/notebooks/TESS/asteroid_rotation/asteroid_rotation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/spacetelescope/mast_notebooks/blob/main/notebooks/notebooks/TESS/asteroid_rotation/asteroid_rotation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/TESS/asteroid_rotation/asteroid_rotation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/TESS/asteroid_rotation/asteroid_rotation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-tess-observations-using-astroquery">Searching for TESS Observations Using <code class="docutils literal notranslate"><span class="pre">astroquery</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#investigating-the-tesscut-data">Investigating the TESScut Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-structure-and-auxillary-data">File Structure and Auxillary Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-individual-cutouts">Plotting Individual Cutouts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-cutout-in-lightkurve">Plotting the Cutout in <code class="docutils literal notranslate"><span class="pre">Lightkurve</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-a-moving-target">Loading a Moving Target</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-interactive-light-curve">Create an Interactive Light Curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning">Data Cleaning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-blank-cadences">Removing Blank Cadences</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-stellar-contamination">Removing Stellar Contamination</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-combined-light-curve">Plotting a Combined Light Curve</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-rotation-period-from-periodogram">Finding the Rotation Period from Periodogram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><a id="top"></a></p>
+<section id="finding-the-rotation-curve-of-an-asteroid-or-comet-with-tesscut-and-lightkurve">
+<h1>Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve<a class="headerlink" href="#finding-the-rotation-curve-of-an-asteroid-or-comet-with-tesscut-and-lightkurve" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand what a TESS cutout of a moving target is</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">Tesscut</span></code> feature of <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> to find a cutout of an asteroid or comet by name</p></li>
+<li><p>Plot light curves using lightkurve</p></li>
+<li><p>Find the rotation period of a bright asteroid using lightkurve</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>NASA’s <a class="reference external" href="https://archive.stsci.edu/missions-and-data/tess">Transiting Exoplanet Survey Satellite, or TESS</a>, was designed to detect planets orbiting bright stars. There are a number of different kinds of <a class="reference external" href="https://heasarc.gsfc.nasa.gov/docs/tess/data-products.html">TESS data products</a> available in the MAST archive, including:</p>
+<ul class="simple">
+<li><p>FFI (full-frame image) time series contain the entire image captured by the camera taken at different times; these are large views of the sky.</p></li>
+<li><p>Target Pixel Files (TPFs) are smaller subsets of full images focused on a single target. They are “postage-stamp” sized images separated by smaller time intervals than FFIs.</p></li>
+<li><p>Light Curve Files are derived from the TPFs using Simple Aperture Photometry (SAP).</p></li>
+</ul>
+<p>Though TESS was designed to study stars and the signatures of exoplanets orbiting them, inevitably other objects are observed within the FFIs. In particular, some asteroids and comets move through the observing sectors. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a> noted:</p>
+<blockquote>
+<div><p>“While its primary mission avoids the vicinity of the ecliptic plane by approximately six degrees, the scale height of the solar system debris disk is large enough to place various small body populations in the field of view.”</p>
+</div></blockquote>
+<p>Because small bodies like asteroids and comets are moving targets, they don’t have fixed RA and Dec coordinates. The MAST archive’s <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESScut</a> tool has built-in features to find all of the sectors that include observations of a moving target, so long as the object’s name or ID can be understood by the <a class="reference external" href="https://ssd.jpl.nasa.gov/horizons/app.html#/">JPL Horizon ephemerades interface</a>. <code class="docutils literal notranslate"><span class="pre">TESScut</span></code> can then return a “cutout” of the full-frame images centered on the target as it moves through the observing sector. With this cutout, we can perform some simple aperture photometry on the target with <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code>.</p>
+<p>In <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a>, the bright asteroid 354 Eleonora (often just called “Eleonora”) was found to have a rotation period of 4.27735 hours and had a mean magnitude of about 9.4 while observed by TESS.</p>
+<p>In this tutorial, we will use <code class="docutils literal notranslate"><span class="pre">TESScut</span></code> to download a cutout of the TESS observations of Eleonora and use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> to create a light curve of Eleonora and find its rotation period. This simple method will work because Eleonora is a relatively bright asteroid. Generally, for fainter solar system objects, more complex photometry methods will be needed. We’ll investigate why in one of the exercises.</p>
+</section>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading">#</a></h2>
+<p>The workflow for this notebook consists of:</p>
+<ul class="simple">
+<li><p><span class="xref myst">Imports</span></p></li>
+<li><p><span class="xref myst">Searching for TESS Observations using astroquery</span></p></li>
+<li><p><span class="xref myst">Investigating TESSCut Data</span></p>
+<ul>
+<li><p><span class="xref myst">File Structure and Auxillary Data</span></p></li>
+<li><p><span class="xref myst">Plotting Individual Cutouts</span></p></li>
+</ul>
+</li>
+<li><p><span class="xref myst">Plotting the Cutout in Lightkurve</span></p>
+<ul>
+<li><p><span class="xref myst">Loading a Moving Target</span></p></li>
+<li><p><span class="xref myst">Create an Interactive Light Curve</span></p></li>
+<li><p><span class="xref myst">Data Cleaning</span></p>
+<ul>
+<li><p><span class="xref myst">Removing Blank Cadences</span></p></li>
+<li><p><span class="xref myst">Removing Stellar Contamination</span></p></li>
+</ul>
+</li>
+<li><p><span class="xref myst">Plotting a Combined Light Curve</span></p></li>
+</ul>
+</li>
+<li><p><span class="xref myst">Finding the Rotation Period from Periodogram</span></p></li>
+<li><p><span class="xref myst">Exercises</span></p></li>
+</ul>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">astropy.io</span> <span class="pre">fits</span></code> for acccessing FITS files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">astropy.table</span> <span class="pre">Table</span></code> for creating tidy tables of the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> to handle array functions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> for plotting data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">astroquery.mast</span> <span class="pre">Tesscut</span></code> will create a cutout of the TESS data from the MAST Archive</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> contains many useful tools for plotting and analyzing light curves</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Tesscut</span>
+<span class="kn">from</span> <span class="nn">astropy.visualization</span> <span class="kn">import</span> <span class="n">time_support</span>
+<span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="searching-for-tess-observations-using-astroquery">
+<h2>Searching for TESS Observations Using <code class="docutils literal notranslate"><span class="pre">astroquery</span></code><a class="headerlink" href="#searching-for-tess-observations-using-astroquery" title="Permalink to this heading">#</a></h2>
+<p>You can use the <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESScut webpage</a> to make a cutout of a TESS FFI time series; for a solar system object like an asteroid or comet, be sure to click on the “Moving Target” button at the top after the words “Create cutout based on.”</p>
+<p>To create a scriptable process for using TESScut, we can instead use the built-in <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html#cutouts">MAST functionality in astroquery to access TESScut</a>. Let’s set our object name to “Eleonora.”</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">objname</span> <span class="o">=</span> <span class="s1">&#39;Eleonora&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>TESS observed distinct areas of the sky called Sectors. We can use <code class="docutils literal notranslate"><span class="pre">Tesscut.get_sectors</span></code> to see which (if any) sectors inlude observations of our object. Whenever using <code class="docutils literal notranslate"><span class="pre">Tesscut</span></code> with a moving target, we must always set <code class="docutils literal notranslate"><span class="pre">moving_target=True</span></code> (the default is <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sector_table</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_sectors</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">moving_target</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sector_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  sectorName   sector camera ccd
+-------------- ------ ------ ---
+tess-s0006-1-1      6      1   1
+tess-s0023-1-1     23      1   1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we’ll use <code class="docutils literal notranslate"><span class="pre">Tess.get_cutouts</span></code> to, as the name implies, get the cutouts. Again, we must include the keyword <code class="docutils literal notranslate"><span class="pre">moving_target=True</span></code>.</p>
+<p>We will also add the <code class="docutils literal notranslate"><span class="pre">size</span></code> keyword to choose how many pixels (in both width and height) we want our cutout to be. For this tutorial, we will choose a 10x10 cutout. This choice significantly affects the size of the <code class="docutils literal notranslate"><span class="pre">.fits</span></code> files and the time it will take to complete <code class="docutils literal notranslate"><span class="pre">get_cutouts</span></code>.</p>
+<p>You can specify e.g. <code class="docutils literal notranslate"><span class="pre">sector=6</span></code> when requesting a single cutout, but it’s not necessary. Without specifying the sector, we will receive results for all sectors available.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">moving_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of hdulist =&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hdulist</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">moving_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of hdulist =&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hdulist</span><span class="p">))</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/cutouts.py:399,</span> in <span class="ni">TesscutClass.get_cutouts</span><span class="nt">(self, coordinates, size, sector, objectname, moving_target, mt_type)</span>
+<span class="g g-Whitespace">    </span><span class="mi">396</span>     <span class="k">if</span> <span class="n">mt_type</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">397</span>         <span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;obj_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt_type</span>
+<span class="ne">--&gt; </span><span class="mi">399</span>     <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_api_connection</span><span class="o">.</span><span class="n">service_request_async</span><span class="p">(</span><span class="s2">&quot;mt_astrocut&quot;</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">401</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">402</span> 
+<span class="g g-Whitespace">    </span><span class="mi">403</span>     <span class="c1"># Get Skycoord object for coordinates/object</span>
+<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">parse_input_location</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">objectname</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/class_or_instance.py:25,</span> in <span class="ni">class_or_instance.__get__.&lt;locals&gt;.f</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/services.py:292,</span> in <span class="ni">ServiceAPI.service_request_async</span><span class="nt">(self, service, params, page_size, page, use_json, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span>     <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span>
+<span class="g g-Whitespace">    </span><span class="mi">291</span>     <span class="n">catalogs_request</span> <span class="o">=</span> <span class="n">params</span>
+<span class="ne">--&gt; </span><span class="mi">292</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">request_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">catalogs_request</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="n">use_json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="k">return</span> <span class="n">response</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/services.py:187,</span> in <span class="ni">ServiceAPI._request</span><span class="nt">(self, method, url, params, data, headers, files, stream, auth, cache, use_json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>                                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">187</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span>                                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span> <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Timeout limit of </span><span class="si">{}</span><span class="s2"> exceeded.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">))</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:339,</span> in <span class="ni">BaseQuery._request</span><span class="nt">(self, method, url, params, data, headers, files, save, savedir, timeout, cache, stream, auth, continuation, verify, allow_redirects, json, return_response_on_save)</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cache</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="k">with</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;cache_active&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">339</span>         <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span>                                  <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>                                  <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>                                  <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">from_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_location</span><span class="p">,</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">cache_timeout</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:74,</span> in <span class="ni">AstroQuery.request</span><span class="nt">(self, session, cache_location, stream, auth, verify, allow_redirects, json)</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">cache_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>             <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span>             <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>                            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>                            <span class="n">files</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span>                            <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span>                            <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span>                            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:587,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">587</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="k">return</span> <span class="n">resp</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:708,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span> <span class="n">r</span><span class="o">.</span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span> <span class="c1"># Response manipulation hooks</span>
+<span class="ne">--&gt; </span><span class="mi">708</span> <span class="n">r</span> <span class="o">=</span> <span class="n">dispatch_hook</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">,</span> <span class="n">hooks</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span> <span class="c1"># Persist cookies</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">history</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">712</span> 
+<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="c1"># If the hooks create history then we want those cookies too</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/hooks.py:30,</span> in <span class="ni">dispatch_hook</span><span class="nt">(key, hooks, hook_data, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>     <span class="n">hooks</span> <span class="o">=</span> <span class="p">[</span><span class="n">hooks</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span> <span class="k">for</span> <span class="n">hook</span> <span class="ow">in</span> <span class="n">hooks</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">30</span>     <span class="n">_hook_data</span> <span class="o">=</span> <span class="n">hook</span><span class="p">(</span><span class="n">hook_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>     <span class="k">if</span> <span class="n">_hook_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>         <span class="n">hook_data</span> <span class="o">=</span> <span class="n">_hook_data</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:223,</span> in <span class="ni">BaseQuery._response_hook</span><span class="nt">(self, response, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response_hdrs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>         <span class="s2">&quot;Streaming Data</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">223</span>     <span class="n">response_log</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">224</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response_hdrs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">228</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span>         <span class="sa">f</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;HTTP response</span><span class="se">\n</span><span class="si">{</span><span class="n">response_log</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/textwrap.py:488,</span> in <span class="ni">indent</span><span class="nt">(text, prefix, predicate)</span>
+<span class="g g-Whitespace">    </span><span class="mi">486</span>     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">487</span>         <span class="k">yield</span> <span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">line</span> <span class="k">if</span> <span class="n">predicate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">else</span> <span class="n">line</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">488</span> <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prefixed_lines</span><span class="p">())</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/textwrap.py:486,</span> in <span class="ni">indent.&lt;locals&gt;.prefixed_lines</span><span class="nt">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">485</span> <span class="k">def</span> <span class="nf">prefixed_lines</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">486</span>     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">487</span>         <span class="k">yield</span> <span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">line</span> <span class="k">if</span> <span class="n">predicate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">else</span> <span class="n">line</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="investigating-the-tesscut-data">
+<h2>Investigating the TESScut Data<a class="headerlink" href="#investigating-the-tesscut-data" title="Permalink to this heading">#</a></h2>
+<p>The result of <code class="docutils literal notranslate"><span class="pre">Tesscut.get_cutouts</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">.fits</span></code> datasets; there is one element in the list per sector returned above. The contents of each element in <code class="docutils literal notranslate"><span class="pre">hdulist</span></code> are identical to the <code class="docutils literal notranslate"><span class="pre">.fits</span></code> files downloaded from the <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESSCut</a> website with the same selections (target name and size).</p>
+<section id="file-structure-and-auxillary-data">
+<h3>File Structure and Auxillary Data<a class="headerlink" href="#file-structure-and-auxillary-data" title="Permalink to this heading">#</a></h3>
+<p>Let’s examine the <em>second</em> item in the list, because it will be the more interesting of the two, as we’ll soon see.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result that we get is described in the <a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/file_formats.html#path-focused-target-pixel-files">astrocut documentation on Path Focused Target Pixel Files</a>. Extension 0 is the header with metadata. Astronomers not used to working with moving targets may note that the <code class="docutils literal notranslate"><span class="pre">RA_OBJ</span></code> and <code class="docutils literal notranslate"><span class="pre">DEC_OBJ</span></code> keywords are not there!</p>
+<p>Extension 1 is the data we most want in the form of a binary table; we’ll look at that next.</p>
+<p>But first, Extension 2, if present, is an image the size of the full-frame image (FFI) that the cutouts were drawn from. It’s an array: the value is 1 if the pixel was used and 0 if the pixel was not. By displaying this array as an image, we can see the trajectory of our moving target through the TESS sector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It appears that for this sector Eleonora is partially outside of the sector during the course of the observations.</p>
+</section>
+<section id="plotting-individual-cutouts">
+<h3>Plotting Individual Cutouts<a class="headerlink" href="#plotting-individual-cutouts" title="Permalink to this heading">#</a></h3>
+<p>Returning to Extension 1, this is a binary table with 358 rows and 16 columns. We can print out the names of each column, along with information about the units and size of arrays (when applicable).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To create our plot, we’ll want to use the data in the ‘FLUX’ column. Note that it has a shape of (10,10), which is the size of the cutout we requested.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the subplot</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Use the flux data to create the image</span>
+<span class="n">imgplot</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;FLUX&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flux (e-/s)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add a title, units, and print RA/DEC</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">objname</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TUNIT1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RA: &#39;</span><span class="p">,</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">14</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dec: &#39;</span><span class="p">,</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">15</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Whoops! This doesn’t look right. Recall that Eleonora is not always in the TESS field of view; we must be looking at data from before the asteroid enters the sector.</p>
+<p>Let’s view a later image instead, say at row (or “cadence”) 100.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s use a parameter to set the row to 100.</span>
+<span class="c1"># How does the listed time change as a result?</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">100</span>
+
+<span class="c1"># As before, create the plot, add titles, print RA/Dec</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">imgplot</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;FLUX&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">objname</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TUNIT1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RA: &#39;</span><span class="p">,</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">14</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dec: &#39;</span><span class="p">,</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">15</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we see our target. Remember, we thought the asteroid would not be in the field of view the whole time; we now see that the target started out of the frame and moved in. Notice that roughly two days have elapsed and the target has moved to a different RA and Dec.</p>
+<p><a id="lightkurve"></a></p>
+</section>
+</section>
+<section id="plotting-the-cutout-in-lightkurve">
+<h2>Plotting the Cutout in <code class="docutils literal notranslate"><span class="pre">Lightkurve</span></code><a class="headerlink" href="#plotting-the-cutout-in-lightkurve" title="Permalink to this heading">#</a></h2>
+<p>Though <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> has a <code class="docutils literal notranslate"><span class="pre">search_tesscut</span></code> function, it does not yet work for moving targets.</p>
+<section id="loading-a-moving-target">
+<h3>Loading a Moving Target<a class="headerlink" href="#loading-a-moving-target" title="Permalink to this heading">#</a></h3>
+<p>We’ll need to save these .fits files locally to load them as Target Pixel Files into <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code>. In a later exercise, you’ll confirm that the files we write are the same as those from the <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESSCut</a> tool in a web browser.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsectors</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">hdulist</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span> 
+    <span class="n">hdulist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">writeto</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">objname</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we’ll load each .fits file in as a <code class="docutils literal notranslate"><span class="pre">TessTargetPixelFile</span></code> object and collect all the sectors together into a <code class="docutils literal notranslate"><span class="pre">TargetPixelFileCollection</span></code> object; basically, a list of target pixel file (TPF) objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span>
+    <span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">TessTargetPixelFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">objname</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.fits&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> 
+        <span class="n">tpfc</span><span class="o">=</span><span class="n">lk</span><span class="o">.</span><span class="n">TargetPixelFileCollection</span><span class="p">([</span><span class="n">tpf</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tpfc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tpf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-an-interactive-light-curve">
+<h3>Create an Interactive Light Curve<a class="headerlink" href="#create-an-interactive-light-curve" title="Permalink to this heading">#</a></h3>
+<p>For one TPF at a time, we can use the <code class="docutils literal notranslate"><span class="pre">interact</span></code> feature of <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> to easily view a light curve (on the left) as a function of time. On the right, we’ll see the 10x10 image of Eleonora, overlaid with the aperture mask used for the aperture photometry that produced the light curve. You can view the <a class="reference external" href="https://docs.lightkurve.org/tutorials/1-getting-started/interactively-inspecting-data.html">Interactively inspecting Target Pixel Files</a> tutorial to learn about more of the features of <code class="docutils literal notranslate"><span class="pre">interact</span></code> such as how to choose a custom aperture mask or change the screen stretch.</p>
+<p>Let’s view the second sector observed by TESS. Try clicking and dragging the “Cadence Number” bar to see how Eleonora moves through the field of view. Can you tell that it is rotating every few hours?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpfc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The light curve above confirms our suspicion that Eleonora was not viewable in the sector during the whole time of observation because it moved <em>into</em> the FFI during the observation. At the time of the writing of this tutorial, these cadences do not have a quality flag associated with them.</p>
+<p>We can check that all of the cadences loaded in this observation have a quality flag of zero:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tpfc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Oh no! That’s larger than zero. Let’s look at the nonzero values and associated cadences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an empty flags list</span>
+<span class="n">flags</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Create a numbered list of flags, then go through them sequentially</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">flag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tpfc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">quality</span><span class="p">):</span>
+    <span class="c1"># Add the number/flag pair if the flag is greater than zero</span>
+    <span class="k">if</span> <span class="n">flag</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">flags</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">flag</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span>        
+</pre></div>
+</div>
+</div>
+</div>
+<p>Aha. A value of 2048 <a class="reference external" href="https://outerspace.stsci.edu/display/TESS/2.0+-+Data+Product+Overview">indicates stray light from the Earth/Moon</a>, which might affect our measurements. Fortunately, Elenora doesn’t enter the field of view until cadence 56. Our list above shows that the last frame with this flag is 60. Even the four “bad” frames don’t seem to be affected by the stray light, so we should be okay to proceed.</p>
+<p><em>Note</em>: Although a for loop is more readable, we can accomplish the same thing we do in above cell with list comprehension. See the cell below for an example!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s use list comprehension to do this in a single line</span>
+<span class="n">flags</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">flag</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">flag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tpfc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span> <span class="k">if</span> <span class="n">flag</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-cleaning">
+<h3>Data Cleaning<a class="headerlink" href="#data-cleaning" title="Permalink to this heading">#</a></h3>
+<section id="removing-blank-cadences">
+<h4>Removing Blank Cadences<a class="headerlink" href="#removing-blank-cadences" title="Permalink to this heading">#</a></h4>
+<p>To remove the blank cadences, we will make the light curve for each TPF, collect them as a list in a <code class="docutils literal notranslate"><span class="pre">LightCurveCollection</span></code> object and then truncate the light curves.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span>
+    <span class="n">lc</span><span class="o">=</span><span class="n">tpfc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> 
+        <span class="n">lcc</span><span class="o">=</span><span class="n">lk</span><span class="o">.</span><span class="n">LightCurveCollection</span><span class="p">([</span><span class="n">lc</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lcc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Based on the <code class="docutils literal notranslate"><span class="pre">interact</span></code> screen above, the second lightkurve should be truncated for all rows before cadence number 59. In an exercise below, you can confirm for yourself that we should truncate the first lightkurve after cadence number 293.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">lcc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">after</span><span class="o">=</span><span class="mi">293</span><span class="p">,</span><span class="n">column</span><span class="o">=</span><span class="s1">&#39;cadenceno&#39;</span><span class="p">)</span>
+<span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">before</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span><span class="n">column</span><span class="o">=</span><span class="s1">&#39;cadenceno&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="removing-stellar-contamination">
+<h4>Removing Stellar Contamination<a class="headerlink" href="#removing-stellar-contamination" title="Permalink to this heading">#</a></h4>
+<p>The second light curve also shows two notable features around cadences 191-203 and 366-381. By examining the pixel data screen on the right, it’s clear that Eleonora passed by two stars at those times. The flux from both stars is added into the aperture photometry and resulting light curve, so we should also remove those cadences from our light curve. If we don’t, they may interfere with the periodogram.</p>
+<p>In this case, we can use <code class="docutils literal notranslate"><span class="pre">remove_outliers</span></code> to remove fluxes greater than 2 standard deviations from the median. In a later exercise, you can confirm that this does not modify the rest of the periodic fluctuation of the light curve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">sigma_upper</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plotting-a-combined-light-curve">
+<h3>Plotting a Combined Light Curve<a class="headerlink" href="#plotting-a-combined-light-curve" title="Permalink to this heading">#</a></h3>
+<p>Now we’re ready to view the two light curves on one plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Admittedly, this view is not very helpful because of the large gap in time between observations of Eleonora. However, this time gap is important because it explains the difference in mean flux values between the two observations. Eleonora must have either been farther away from us during the first sector (and hence, dimmer) <em>or</em> possibly in a dimmer phase due to its position from us relative to the sun.</p>
+<p>Still, having more data will help confirm the periodic nature of the flux variation, and hence, the period of the rotation of the asteroid. So, we should still stitch these together to create one light curve. In an exercse, you can investigate if this affects the rotation period.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_stitched</span><span class="o">=</span><span class="n">lcc</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+<span class="n">lc_stitched</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a id="period"></a></p>
+</section>
+</section>
+<section id="finding-the-rotation-period-from-periodogram">
+<h2>Finding the Rotation Period from Periodogram<a class="headerlink" href="#finding-the-rotation-period-from-periodogram" title="Permalink to this heading">#</a></h2>
+<p>Next, we’ll create the periodogram of this stitched light curve. More information can be found in the lightkurve documentation: <a class="reference external" href="https://docs.lightkurve.org/tutorials/1-getting-started/what-are-periodogram-objects.html">What are Periodogram objects?</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">=</span><span class="n">lc_stitched</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is clearly a frequency around 11 d<sup>-1</sup> found with maximum power. That corresponds to a period of:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or, in hours:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">hr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use this period to fold the light curve. This plots the flux values as a function of phase, or progress along each iteration of the period. In the folded light curve, the horizontal axis spans a value of 0.089 days. Rather than be shown all from left to right in time, the data points go back to the left side of the graph every 0.089 days; that’s why it’s “folded.”</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_stitched</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There appear to be two separate light curves: one with higher variation from the normalized flux, and one with lower variation. These correspond, respectively, to the first and second sectors, where the mean brightness of the asteroid was notably different. We can confirm this by examining each folded light curve separately.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The folded light curve for the second sector looks a little suspicious because the same point in the phase (around 0.02) seems to show two different levels of flux. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a>, found a rotation period of 4.27735 hours; their period is almost a perfectly integer multiple of ours (times 2), which is known as a harmonic. Their period corresponds to second highest peak in our periodogram. We can view the difference this makes by looking at the folded light curve with our period times two:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The accepted period (the second one we viewed) produced better folded light curves. It’s possible that our result was off by a factor of two due to a kind of symmetry in the asteroid. A more easily understandable example of this would be an eclipsing binary system; if the stars are a similar size, we will measure the period as being half of the true value. Dips of similar sizes might be counted as <em>the same</em> transit when they are in reality two distinct transits, which is likely what happened above. See the somewhat rudimentary diagram below for a visual explanation.</p>
+<a class="reference internal image-reference" href="../../../_images/transits.png"><img alt="../../../_images/transits.png" src="../../../_images/transits.png" style="width: 500px;" /></a>
+<p>It’s possible Eleonora has a double-lobe shape that causes a similar type of degeneracy to eclipsing binaries. As a matter of fact, the somewhat famous comet 67P/Churyumov-Gerasimenko exhibits this type of behavior. You can see an excellent example of this type of rotation in the images from ESA/Rosetta/NAVCAM (<a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0/igo/">CC BY-SA IGO 3.0</a>).</p>
+<a class="reference internal image-reference" href="../../../_images/67P.gif"><img alt="../../../_images/67P.gif" class="align-center" src="../../../_images/67P.gif" style="width: 400px;" /></a>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Confirm that the first light curve in our hdulist should be truncated after cadence number 293.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place for code for Exercise 1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Confirm that using a <code class="docutils literal notranslate"><span class="pre">remove_outlier</span></code> cutoff of <code class="docutils literal notranslate"><span class="pre">sigma_upper=2</span></code> did not affect the other cadences of the light curve for the second sector. At this point in the tutorial, the second sector’s original light curve is still saved under the variable name <code class="docutils literal notranslate"><span class="pre">lc</span></code>; plot a graph of its time vs. flux columns and then overplot our sigma-clipped time and flux columns. Hint: You’ll need to <a class="reference external" href="https://docs.astropy.org/en/stable/visualization/matplotlib_integration.html#plotting-times">load <code class="docutils literal notranslate"><span class="pre">time_support()</span></code> first</a> in order to use the time column in matplotlib.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place for code for Exercise 2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Determine if the rotation period returned by <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> is different when using only one sector’s light curve at a time.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place for code for Exercise 3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Use the interactive <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESSCut webpage</a> to download 10x10 cutouts for all sectors observing Eleonora. Be sure to select “Moving Target” at the top! Load the resulting fits files in and confirm that they are identical to the items in <code class="docutils literal notranslate"><span class="pre">hdulist</span></code> above. Hint: Astropy has a built-in method called <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/api/diff.html">FITSDiff</a>.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place for code for Exercise 4</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a> such as Hippodamia. What issues do you encounter in this case?</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place for code for Exercise 5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Use <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mpc/mpc.html?highlight=mpc#ephemerides">astroquery’s Minor Planet Center Queries (MPC)</a> <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations. The times of each cadence are in the light curve’s <code class="docutils literal notranslate"><span class="pre">time</span></code> column.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place for code for Exercise 6</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Permalink to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">astropy</span></code>, <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code>, or <code class="docutils literal notranslate"><span class="pre">TESScut</span></code> for published research, please cite the
+authors. Follow these links for more information about citations:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code></a></p></li>
+<li><p><a class="reference external" href="http://docs.lightkurve.org/about/citing.html">Citing <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code></a></p></li>
+<li><p>Cite <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2019ascl.soft05007B/abstract">Brasseur et al. 2019</a> for TESScut</p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Author:</strong> Julia Kamenetzky<br>
+<strong>Keywords:</strong> TESS, asteroid, lighkurve<br>
+<strong>Last Updated:</strong>  Apr 2023</p>
+<hr class="docutils" />
+<p><span class="xref myst">Top of Page</span>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/TESS/asteroid_rotation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../interm_tasoc_lc/interm_tasoc_lc.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../FFIs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">TESS FFIs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-tess-observations-using-astroquery">Searching for TESS Observations Using <code class="docutils literal notranslate"><span class="pre">astroquery</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#investigating-the-tesscut-data">Investigating the TESScut Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-structure-and-auxillary-data">File Structure and Auxillary Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-individual-cutouts">Plotting Individual Cutouts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-cutout-in-lightkurve">Plotting the Cutout in <code class="docutils literal notranslate"><span class="pre">Lightkurve</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-a-moving-target">Loading a Moving Target</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-interactive-light-curve">Create an Interactive Light Curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning">Data Cleaning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-blank-cadences">Removing Blank Cadences</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-stellar-contamination">Removing Stellar Contamination</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-combined-light-curve">Plotting a Combined Light Curve</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-rotation-period-from-periodogram">Finding the Rotation Period from Periodogram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
