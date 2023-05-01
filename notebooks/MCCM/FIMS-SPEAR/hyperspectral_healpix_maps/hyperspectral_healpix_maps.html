@@ -694,7 +694,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fixing a few global settings</span>
-<span class="o">%</span><span class="k">matplotlib</span> notebook
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">5.85</span><span class="p">)</span>
 <span class="n">conf</span><span class="o">.</span><span class="n">max_lines</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># Max lines for astropy.Table in-notebook display</span>
@@ -734,7 +734,7 @@ document.write(`
 <blockquote>
 <div><center>Fig. 1 image description: all-sky map of integrated intensity from the C IV emission line, with adaptive binning that gets smaller in regions with high intensity (like the Vela supernova remnant towards the right, the brightest part of the map).</center></div></blockquote>
 <p>But hyperspectral maps are a little bit more complicated, and <code class="docutils literal notranslate"><span class="pre">healpy.fitsfunc.read_map</span></code> won’t work for them.</p>
-<p>Let’s download several hyperspectral HEALPix maps created by the FIMS team: Nside=512 (7 arcmin resolution) and Nside=64 (55 arcmin resolution) for the L-band data, and Nside=64 for the S-band data. The spatial resolution of a HEALPix scheme is parameterized as <code class="docutils literal notranslate"><span class="pre">Nside</span></code>, which is equal to the number of subdivisions along the side of a baseline HEALPixel (where the baseline HEALPixel at Nside=1 spans 1/12th of the sky).</p>
+<p>Let’s download several hyperspectral HEALPix maps created by the FIMS team: Nside=64 for both bands, and an additional higher-Nside map for L-Band. The spatial resolution of a HEALPix scheme is parameterized as <code class="docutils literal notranslate"><span class="pre">Nside</span></code>, which is equal to the number of subdivisions along the side of a baseline HEALPixel (where the baseline HEALPixel at Nside=1 spans 1/12th of the sky).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uri1</span> <span class="o">=</span> <span class="s1">&#39;mast:MCCM/fims-spear/fims/hp-map-hsi/mccm_fims-spear_fims-ap100-n064_sky-starless_long_v1.0_hp-map-hsi.fits.gz&#39;</span>
@@ -750,14 +750,34 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The Nside=512 map would be 4.5 GB if we downloaded the whole thing, so for this tutorial we’ve made a special 360 MB file that only contains data in the regions that we need. If you’d like to download the full map instead, comment out the first line below and uncomment the second line. Everything in this notebook will work either way!</p>
+<p>For our high-resolution map, it would be ideal to use the highest resolution available, Nside=512. But that would be 4.5 GB compressed on-disk, and 12 GB decompressed into memory. So for this demonstration we’ll default to a special Nside=256 map that only contains data in the regions that we need.</p>
+<p><strong>If you have a good internet connection and sufficient RAM, we highly recommend that you comment out the first cell below, and uncomment the second cell, for the full FIMS-SPEAR experience. Everything in this notebook will work either way!</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uri5</span> <span class="o">=</span> <span class="s1">&#39;mast:MCCM/fims-spear/tutorial/mccm_fims-spear_fims-ap100-n512_tutorial-cutout-starless_long_v1.0_hp-map-hsi.fits.gz&#39;</span> <span class="c1"># tutorial cutout map</span>
-<span class="c1"># uri5 = &#39;mast:MCCM/fims-spear/fims/hp-map-hsi/mccm_fims-spear_fims-ap100-n512_sky-starless_long_v1.0_hp-map-hsi.fits.gz&#39; # full map</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use this cell if you have a limited internet connection or limited RAM.</span>
 
-<span class="n">Observations</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">uri5</span><span class="p">)</span> <span class="c1"># 360 MB (or 4.5 GB if the second line above is executed)</span>
-<span class="n">file_n512</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">uri5</span><span class="p">)</span>
+<span class="n">nside_highres</span> <span class="o">=</span> <span class="mi">256</span> <span class="c1"># Download the Nside=256 map cutout</span>
+<span class="n">uri5</span> <span class="o">=</span> <span class="s1">&#39;mast:MCCM/fims-spear/tutorial/mccm_fims-spear_fims-ap100-n256_tutorial-cutout-starless_long_v1.0_hp-map-hsi.fits.gz&#39;</span> <span class="c1"># tutorial cutout map</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Uncomment this cell to use the full Nside=512 map instead:</span>
+
+<span class="c1"># nside_highres = 512 # Download the Nside=512 full map</span>
+<span class="c1"># uri5 = &#39;mast:MCCM/fims-spear/fims/hp-map-hsi/mccm_fims-spear_fims-ap100-n512_sky-starless_long_v1.0_hp-map-hsi.fits.gz&#39; # full map</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Execute this cell either way:</span>
+
+<span class="n">Observations</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">uri5</span><span class="p">)</span> <span class="c1"># 360 MB (or 4.5 GB if the second cell above is executed)</span>
+<span class="n">file_highres</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">uri5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -822,7 +842,7 @@ document.write(`
 <span class="n">s_n064</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;mccm_fims-spear_fims-ap100-n064_sky-starless_short_v1.0_hp-map-hsi.fits.gz&#39;</span><span class="p">,</span> 
                     <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
 
-<span class="n">l_n512</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_n512</span><span class="p">,</span> 
+<span class="n">l_highres</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_highres</span><span class="p">,</span> 
                     <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span> <span class="c1"># this one may take a minute</span>
 </pre></div>
 </div>
@@ -877,11 +897,11 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Integrated intensity maps (background-subtracted)</span>
 <span class="n">l_n064_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_n064</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># integrate over wavelength</span>
 <span class="n">s_n064_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s_n064</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">l_n512_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">l_highres_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">l_n064_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">s_n064_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">l_n512_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l_highres_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -909,11 +929,11 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Maps of spatially-averaged spectra</span>
 <span class="n">l_n064_spec</span> <span class="o">=</span> <span class="n">weighted_spatial_average</span><span class="p">(</span><span class="n">l_n064</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">l_n064</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">])</span> <span class="c1"># integrate over spatial coordinate</span>
 <span class="n">s_n064_spec</span> <span class="o">=</span> <span class="n">weighted_spatial_average</span><span class="p">(</span><span class="n">s_n064</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">s_n064</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">])</span>
-<span class="n">l_n512_spec</span> <span class="o">=</span> <span class="n">weighted_spatial_average</span><span class="p">(</span><span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">])</span>
+<span class="n">l_highres_spec</span> <span class="o">=</span> <span class="n">weighted_spatial_average</span><span class="p">(</span><span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">],</span> <span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">l_n064_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">s_n064_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">l_n512_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l_highres_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1016,13 +1036,13 @@ document.write(`
 <blockquote>
 <div><center>Fig. 4 image description: The top row shows all-sky integrated count maps in the L and S bands, and the bottom row shows exposure maps in the L and S bands. The count maps and the exposure maps look similar. </center></div></blockquote>
 <p>Many fewer counts were detected in S-band compared to L-band, even though their exposure times were broadly similar. This is because <a class="reference external" href="https://outerspace.stsci.edu/display/SPEARFIMS/Design">the S-band detector suffered from a severe loss of sensitivity during manufacturing</a>.</p>
-<p>Finally, let’s take a quick look at the high-resolution (Nside=512) map, in which each HEALPixel is about 7 arcmin in size:</p>
+<p>Finally, let’s take a quick look at an Nside=512 map, in which each HEALPixel is about 7 arcmin in size:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # If you downloaded the full 4.5 GB map, uncomment this cell and plot it yourself:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # If you downloaded the full 4.5 GB, Nside=512 map, uncomment this cell and plot it yourself:</span>
 
 <span class="c1"># display(Markdown(&quot;&lt;font size=6&gt;Fig. 5: High-resolution integrated intensity map&lt;/font&gt;&quot;))</span>
-<span class="c1"># hp.mollview(l_n512_map, min=min1, max=max1, coord=&#39;G&#39;, unit=&#39;photon cm-2 s-1 sr-1&#39;, title=&#39;&#39;, notext=True)</span>
+<span class="c1"># hp.mollview(l_highres_map, min=min1, max=max1, coord=&#39;G&#39;, unit=&#39;photon cm-2 s-1 sr-1&#39;, title=&#39;&#39;, notext=True)</span>
 </pre></div>
 </div>
 </div>
@@ -1220,8 +1240,8 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&lt;font size=6&gt;Fig. 13: Vela supernova remnant&lt;/font&gt;&quot;</span><span class="p">))</span>
 
-<span class="c1"># Switching to the higher resolution (Nside=512) map</span>
-<span class="n">hp</span><span class="o">.</span><span class="n">cartview</span><span class="p">(</span><span class="n">l_n512_map</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">min1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">max1</span><span class="o">*</span><span class="mf">3.</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="n">lonra</span><span class="o">=</span><span class="n">lonrange</span><span class="p">,</span> <span class="n">latra</span><span class="o">=</span><span class="n">latrange</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Vela&#39;</span><span class="p">)</span>
+<span class="c1"># Switching to the higher resolution map</span>
+<span class="n">hp</span><span class="o">.</span><span class="n">cartview</span><span class="p">(</span><span class="n">l_highres_map</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">min1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">max1</span><span class="o">*</span><span class="mf">3.</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="n">lonra</span><span class="o">=</span><span class="n">lonrange</span><span class="p">,</span> <span class="n">latra</span><span class="o">=</span><span class="n">latrange</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Vela&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1324,24 +1344,19 @@ document.write(`
 <p>These regions can’t be well-described by a circle, so we’ll use the <code class="docutils literal notranslate"><span class="pre">query_polygon</span></code> function in <code class="docutils literal notranslate"><span class="pre">healpy</span></code> for this, which lets us define a polygon of any degree of complexity (any number of vertices) in the HEALPix scheme.</p>
 <p>It would probably be best to use some other software to draw complex polygon regions and obtain the coordinates of the vertices, then load those vertex coordinate lists back into Python/healpy. If you want to move the data to a more versatile image plotting program, you can set <code class="docutils literal notranslate"><span class="pre">return_projected_map=True</span></code> in <code class="docutils literal notranslate"><span class="pre">hp.cartview</span></code> to return a 2-dimensional array containing the above cutout projection.</p>
 <p>But for demonstration purposes, we’ll just use the above projection with matplotlib in interactive mode (<code class="docutils literal notranslate"><span class="pre">%matplotlib</span> <span class="pre">notebook</span></code>), reading off the (Galactic longitude, Galactic latitude) numbers in parentheses when we point our cursor at a place where we want a polygon vertex.</p>
-<p>We’ll use the Nside=64 data, where the low resolution helps us see the broad spatial features of the region.</p>
+<p>We’ll use the Nside=64 data to draw our polygon, where the low resolution helps us see the broad spatial features of the region:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&lt;font size=6&gt;Fig. 16: Extraction regions&lt;/font&gt;&quot;</span><span class="p">))</span>
 
-<span class="c1"># First, let&#39;s create the polygon for Aquila-Serpens.</span>
+<span class="c1"># First, let&#39;s draw the polygon for Aquila-Serpens.</span>
 <span class="c1"># Transcribing the polygon vertices</span>
 <span class="n">aquila_serpens_lon</span> <span class="o">=</span> <span class="p">[</span><span class="mf">27.89</span><span class="p">,</span> <span class="mf">32.2</span><span class="p">,</span> <span class="mf">22.44</span><span class="p">]</span> <span class="c1"># list of Galactic longitude values for the vertices</span>
 <span class="n">aquila_serpens_lat</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.45</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">9.7</span><span class="p">]</span> <span class="c1"># list of Galactic latitude values for the vertices, in the same order</span>
-<span class="c1"># Creating the polygon</span>
-<span class="n">tempvec</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">ang2vec</span><span class="p">(</span><span class="n">aquila_serpens_lon</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">aquila_serpens_lat</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">lonlat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">aquila_serpens_polygon</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">tempvec</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fact</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">nest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Now, let&#39;s do the same again to create a polygon for Aquila-East.</span>
+<span class="c1"># Now, let&#39;s do the same again to draw a polygon for Aquila-East.</span>
 <span class="n">aquila_east_lon</span> <span class="o">=</span> <span class="p">[</span><span class="mf">38.21</span><span class="p">,</span> <span class="mf">33.</span><span class="p">,</span> <span class="mf">33.</span><span class="p">,</span> <span class="mf">34.92</span><span class="p">]</span>
 <span class="n">aquila_east_lat</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.17</span><span class="p">,</span> <span class="mf">4.66</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]</span>
-<span class="n">tempvec</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">ang2vec</span><span class="p">(</span><span class="n">aquila_east_lon</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">aquila_east_lat</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">lonlat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">aquila_east_polygon</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">tempvec</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fact</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">nest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Plotting the vertices of the polygons, with Aquila-Serpens in green and Aquila-East in blue</span>
 <span class="n">hp</span><span class="o">.</span><span class="n">cartview</span><span class="p">(</span><span class="n">l_n064_map</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">max1</span><span class="o">/</span><span class="mf">8.</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">max1</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="n">lonra</span><span class="o">=</span><span class="n">lonrange</span><span class="p">,</span> <span class="n">latra</span><span class="o">=</span><span class="n">latrange</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;inferno&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Aquila Rift&#39;</span><span class="p">)</span>
@@ -1354,17 +1369,28 @@ document.write(`
 </div>
 <blockquote>
 <div><center>Fig. 16 image description: vertices for 2 extraction regions are overplotted on top of the Aquila Rift image from the previous figure. The region in the lower-left (blue vertices, Aquila-East) is of moderate intensity, but avoids the bright spine that goes through the center of the image. The region in the upper-left (green vertices, Aquila-Serpens) is very low intensity. </center></div></blockquote>
-<p>Now that we’ve drawn the polygons, let’s calculate the average spectrum in each polygon. We should use the highest-resolution HEALPix map available for this, so that we’re not splitting pixels at the boundaries of the polygons.</p>
-<p><strong>Important: This is the recommended workflow. Start with examining low-resolution maps if doing so helps guide the eye, but then switch to high resolution maps for the final calculations, so that the regions you drew will be precisely implemented.</strong></p>
+<p>Now that we’ve drawn the polygons, let’s create the polygons with <code class="docutils literal notranslate"><span class="pre">query_polygon</span></code>, and calculate the average spectrum in each polygon. We should use a higher-resolution HEALPix map for this, so that we’re not splitting pixels at the boundaries of the polygons.</p>
+<p><strong>Important: This is the recommended workflow. Start with examining low-resolution maps if doing so helps guide the eye, but then switch to high resolution maps for the final calculations (ideally Nside=512), so that the regions you drew will be precisely implemented.</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spatially-averaged spectrum in each polygon</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the polygons at a higher-resolution Nside</span>
+
+<span class="c1"># These use &quot;nside_highres&quot; from earlier in this notebook,</span>
+<span class="c1"># which is 256 by default, or 512 if you downloaded the full 4.5 GB map.</span>
+
+<span class="n">tempvec</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">ang2vec</span><span class="p">(</span><span class="n">aquila_serpens_lon</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">aquila_serpens_lat</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">lonlat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">aquila_serpens_polygon</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span><span class="n">nside_highres</span><span class="p">,</span> <span class="n">tempvec</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fact</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">nest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">tempvec</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">ang2vec</span><span class="p">(</span><span class="n">aquila_east_lon</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">aquila_east_lat</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">lonlat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">aquila_east_polygon</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span><span class="n">nside_highres</span><span class="p">,</span> <span class="n">tempvec</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fact</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">nest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Spatially-averaged spectrum in each polygon</span>
 <span class="n">aquila_serpens_spec</span> <span class="o">=</span> <span class="n">weighted_spatial_average</span><span class="p">(</span>
-    <span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">][</span><span class="n">aquila_serpens_polygon</span><span class="p">,</span> <span class="p">:],</span> 
-    <span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">][</span><span class="n">aquila_serpens_polygon</span><span class="p">])</span>
+    <span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">][</span><span class="n">aquila_serpens_polygon</span><span class="p">,</span> <span class="p">:],</span> 
+    <span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">][</span><span class="n">aquila_serpens_polygon</span><span class="p">])</span>
 <span class="n">aquila_east_spec</span> <span class="o">=</span> <span class="n">weighted_spatial_average</span><span class="p">(</span>
-    <span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">][</span><span class="n">aquila_east_polygon</span><span class="p">,</span> <span class="p">:],</span> 
-    <span class="n">l_n512</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">][</span><span class="n">aquila_east_polygon</span><span class="p">])</span>
+    <span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">][</span><span class="n">aquila_east_polygon</span><span class="p">,</span> <span class="p">:],</span> 
+    <span class="n">l_highres</span><span class="p">[</span><span class="s1">&#39;EXP-SLIT&#39;</span><span class="p">][</span><span class="n">aquila_east_polygon</span><span class="p">])</span>
 
 <span class="c1"># Smoothing the spectra with specutils</span>
 <span class="n">specunit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">ph</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">sr</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">AA</span>
@@ -1387,12 +1413,12 @@ document.write(`
 <p>Next, let’s plot the Aquila-Serpens and Aquila-East extraction regions, and the spatially-averaged spectrum in each region.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Making versions of the highest-resolution HEALPix map with everything except the polygon set to NaN</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Making versions of the higher-resolution HEALPix map with everything except the polygon set to NaN</span>
 
-<span class="n">aquila_serpens_mask</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">l_n512_map</span><span class="p">)</span> <span class="c1"># We don&#39;t want to alter the original map, so use deepcopy</span>
+<span class="n">aquila_serpens_mask</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">l_highres_map</span><span class="p">)</span> <span class="c1"># We don&#39;t want to alter the original map, so use deepcopy</span>
 <span class="n">aquila_serpens_mask</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">aquila_serpens_mask</span><span class="p">)),</span> <span class="n">aquila_serpens_polygon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-<span class="n">aquila_east_mask</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">l_n512_map</span><span class="p">)</span>
+<span class="n">aquila_east_mask</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">l_highres_map</span><span class="p">)</span>
 <span class="n">aquila_east_mask</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">aquila_east_mask</span><span class="p">)),</span> <span class="n">aquila_east_polygon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 </pre></div>
 </div>
@@ -1445,7 +1471,7 @@ document.write(`
 </div>
 </div>
 <blockquote>
-<div><center>Fig. 17 image description: the top row shows cutouts of the Aquila-Serpens (left column) and Aquila-East (right column) regions, with the rest of the Aquila Rift image blanked out with NaN values. The cutouts display the high-resolution Nside=512 integrated intensity imaging, with many small dots of light and dark. The bottom row displays the extracted spectrum for each of the two regions. The Aquila-Serpens spectrum exhibits emission features that line up with vertical lines denoting H2 fluorescent line blends, while Aquila-East spectrum's features do not line up with these vertical lines.</center></div></blockquote>
+<div><center>Fig. 17 image description: the top row shows cutouts of the Aquila-Serpens (left column) and Aquila-East (right column) regions, with the rest of the Aquila Rift image blanked out with NaN values. The cutouts display the high-resolution integrated intensity imaging, with many small dots of light and dark. The bottom row displays the extracted spectrum for each of the two regions. The Aquila-Serpens spectrum exhibits emission features that line up with vertical lines denoting H2 fluorescent line blends, while Aquila-East spectrum's features do not line up with these vertical lines.</center></div></blockquote>
 <p>The vertical dashed lines above are representative wavelengths of H2 fluorescent line blends, transcribed from Fig. 2 of <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2012ApJ...754...10P/abstract">Park et al. 2012</a>.</p>
 <p>We appear to have reproduced the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2012ApJ...754...10P/abstract">Park et al. 2012</a> result that H2 fluorescent emission lines are more clearly seen in Aquila-Serpens (left) than Aquila-East (right) — with the codicil that we have not re-done the full analysis, and H2 emission has complex spectral and spatial morphologies. According to <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2012ApJ...754...10P/abstract">Park et al. 2012</a>, stronger H2 emission in Aquila-Serpens is due to higher density, molecular hydrogen column density, and excitation temperature, consistent with proximity to star formation.</p>
 <p>From here, you are ready to explore on your own!</p>
