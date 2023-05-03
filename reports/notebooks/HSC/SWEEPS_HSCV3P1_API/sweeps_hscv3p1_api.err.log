@@ -30,8 +30,14 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['lpm_sgra = -6.379 # +- 0.026', 'bpm_sgra = -0.202 # +- 0.019', '', "lpm0 = np.array(tab['lpm'])", "bpm0 = np.array(tab['bpm'])"]
-...
-['wpmh = wpmh[np.argsort(-pmtot0[wpmh])]', '', 'print(f"Plotting {len(wpmh)} objects")', 'for o in tab["ObjID"][wpmh]:', '    positions(o)']
+n = tab['NumVisits']
+dev = tab['pmdev']
+objid = tab['ObjID']
+lpmerr0 = np.array(tab['lpmerr'])
+bpmerr0 = np.array(tab['bpmerr'])
+wi = np.where((dev < 1.5) & (n > 90) & (np.sqrt(bpmerr0**2+lpmerr0**2) < 1.0))[0]
+print(f"Plotting {len(wi)} objects")
+for o in objid[wi]:
+    positions(o)
 -------------------
 

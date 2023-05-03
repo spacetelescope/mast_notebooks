@@ -584,9 +584,8 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-that-the-first-lightcurve-in-our-hdulist-should-be-truncated-after-cadence-number-293">1. Confirm that the first lightcurve in our hdulist should be truncated after cadence number 293.</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-that-using-a-remove-outlier-cutoff-of-sigma-upper-2-did-not-affect-the-other-cadences-of-the-lightcurve-for-the-second-sector">2. Confirm that using a <code class="docutils literal notranslate"><span class="pre">remove_outlier</span></code> cutoff of <code class="docutils literal notranslate"><span class="pre">sigma_upper=2</span></code> did not affect the other cadences of the lightcurve for the second sector.</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#determine-if-the-rotation-period-returned-by-lightkurve-is-different-when-using-only-one-sector-s-light-curve-at-a-time">3. Determine if the rotation period returned by <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> is different when using only one sector’s light curve at a time.</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-interactive-tesscut-webpage-to-download-10x10-cutouts-for-all-sectors-observing-eleonora">4. Use the interactive TESSCut webpage to download 10x10 cutouts for all sectors observing Eleonora.</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia">5. Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from Pál et al. 2020 such as Hippodamia.</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations">6. Use astroquery’s Minor Planet Center Queries (MPC) <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations.</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia">4. Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from Pál et al. 2020 such as Hippodamia.</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations">5. Use astroquery’s Minor Planet Center Queries (MPC) <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations.</a></li>
 </ul>
 
             </nav>
@@ -640,9 +639,15 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">objname</span><span class="o">=</span><span class="s1">&#39;Eleonora&#39;</span>
-<span class="n">nsectors</span><span class="o">=</span><span class="mi">2</span>
+
+<span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">moving_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">nsectors</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">hdulist</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span> 
+    <span class="n">hdulist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">writeto</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">objname</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span>
-    <span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">TessTargetPixelFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;objname_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.fits&quot;</span><span class="p">)</span>
+    <span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">TessTargetPixelFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">objname</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.fits&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> 
         <span class="n">tpfc</span><span class="o">=</span><span class="n">lk</span><span class="o">.</span><span class="n">TargetPixelFileCollection</span><span class="p">([</span><span class="n">tpf</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
@@ -652,106 +657,185 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">nsectors</span><span class="o">=</span><span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span>
-<span class="ne">----&gt; </span><span class="mi">4</span>     <span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">TessTargetPixelFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;objname_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.fits&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> 
-<span class="g g-Whitespace">      </span><span class="mi">6</span>         <span class="n">tpfc</span><span class="o">=</span><span class="n">lk</span><span class="o">.</span><span class="n">TargetPixelFileCollection</span><span class="p">([</span><span class="n">tpf</span><span class="p">])</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">objname</span><span class="o">=</span><span class="s1">&#39;Eleonora&#39;</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">moving_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">nsectors</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">hdulist</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsectors</span><span class="p">):</span> 
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:2732,</span> in <span class="ni">TessTargetPixelFile.__init__</span><span class="nt">(self, path, quality_bitmask, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2731</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">quality_bitmask</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">2732</span>     <span class="nb">super</span><span class="p">(</span><span class="n">TessTargetPixelFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2733</span>         <span class="n">path</span><span class="p">,</span> <span class="n">quality_bitmask</span><span class="o">=</span><span class="n">quality_bitmask</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-<span class="g g-Whitespace">   </span><span class="mi">2734</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2735</span>     <span class="bp">self</span><span class="o">.</span><span class="n">quality_mask</span> <span class="o">=</span> <span class="n">TessQualityFlags</span><span class="o">.</span><span class="n">create_quality_mask</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2736</span>         <span class="n">quality_array</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;QUALITY&quot;</span><span class="p">],</span> <span class="n">bitmask</span><span class="o">=</span><span class="n">quality_bitmask</span>
-<span class="g g-Whitespace">   </span><span class="mi">2737</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2738</span>     <span class="c1"># Early TESS releases had cadences with time=NaN (i.e. missing data)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2739</span>     <span class="c1"># which were not flagged by a QUALITY flag yet; the line below prevents</span>
-<span class="g g-Whitespace">   </span><span class="mi">2740</span>     <span class="c1"># these cadences from being used. They would break most methods!</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/cutouts.py:399,</span> in <span class="ni">TesscutClass.get_cutouts</span><span class="nt">(self, coordinates, size, sector, objectname, moving_target, mt_type)</span>
+<span class="g g-Whitespace">    </span><span class="mi">396</span>     <span class="k">if</span> <span class="n">mt_type</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">397</span>         <span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;obj_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt_type</span>
+<span class="ne">--&gt; </span><span class="mi">399</span>     <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_api_connection</span><span class="o">.</span><span class="n">service_request_async</span><span class="p">(</span><span class="s2">&quot;mt_astrocut&quot;</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">401</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">402</span> 
+<span class="g g-Whitespace">    </span><span class="mi">403</span>     <span class="c1"># Get Skycoord object for coordinates/object</span>
+<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">parse_input_location</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">objectname</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/targetpixelfile.py:105,</span> in <span class="ni">TargetPixelFile.__init__</span><span class="nt">(self, path, quality_bitmask, targetid, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">103</span>     <span class="bp">self</span><span class="o">.</span><span class="n">hdu</span> <span class="o">=</span> <span class="n">path</span>
-<span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">105</span>     <span class="bp">self</span><span class="o">.</span><span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">106</span> <span class="bp">self</span><span class="o">.</span><span class="n">quality_bitmask</span> <span class="o">=</span> <span class="n">quality_bitmask</span>
-<span class="g g-Whitespace">    </span><span class="mi">107</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetid</span> <span class="o">=</span> <span class="n">targetid</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/utils/class_or_instance.py:25,</span> in <span class="ni">class_or_instance.__get__.&lt;locals&gt;.f</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/fits/hdu/hdulist.py:214,</span> in <span class="ni">fitsopen</span><span class="nt">(name, mode, memmap, save_backup, cache, lazy_load_hdus, ignore_missing_simple, use_fsspec, fsspec_kwargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">211</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty filename: </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">214</span> <span class="k">return</span> <span class="n">HDUList</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span>     <span class="n">name</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="n">mode</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">217</span>     <span class="n">memmap</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">218</span>     <span class="n">save_backup</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">219</span>     <span class="n">cache</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">lazy_load_hdus</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span>     <span class="n">ignore_missing_simple</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="n">use_fsspec</span><span class="o">=</span><span class="n">use_fsspec</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="n">fsspec_kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span> <span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/services.py:292,</span> in <span class="ni">ServiceAPI.service_request_async</span><span class="nt">(self, service, params, page_size, page, use_json, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span>     <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span>
+<span class="g g-Whitespace">    </span><span class="mi">291</span>     <span class="n">catalogs_request</span> <span class="o">=</span> <span class="n">params</span>
+<span class="ne">--&gt; </span><span class="mi">292</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">request_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">catalogs_request</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="n">use_json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="k">return</span> <span class="n">response</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/fits/hdu/hdulist.py:482,</span> in <span class="ni">HDUList.fromfile</span><span class="nt">(cls, fileobj, mode, memmap, save_backup, cache, lazy_load_hdus, ignore_missing_simple, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">462</span> <span class="nd">@classmethod</span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span> <span class="k">def</span> <span class="nf">fromfile</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">464</span>     <span class="bp">cls</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">472</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">473</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">474</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">475</span><span class="sd">     Creates an `HDUList` instance from a file-like object.</span>
-<span class="g g-Whitespace">    </span><span class="mi">476</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">479</span><span class="sd">     documentation for details of the parameters accepted by this method).</span>
-<span class="g g-Whitespace">    </span><span class="mi">480</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">482</span>     <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_readfrom</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">483</span>         <span class="n">fileobj</span><span class="o">=</span><span class="n">fileobj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">484</span>         <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">485</span>         <span class="n">memmap</span><span class="o">=</span><span class="n">memmap</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">486</span>         <span class="n">save_backup</span><span class="o">=</span><span class="n">save_backup</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">487</span>         <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">488</span>         <span class="n">ignore_missing_simple</span><span class="o">=</span><span class="n">ignore_missing_simple</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">489</span>         <span class="n">lazy_load_hdus</span><span class="o">=</span><span class="n">lazy_load_hdus</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">490</span>         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">491</span>     <span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/services.py:187,</span> in <span class="ni">ServiceAPI._request</span><span class="nt">(self, method, url, params, data, headers, files, stream, auth, cache, use_json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>                                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">187</span>     <span class="n">response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span>                                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span> <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Timeout limit of </span><span class="si">{}</span><span class="s2"> exceeded.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">))</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/fits/hdu/hdulist.py:1170,</span> in <span class="ni">HDUList._readfrom</span><span class="nt">(cls, fileobj, data, mode, memmap, cache, lazy_load_hdus, ignore_missing_simple, use_fsspec, fsspec_kwargs, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1167</span> <span class="k">if</span> <span class="n">fileobj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1168</span>     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">_File</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1169</span>         <span class="c1"># instantiate a FITS file object (ffo)</span>
-<span class="ne">-&gt; </span><span class="mi">1170</span>         <span class="n">fileobj</span> <span class="o">=</span> <span class="n">_File</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1171</span>             <span class="n">fileobj</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1172</span>             <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1173</span>             <span class="n">memmap</span><span class="o">=</span><span class="n">memmap</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1174</span>             <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1175</span>             <span class="n">use_fsspec</span><span class="o">=</span><span class="n">use_fsspec</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1176</span>             <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="n">fsspec_kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1177</span>         <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1178</span>     <span class="c1"># The Astropy mode is determined by the _File initializer if the</span>
-<span class="g g-Whitespace">   </span><span class="mi">1179</span>     <span class="c1"># supplied mode was None</span>
-<span class="g g-Whitespace">   </span><span class="mi">1180</span>     <span class="n">mode</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">mode</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:339,</span> in <span class="ni">BaseQuery._request</span><span class="nt">(self, method, url, params, data, headers, files, save, savedir, timeout, cache, stream, auth, continuation, verify, allow_redirects, json, return_response_on_save)</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cache</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="k">with</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;cache_active&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">339</span>         <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span>                                  <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>                                  <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>                                  <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">from_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_location</span><span class="p">,</span> <span class="n">cache_conf</span><span class="o">.</span><span class="n">cache_timeout</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/fits/file.py:218,</span> in <span class="ni">_File.__init__</span><span class="nt">(self, fileobj, mode, memmap, overwrite, cache, use_fsspec, fsspec_kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_open_fileobj</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">217</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
-<span class="ne">--&gt; </span><span class="mi">218</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_open_filename</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">219</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_open_filelike</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:74,</span> in <span class="ni">AstroQuery.request</span><span class="nt">(self, session, cache_location, stream, auth, verify, allow_redirects, json)</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">cache_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>             <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span>             <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>                            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>                            <span class="n">files</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span>                            <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span>                            <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span>                            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/fits/file.py:636,</span> in <span class="ni">_File._open_filename</span><span class="nt">(self, filename, mode, overwrite)</span>
-<span class="g g-Whitespace">    </span><span class="mi">633</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">635</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_try_read_compressed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">magic</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">636</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">IO_FITS_MODES</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
-<span class="g g-Whitespace">    </span><span class="mi">637</span>     <span class="bp">self</span><span class="o">.</span><span class="n">close_on_error</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">639</span> <span class="c1"># Make certain we&#39;re back at the beginning of the file</span>
-<span class="g g-Whitespace">    </span><span class="mi">640</span> <span class="c1"># BZ2File does not support seek when the file is open for writing, but</span>
-<span class="g g-Whitespace">    </span><span class="mi">641</span> <span class="c1"># when opening a file for write, bz2.BZ2File always truncates anyway.</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:587,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">587</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="k">return</span> <span class="n">resp</span>
 
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;objname_0.fits&#39;
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:701,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">698</span> <span class="n">start</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span> <span class="c1"># Send the request</span>
+<span class="ne">--&gt; </span><span class="mi">701</span> <span class="n">r</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="c1"># Total elapsed time of the request (approximately)</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/adapters.py:489,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
+<span class="g g-Whitespace">    </span><span class="mi">487</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">488</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">chunked</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">489</span>         <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">490</span>             <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span>             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">492</span>             <span class="n">body</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">493</span>             <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span>             <span class="n">redirect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">495</span>             <span class="n">assert_same_host</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">496</span>             <span class="n">preload_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">497</span>             <span class="n">decode_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">498</span>             <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">499</span>             <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">500</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">502</span>     <span class="c1"># Send the request.</span>
+<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">504</span>         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;proxy_pool&quot;</span><span class="p">):</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:703,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, **response_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_proxy</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">702</span> <span class="c1"># Make the request on the httplib connection object.</span>
+<span class="ne">--&gt; </span><span class="mi">703</span> <span class="n">httplib_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="n">conn</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span>     <span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">708</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">709</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="c1"># If we&#39;re going to release the connection in ``finally:``, then</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="c1"># the response doesn&#39;t need to know about the connection. Otherwise</span>
+<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="c1"># it will also try to release it and we&#39;ll have a double-release</span>
+<span class="g g-Whitespace">    </span><span class="mi">716</span> <span class="c1"># mess.</span>
+<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="n">response_conn</span> <span class="o">=</span> <span class="n">conn</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">release_conn</span> <span class="k">else</span> <span class="kc">None</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:449,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span>             <span class="n">httplib_response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>             <span class="c1"># Remove the TypeError from the exception chain in</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>             <span class="c1"># Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>             <span class="c1"># Otherwise it looks like a bug in the code.</span>
+<span class="ne">--&gt; </span><span class="mi">449</span>             <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">450</span> <span class="k">except</span> <span class="p">(</span><span class="n">SocketTimeout</span><span class="p">,</span> <span class="n">BaseSSLError</span><span class="p">,</span> <span class="n">SocketError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">451</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_raise_timeout</span><span class="p">(</span><span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout_value</span><span class="o">=</span><span class="n">read_timeout</span><span class="p">)</span>
+
+<span class="nn">File &lt;string&gt;:3,</span> in <span class="ni">raise_from</span><span class="nt">(value, from_value)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:444,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">442</span>     <span class="c1"># Python 3</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">444</span>         <span class="n">httplib_response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>     <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>         <span class="c1"># Remove the TypeError from the exception chain in</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>         <span class="c1"># Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>         <span class="c1"># Otherwise it looks like a bug in the code.</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span>         <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:1374,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1372</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1373</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1374</span>         <span class="n">response</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1375</span>     <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1376</span>         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:318,</span> in <span class="ni">HTTPResponse.begin</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">316</span> <span class="c1"># read until we get a non-100 response</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">318</span>     <span class="n">version</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_status</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span>     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">CONTINUE</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">320</span>         <span class="k">break</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:279,</span> in <span class="ni">HTTPResponse._read_status</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span> <span class="k">def</span> <span class="nf">_read_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">279</span>     <span class="n">line</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">(</span><span class="n">_MAXLINE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;iso-8859-1&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">280</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">_MAXLINE</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span>         <span class="k">raise</span> <span class="n">LineTooLong</span><span class="p">(</span><span class="s2">&quot;status line&quot;</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/socket.py:705,</span> in <span class="ni">SocketIO.readinto</span><span class="nt">(self, b)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">705</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="k">except</span> <span class="n">timeout</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_timeout_occurred</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/ssl.py:1274,</span> in <span class="ni">SSLSocket.recv_into</span><span class="nt">(self, buffer, nbytes, flags)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1270</span>     <span class="k">if</span> <span class="n">flags</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1271</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1272</span>           <span class="s2">&quot;non-zero flags not allowed in calls to recv_into() on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="g g-Whitespace">   </span><span class="mi">1273</span>           <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1274</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nbytes</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1275</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1276</span>     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/ssl.py:1130,</span> in <span class="ni">SSLSocket.read</span><span class="nt">(self, len, buffer)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1128</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1129</span>     <span class="k">if</span> <span class="n">buffer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1130</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1131</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1132</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -818,19 +902,15 @@ document.write(`
 </div>
 </div>
 </div>
-<p><a id="4"></a></p>
-</section>
-<section id="use-the-interactive-tesscut-webpage-to-download-10x10-cutouts-for-all-sectors-observing-eleonora">
-<h1>4. Use the interactive <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESSCut webpage</a> to download 10x10 cutouts for all sectors observing Eleonora.<a class="headerlink" href="#use-the-interactive-tesscut-webpage-to-download-10x10-cutouts-for-all-sectors-observing-eleonora" title="Permalink to this heading">#</a></h1>
-<p>Be sure to select “Moving Target” at the top! Load the resulting fits files in and confirm that they are identical to the items in <code class="docutils literal notranslate"><span class="pre">hdulist</span></code> above.</p>
-<p><strong>Hint:</strong> Astropy has a built-in method called <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/api/diff.html">FITSDiff</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SOLUTION FOR EXERCISE 4</span>
+
 <span class="c1"># Using the default filenames from the website at the time of the writing of this tutorial:</span>
 <span class="n">diff1</span><span class="o">=</span><span class="n">fits</span><span class="o">.</span><span class="n">FITSDiff</span><span class="p">(</span><span class="s1">&#39;Eleonora_0.fits&#39;</span><span class="p">,</span><span class="s1">&#39;Eleonora_1468.2870040465345-1475.8494727152606_10.0-x-10.0_astrocut.fits&#39;</span><span class="p">,</span><span class="n">numdiffs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">diff1</span><span class="o">.</span><span class="n">identical</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">diff1</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
+
 <span class="c1"># The only differences appera to be in &quot;CHECKSUM&quot; and &quot;DATASUM&quot; values, which seem to correspond to the </span>
 <span class="c1"># timestamps when the files were saved. Try ignoring those values. </span>
 <span class="n">diff1_ignore</span><span class="o">=</span><span class="n">fits</span><span class="o">.</span><span class="n">FITSDiff</span><span class="p">(</span><span class="s1">&#39;Eleonora_0.fits&#39;</span><span class="p">,</span>
@@ -846,10 +926,10 @@ document.write(`
 </div>
 </div>
 </div>
-<p><a id="5"></a></p>
+<p><a id="4"></a></p>
 </section>
 <section id="try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia">
-<h1>5. Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a> such as Hippodamia.<a class="headerlink" href="#try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia" title="Permalink to this heading">#</a></h1>
+<h1>4. Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a> such as Hippodamia.<a class="headerlink" href="#try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia" title="Permalink to this heading">#</a></h1>
 <p>What issues do you encounter in this case?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -902,10 +982,10 @@ document.write(`
 </div>
 </div>
 </div>
-<p><a id="6"></a></p>
+<p><a id="5"></a></p>
 </section>
 <section id="use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations">
-<h1>6. Use <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mpc/mpc.html?highlight=mpc#ephemerides">astroquery’s Minor Planet Center Queries (MPC)</a> <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations.<a class="headerlink" href="#use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations" title="Permalink to this heading">#</a></h1>
+<h1>5. Use <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mpc/mpc.html?highlight=mpc#ephemerides">astroquery’s Minor Planet Center Queries (MPC)</a> <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations.<a class="headerlink" href="#use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations" title="Permalink to this heading">#</a></h1>
 <p>The times of each cadence are in the light curve’s <code class="docutils literal notranslate"><span class="pre">time</span></code> column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -996,9 +1076,8 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-that-the-first-lightcurve-in-our-hdulist-should-be-truncated-after-cadence-number-293">1. Confirm that the first lightcurve in our hdulist should be truncated after cadence number 293.</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-that-using-a-remove-outlier-cutoff-of-sigma-upper-2-did-not-affect-the-other-cadences-of-the-lightcurve-for-the-second-sector">2. Confirm that using a <code class="docutils literal notranslate"><span class="pre">remove_outlier</span></code> cutoff of <code class="docutils literal notranslate"><span class="pre">sigma_upper=2</span></code> did not affect the other cadences of the lightcurve for the second sector.</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#determine-if-the-rotation-period-returned-by-lightkurve-is-different-when-using-only-one-sector-s-light-curve-at-a-time">3. Determine if the rotation period returned by <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> is different when using only one sector’s light curve at a time.</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-interactive-tesscut-webpage-to-download-10x10-cutouts-for-all-sectors-observing-eleonora">4. Use the interactive TESSCut webpage to download 10x10 cutouts for all sectors observing Eleonora.</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia">5. Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from Pál et al. 2020 such as Hippodamia.</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations">6. Use astroquery’s Minor Planet Center Queries (MPC) <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations.</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-recreating-the-procedure-above-to-find-the-rotation-period-for-a-fainter-higher-magnitude-small-body-from-pal-et-al-2020-such-as-hippodamia">4. Try recreating the procedure above to find the rotation period for a fainter (higher magnitude) small body from Pál et al. 2020 such as Hippodamia.</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#use-astroquery-s-minor-planet-center-queries-mpc-get-ephemeris-feature-to-investigate-why-the-median-flux-for-the-first-sector-s-observations-is-lower-than-for-the-second-sector-s-observations">5. Use astroquery’s Minor Planet Center Queries (MPC) <code class="docutils literal notranslate"><span class="pre">get_ephemeris</span></code> feature to investigate why the median flux for the first sector’s observations is lower than for the second sector’s observations.</a></li>
 </ul>
 
   </nav></div>
