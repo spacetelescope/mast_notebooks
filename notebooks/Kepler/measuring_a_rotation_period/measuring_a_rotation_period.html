@@ -734,7 +734,138 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/e7d108ae88fa8b6a84bc9b506f2b427a1d6563eb888a8527b8e21929f1d698dd.png" src="../../../_images/e7d108ae88fa8b6a84bc9b506f2b427a1d6563eb888a8527b8e21929f1d698dd.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Download the light curve data</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">search</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 8197761&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">lc</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Fold the light curve at the known planet period</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">planet_period</span> <span class="o">=</span> <span class="mf">9.8686667</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/collections.py:197,</span> in <span class="ni">LightCurveCollection.stitch</span><span class="nt">(self, corrector_func)</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span> <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>  <span class="c1"># ignore &quot;already normalized&quot; message</span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;.*already.*&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">197</span>     <span class="n">lcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">corrector_func</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span> <span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">199</span> <span class="c1"># Address issue #954: ignore incompatible columns with the same name</span>
+<span class="g g-Whitespace">    </span><span class="mi">200</span> <span class="n">columns_to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/collections.py:197,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span> <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>  <span class="c1"># ignore &quot;already normalized&quot; message</span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;.*already.*&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">197</span>     <span class="n">lcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">corrector_func</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span> <span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">199</span> <span class="c1"># Address issue #954: ignore incompatible columns with the same name</span>
+<span class="g g-Whitespace">    </span><span class="mi">200</span> <span class="n">columns_to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/collections.py:174,</span> in <span class="ni">LightCurveCollection.&lt;lambda&gt;</span><span class="nt">(x)</span>
+<span class="g g-Whitespace">    </span><span class="mi">169</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;DEPRECATED. Replaces `LightCurveFileCollection.SAP_FLUX`.</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span><span class="sd">     Provided for backwards-compatibility with Lightkurve v1.x;</span>
+<span class="g g-Whitespace">    </span><span class="mi">171</span><span class="sd">     will be removed soon.&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">172</span>     <span class="k">return</span> <span class="n">LightCurveCollection</span><span class="p">([</span><span class="n">lc</span><span class="o">.</span><span class="n">SAP_FLUX</span> <span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+<span class="ne">--&gt; </span><span class="mi">174</span> <span class="k">def</span> <span class="nf">stitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">normalize</span><span class="p">()):</span>
+<span class="g g-Whitespace">    </span><span class="mi">175</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Stitch all light curves in the collection into a single `LightCurve`.</span>
+<span class="g g-Whitespace">    </span><span class="mi">176</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span><span class="sd">     Any function passed to `corrector_func` will be applied to each light curve</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span><span class="sd">         Stitched light curve.</span>
+<span class="g g-Whitespace">    </span><span class="mi">192</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">193</span>     <span class="k">if</span> <span class="n">corrector_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/lightcurve.py:1148,</span> in <span class="ni">LightCurve.normalize</span><span class="nt">(self, unit)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1139</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1140</span>         <span class="s2">&quot;The light curve has a negative median flux (</span><span class="si">{:.2e}</span><span class="s2">);&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1141</span>         <span class="s2">&quot; `normalize()` will therefore divide by a negative &quot;</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1144</span>         <span class="n">LightkurveWarning</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1145</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1147</span> <span class="c1"># Create a new light curve instance and normalize its values</span>
+<span class="ne">-&gt; </span><span class="mi">1148</span> <span class="n">lc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1149</span> <span class="n">lc</span><span class="o">.</span><span class="n">flux</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">flux</span> <span class="o">/</span> <span class="n">median_flux</span>
+<span class="g g-Whitespace">   </span><span class="mi">1150</span> <span class="n">lc</span><span class="o">.</span><span class="n">flux_err</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">flux_err</span> <span class="o">/</span> <span class="n">median_flux</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:3664,</span> in <span class="ni">Table.copy</span><span class="nt">(self, copy_data)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3653</span> <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy_data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3654</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">3655</span><span class="sd">     Return a copy of the table.</span>
+<span class="g g-Whitespace">   </span><span class="mi">3656</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3662</span><span class="sd">         deepcopied regardless of the value for ``copy_data``.</span>
+<span class="g g-Whitespace">   </span><span class="mi">3663</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">3664</span>     <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy_data</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3666</span>     <span class="c1"># If the current table is grouped then do the same in the copy</span>
+<span class="g g-Whitespace">   </span><span class="mi">3667</span>     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_groups&quot;</span><span class="p">):</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/lightcurve.py:339,</span> in <span class="ni">LightCurve.__init__</span><span class="nt">(self, data, time, flux, flux_err, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span> <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required_columns</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required_columns</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="ne">--&gt; </span><span class="mi">339</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required_columns</span> <span class="o">=</span> <span class="n">tmp</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span> <span class="c1"># For some operations, an empty time series needs to be created, then</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span> <span class="c1"># columns added one by one. We should check that when columns are added</span>
+<span class="g g-Whitespace">    </span><span class="mi">344</span> <span class="c1"># manually, time is added first and is of the right type.</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/timeseries/sampled.py:71,</span> in <span class="ni">TimeSeries.__init__</span><span class="nt">(self, data, time, time_start, time_delta, n_samples, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span>     <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">69</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">71</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span>     <span class="c1"># For some operations, an empty time series needs to be created, then</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="c1"># columns added one by one. We should check that when columns are added</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>     <span class="c1"># manually, time is added first and is of the right type.</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>     <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time_start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time_delta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:875,</span> in <span class="ni">Table.__init__</span><span class="nt">(self, data, masked, names, dtype, meta, copy, rows, copy_indices, units, descriptions, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">872</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_names_dtype</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">874</span> <span class="c1"># Finally do the real initialization</span>
+<span class="ne">--&gt; </span><span class="mi">875</span> <span class="n">init_func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span> <span class="c1"># Set table meta.  If copy=True then deepcopy meta otherwise use the</span>
+<span class="g g-Whitespace">    </span><span class="mi">878</span> <span class="c1"># user-supplied meta directly.</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span> <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:1240,</span> in <span class="ni">Table._init_from_list</span><span class="nt">(self, data, names, dtype, n_cols, copy)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1237</span> <span class="n">default_names</span> <span class="o">=</span> <span class="n">_auto_names</span><span class="p">(</span><span class="n">n_cols</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1239</span> <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default_name</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">default_names</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1240</span>     <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_data_to_col</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">default_name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1242</span>     <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1244</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_from_cols</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:1342,</span> in <span class="ni">Table._convert_data_to_col</span><span class="nt">(self, data, copy, default_name, dtype, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1335</span>     <span class="n">col_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_col_cls_for_table</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1337</span> <span class="k">elif</span> <span class="n">data_is_mixin</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1338</span>     <span class="c1"># Copy the mixin column attributes if they exist since the copy below</span>
+<span class="g g-Whitespace">   </span><span class="mi">1339</span>     <span class="c1"># may not get this attribute. If not copying, take a slice</span>
+<span class="g g-Whitespace">   </span><span class="mi">1340</span>     <span class="c1"># to ensure we get a new instance and we do not share metadata</span>
+<span class="g g-Whitespace">   </span><span class="mi">1341</span>     <span class="c1"># like info.</span>
+<span class="ne">-&gt; </span><span class="mi">1342</span>     <span class="n">col</span> <span class="o">=</span> <span class="n">col_copy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">copy_indices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_indices</span><span class="p">)</span> <span class="k">if</span> <span class="n">copy</span> <span class="k">else</span> <span class="n">data</span><span class="p">[:]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1343</span>     <span class="n">col</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="g g-Whitespace">   </span><span class="mi">1344</span>     <span class="k">return</span> <span class="n">col</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/column.py:92,</span> in <span class="ni">col_copy</span><span class="nt">(col, copy_indices)</span>
+<span class="g g-Whitespace">     </span><span class="mi">90</span> <span class="k">if</span> <span class="s2">&quot;info&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">91</span>     <span class="n">newcol</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">info</span>
+<span class="ne">---&gt; </span><span class="mi">92</span>     <span class="k">if</span> <span class="n">copy_indices</span> <span class="ow">and</span> <span class="n">col</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">indices</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span>         <span class="n">newcol</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">94</span>         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">newcol</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">indices</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/utils/data_info.py:608,</span> in <span class="ni">BaseColumnInfo.indices</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">605</span>     <span class="n">_pformat_col_iter</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">.</span><span class="n">_pformat_col_iter</span>
+<span class="g g-Whitespace">    </span><span class="mi">606</span>     <span class="k">yield from</span> <span class="n">_pformat_col_iter</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{})</span>
+<span class="ne">--&gt; </span><span class="mi">608</span> <span class="nd">@property</span>
+<span class="g g-Whitespace">    </span><span class="mi">609</span> <span class="k">def</span> <span class="nf">indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">610</span>     <span class="c1"># Implementation note: the auto-generation as an InfoAttribute cannot</span>
+<span class="g g-Whitespace">    </span><span class="mi">611</span>     <span class="c1"># be used here, since on access, one should not just return the</span>
+<span class="g g-Whitespace">    </span><span class="mi">612</span>     <span class="c1"># default (empty list is this case), but set _attrs[&#39;indices&#39;] so that</span>
+<span class="g g-Whitespace">    </span><span class="mi">613</span>     <span class="c1"># if the list is appended to, it is registered here.</span>
+<span class="g g-Whitespace">    </span><span class="mi">614</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;indices&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<span class="g g-Whitespace">    </span><span class="mi">616</span> <span class="nd">@indices</span><span class="o">.</span><span class="n">setter</span>
+<span class="g g-Whitespace">    </span><span class="mi">617</span> <span class="k">def</span> <span class="nf">indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
 </div>
 </div>
 <p>Despite these data being folded on the period of a known planet, we are unable to see the planet transits within the noise. Let’s have a look at the periodogram.</p>
@@ -744,9 +875,6 @@ document.write(`
 <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/063236e0448d242b82e76a28cbe9acf3641879b96fc8bed43e0f3018ec508b96.png" src="../../../_images/063236e0448d242b82e76a28cbe9acf3641879b96fc8bed43e0f3018ec508b96.png" />
 </div>
 </div>
 <p>As we can see in this periodogram, the star appears to include multiple high-amplitude oscillation signals. Using the Lomb-Scargle <code class="docutils literal notranslate"><span class="pre">model()</span></code> method we used earlier, we can remove these signals from the time series data. We’ll do this as follows:</p>
@@ -769,181 +897,6 @@ document.write(`
 <span class="c1"># Plot the new light curve on top of the original one</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">);</span>
 <span class="n">newlc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;New&#39;</span><span class="p">);</span> 
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error in callback &lt;function flush_figures at 0x7f3d97115900&gt; (for post_execute):
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib_inline/backend_inline.py:126,</span> in <span class="ni">flush_figures</span><span class="nt">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">123</span> <span class="k">if</span> <span class="n">InlineBackend</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">close_figures</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">124</span>     <span class="c1"># ignore the tracking, just draw and close all figures</span>
-<span class="g g-Whitespace">    </span><span class="mi">125</span>     <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">126</span>         <span class="k">return</span> <span class="n">show</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">127</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">128</span>         <span class="c1"># safely show traceback if in IPython, else raise</span>
-<span class="g g-Whitespace">    </span><span class="mi">129</span>         <span class="n">ip</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib_inline/backend_inline.py:90,</span> in <span class="ni">show</span><span class="nt">(close, block)</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span>     <span class="k">for</span> <span class="n">figure_manager</span> <span class="ow">in</span> <span class="n">Gcf</span><span class="o">.</span><span class="n">get_all_fig_managers</span><span class="p">():</span>
-<span class="ne">---&gt; </span><span class="mi">90</span>         <span class="n">display</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">91</span>             <span class="n">figure_manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span>             <span class="n">metadata</span><span class="o">=</span><span class="n">_fetch_figure_metadata</span><span class="p">(</span><span class="n">figure_manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span>         <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span> <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">95</span>     <span class="n">show</span><span class="o">.</span><span class="n">_to_draw</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/IPython/core/display_functions.py:298,</span> in <span class="ni">display</span><span class="nt">(include, exclude, metadata, transient, display_id, raw, clear, *objs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">296</span>     <span class="n">publish_display_data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">297</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">298</span>     <span class="n">format_dict</span><span class="p">,</span> <span class="n">md_dict</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">299</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">format_dict</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">300</span>         <span class="c1"># nothing to display (e.g. _ipython_display_ took over)</span>
-<span class="g g-Whitespace">    </span><span class="mi">301</span>         <span class="k">continue</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/IPython/core/formatters.py:179,</span> in <span class="ni">DisplayFormatter.format</span><span class="nt">(self, obj, include, exclude)</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="n">md</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">179</span>     <span class="n">data</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">180</span> <span class="k">except</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span>     <span class="c1"># FIXME: log the exception</span>
-<span class="g g-Whitespace">    </span><span class="mi">182</span>     <span class="k">raise</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/decorator.py:232,</span> in <span class="ni">decorate.&lt;locals&gt;.fun</span><span class="nt">(*args, **kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">kwsyntax</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">231</span>     <span class="n">args</span><span class="p">,</span> <span class="n">kw</span> <span class="o">=</span> <span class="n">fix</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kw</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">232</span> <span class="k">return</span> <span class="n">caller</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">extras</span> <span class="o">+</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/IPython/core/formatters.py:223,</span> in <span class="ni">catch_format_error</span><span class="nt">(method, self, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;show traceback on failed format call&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">223</span>     <span class="n">r</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span> <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span>     <span class="c1"># don&#39;t warn on NotImplementedErrors</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_return</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/IPython/core/formatters.py:340,</span> in <span class="ni">BaseFormatter.__call__</span><span class="nt">(self, obj)</span>
-<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="k">pass</span>
-<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">340</span>     <span class="k">return</span> <span class="n">printer</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">341</span> <span class="c1"># Finally look for special method names</span>
-<span class="g g-Whitespace">    </span><span class="mi">342</span> <span class="n">method</span> <span class="o">=</span> <span class="n">get_real_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_method</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/IPython/core/pylabtools.py:152,</span> in <span class="ni">print_figure</span><span class="nt">(fig, fmt, bbox_inches, base64, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">149</span>     <span class="kn">from</span> <span class="nn">matplotlib.backend_bases</span> <span class="kn">import</span> <span class="n">FigureCanvasBase</span>
-<span class="g g-Whitespace">    </span><span class="mi">150</span>     <span class="n">FigureCanvasBase</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">152</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">bytes_io</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">153</span> <span class="n">data</span> <span class="o">=</span> <span class="n">bytes_io</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">154</span> <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;svg&#39;</span><span class="p">:</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/backend_bases.py:2346,</span> in <span class="ni">FigureCanvasBase.print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2344</span> <span class="k">if</span> <span class="n">bbox_inches</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2345</span>     <span class="k">if</span> <span class="n">bbox_inches</span> <span class="o">==</span> <span class="s2">&quot;tight&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2346</span>         <span class="n">bbox_inches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2347</span>             <span class="n">renderer</span><span class="p">,</span> <span class="n">bbox_extra_artists</span><span class="o">=</span><span class="n">bbox_extra_artists</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2348</span>         <span class="k">if</span> <span class="n">pad_inches</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2349</span>             <span class="n">pad_inches</span> <span class="o">=</span> <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;savefig.pad_inches&#39;</span><span class="p">]</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/figure.py:1744,</span> in <span class="ni">FigureBase.get_tightbbox</span><span class="nt">(self, renderer, bbox_extra_artists)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1741</span>     <span class="n">artists</span> <span class="o">=</span> <span class="n">bbox_extra_artists</span>
-<span class="g g-Whitespace">   </span><span class="mi">1743</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1744</span>     <span class="n">bbox</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1745</span>     <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1746</span>         <span class="n">bb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/axes/_base.py:4408,</span> in <span class="ni">_AxesBase.get_tightbbox</span><span class="nt">(self, renderer, call_axes_locator, bbox_extra_artists, for_layout_only)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4405</span>     <span class="n">bbox_artists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_bbox_extra_artists</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">4407</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">bbox_artists</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">4408</span>     <span class="n">bbox</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4409</span>     <span class="k">if</span> <span class="p">(</span><span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">4410</span>             <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-<span class="g g-Whitespace">   </span><span class="mi">4411</span>             <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">4412</span>         <span class="n">bb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/legend.py:1026,</span> in <span class="ni">Legend.get_tightbbox</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1024</span> <span class="k">def</span> <span class="nf">get_tightbbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1025</span>     <span class="c1"># docstring inherited</span>
-<span class="ne">-&gt; </span><span class="mi">1026</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_box</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/offsetbox.py:402,</span> in <span class="ni">OffsetBox.get_window_extent</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">400</span> <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">401</span> <span class="k">try</span><span class="p">:</span>  <span class="c1"># Some subclasses redefine get_offset to take no args.</span>
-<span class="ne">--&gt; </span><span class="mi">402</span>     <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">403</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offset</span><span class="p">()</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/offsetbox.py:60,</span> in <span class="ni">_compat_get_offset.&lt;locals&gt;.get_offset</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span> <span class="n">params</span> <span class="o">=</span> <span class="n">_api</span><span class="o">.</span><span class="n">select_matching_signature</span><span class="p">(</span><span class="n">sigs</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="n">bbox</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;bbox&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;bbox&quot;</span> <span class="ow">in</span> <span class="n">params</span> <span class="k">else</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span>         <span class="n">Bbox</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="o">-</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;xdescent&quot;</span><span class="p">],</span> <span class="o">-</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;ydescent&quot;</span><span class="p">],</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span>                          <span class="n">params</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]))</span>
-<span class="ne">---&gt; </span><span class="mi">60</span> <span class="k">return</span> <span class="n">meth</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;self&quot;</span><span class="p">],</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;renderer&quot;</span><span class="p">])</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/offsetbox.py:313,</span> in <span class="ni">OffsetBox.get_offset</span><span class="nt">(self, bbox, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">298</span> <span class="nd">@_compat_get_offset</span>
-<span class="g g-Whitespace">    </span><span class="mi">299</span> <span class="k">def</span> <span class="nf">get_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">300</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">301</span><span class="sd">     Return the offset as a tuple (x, y).</span>
-<span class="g g-Whitespace">    </span><span class="mi">302</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">310</span><span class="sd">     renderer : `.RendererBase` subclass</span>
-<span class="g g-Whitespace">    </span><span class="mi">311</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">312</span>     <span class="k">return</span> <span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">313</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">(</span><span class="n">bbox</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="o">-</span><span class="n">bbox</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="o">-</span><span class="n">bbox</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span>         <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">315</span>         <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/legend.py:695,</span> in <span class="ni">Legend._findoffset</span><span class="nt">(self, width, height, xdescent, ydescent, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">692</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Helper function to locate the legend.&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">694</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># &quot;best&quot;.</span>
-<span class="ne">--&gt; </span><span class="mi">695</span>     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_best_position</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">696</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span> <span class="ow">in</span> <span class="n">Legend</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>  <span class="c1"># Fixed location.</span>
-<span class="g g-Whitespace">    </span><span class="mi">697</span>     <span class="n">bbox</span> <span class="o">=</span> <span class="n">Bbox</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/legend.py:1140,</span> in <span class="ni">Legend._find_best_position</span><span class="nt">(self, width, height, renderer, consider)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1137</span> <span class="n">badness</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="g g-Whitespace">   </span><span class="mi">1138</span> <span class="c1"># XXX TODO: If markers are present, it would be good to take them</span>
-<span class="g g-Whitespace">   </span><span class="mi">1139</span> <span class="c1"># into account when checking vertex overlaps in the next line.</span>
-<span class="ne">-&gt; </span><span class="mi">1140</span> <span class="n">badness</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">legendBox</span><span class="o">.</span><span class="n">count_contains</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1141</span>                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1142</span>            <span class="o">+</span> <span class="n">legendBox</span><span class="o">.</span><span class="n">count_contains</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1143</span>            <span class="o">+</span> <span class="n">legendBox</span><span class="o">.</span><span class="n">count_overlaps</span><span class="p">(</span><span class="n">bboxes</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1144</span>            <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">intersects_bbox</span><span class="p">(</span><span class="n">legendBox</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1145</span>                  <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">))</span>
-<span class="g g-Whitespace">   </span><span class="mi">1146</span> <span class="k">if</span> <span class="n">badness</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1147</span>     <span class="k">return</span> <span class="n">l</span><span class="p">,</span> <span class="n">b</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/legend.py:1140,</span> in <span class="ni">&lt;genexpr&gt;</span><span class="nt">(.0)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1137</span> <span class="n">badness</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="g g-Whitespace">   </span><span class="mi">1138</span> <span class="c1"># XXX TODO: If markers are present, it would be good to take them</span>
-<span class="g g-Whitespace">   </span><span class="mi">1139</span> <span class="c1"># into account when checking vertex overlaps in the next line.</span>
-<span class="ne">-&gt; </span><span class="mi">1140</span> <span class="n">badness</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">legendBox</span><span class="o">.</span><span class="n">count_contains</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1141</span>                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1142</span>            <span class="o">+</span> <span class="n">legendBox</span><span class="o">.</span><span class="n">count_contains</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1143</span>            <span class="o">+</span> <span class="n">legendBox</span><span class="o">.</span><span class="n">count_overlaps</span><span class="p">(</span><span class="n">bboxes</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1144</span>            <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">intersects_bbox</span><span class="p">(</span><span class="n">legendBox</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1145</span>                  <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">))</span>
-<span class="g g-Whitespace">   </span><span class="mi">1146</span> <span class="k">if</span> <span class="n">badness</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1147</span>     <span class="k">return</span> <span class="n">l</span><span class="p">,</span> <span class="n">b</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/matplotlib/transforms.py:593,</span> in <span class="ni">BboxBase.count_contains</span><span class="nt">(self, vertices)</span>
-<span class="g g-Whitespace">    </span><span class="mi">591</span> <span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">592</span> <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">593</span>     <span class="k">return</span> <span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;</span> <span class="n">vertices</span><span class="p">)</span> <span class="o">&amp;</span>
-<span class="g g-Whitespace">    </span><span class="mi">594</span>              <span class="p">(</span><span class="n">vertices</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/core/_methods.py:64,</span> in <span class="ni">_all</span><span class="nt">(a, axis, dtype, out, keepdims, where)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span> <span class="k">def</span> <span class="nf">_all</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">62</span>     <span class="c1"># Parsing keyword arguments is currently fairly slow, so avoid it for now</span>
-<span class="g g-Whitespace">     </span><span class="mi">63</span>     <span class="k">if</span> <span class="n">where</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">64</span>         <span class="k">return</span> <span class="n">umr_all</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span>     <span class="k">return</span> <span class="n">umr_all</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>

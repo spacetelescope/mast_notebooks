@@ -904,7 +904,7 @@ document.write(`
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table139705657919568" class="table-striped table-bordered table-condensed">
+<table id="table140435144614400" class="table-striped table-bordered table-condensed">
 <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
 <thead><tr><th>str16</th><th>str5</th><th>str31</th></tr></thead>
 <tr><td>objID</td><td>long</td><td>objID_descriptionTBD</td></tr>
@@ -968,38 +968,63 @@ These constraints can be modified depending on your science goals.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://catalogs.mast.stsci.edu/api/v0.1/hsc/v3/propermotions.csv?pagesize=500000&amp;NumFilters.gt=1&amp;NumVisits.gt=9&amp;NumImages.gt=19&amp;columns=%5BObjID%2CraMean%2CdecMean%2CraMeanErr%2CdecMeanErr%2CNumFilters%2CNumVisits%2CpmLat%2CpmLon%2CpmLatErr%2CpmLonErr%2CpmLatDev%2CpmLonDev%2CepochMean%2CepochStart%2CepochEnd%5D
-10.3 s: retrieved data
+22.0 s: retrieved data
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>27.5 s: converted to astropy table
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">17</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">results</span> <span class="o">=</span> <span class="n">hscsearch</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;propermotions&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="o">**</span><span class="n">constraints</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.1f}</span><span class="s2"> s: retrieved data&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">))</span>
+<span class="ne">---&gt; </span><span class="mi">17</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> s: converted to astropy table&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># change some column names for consistency with the Casjobs version of this notebook</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/ascii/ui.py:374,</span> in <span class="ni">read</span><span class="nt">(table, guess, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">368</span>             <span class="n">new_kwargs</span><span class="p">[</span><span class="s2">&quot;guess_html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_probably_html</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="c1"># Get the table from guess in ``dat``.  If ``dat`` comes back as None</span>
+<span class="g g-Whitespace">    </span><span class="mi">371</span> <span class="c1"># then there was just one set of kwargs in the guess list so fall</span>
+<span class="g g-Whitespace">    </span><span class="mi">372</span> <span class="c1"># through below to the non-guess way so that any problems result in a</span>
+<span class="g g-Whitespace">    </span><span class="mi">373</span> <span class="c1"># more useful traceback.</span>
+<span class="ne">--&gt; </span><span class="mi">374</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">_guess</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">new_kwargs</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">fast_reader</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span> <span class="k">if</span> <span class="n">dat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span>     <span class="n">guess</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/ascii/ui.py:582,</span> in <span class="ni">_guess</span><span class="nt">(table, read_kwargs, format, fast_reader)</span>
+<span class="g g-Whitespace">    </span><span class="mi">579</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">get_reader</span><span class="p">(</span><span class="o">**</span><span class="n">guess_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">581</span> <span class="n">reader</span><span class="o">.</span><span class="n">guessing</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="ne">--&gt; </span><span class="mi">582</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span> <span class="n">_read_trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span>         <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">guess_kwargs</span><span class="p">),</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span>     <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">590</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">591</span> <span class="k">return</span> <span class="n">dat</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/ascii/fastbasic.py:143,</span> in <span class="ni">FastBasic.read</span><span class="nt">(self, table)</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;fast_reader&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fast_reader</span>
+<span class="g g-Whitespace">    </span><span class="mi">131</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">cparser</span><span class="o">.</span><span class="n">CParser</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">132</span>     <span class="n">table</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">133</span>     <span class="bp">self</span><span class="o">.</span><span class="n">strip_whitespace_lines</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">141</span>     <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">143</span> <span class="n">conversion_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_header</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">144</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_header</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">145</span> <span class="k">if</span> <span class="n">conversion_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/io/ascii/fastbasic.py:319,</span> in <span class="ni">FastCommentedHeader._read_header</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">316</span> <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">source</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span> <span class="n">commented_lines</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="ne">--&gt; </span><span class="mi">319</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">tmp</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">320</span>     <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">321</span>     <span class="k">if</span> <span class="n">line</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="p">:</span>  <span class="c1"># line begins with a comment</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
-<div class="output text_html"><div><i>Table length=462899</i>
-<table id="table139705657810928" class="table-striped table-bordered table-condensed">
-<thead><tr><th>ObjID</th><th>RA</th><th>Dec</th><th>RAerr</th><th>Decerr</th><th>NumFilters</th><th>NumVisits</th><th>bpm</th><th>lpm</th><th>bpmerr</th><th>lpmerr</th><th>pmdev</th><th>yr</th><th>dT</th><th>yrStart</th><th>yrEnd</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>4000709002286</td><td>269.7911379669984</td><td>-29.206156187411423</td><td>0.6964818624528099</td><td>0.2730062330800141</td><td>2</td><td>47</td><td>2.087558644949346</td><td>-7.738272329430371</td><td>0.38854582276386007</td><td>0.22115673368981237</td><td>2.887154518133692</td><td>2013.3007902147058</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002287</td><td>269.7955922590832</td><td>-29.206151631494986</td><td>0.24020216760386343</td><td>0.18524811391217816</td><td>2</td><td>47</td><td>-2.8930568503344967</td><td>-0.7898583846555245</td><td>0.1316584790053578</td><td>0.12462185695877996</td><td>1.474676632663785</td><td>2013.3007902147058</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002288</td><td>269.81608933789283</td><td>-29.206155196641195</td><td>0.3040684131020671</td><td>0.2850407586200256</td><td>2</td><td>47</td><td>4.65866649193795</td><td>-3.2098804580343785</td><td>0.13931172183651183</td><td>0.20648097604781626</td><td>1.9570357322713463</td><td>2013.3007902147058</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002289</td><td>269.8259694163096</td><td>-29.20615668840751</td><td>0.3564325426522067</td><td>0.39542200297333663</td><td>2</td><td>47</td><td>-0.45662407290928664</td><td>-2.0909050045433832</td><td>0.15758175952333653</td><td>0.2763881282194908</td><td>2.2415238499377685</td><td>2013.3007902147058</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002290</td><td>269.83486415728754</td><td>-29.206155266983643</td><td>0.16299639839198538</td><td>0.14062839407811836</td><td>2</td><td>46</td><td>4.459275526783969</td><td>-2.0433632344343886</td><td>0.17899727943855331</td><td>0.18503594468835396</td><td>1.0091970907052557</td><td>2013.5152382701992</td><td>3.0067822490178155</td><td>2011.8013119543625</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002291</td><td>269.83512411344606</td><td>-29.2061635244798</td><td>0.18282583105108072</td><td>0.2093503650681541</td><td>2</td><td>46</td><td>4.090870144734149</td><td>-8.059473158394072</td><td>0.20446351152189052</td><td>0.26206212529696193</td><td>1.293050027027329</td><td>2013.5152382701992</td><td>3.0067822490178155</td><td>2011.8013119543625</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002292</td><td>269.7964913295107</td><td>-29.20618734483311</td><td>0.30491102397226527</td><td>0.26784496777851086</td><td>2</td><td>47</td><td>-1.7001866534338244</td><td>-5.963967462759159</td><td>0.14814161799844547</td><td>0.1920517681653374</td><td>1.9671761489287654</td><td>2013.3007902147058</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002293</td><td>269.7872745304419</td><td>-29.206257828852337</td><td>1.351885504360048</td><td>1.0460614189471378</td><td>2</td><td>46</td><td>-2.290436263458843</td><td>-9.596838559623627</td><td>0.779373480816473</td><td>0.6485354032580087</td><td>8.518045574208871</td><td>2013.3206150152016</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002294</td><td>269.80888716219647</td><td>-29.206189189626002</td><td>1.4134596118752103</td><td>1.2518047802862953</td><td>2</td><td>47</td><td>4.381302303073221</td><td>-4.701855876394848</td><td>0.4784428793001857</td><td>1.0219363775325352</td><td>6.469654565147953</td><td>2013.3007902147058</td><td>11.371914541371764</td><td>2003.4361796620085</td><td>2014.8080942033803</td></tr>
-<tr><td>4000709002295</td><td>269.8234425365187</td><td>-29.206188473661626</td><td>0.35597857562160923</td><td>1.5877104410672558</td><td>2</td><td>36</td><td>4.48015296877619</td><td>-8.000985108228505</td><td>0.5070876244065738</td><td>0.7286553380951986</td><td>4.141157872026995</td><td>2013.174250263767</td><td>11.298715372835678</td><td>2003.4361796620085</td><td>2014.7348950348442</td></tr>
-<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>4000812954616</td><td>269.70861806936244</td><td>-29.22963925127374</td><td>0.4145350791035023</td><td>0.5646425139601212</td><td>2</td><td>22</td><td>6.446666882419759</td><td>-3.264926033437659</td><td>0.6828436154370532</td><td>0.5815421760344301</td><td>2.575583819860359</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954617</td><td>269.7095074514663</td><td>-29.22960739481815</td><td>0.49938250039075976</td><td>1.8982129844394509</td><td>2</td><td>22</td><td>3.623866913363032</td><td>-2.9658479339905663</td><td>1.5967167108154778</td><td>1.9408891618757047</td><td>6.437305561644422</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954626</td><td>269.7091983596267</td><td>-29.22958750839926</td><td>0.3611643080764414</td><td>0.47429286442575236</td><td>2</td><td>22</td><td>-5.433170069101051</td><td>-0.9841417338576105</td><td>0.5872691071338287</td><td>0.4876507397388473</td><td>1.7430015764136113</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954627</td><td>269.71209922276853</td><td>-29.22959324051154</td><td>0.5658959311125298</td><td>0.519501839292499</td><td>2</td><td>22</td><td>4.2551901040204285</td><td>-5.316064882484524</td><td>0.7465186345159079</td><td>0.6405049366233309</td><td>2.632563947115044</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954637</td><td>269.7036252387055</td><td>-29.22962285608012</td><td>2.425143716284974</td><td>8.88123895829776</td><td>2</td><td>22</td><td>2.1216800196936427</td><td>-5.961047115042334</td><td>8.107830471183322</td><td>8.557354457535954</td><td>31.969639239581014</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954638</td><td>269.70516093446395</td><td>-29.229602412104736</td><td>0.8032125874507969</td><td>4.19454587612144</td><td>2</td><td>22</td><td>2.2998593766281075</td><td>-5.478248541486434</td><td>3.4483834125155632</td><td>4.244190586824991</td><td>16.085438853294303</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954639</td><td>269.7093070217424</td><td>-29.22959180754154</td><td>1.1921607534771352</td><td>1.7790305698670303</td><td>2</td><td>17</td><td>-1.820561603619025</td><td>-7.642848312464297</td><td>2.1090181120653155</td><td>2.082832995058273</td><td>6.165084911750225</td><td>2013.2228711226198</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954640</td><td>269.7093932337725</td><td>-29.229607887328886</td><td>1.1740622179568994</td><td>1.5846576780771122</td><td>2</td><td>22</td><td>-0.4509106887293366</td><td>-9.522244792558286</td><td>1.117655690542412</td><td>2.2645107971462086</td><td>6.450944495248279</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954644</td><td>269.7029865879542</td><td>-29.229612168034777</td><td>1.642949267162042</td><td>9.35620041894705</td><td>2</td><td>14</td><td>3.5574461227433147</td><td>-2.4326941838865883</td><td>7.242036606677296</td><td>9.522286534824058</td><td>23.979933473781877</td><td>2013.3627585429379</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-<tr><td>4000812954645</td><td>269.70419237331345</td><td>-29.22962488614748</td><td>0.26508374005333074</td><td>0.7909562563588484</td><td>2</td><td>22</td><td>3.094705231697324</td><td>-10.377113607275149</td><td>0.5699573253488941</td><td>0.9033750506085733</td><td>2.4453274575527577</td><td>2013.3781422207417</td><td>2.23068392031726</td><td>2012.2042105057922</td><td>2014.4348944261094</td></tr>
-</table></div></div></div>
+</div>
 </div>
 </section>
 </section>
@@ -1015,9 +1040,6 @@ These constraints can be modified depending on your science goals.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">invert_xaxis</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/5e564621159e011d355dfe742304133e12fc62389c446d04ac2c1d683708a7e1.png" src="../../../_images/5e564621159e011d355dfe742304133e12fc62389c446d04ac2c1d683708a7e1.png" />
 </div>
 </div>
 </section>
@@ -1040,9 +1062,6 @@ These constraints can be modified depending on your science goals.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/1eae348f9116baad877be70183ee5a1df58dcf6f96523843e670e016219cdcd7.png" src="../../../_images/1eae348f9116baad877be70183ee5a1df58dcf6f96523843e670e016219cdcd7.png" />
-</div>
 </div>
 </section>
 <section id="proper-motion-error-cumulative-histogram-for-lon-and-lat">
@@ -1061,9 +1080,6 @@ These constraints can be modified depending on your science goals.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/541582b3c3cc6ee63765ffbd2e2dc6fe4983297f8ce76d156ce3403aee31f588.png" src="../../../_images/541582b3c3cc6ee63765ffbd2e2dc6fe4983297f8ce76d156ce3403aee31f588.png" />
-</div>
 </div>
 </section>
 <section id="proper-motion-error-log-histogram-for-lon-and-lat">
@@ -1081,9 +1097,6 @@ These constraints can be modified depending on your science goals.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/fc1f1aef39162dfd20ca0540ef34551d461112ac1cfe29c769ed8b17cd380820.png" src="../../../_images/fc1f1aef39162dfd20ca0540ef34551d461112ac1cfe29c769ed8b17cd380820.png" />
 </div>
 </div>
 </section>
@@ -1122,14 +1135,6 @@ These constraints can be modified depending on your science goals.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kde took 2.5 sec
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting 190405 of 461199 points
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1140,9 +1145,6 @@ These constraints can be modified depending on your science goals.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/f654559439e1d8f596ef76a9fda7ac6866b3b19c43799d1cfa05839ccdddf5fe.png" src="../../../_images/f654559439e1d8f596ef76a9fda7ac6866b3b19c43799d1cfa05839ccdddf5fe.png" />
 </div>
 </div>
 </section>
@@ -1184,9 +1186,6 @@ These constraints can be modified depending on your science goals.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/fac0adc2ea13fe596da09cdcbf0da114bf783bb9c66ca0d939a82bd3b438d3b5.png" src="../../../_images/fac0adc2ea13fe596da09cdcbf0da114bf783bb9c66ca0d939a82bd3b438d3b5.png" />
-</div>
 </div>
 </section>
 </section>
@@ -1204,9 +1203,6 @@ These constraints can be modified depending on your science goals.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/dde23f41f3bc53db5b6ce35d5e35480a2b30e808819da6d1dfa57cb7fc8398a1.png" src="../../../_images/dde23f41f3bc53db5b6ce35d5e35480a2b30e808819da6d1dfa57cb7fc8398a1.png" />
 </div>
 </div>
 </section>
@@ -1227,9 +1223,6 @@ These constraints can be modified depending on your science goals.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/ac4064bde417824992cf52bc1bfa51720521002ba0f6692c3709603d3f089ec3.png" src="../../../_images/ac4064bde417824992cf52bc1bfa51720521002ba0f6692c3709603d3f089ec3.png" />
-</div>
 </div>
 <p>Then plot histogram of observation duration for the objects.</p>
 <div class="cell docutils container">
@@ -1243,9 +1236,6 @@ These constraints can be modified depending on your science goals.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;time span (years)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Number of objects&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> stars in SWEEPS&#39;</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/dd2ffee0bd8c250c7944be6c8a171aa687ce086b1059b965a8ba723f70916d85.png" src="../../../_images/dd2ffee0bd8c250c7944be6c8a171aa687ce086b1059b965a8ba723f70916d85.png" />
 </div>
 </div>
 </section>
@@ -1323,199 +1313,6 @@ These constraints can be modified depending on your science goals.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plotting </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wi</span><span class="p">)</span><span class="si">}</span><span class="s2"> objects&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objid</span><span class="p">[</span><span class="n">wi</span><span class="p">]:</span>
     <span class="n">positions</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting 21 objects
-</pre></div>
-</div>
-<img alt="../../../_images/f567f7e3ed4b7fdaf5c7ff4e31605c845d05c75885addd484f763eacc4cfd75a.png" src="../../../_images/f567f7e3ed4b7fdaf5c7ff4e31605c845d05c75885addd484f763eacc4cfd75a.png" />
-<img alt="../../../_images/3bb77411bdf3ecede6539a4ed9c490699d225cae6192bf91d166c7e40124d716.png" src="../../../_images/3bb77411bdf3ecede6539a4ed9c490699d225cae6192bf91d166c7e40124d716.png" />
-<img alt="../../../_images/b12ddf20f033622a9d361cfa0a985e979c593b4544df12a656d7924260489fe6.png" src="../../../_images/b12ddf20f033622a9d361cfa0a985e979c593b4544df12a656d7924260489fe6.png" />
-<img alt="../../../_images/d18127f89e6c435623fc607220c35aabdc89b63035ac9d0ac876a23588f1705f.png" src="../../../_images/d18127f89e6c435623fc607220c35aabdc89b63035ac9d0ac876a23588f1705f.png" />
-<img alt="../../../_images/19fa14b5258d56ca2c9d7819d1cc3469cebd26385dbf626e45a050c4def9de99.png" src="../../../_images/19fa14b5258d56ca2c9d7819d1cc3469cebd26385dbf626e45a050c4def9de99.png" />
-<img alt="../../../_images/99789175ba11cce05133ce1382d76d36e8bd589599ea8de6b7243ef788ad4c04.png" src="../../../_images/99789175ba11cce05133ce1382d76d36e8bd589599ea8de6b7243ef788ad4c04.png" />
-<img alt="../../../_images/a0cc59c3a2bb6e0ec22ea086f492c442ec36b2091cafa58935ea22efce71ecce.png" src="../../../_images/a0cc59c3a2bb6e0ec22ea086f492c442ec36b2091cafa58935ea22efce71ecce.png" />
-<img alt="../../../_images/424e9f8e3b73a9545def891581b3ff8eddaa36a979ab56b1a1e11e2853fb458c.png" src="../../../_images/424e9f8e3b73a9545def891581b3ff8eddaa36a979ab56b1a1e11e2853fb458c.png" />
-<img alt="../../../_images/7da4719bbfe6f5d8ceea469da201e7e20e268560cf29e4854f8ba1b6de24cd06.png" src="../../../_images/7da4719bbfe6f5d8ceea469da201e7e20e268560cf29e4854f8ba1b6de24cd06.png" />
-<img alt="../../../_images/220a46b32c773559e67bfbb5eaaeeba8e33a42aeb7432f302873037a7c6a8ac6.png" src="../../../_images/220a46b32c773559e67bfbb5eaaeeba8e33a42aeb7432f302873037a7c6a8ac6.png" />
-<img alt="../../../_images/5aa1171fbc27dc90830d53f3250a0d001e6809e867ee386b664f2f6efe05ddfd.png" src="../../../_images/5aa1171fbc27dc90830d53f3250a0d001e6809e867ee386b664f2f6efe05ddfd.png" />
-<img alt="../../../_images/36e9f68289554630339ce21a4b9865234b7fad3f7768d32d3617f0dbf8b3a04d.png" src="../../../_images/36e9f68289554630339ce21a4b9865234b7fad3f7768d32d3617f0dbf8b3a04d.png" />
-<img alt="../../../_images/316ff05ae90c48c37a907eea38baeec6517abe27ade988852246ca33b643c64d.png" src="../../../_images/316ff05ae90c48c37a907eea38baeec6517abe27ade988852246ca33b643c64d.png" />
-<img alt="../../../_images/d53145c187bf2e6eb66b1613efc2c1c8bca4390b9f8a05651b05b8ef3f646825.png" src="../../../_images/d53145c187bf2e6eb66b1613efc2c1c8bca4390b9f8a05651b05b8ef3f646825.png" />
-<img alt="../../../_images/ec4053b44c2299cf036441365fb4f3bdc01307321d854293e8c2447d2a9431a7.png" src="../../../_images/ec4053b44c2299cf036441365fb4f3bdc01307321d854293e8c2447d2a9431a7.png" />
-<img alt="../../../_images/c87e5ca3acc521835f28df4225b6214b63cfb913c064632f0131a32d8e953b7d.png" src="../../../_images/c87e5ca3acc521835f28df4225b6214b63cfb913c064632f0131a32d8e953b7d.png" />
-<img alt="../../../_images/5c5d0e7eb0a8f197e656f2e65240b25f70a2563ead517298e9030e53dcc53637.png" src="../../../_images/5c5d0e7eb0a8f197e656f2e65240b25f70a2563ead517298e9030e53dcc53637.png" />
-<img alt="../../../_images/1f3ed5d112345bc9f5090c33e8c9473187d43a2838a9078f3c6d69e68060bc44.png" src="../../../_images/1f3ed5d112345bc9f5090c33e8c9473187d43a2838a9078f3c6d69e68060bc44.png" />
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plotting </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wi</span><span class="p">)</span><span class="si">}</span><span class="s2"> objects&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objid</span><span class="p">[</span><span class="n">wi</span><span class="p">]:</span>
-<span class="ne">----&gt; </span><span class="mi">9</span>     <span class="n">positions</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
-
-<span class="nn">Cell In[17], line 11,</span> in <span class="ni">positions</span><span class="nt">(Obj)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span><span class="sd"> input parameter Obj is the value of the ObjID </span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span><span class="sd"> output plots change in (lon, lat) as a function of time</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span><span class="sd"> overplots proper motion fit</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span><span class="sd"> provides ObjID and proper motion information in labels</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="c1"># get the measured positions as a function of time</span>
-<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hscsearch</span><span class="p">(</span><span class="s2">&quot;sourcepositions&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dT,dLon,dLat&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">),</span> <span class="n">objid</span><span class="o">=</span><span class="n">Obj</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">pos</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;dT&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># get the PM fit parameters</span>
-
-<span class="nn">Cell In[3], line 57,</span> in <span class="ni">hscsearch</span><span class="nt">(table, release, magtype, format, columns, baseurl, verbose, **kw)</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span> <span class="k">if</span> <span class="n">columns</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="c1"># check that column values are legal</span>
-<span class="g g-Whitespace">     </span><span class="mi">55</span>     <span class="c1"># create a dictionary to speed this up</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="n">dcols</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="ne">---&gt; </span><span class="mi">57</span>     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">hscmetadata</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">magtype</span><span class="p">)[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span>         <span class="n">dcols</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span>     <span class="n">badcols</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="nn">Cell In[3], line 95,</span> in <span class="ni">hscmetadata</span><span class="nt">(table, release, magtype, baseurl)</span>
-<span class="g g-Whitespace">     </span><span class="mi">83</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Return metadata for the specified catalog and table</span>
-<span class="g g-Whitespace">     </span><span class="mi">84</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">85</span><span class="sd"> Parameters</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span><span class="sd"> Returns an astropy table with columns name, type, description</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span> <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/metadata&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cat2url</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">magtype</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">))</span>
-<span class="ne">---&gt; </span><span class="mi">95</span> <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span> <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span> <span class="n">v</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/api.py:73,</span> in <span class="ni">get</span><span class="nt">(url, params, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">62</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">63</span><span class="w">     </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sends a GET request.</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span><span class="sd">     :param url: URL for the new :class:`Request` object.</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span><span class="sd">     :rtype: requests.Response</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">---&gt; </span><span class="mi">73</span>     <span class="k">return</span> <span class="n">request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/api.py:59,</span> in <span class="ni">request</span><span class="nt">(method, url, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="c1"># By using the &#39;with&#39; statement we are sure the session is closed, thus we</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span> <span class="c1"># avoid leaving sockets open which can trigger a ResourceWarning in some</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="c1"># cases, and look like a memory leak in others.</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span> <span class="k">with</span> <span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">59</span>     <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:587,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
-<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">}</span>
-<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">587</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="k">return</span> <span class="n">resp</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:701,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">698</span> <span class="n">start</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">700</span> <span class="c1"># Send the request</span>
-<span class="ne">--&gt; </span><span class="mi">701</span> <span class="n">r</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="c1"># Total elapsed time of the request (approximately)</span>
-<span class="g g-Whitespace">    </span><span class="mi">704</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/adapters.py:489,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
-<span class="g g-Whitespace">    </span><span class="mi">487</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">488</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">chunked</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">489</span>         <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">490</span>             <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">491</span>             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">492</span>             <span class="n">body</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">493</span>             <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">494</span>             <span class="n">redirect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">495</span>             <span class="n">assert_same_host</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">496</span>             <span class="n">preload_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">497</span>             <span class="n">decode_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">498</span>             <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">499</span>             <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">500</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">502</span>     <span class="c1"># Send the request.</span>
-<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">504</span>         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;proxy_pool&quot;</span><span class="p">):</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:703,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, **response_kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">700</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_proxy</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">702</span> <span class="c1"># Make the request on the httplib connection object.</span>
-<span class="ne">--&gt; </span><span class="mi">703</span> <span class="n">httplib_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="n">conn</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">705</span>     <span class="n">method</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="n">url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">707</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">708</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">709</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="c1"># If we&#39;re going to release the connection in ``finally:``, then</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="c1"># the response doesn&#39;t need to know about the connection. Otherwise</span>
-<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="c1"># it will also try to release it and we&#39;ll have a double-release</span>
-<span class="g g-Whitespace">    </span><span class="mi">716</span> <span class="c1"># mess.</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="n">response_conn</span> <span class="o">=</span> <span class="n">conn</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">release_conn</span> <span class="k">else</span> <span class="kc">None</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:386,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">384</span> <span class="c1"># Trigger any extra validation we need to do.</span>
-<span class="g g-Whitespace">    </span><span class="mi">385</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">386</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_conn</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span> <span class="k">except</span> <span class="p">(</span><span class="n">SocketTimeout</span><span class="p">,</span> <span class="n">BaseSSLError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">388</span>     <span class="c1"># Py2 raises this as a BaseSSLError, Py3 raises it as socket timeout.</span>
-<span class="g g-Whitespace">    </span><span class="mi">389</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_raise_timeout</span><span class="p">(</span><span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout_value</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:1042,</span> in <span class="ni">HTTPSConnectionPool._validate_conn</span><span class="nt">(self, conn)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1040</span> <span class="c1"># Force connect early to allow us to validate the connection.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1041</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;sock&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># AppEngine might not have  `.sock`</span>
-<span class="ne">-&gt; </span><span class="mi">1042</span>     <span class="n">conn</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1044</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1045</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1046</span>         <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1047</span>             <span class="s2">&quot;Unverified HTTPS request is being made to host &#39;</span><span class="si">%s</span><span class="s2">&#39;. &quot;</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1052</span>         <span class="n">InsecureRequestWarning</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1053</span>     <span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connection.py:419,</span> in <span class="ni">HTTPSConnection.connect</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">410</span> <span class="k">if</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">411</span>     <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ca_certs</span>
-<span class="g g-Whitespace">    </span><span class="mi">412</span>     <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_dir</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">415</span>     <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s2">&quot;load_default_certs&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">416</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">417</span>     <span class="n">context</span><span class="o">.</span><span class="n">load_default_certs</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">419</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">ssl_wrap_socket</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">420</span>     <span class="n">sock</span><span class="o">=</span><span class="n">conn</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">421</span>     <span class="n">keyfile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key_file</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">422</span>     <span class="n">certfile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cert_file</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">423</span>     <span class="n">key_password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key_password</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">424</span>     <span class="n">ca_certs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_certs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">425</span>     <span class="n">ca_cert_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_dir</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">426</span>     <span class="n">ca_cert_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_data</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">427</span>     <span class="n">server_hostname</span><span class="o">=</span><span class="n">server_hostname</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">428</span>     <span class="n">ssl_context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">429</span>     <span class="n">tls_in_tls</span><span class="o">=</span><span class="n">tls_in_tls</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">430</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">432</span> <span class="c1"># If we&#39;re using all defaults and the connection</span>
-<span class="g g-Whitespace">    </span><span class="mi">433</span> <span class="c1"># is TLSv1 or TLSv1.1 we throw a DeprecationWarning</span>
-<span class="g g-Whitespace">    </span><span class="mi">434</span> <span class="c1"># for the host.</span>
-<span class="g g-Whitespace">    </span><span class="mi">435</span> <span class="k">if</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">436</span>     <span class="n">default_ssl_context</span>
-<span class="g g-Whitespace">    </span><span class="mi">437</span>     <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_version</span> <span class="ow">is</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">438</span>     <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">439</span>     <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">version</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;TLSv1&quot;</span><span class="p">,</span> <span class="s2">&quot;TLSv1.1&quot;</span><span class="p">}</span>
-<span class="g g-Whitespace">    </span><span class="mi">440</span> <span class="p">):</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/util/ssl_.py:402,</span> in <span class="ni">ssl_wrap_socket</span><span class="nt">(sock, keyfile, certfile, cert_reqs, ca_certs, server_hostname, ssl_version, ciphers, ssl_context, ca_cert_dir, key_password, ca_cert_data, tls_in_tls)</span>
-<span class="g g-Whitespace">    </span><span class="mi">400</span> <span class="k">if</span> <span class="n">ca_certs</span> <span class="ow">or</span> <span class="n">ca_cert_dir</span> <span class="ow">or</span> <span class="n">ca_cert_data</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">401</span>     <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">402</span>         <span class="n">context</span><span class="o">.</span><span class="n">load_verify_locations</span><span class="p">(</span><span class="n">ca_certs</span><span class="p">,</span> <span class="n">ca_cert_dir</span><span class="p">,</span> <span class="n">ca_cert_data</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">403</span>     <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span>         <span class="k">raise</span> <span class="n">SSLError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>

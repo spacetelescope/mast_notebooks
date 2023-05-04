@@ -30,15 +30,12 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-# Remove the signals associated with the 50 highest peaks
-newlc = lc.copy()
-for i in range(50):
-  pg = newlc.to_periodogram()
-  model = pg.model(time=newlc.time, frequency=pg.frequency_at_max_power)
-  newlc.flux = newlc.flux / model.flux
+# Download the light curve data
+search = lk.search_lightcurve('KIC 8197761', mission='Kepler')
+lc = search.download_all().stitch()
 
-# Plot the new light curve on top of the original one
-ax = lc.plot(alpha=.5, label='Original');
-newlc.plot(ax=ax, label='New'); 
+# Fold the light curve at the known planet period
+planet_period = 9.8686667
+lc.fold(period=planet_period).plot();
 -------------------
 

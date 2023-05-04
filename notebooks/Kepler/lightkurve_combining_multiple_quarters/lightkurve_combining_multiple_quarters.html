@@ -660,7 +660,7 @@ Observations by <em>K2</em> and <em>TESS</em> are also broken down into chunks o
 <div class="cell_output docutils container">
 <div class="output text_html">SearchResult containing 49 data products.
 
-<table id="table139875246546400">
+<table id="table139815381953040">
 <thead><tr><th>#</th><th>mission</th><th>year</th><th>author</th><th>exptime</th><th>target_name</th><th>distance</th></tr></thead>
 <thead><tr><th></th><th></th><th></th><th></th><th>s</th><th></th><th>arcsec</th></tr></thead>
 <tr><td>0</td><td>Kepler Quarter 00</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
@@ -738,88 +738,160 @@ Length = 49 rows</div></div>
 <span class="g g-Whitespace">    </span><span class="mi">350</span>         <span class="sa">f</span><span class="s2">&quot;MAST returns </span><span class="si">{</span><span class="n">download_response</span><span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">download_response</span><span class="p">[</span><span class="s1">&#39;Message&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">351</span>         <span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/observations.py:728,</span> in <span class="ni">ObservationsClass.download_products</span><span class="nt">(self, products, download_dir, flat, cache, curl_flag, mrp_only, cloud_only, **filters)</span>
-<span class="g g-Whitespace">    </span><span class="mi">725</span> <span class="n">products</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_duplicate_products</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">727</span> <span class="c1"># apply filters</span>
-<span class="ne">--&gt; </span><span class="mi">728</span> <span class="n">products</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">products</span><span class="p">,</span> <span class="n">mrp_only</span><span class="o">=</span><span class="n">mrp_only</span><span class="p">,</span> <span class="o">**</span><span class="n">filters</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">730</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">731</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No products to download.&quot;</span><span class="p">,</span> <span class="n">NoResultsWarning</span><span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/observations.py:734,</span> in <span class="ni">ObservationsClass.download_products</span><span class="nt">(self, products, download_dir, cache, curl_flag, mrp_only, cloud_only, **filters)</span>
+<span class="g g-Whitespace">    </span><span class="mi">732</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">733</span>     <span class="n">base_dir</span> <span class="o">=</span> <span class="n">download_dir</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mastDownload&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">manifest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_files</span><span class="p">(</span><span class="n">products</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">735</span>                                     <span class="n">base_dir</span><span class="o">=</span><span class="n">base_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">736</span>                                     <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">737</span>                                     <span class="n">cloud_only</span><span class="o">=</span><span class="n">cloud_only</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">739</span> <span class="k">return</span> <span class="n">manifest</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/observations.py:499,</span> in <span class="ni">ObservationsClass.filter_products</span><span class="nt">(self, products, mrp_only, extension, **filters)</span>
-<span class="g g-Whitespace">    </span><span class="mi">495</span>         <span class="n">mask</span> <span class="o">|=</span> <span class="p">(</span><span class="n">products</span><span class="p">[</span><span class="n">colname</span><span class="p">]</span> <span class="o">==</span> <span class="n">elt</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">497</span>     <span class="n">filter_mask</span> <span class="o">&amp;=</span> <span class="n">mask</span>
-<span class="ne">--&gt; </span><span class="mi">499</span> <span class="k">return</span> <span class="n">products</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">filter_mask</span><span class="p">)]</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/observations.py:617,</span> in <span class="ni">ObservationsClass._download_files</span><span class="nt">(self, products, base_dir, cache, cloud_only)</span>
+<span class="g g-Whitespace">    </span><span class="mi">614</span>     <span class="n">local_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_product</span><span class="p">[</span><span class="s1">&#39;productFilename&#39;</span><span class="p">]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">616</span>     <span class="c1"># download the files</span>
+<span class="ne">--&gt; </span><span class="mi">617</span>     <span class="n">status</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">data_product</span><span class="p">[</span><span class="s2">&quot;dataURI&quot;</span><span class="p">],</span> <span class="n">local_path</span><span class="o">=</span><span class="n">local_path</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">618</span>                                           <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">cloud_only</span><span class="o">=</span><span class="n">cloud_only</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">620</span>     <span class="n">manifest_array</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">local_path</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">url</span><span class="p">])</span>
+<span class="g g-Whitespace">    </span><span class="mi">622</span> <span class="n">manifest</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">manifest_array</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Local Path&#39;</span><span class="p">,</span> <span class="s1">&#39;Status&#39;</span><span class="p">,</span> <span class="s1">&#39;Message&#39;</span><span class="p">,</span> <span class="s2">&quot;URL&quot;</span><span class="p">))</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:2106,</span> in <span class="ni">Table.__getitem__</span><span class="nt">(self, item)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2095</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_from_slice</span><span class="p">([])</span>
-<span class="g g-Whitespace">   </span><span class="mi">2096</span> <span class="k">elif</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2097</span>     <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2098</span>     <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2104</span>     <span class="c1"># is produced by np.where, as in t[np.where(t[&#39;a&#39;] &gt; 2)]</span>
-<span class="g g-Whitespace">   </span><span class="mi">2105</span>     <span class="c1"># For all, a new table is constructed with slice of all columns</span>
-<span class="ne">-&gt; </span><span class="mi">2106</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_from_slice</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2107</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2108</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="si">}</span><span class="s2"> for table item access&quot;</span><span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/mast/observations.py:568,</span> in <span class="ni">ObservationsClass.download_file</span><span class="nt">(self, uri, local_path, base_url, cache, cloud_only)</span>
+<span class="g g-Whitespace">    </span><span class="mi">565</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_download_file</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">566</span>                                 <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">head_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">continuation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">567</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">568</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_download_file</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">569</span>                         <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span> <span class="n">head_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">continuation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">571</span> <span class="c1"># check if file exists also this is where would perform md5,</span>
+<span class="g g-Whitespace">    </span><span class="mi">572</span> <span class="c1"># and also check the filesize if the database reliably reported file sizes</span>
+<span class="g g-Whitespace">    </span><span class="mi">573</span> <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">local_path</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;SKIPPED&quot;</span><span class="p">):</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:1502,</span> in <span class="ni">Table._new_from_slice</span><span class="nt">(self, slice_)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1500</span> <span class="n">newcols</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1501</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<span class="ne">-&gt; </span><span class="mi">1502</span>     <span class="n">newcol</span> <span class="o">=</span> <span class="n">col</span><span class="p">[</span><span class="n">slice_</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1504</span>     <span class="c1"># Note in line below, use direct attribute access to col.indices for Column</span>
-<span class="g g-Whitespace">   </span><span class="mi">1505</span>     <span class="c1"># instances instead of the generic col.info.indices.  This saves about 4 usec</span>
-<span class="g g-Whitespace">   </span><span class="mi">1506</span>     <span class="c1"># per column.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1507</span>     <span class="k">if</span> <span class="p">(</span><span class="n">col</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">Column</span><span class="p">)</span> <span class="k">else</span> <span class="n">col</span><span class="o">.</span><span class="n">info</span><span class="p">)</span><span class="o">.</span><span class="n">indices</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1508</span>         <span class="c1"># TODO : as far as I can tell the only purpose of setting _copy_indices</span>
-<span class="g g-Whitespace">   </span><span class="mi">1509</span>         <span class="c1"># here is to communicate that to the initial test in `slice_indices`.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1510</span>         <span class="c1"># Why isn&#39;t that just sent as an arg to the function?</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astroquery/query.py:417,</span> in <span class="ni">BaseQuery._download_file</span><span class="nt">(self, url, local_filepath, timeout, auth, continuation, cache, method, head_safe, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">415</span>     <span class="n">open_mode</span> <span class="o">=</span> <span class="s1">&#39;wb&#39;</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span>     <span class="k">if</span> <span class="n">head_safe</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">417</span>         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">418</span>                                          <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">419</span>                                          <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">420</span>         <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">422</span> <span class="n">blocksize</span> <span class="o">=</span> <span class="n">astropy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">download_block_size</span>
 
-<span class="nn">File astropy/table/_column_mixins.pyx:94,</span> in <span class="ni">astropy.table._column_mixins._MaskedColumnGetitemShim.__getitem__</span><span class="nt">()</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:587,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">587</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="k">return</span> <span class="n">resp</span>
 
-<span class="nn">File astropy/table/_column_mixins.pyx:64,</span> in <span class="ni">astropy.table._column_mixins.base_getitem</span><span class="nt">()</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/sessions.py:701,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">698</span> <span class="n">start</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span> <span class="c1"># Send the request</span>
+<span class="ne">--&gt; </span><span class="mi">701</span> <span class="n">r</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="c1"># Total elapsed time of the request (approximately)</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 
-<span class="nn">File astropy/table/_column_mixins.pyx:88,</span> in <span class="ni">astropy.table._column_mixins.masked_column_getitem</span><span class="nt">()</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/requests/adapters.py:489,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
+<span class="g g-Whitespace">    </span><span class="mi">487</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">488</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">chunked</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">489</span>         <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">490</span>             <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span>             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">492</span>             <span class="n">body</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">493</span>             <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span>             <span class="n">redirect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">495</span>             <span class="n">assert_same_host</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">496</span>             <span class="n">preload_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">497</span>             <span class="n">decode_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">498</span>             <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">499</span>             <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">500</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">502</span>     <span class="c1"># Send the request.</span>
+<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">504</span>         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;proxy_pool&quot;</span><span class="p">):</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/ma/core.py:3288,</span> in <span class="ni">MaskedArray.__getitem__</span><span class="nt">(self, indx)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3285</span>             <span class="k">return</span> <span class="n">dout</span>
-<span class="g g-Whitespace">   </span><span class="mi">3286</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3287</span>     <span class="c1"># Force dout to MA</span>
-<span class="ne">-&gt; </span><span class="mi">3288</span>     <span class="n">dout</span> <span class="o">=</span> <span class="n">dout</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-<span class="g g-Whitespace">   </span><span class="mi">3289</span>     <span class="c1"># Inherit attributes from self</span>
-<span class="g g-Whitespace">   </span><span class="mi">3290</span>     <span class="n">dout</span><span class="o">.</span><span class="n">_update_from</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:703,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, **response_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_proxy</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">702</span> <span class="c1"># Make the request on the httplib connection object.</span>
+<span class="ne">--&gt; </span><span class="mi">703</span> <span class="n">httplib_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="n">conn</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span>     <span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">708</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">709</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="c1"># If we&#39;re going to release the connection in ``finally:``, then</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="c1"># the response doesn&#39;t need to know about the connection. Otherwise</span>
+<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="c1"># it will also try to release it and we&#39;ll have a double-release</span>
+<span class="g g-Whitespace">    </span><span class="mi">716</span> <span class="c1"># mess.</span>
+<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="n">response_conn</span> <span class="o">=</span> <span class="n">conn</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">release_conn</span> <span class="k">else</span> <span class="kc">None</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/ma/core.py:3179,</span> in <span class="ni">MaskedArray.view</span><span class="nt">(self, dtype, type, fill_value)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3177</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3178</span>     <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">3179</span>         <span class="n">output</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3180</span>         <span class="n">dtype</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">3181</span>     <span class="k">else</span><span class="p">:</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:449,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span>             <span class="n">httplib_response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>             <span class="c1"># Remove the TypeError from the exception chain in</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>             <span class="c1"># Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>             <span class="c1"># Otherwise it looks like a bug in the code.</span>
+<span class="ne">--&gt; </span><span class="mi">449</span>             <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">450</span> <span class="k">except</span> <span class="p">(</span><span class="n">SocketTimeout</span><span class="p">,</span> <span class="n">BaseSSLError</span><span class="p">,</span> <span class="n">SocketError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">451</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_raise_timeout</span><span class="p">(</span><span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout_value</span><span class="o">=</span><span class="n">read_timeout</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/column.py:707,</span> in <span class="ni">BaseColumn.__array_finalize__</span><span class="nt">(self, obj)</span>
-<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="k">return</span>
-<span class="g g-Whitespace">    </span><span class="mi">706</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__array_finalize__</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">707</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__array_finalize__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">709</span> <span class="c1"># Self was created from template (e.g. obj[slice] or (obj * 2))</span>
-<span class="g g-Whitespace">    </span><span class="mi">710</span> <span class="c1"># or viewcast e.g. obj.view(Column).  In either case we want to</span>
-<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="c1"># init Column attributes for self from obj if possible.</span>
-<span class="g g-Whitespace">    </span><span class="mi">712</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_table</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nn">File &lt;string&gt;:3,</span> in <span class="ni">raise_from</span><span class="nt">(value, from_value)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/ma/core.py:3054,</span> in <span class="ni">MaskedArray.__array_finalize__</span><span class="nt">(self, obj)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3052</span> <span class="c1"># Finalize the fill_value</span>
-<span class="g g-Whitespace">   </span><span class="mi">3053</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">3054</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fill_value</span> <span class="o">=</span> <span class="n">_check_fill_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3055</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3056</span>     <span class="c1"># Finalize the default fill_value for structured arrays</span>
-<span class="g g-Whitespace">   </span><span class="mi">3057</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_fill_value</span> <span class="o">=</span> <span class="n">_check_fill_value</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/urllib3/connectionpool.py:444,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">442</span>     <span class="c1"># Python 3</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">444</span>         <span class="n">httplib_response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>     <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>         <span class="c1"># Remove the TypeError from the exception chain in</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>         <span class="c1"># Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>         <span class="c1"># Otherwise it looks like a bug in the code.</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span>         <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/numpy/ma/core.py:3405,</span> in <span class="ni">MaskedArray.dtype</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3402</span>     <span class="k">return</span>
-<span class="g g-Whitespace">   </span><span class="mi">3404</span> <span class="c1"># Define so that we can overwrite the setter.</span>
-<span class="ne">-&gt; </span><span class="mi">3405</span> <span class="nd">@property</span>
-<span class="g g-Whitespace">   </span><span class="mi">3406</span> <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">3407</span>     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dtype</span>
-<span class="g g-Whitespace">   </span><span class="mi">3409</span> <span class="nd">@dtype</span><span class="o">.</span><span class="n">setter</span>
-<span class="g g-Whitespace">   </span><span class="mi">3410</span> <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:1374,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1372</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1373</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1374</span>         <span class="n">response</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1375</span>     <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1376</span>         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:318,</span> in <span class="ni">HTTPResponse.begin</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">316</span> <span class="c1"># read until we get a non-100 response</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">318</span>     <span class="n">version</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_status</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span>     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">CONTINUE</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">320</span>         <span class="k">break</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/http/client.py:279,</span> in <span class="ni">HTTPResponse._read_status</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span> <span class="k">def</span> <span class="nf">_read_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">279</span>     <span class="n">line</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">(</span><span class="n">_MAXLINE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;iso-8859-1&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">280</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">_MAXLINE</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span>         <span class="k">raise</span> <span class="n">LineTooLong</span><span class="p">(</span><span class="s2">&quot;status line&quot;</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/socket.py:705,</span> in <span class="ni">SocketIO.readinto</span><span class="nt">(self, b)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">705</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>     <span class="k">except</span> <span class="n">timeout</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_timeout_occurred</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/ssl.py:1274,</span> in <span class="ni">SSLSocket.recv_into</span><span class="nt">(self, buffer, nbytes, flags)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1270</span>     <span class="k">if</span> <span class="n">flags</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1271</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1272</span>           <span class="s2">&quot;non-zero flags not allowed in calls to recv_into() on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="g g-Whitespace">   </span><span class="mi">1273</span>           <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1274</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nbytes</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1275</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1276</span>     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+
+<span class="nn">File /usr/share/miniconda/lib/python3.10/ssl.py:1130,</span> in <span class="ni">SSLSocket.read</span><span class="nt">(self, len, buffer)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1128</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1129</span>     <span class="k">if</span> <span class="n">buffer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1130</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1131</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1132</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
