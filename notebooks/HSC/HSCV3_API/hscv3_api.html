@@ -917,7 +917,7 @@ document.write(`
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=19</i>
-<table id="table139644782143968" class="table-striped table-bordered table-condensed">
+<table id="table139649392077424" class="table-striped table-bordered table-condensed">
 <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
 <thead><tr><th>str16</th><th>str5</th><th>str163</th></tr></thead>
 <tr><td>MatchID</td><td>long</td><td>identifier for the match</td></tr>
@@ -959,8 +959,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ra: 16.22583333
-dec: 2.13333333
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ra: 16.22583
+dec: 2.13333
 </pre></div>
 </div>
 </div>
@@ -998,39 +998,45 @@ dec: 2.13333333
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://catalogs.mast.stsci.edu/api/v0.1/hsc/v3/summary/magaper2.csv?A_F475W_N.gte=10&amp;A_F814W_N.gte=10&amp;ra=16.22583333&amp;dec=2.13333333&amp;radius=0.5&amp;columns=%5BMatchID%2CMatchRA%2CMatchDec%2CNumFilters%2CNumVisits%2CNumImages%2CStartMJD%2CStopMJD%2CA_F475W%2CA_F475W_N%2CA_F475W_MAD%2CA_F814W%2CA_F814W_N%2CA_F814W_MAD%5D
-7.3 s: retrieved data and converted to 18666-row astropy table
-</pre></div>
-</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">16</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A_F475W_N.gte&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;A_F814W_N.gte&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">hsccone</span><span class="p">(</span><span class="n">ra_ic1613</span><span class="p">,</span> <span class="n">dec_ic1613</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">constraints</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> s: retrieved data and converted to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span><span class="si">}</span><span class="s2">-row astropy table&quot;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># clean up the output format</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F475W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
-<span class="ne">---&gt; </span><span class="mi">16</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F475W_MAD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F814W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;A_F814W_MAD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:2075,</span> in <span class="ni">Table.__getitem__</span><span class="nt">(self, item)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2073</span> <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">2074</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">2075</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">2076</span>     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
-<span class="g g-Whitespace">   </span><span class="mi">2077</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+<span class="nn">Cell In[3], line 27,</span> in <span class="ni">hsccone</span><span class="nt">(ra, dec, radius, table, release, format, magtype, columns, baseurl, verbose, **kw)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dec</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
+<span class="ne">---&gt; </span><span class="mi">27</span> <span class="k">return</span> <span class="n">hscsearch</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="n">release</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">magtype</span><span class="o">=</span><span class="n">magtype</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>                  <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span>
 
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/astropy/table/table.py:263,</span> in <span class="ni">TableColumns.__getitem__</span><span class="nt">(self, item)</span>
-<span class="g g-Whitespace">    </span><span class="mi">253</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Get items from a TableColumns object.</span>
-<span class="g g-Whitespace">    </span><span class="mi">254</span><span class="sd"> ::</span>
-<span class="g g-Whitespace">    </span><span class="mi">255</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">260</span><span class="sd">   tc[1:3] # &lt;TableColumns names=(&#39;b&#39;, &#39;c&#39;)&gt;</span>
-<span class="g g-Whitespace">    </span><span class="mi">261</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">262</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">263</span>     <span class="k">return</span> <span class="n">OrderedDict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">264</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
-<span class="g g-Whitespace">    </span><span class="mi">265</span>     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="n">item</span><span class="p">]</span>
+<span class="nn">Cell In[3], line 61,</span> in <span class="ni">hscsearch</span><span class="nt">(table, release, magtype, format, columns, baseurl, verbose, **kw)</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="k">if</span> <span class="n">columns</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">58</span>     <span class="c1"># check that column values are legal</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span>     <span class="c1"># create a dictionary to speed this up</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span>     <span class="n">dcols</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="ne">---&gt; </span><span class="mi">61</span>     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">hscmetadata</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">magtype</span><span class="p">)[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span>         <span class="n">dcols</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span>     <span class="n">badcols</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="ne">KeyError</span>: &#39;A_F475W_MAD&#39;
+<span class="nn">Cell In[3], line 106,</span> in <span class="ni">hscmetadata</span><span class="nt">(table, release, magtype, baseurl)</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="n">v</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span> <span class="c1"># convert to astropy table</span>
+<span class="ne">--&gt; </span><span class="mi">106</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">107</span>             <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">108</span> <span class="k">return</span> <span class="n">tab</span>
+
+<span class="nn">Cell In[3], line 106,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="n">v</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span> <span class="c1"># convert to astropy table</span>
+<span class="ne">--&gt; </span><span class="mi">106</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">107</span>             <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">108</span> <span class="k">return</span> <span class="n">tab</span>
+
+<span class="ne">KeyError</span>: &#39;type&#39;
 </pre></div>
 </div>
 </div>

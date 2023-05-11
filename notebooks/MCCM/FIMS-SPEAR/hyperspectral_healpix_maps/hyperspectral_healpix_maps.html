@@ -994,12 +994,29 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=49152</i>
+<table id="table139851534533344" class="table-striped table-bordered table-condensed">
+<thead><tr><th>INTEN_BSUB</th><th>BACKGROUND</th><th>COUNT</th><th>EXP-SLIT</th></tr></thead>
+<thead><tr><th>ph / (Angstrom cm2 s sr)</th><th>ph / (Angstrom cm2 s sr)</th><th>ph</th><th>s</th></tr></thead>
+<thead><tr><th>float32[340]</th><th>float32[340]</th><th>float32[340]</th><th>float32</th></tr></thead>
+<tr><td>2120.5747 .. 2385.6494</td><td>107.568214 .. 485.2661</td><td>3.9616582 .. 1.8802476</td><td>26.404175</td></tr>
+<tr><td>-107.24924 .. -484.62482</td><td>107.24924 .. 484.62482</td><td>0.0 .. 0.0</td><td>20.756926</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>-172.61147 .. -582.49664</td><td>172.61147 .. 582.49664</td><td>0.0 .. 0.0</td><td>6.942025</td></tr>
+<tr><td>1807.2567 .. -582.16724</td><td>172.32039 .. 582.16724</td><td>0.8796094 .. 0.0</td><td>10.608619</td></tr>
+</table></div></div></div>
 </div>
 <p>This table has 49152 rows, equal to the number of HEALPixels in the map (<code class="docutils literal notranslate"><span class="pre">12</span> <span class="pre">x</span> <span class="pre">Nside^2</span></code>). The columns and their units correspond to the <code class="docutils literal notranslate"><span class="pre">TTYPEi</span></code> and <code class="docutils literal notranslate"><span class="pre">TUNITi</span></code> keywords in the FITS extension header.</p>
 <p>EXP-SLIT (<a class="reference external" href="https://outerspace.stsci.edu/display/SPEARFIMS/Exposure+Time+Calculation">the FIMS definition of exposure time</a>) is a simple HEALPix map, with one value per HEALPixel. But for the other columns, each HEALPixel contains an array of length 340, giving the value in each wavelength bin.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l_n064</span><span class="p">[</span><span class="s1">&#39;INTEN_BSUB&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>340
 </pre></div>
 </div>
 </div>
@@ -1025,6 +1042,14 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>S-band: 900.5 to 1149.5 Angstrom, 250 bins
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>L-band: 1370.5 to 1709.5 Angstrom, 340 bins
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="all-sky-maps-and-spectra">
@@ -1040,6 +1065,13 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="nb">print</span><span class="p">(</span><span class="n">l_n064_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">s_n064_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">l_highres_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(49152,)
+(49152,)
+(786432,)
 </pre></div>
 </div>
 </div>
@@ -1072,6 +1104,13 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="nb">print</span><span class="p">(</span><span class="n">l_n064_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">s_n064_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">l_highres_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(340,)
+(250,)
+(340,)
 </pre></div>
 </div>
 </div>
@@ -1124,6 +1163,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 3: Integrated intensity maps and all-sky spectra</font></p>
+<img alt="../../../../_images/5b0e7e24b38666c18bb1ba6a1dc8a789f42fd73da466288dc0078be34813cfc1.png" src="../../../../_images/5b0e7e24b38666c18bb1ba6a1dc8a789f42fd73da466288dc0078be34813cfc1.png" />
+</div>
 </div>
 <blockquote>
 <div><center>Fig. 3 image description: The top row shows all-sky integrated intensity in the L and S bands; the S-band data is much noisier. The bottom row shows the averaged all-sky spectrum, displaying many strong emission lines in both bands.</center></div></blockquote>
@@ -1169,6 +1212,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 4: Integrated count maps and exposure maps</font></p>
+<img alt="../../../../_images/db1362259e488d83d150b704cc32b8c3c495436e4ab45b788aa6022f952f1441.png" src="../../../../_images/db1362259e488d83d150b704cc32b8c3c495436e4ab45b788aa6022f952f1441.png" />
 </div>
 </div>
 <blockquote>
@@ -1236,6 +1283,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 6: SPEAR all-sky spectra</font></p>
+<img alt="../../../../_images/a7c82f36931cc4771a78919782801139c53f8e7b5eecbe9d7aeac73d46c3ba87.png" src="../../../../_images/a7c82f36931cc4771a78919782801139c53f8e7b5eecbe9d7aeac73d46c3ba87.png" />
+</div>
 </div>
 <blockquote>
 <div><center>Fig. 6 image description: The SPEAR average all-sky spectra look similar to their FIMS equivalents in the bottom row of Fig. 3, but at the high and low wavelength edges of both bands, they abruptly peak and/or dip due to instrumental effects.</center></div></blockquote>
@@ -1253,6 +1304,20 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">&lt;Column name=&apos;INTEN_BSUB&apos; dtype=&apos;float32&apos; shape=(319,) unit=&apos;ph / (Angstrom cm2 s sr)&apos; length=49152&gt;
+<table>
+<tr><td>1040.7367 .. 3356.3235</td></tr>
+<tr><td>853.0619 .. 867.55707</td></tr>
+<tr><td>1667.1606 .. 1929.2197</td></tr>
+<tr><td>1045.0162 .. 2581.3967</td></tr>
+<tr><td>590.16125 .. 6092.3687</td></tr>
+<tr><td>...</td></tr>
+<tr><td>1694.2078 .. 4622.887</td></tr>
+<tr><td>0.0 .. 6963.8784</td></tr>
+<tr><td>1148.3492 .. 0.0</td></tr>
+<tr><td>4558.5303 .. 3931.4775</td></tr>
+</table></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1270,6 +1335,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 7: SPEAR all-sky spectra (trimmed)</font></p>
+<img alt="../../../../_images/fa9859f771567d0f2882f0b2d6d7402d4affa7a36ea579e66a18e5bedc4c647a.png" src="../../../../_images/fa9859f771567d0f2882f0b2d6d7402d4affa7a36ea579e66a18e5bedc4c647a.png" />
 </div>
 </div>
 <blockquote>
@@ -1294,6 +1363,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 8: SPEAR integrated intensity map</font></p>
+<img alt="../../../../_images/7709172a6d49ed54b0c4ca53abc0e7c47356cbeaaab005b975038e265a56f21b.png" src="../../../../_images/7709172a6d49ed54b0c4ca53abc0e7c47356cbeaaab005b975038e265a56f21b.png" />
+</div>
 </div>
 <blockquote>
 <div><center>Fig. 8 image description: The SPEAR integrated intensity all-sky map in ecliptic coordinates.</center></div></blockquote>
@@ -1308,6 +1381,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">hp</span><span class="o">.</span><span class="n">graticule</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 9: SPEAR map plotted in Galactic coordinates</font></p>
+<img alt="../../../../_images/334d24dab42f6f4af2f97cea21a36b49b2db30b90568eb55ac26929010021333.png" src="../../../../_images/334d24dab42f6f4af2f97cea21a36b49b2db30b90568eb55ac26929010021333.png" />
 </div>
 </div>
 <blockquote>
@@ -1333,6 +1410,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 10: SPEAR map rotated to Galactic coordinates</font></p>
+<img alt="../../../../_images/641fa5164c7d505c9f0397c81061e6fb1aa6318e8ea8ed95318959c6d8cfc410.png" src="../../../../_images/641fa5164c7d505c9f0397c81061e6fb1aa6318e8ea8ed95318959c6d8cfc410.png" />
+</div>
 </div>
 <blockquote>
 <div><center>Fig. 10 image description: The SPEAR integrated intensity all-sky map rotated to Galactic coordinates, then plotted. Noticeably blurry, now that the data itself has been rotated.</center></div></blockquote>
@@ -1349,6 +1430,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="c1"># The output value is NaN in places where the footprints don&#39;t overlap.</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 11: Rotated SPEAR map divided by FIMS map</font></p>
+<img alt="../../../../_images/43cdcc071b857eee8a14c8ada5fe1e831906d8a4023f5c20892b574ebd40ae88.png" src="../../../../_images/43cdcc071b857eee8a14c8ada5fe1e831906d8a4023f5c20892b574ebd40ae88.png" />
 </div>
 </div>
 <blockquote>
@@ -1370,6 +1455,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 12: Vela supernova remnant</font></p>
+<img alt="../../../../_images/d9c066c7d86b38369164c8b87701a32f3a17184385a340a29e7763d5e08a55a2.png" src="../../../../_images/d9c066c7d86b38369164c8b87701a32f3a17184385a340a29e7763d5e08a55a2.png" />
+</div>
 </div>
 <blockquote>
 <div><center>Fig. 12 image description: Cartesian projection of the region around the Vela supernova remnant in the FIMS integrated intensity map. The image is low-resolution.</center></div></blockquote>
@@ -1382,6 +1471,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">hp</span><span class="o">.</span><span class="n">cartview</span><span class="p">(</span><span class="n">l_highres_map</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">min1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">max1</span><span class="o">*</span><span class="mf">3.</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="n">lonra</span><span class="o">=</span><span class="n">lonrange</span><span class="p">,</span> <span class="n">latra</span><span class="o">=</span><span class="n">latrange</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Vela&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 13: Vela supernova remnant</font></p>
+<img alt="../../../../_images/85b231b9837010e70f04412dd7fa09d28ac53c119a4a3cadb8efc35dd4e88ac3.png" src="../../../../_images/85b231b9837010e70f04412dd7fa09d28ac53c119a4a3cadb8efc35dd4e88ac3.png" />
 </div>
 </div>
 <blockquote>
@@ -1421,6 +1514,21 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[23610 23611 23612 23866 23867 23868 23869 24121 24122 24123 24124 24125
+ 24377 24378 24379 24380 24381 24382 24632 24633 24634 24635 24636 24637
+ 24638 24888 24889 24890 24891 24892 24893 24894 24895 25144 25145 25146
+ 25147 25148 25149 25150 25400 25401 25402 25403 25404 25405 25406 25407
+ 25655 25656 25657 25658 25659 25660 25661 25662 25912 25913 25914 25915
+ 25916 25917 25918 25919 26167 26168 26169 26170 26171 26172 26173 26174
+ 26424 26425 26426 26427 26428 26429 26430 26431 26680 26681 26682 26683
+ 26684 26685 26686 26936 26937 26938 26939 26940 26941 26942 27192 27193
+ 27194 27195 27196 27197 27198 27449 27450 27451 27452 27453 27454 27705
+ 27706 27707 27708 27709 27962 27963 27964 27965 28219]
+(117,)
+</pre></div>
+</div>
+</div>
 </div>
 <p>Let’s find the spectrum in <code class="docutils literal notranslate"><span class="pre">disk</span></code>.</p>
 <div class="cell docutils container">
@@ -1457,6 +1565,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 14: Vela supernova remnant vs. the sky</font></p>
+<img alt="../../../../_images/70cb6ccd7b36f026bf23f0d3b14e2f5839c20b41a9e9475716b9c0d9683c3913.png" src="../../../../_images/70cb6ccd7b36f026bf23f0d3b14e2f5839c20b41a9e9475716b9c0d9683c3913.png" />
+</div>
 </div>
 <blockquote>
 <div><center>Fig. 14 image description: Top row shows the all-sky integrated intensity map with all except the Vela supernova remnant blanked out with NaN values. Bottom row shows the Vela average spectrum (red line) with a very strong C IV emission line, overplotted on the average all-sky spectrum (black line) with a weak C IV emission line. </center></div></blockquote>
@@ -1474,6 +1586,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">hp</span><span class="o">.</span><span class="n">cartview</span><span class="p">(</span><span class="n">l_n064_map</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">max1</span><span class="o">/</span><span class="mf">8.</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">max1</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="n">lonra</span><span class="o">=</span><span class="n">lonrange</span><span class="p">,</span> <span class="n">latra</span><span class="o">=</span><span class="n">latrange</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;inferno&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Aquila Rift&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 15: The Aquila Rift</font></p>
+<img alt="../../../../_images/2f332b22f0af040752a1d1d965f1b6f35bd456641223011875f7ee82342f8e56.png" src="../../../../_images/2f332b22f0af040752a1d1d965f1b6f35bd456641223011875f7ee82342f8e56.png" />
 </div>
 </div>
 <blockquote>
@@ -1503,6 +1619,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 16: Extraction regions</font></p>
+<img alt="../../../../_images/272c49a7d2b715abe1f715dc14c0b50abb88ec9888b7e35a98350b34c87a6976.png" src="../../../../_images/272c49a7d2b715abe1f715dc14c0b50abb88ec9888b7e35a98350b34c87a6976.png" />
 </div>
 </div>
 <blockquote>
@@ -1606,6 +1726,10 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<p><font size=6>Fig. 17: Extracted spectra</font></p>
+<img alt="../../../../_images/33e6d8a59e208f55a2b994cf6dcd769811f216b203401c9d5413c34879426963.png" src="../../../../_images/33e6d8a59e208f55a2b994cf6dcd769811f216b203401c9d5413c34879426963.png" />
 </div>
 </div>
 <blockquote>
