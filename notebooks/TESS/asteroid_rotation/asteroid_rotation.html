@@ -63,7 +63,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/TESS/asteroid_rotation/asteroid_rotation';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -247,6 +246,10 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
@@ -304,6 +307,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
 
 
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
 <ul class="current nav bd-sidenav">
@@ -630,6 +634,7 @@ document.write(`
 <li><p>Plot light curves using lightkurve</p></li>
 <li><p>Find the rotation period of a bright asteroid using lightkurve</p></li>
 </ul>
+<p><font color="red">This notebook currently fails to execute, use as reference only</font></p>
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
@@ -723,14 +728,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  sectorName   sector camera ccd
--------------- ------ ------ ---
-tess-s0006-1-1      6      1   1
-tess-s0023-1-1     23      1   1
-</pre></div>
-</div>
-</div>
 </div>
 <p>Next we’ll use <code class="docutils literal notranslate"><span class="pre">Tess.get_cutouts</span></code> to, as the name implies, get the cutouts. Again, we must include the keyword <code class="docutils literal notranslate"><span class="pre">moving_target=True</span></code>.</p>
 <p>We will also add the <code class="docutils literal notranslate"><span class="pre">size</span></code> keyword to choose how many pixels (in both width and height) we want our cutout to be. For this tutorial, we will choose a 10x10 cutout. This choice significantly affects the size of the <code class="docutils literal notranslate"><span class="pre">.fits</span></code> files and the time it will take to complete <code class="docutils literal notranslate"><span class="pre">get_cutouts</span></code>.</p>
@@ -739,11 +736,6 @@ tess-s0023-1-1     23      1   1
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">objectname</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">moving_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of hdulist =&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hdulist</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Length of hdulist = 2
 </pre></div>
 </div>
 </div>
@@ -761,15 +753,6 @@ tess-s0023-1-1     23      1   1
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: &lt;class &#39;_io.BytesIO&#39;&gt;
-No.    Name      Ver    Type      Cards   Dimensions   Format
-  0  PRIMARY       1 PrimaryHDU      55   ()      
-  1  PIXELS        1 BinTableHDU    151   444R x 16C   [D, E, J, 100J, 100E, 100E, 100E, 100E, J, E, E, 38A, D, D, D, D]   
-  2  APERTURE      1 ImageHDU        97   (2136, 2078)   int32   
-</pre></div>
-</div>
-</div>
 </div>
 <p>The result that we get is described in the <a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/file_formats.html#path-focused-target-pixel-files">astrocut documentation on Path Focused Target Pixel Files</a>. Extension 0 is the header with metadata. Astronomers not used to working with moving targets may note that the <code class="docutils literal notranslate"><span class="pre">RA_OBJ</span></code> and <code class="docutils literal notranslate"><span class="pre">DEC_OBJ</span></code> keywords are not there!</p>
 <p>Extension 1 is the data we most want in the form of a binary table; we’ll look at that next.</p>
@@ -780,12 +763,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f6220d2ac20&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/50c864d6350a591a7a27d984a2dfde727eab8bda613fc85242afceb7a702d5fe.png" src="../../../_images/50c864d6350a591a7a27d984a2dfde727eab8bda613fc85242afceb7a702d5fe.png" />
-</div>
 </div>
 <p>It appears that for this sector Eleonora is partially outside of the sector during the course of the observations.</p>
 </section>
@@ -795,28 +772,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
-    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2457000, days&#39;; disp = &#39;D14.7&#39;
-    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
-    name = &#39;RAW_CNTS&#39;; format = &#39;100J&#39;; unit = &#39;count&#39;; null = -1; disp = &#39;I8&#39;; dim = &#39;(10,10)&#39;
-    name = &#39;FLUX&#39;; format = &#39;100E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,10)&#39;
-    name = &#39;FLUX_ERR&#39;; format = &#39;100E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,10)&#39;
-    name = &#39;FLUX_BKG&#39;; format = &#39;100E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,10)&#39;
-    name = &#39;FLUX_BKG_ERR&#39;; format = &#39;100E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(10,10)&#39;
-    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B16.16&#39;
-    name = &#39;POS_CORR1&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
-    name = &#39;POS_CORR2&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
-    name = &#39;FFI_FILE&#39;; format = &#39;38A&#39;; unit = &#39;pixel&#39;
-    name = &#39;TGT_X&#39;; format = &#39;D&#39;
-    name = &#39;TGT_Y&#39;; format = &#39;D&#39;
-    name = &#39;TGT_RA&#39;; format = &#39;D&#39;
-    name = &#39;TGT_DEC&#39;; format = &#39;D&#39;
-)
 </pre></div>
 </div>
 </div>
@@ -838,13 +793,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RA:  213.39932007650447
-Dec:  14.18553175660382
-</pre></div>
-</div>
-<img alt="../../../_images/ba6f4e59b8fd97f3b63407759a5d294b7ccd40af1ea516b8fddc55de98ee5b06.png" src="../../../_images/ba6f4e59b8fd97f3b63407759a5d294b7ccd40af1ea516b8fddc55de98ee5b06.png" />
-</div>
 </div>
 <p>Whoops! This doesn’t look right. Recall that Eleonora is not always in the TESS field of view; we must be looking at data from before the asteroid enters the sector.</p>
 <p>Let’s view a later image instead, say at row (or “cadence”) 100.</p>
@@ -863,13 +811,6 @@ Dec:  14.18553175660382
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dec: &#39;</span><span class="p">,</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">15</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RA:  213.07098438825955
-Dec:  14.509726204935053
-</pre></div>
-</div>
-<img alt="../../../_images/62877ce4dc3c20a19c65ba2a452b58f7fd6bc0156832d6a43b593532c6b97064.png" src="../../../_images/62877ce4dc3c20a19c65ba2a452b58f7fd6bc0156832d6a43b593532c6b97064.png" />
 </div>
 </div>
 <p>Now we see our target. Remember, we thought the asteroid would not be in the field of view the whole time; we now see that the target started out of the frame and moved in. Notice that roughly two days have elapsed and the target has moved to a different RA and Dec.</p>
@@ -915,307 +856,12 @@ Dec:  14.509726204935053
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">(function(root) {
-  function now() {
-    return new Date();
-  }
-
-  const force = true;
-
-  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
-    root._bokeh_onload_callbacks = [];
-    root._bokeh_is_loading = undefined;
-  }
-
-const JS_MIME_TYPE = 'application/javascript';
-  const HTML_MIME_TYPE = 'text/html';
-  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
-  const CLASS_NAME = 'output_bokeh rendered_html';
-
-  /**
-   * Render data to the DOM node
-   */
-  function render(props, node) {
-    const script = document.createElement("script");
-    node.appendChild(script);
-  }
-
-  /**
-   * Handle when an output is cleared or removed
-   */
-  function handleClearOutput(event, handle) {
-    const cell = handle.cell;
-
-    const id = cell.output_area._bokeh_element_id;
-    const server_id = cell.output_area._bokeh_server_id;
-    // Clean up Bokeh references
-    if (id != null && id in Bokeh.index) {
-      Bokeh.index[id].model.document.clear();
-      delete Bokeh.index[id];
-    }
-
-    if (server_id !== undefined) {
-      // Clean up Bokeh references
-      const cmd_clean = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
-      cell.notebook.kernel.execute(cmd_clean, {
-        iopub: {
-          output: function(msg) {
-            const id = msg.content.text.trim();
-            if (id in Bokeh.index) {
-              Bokeh.index[id].model.document.clear();
-              delete Bokeh.index[id];
-            }
-          }
-        }
-      });
-      // Destroy server and session
-      const cmd_destroy = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
-      cell.notebook.kernel.execute(cmd_destroy);
-    }
-  }
-
-  /**
-   * Handle when a new output is added
-   */
-  function handleAddOutput(event, handle) {
-    const output_area = handle.output_area;
-    const output = handle.output;
-
-    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
-    if ((output.output_type != "display_data") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {
-      return
-    }
-
-    const toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
-
-    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
-      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
-      // store reference to embed id on output_area
-      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
-    }
-    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
-      const bk_div = document.createElement("div");
-      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
-      const script_attrs = bk_div.children[0].attributes;
-      for (let i = 0; i < script_attrs.length; i++) {
-        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
-        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent
-      }
-      // store reference to server id on output_area
-      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
-    }
-  }
-
-  function register_renderer(events, OutputArea) {
-
-    function append_mime(data, metadata, element) {
-      // create a DOM node to render to
-      const toinsert = this.create_output_subarea(
-        metadata,
-        CLASS_NAME,
-        EXEC_MIME_TYPE
-      );
-      this.keyboard_manager.register_events(toinsert);
-      // Render to node
-      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
-      render(props, toinsert[toinsert.length - 1]);
-      element.append(toinsert);
-      return toinsert
-    }
-
-    /* Handle when an output is cleared or removed */
-    events.on('clear_output.CodeCell', handleClearOutput);
-    events.on('delete.Cell', handleClearOutput);
-
-    /* Handle when a new output is added */
-    events.on('output_added.OutputArea', handleAddOutput);
-
-    /**
-     * Register the mime type and append_mime function with output_area
-     */
-    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
-      /* Is output safe? */
-      safe: true,
-      /* Index of renderer in `output_area.display_order` */
-      index: 0
-    });
-  }
-
-  // register the mime type if in Jupyter Notebook environment and previously unregistered
-  if (root.Jupyter !== undefined) {
-    const events = require('base/js/events');
-    const OutputArea = require('notebook/js/outputarea').OutputArea;
-
-    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
-      register_renderer(events, OutputArea);
-    }
-  }
-  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
-    root._bokeh_timeout = Date.now() + 5000;
-    root._bokeh_failed_load = false;
-  }
-
-  const NB_LOAD_WARNING = {'data': {'text/html':
-     "<div style='background-color: #fdd'>\n"+
-     "<p>\n"+
-     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
-     "may be due to a slow or bad network connection. Possible fixes:\n"+
-     "</p>\n"+
-     "<ul>\n"+
-     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
-     "<li>use INLINE resources instead, as so:</li>\n"+
-     "</ul>\n"+
-     "<code>\n"+
-     "from bokeh.resources import INLINE\n"+
-     "output_notebook(resources=INLINE)\n"+
-     "</code>\n"+
-     "</div>"}};
-
-  function display_loaded() {
-    const el = document.getElementById(null);
-    if (el != null) {
-      el.textContent = "BokehJS is loading...";
-    }
-    if (root.Bokeh !== undefined) {
-      if (el != null) {
-        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
-      }
-    } else if (Date.now() < root._bokeh_timeout) {
-      setTimeout(display_loaded, 100)
-    }
-  }
-
-  function run_callbacks() {
-    try {
-      root._bokeh_onload_callbacks.forEach(function(callback) {
-        if (callback != null)
-          callback();
-      });
-    } finally {
-      delete root._bokeh_onload_callbacks
-    }
-    console.debug("Bokeh: all callbacks have finished");
-  }
-
-  function load_libs(css_urls, js_urls, callback) {
-    if (css_urls == null) css_urls = [];
-    if (js_urls == null) js_urls = [];
-
-    root._bokeh_onload_callbacks.push(callback);
-    if (root._bokeh_is_loading > 0) {
-      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
-      return null;
-    }
-    if (js_urls == null || js_urls.length === 0) {
-      run_callbacks();
-      return null;
-    }
-    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
-    root._bokeh_is_loading = css_urls.length + js_urls.length;
-
-    function on_load() {
-      root._bokeh_is_loading--;
-      if (root._bokeh_is_loading === 0) {
-        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
-        run_callbacks()
-      }
-    }
-
-    function on_error(url) {
-      console.error("failed to load " + url);
-    }
-
-    for (let i = 0; i < css_urls.length; i++) {
-      const url = css_urls[i];
-      const element = document.createElement("link");
-      element.onload = on_load;
-      element.onerror = on_error.bind(null, url);
-      element.rel = "stylesheet";
-      element.type = "text/css";
-      element.href = url;
-      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
-      document.body.appendChild(element);
-    }
-
-    for (let i = 0; i < js_urls.length; i++) {
-      const url = js_urls[i];
-      const element = document.createElement('script');
-      element.onload = on_load;
-      element.onerror = on_error.bind(null, url);
-      element.async = false;
-      element.src = url;
-      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
-      document.head.appendChild(element);
-    }
-  };
-
-  function inject_raw_css(css) {
-    const element = document.createElement("style");
-    element.appendChild(document.createTextNode(css));
-    document.body.appendChild(element);
-  }
-
-  const js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-3.1.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.1.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.1.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.1.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.1.1.min.js"];
-  const css_urls = [];
-
-  const inline_js = [    function(Bokeh) {
-      Bokeh.set_log_level("info");
-    },
-function(Bokeh) {
-    }
-  ];
-
-  function run_inline_js() {
-    if (root.Bokeh !== undefined || force === true) {
-          for (let i = 0; i < inline_js.length; i++) {
-      inline_js[i].call(root, root.Bokeh);
-    }
-} else if (Date.now() < root._bokeh_timeout) {
-      setTimeout(run_inline_js, 100);
-    } else if (!root._bokeh_failed_load) {
-      console.log("Bokeh: BokehJS failed to load within specified timeout.");
-      root._bokeh_failed_load = true;
-    } else if (force !== true) {
-      const cell = $(document.getElementById(null)).parents('.cell').data().cell;
-      cell.output_area.append_execute_result(NB_LOAD_WARNING)
-    }
-  }
-
-  if (root._bokeh_is_loading === 0) {
-    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
-    run_inline_js();
-  } else {
-    load_libs(css_urls, js_urls, function() {
-      console.debug("Bokeh: BokehJS plotting callback run at", now());
-      run_inline_js();
-    });
-  }
-}(window));</script><div class="output text_html"><script id="p1001">
-  (function() {
-    const xhr = new XMLHttpRequest()
-    xhr.responseType = 'blob';
-    xhr.open('GET', "http://localhost:42485/autoload.js?bokeh-autoload-element=p1001&bokeh-absolute-url=http://localhost:42485&resources=none", true);
-    xhr.onload = function (event) {
-      const script = document.createElement('script');
-      const src = URL.createObjectURL(event.target.response);
-      script.src = src;
-      document.body.appendChild(script);
-    };
-    xhr.send();
-  })();
-</script></div></div>
 </div>
 <p>The light curve above confirms our suspicion that Eleonora was not viewable in the sector during the whole time of observation because it moved <em>into</em> the FFI during the observation. At the time of the writing of this tutorial, these cadences do not have a quality flag associated with them.</p>
 <p>We can check that all of the cadences loaded in this observation have a quality flag of zero:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tpfc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>124928
 </pre></div>
 </div>
 </div>
@@ -1236,11 +882,6 @@ function(Bokeh) {
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0, 2048], [1, 2048], [2, 2048], [3, 2048], [4, 2048], [5, 2048], [6, 2048], [7, 2048], [8, 2048], [9, 2048], [10, 2048], [11, 2048], [12, 2048], [13, 2048], [14, 2048], [15, 2048], [16, 2048], [17, 2048], [18, 2048], [19, 2048], [20, 2048], [21, 2048], [22, 2048], [23, 2048], [24, 2048], [25, 2048], [26, 2048], [27, 2048], [28, 2048], [29, 2048], [30, 2048], [31, 2048], [32, 2048], [33, 2048], [34, 2048], [35, 2048], [36, 2048], [37, 2048], [38, 2048], [39, 2048], [40, 2048], [41, 2048], [42, 2048], [43, 2048], [44, 2048], [45, 2048], [46, 2048], [47, 2048], [48, 2048], [49, 2048], [50, 2048], [51, 2048], [52, 2048], [53, 2048], [54, 2048], [55, 2048], [56, 2048], [57, 2048], [58, 2048], [59, 2048], [60, 2048]]
-</pre></div>
-</div>
-</div>
 </div>
 <p>Aha. A value of 2048 <a class="reference external" href="https://outerspace.stsci.edu/display/TESS/2.0+-+Data+Product+Overview">indicates stray light from the Earth/Moon</a>, which might affect our measurements. Fortunately, Elenora doesn’t enter the field of view until cadence 56. Our list above shows that the last frame with this flag is 60. Even the four “bad” frames don’t seem to be affected by the stray light, so we should be okay to proceed.</p>
 <p><em>Note</em>: Although a for loop is more readable, we can accomplish the same thing we do in above cell with list comprehension. See the cell below for an example!</p>
@@ -1250,11 +891,6 @@ function(Bokeh) {
 <span class="n">flags</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">flag</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">flag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tpfc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span> <span class="k">if</span> <span class="n">flag</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0, 2048], [1, 2048], [2, 2048], [3, 2048], [4, 2048], [5, 2048], [6, 2048], [7, 2048], [8, 2048], [9, 2048], [10, 2048], [11, 2048], [12, 2048], [13, 2048], [14, 2048], [15, 2048], [16, 2048], [17, 2048], [18, 2048], [19, 2048], [20, 2048], [21, 2048], [22, 2048], [23, 2048], [24, 2048], [25, 2048], [26, 2048], [27, 2048], [28, 2048], [29, 2048], [30, 2048], [31, 2048], [32, 2048], [33, 2048], [34, 2048], [35, 2048], [36, 2048], [37, 2048], [38, 2048], [39, 2048], [40, 2048], [41, 2048], [42, 2048], [43, 2048], [44, 2048], [45, 2048], [46, 2048], [47, 2048], [48, 2048], [49, 2048], [50, 2048], [51, 2048], [52, 2048], [53, 2048], [54, 2048], [55, 2048], [56, 2048], [57, 2048], [58, 2048], [59, 2048], [60, 2048]]
 </pre></div>
 </div>
 </div>
@@ -1309,12 +945,6 @@ function(Bokeh) {
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Time - 2457000 [BTJD days]&#39;, ylabel=&#39;Flux [$\\mathrm{e^{-}\\,s^{-1}}$]&#39;&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/25969bfd917b45b2a3cfd3516a24ee23bb6d590b68329e767828a0731b2644bd.png" src="../../../_images/25969bfd917b45b2a3cfd3516a24ee23bb6d590b68329e767828a0731b2644bd.png" />
-</div>
 </div>
 <p>Admittedly, this view is not very helpful because of the large gap in time between observations of Eleonora. However, this time gap is important because it explains the difference in mean flux values between the two observations. Eleonora must have either been farther away from us during the first sector (and hence, dimmer) <em>or</em> possibly in a dimmer phase due to its position from us relative to the sun.</p>
 <p>Still, having more data will help confirm the periodic nature of the flux variation, and hence, the period of the rotation of the asteroid. So, we should still stitch these together to create one light curve. In an exercse, you can investigate if this affects the rotation period.</p>
@@ -1324,12 +954,6 @@ function(Bokeh) {
 <span class="n">lc_stitched</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Time - 2457000 [BTJD days]&#39;, ylabel=&#39;Normalized Flux&#39;&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/7dca2f8c7003644b262c3466be1f97c7bfd03329db0e37208255c928d592230c.png" src="../../../_images/7dca2f8c7003644b262c3466be1f97c7bfd03329db0e37208255c928d592230c.png" />
 </div>
 </div>
 <p><a id="period"></a></p>
@@ -1344,24 +968,12 @@ function(Bokeh) {
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/lib/python3.10/site-packages/astropy/units/quantity.py:673: RuntimeWarning: invalid value encountered in sqrt
-  result = super().__array_ufunc__(function, method, *arrays, **kwargs)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Frequency [$\\mathrm{\\frac{1}{d}}$]&#39;, ylabel=&#39;Power&#39;&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/0b44d91398ba08bf66a8beadb8d60258e7a09b60f6a55d37c130dd062b9eeee1.png" src="../../../_images/0b44d91398ba08bf66a8beadb8d60258e7a09b60f6a55d37c130dd062b9eeee1.png" />
 </div>
 </div>
 <p>There is clearly a frequency around 11 d<sup>-1</sup> found with maximum power. That corresponds to a period of:</p>
@@ -1371,10 +983,6 @@ function(Bokeh) {
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_latex math notranslate nohighlight">
-\[0.089104183 \; \mathrm{d}\]</div>
-</div>
 </div>
 <p>Or, in hours:</p>
 <div class="cell docutils container">
@@ -1383,10 +991,6 @@ function(Bokeh) {
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_latex math notranslate nohighlight">
-\[2.1385004 \; \mathrm{h}\]</div>
-</div>
 </div>
 <p>We can use this period to fold the light curve. This plots the flux values as a function of phase, or progress along each iteration of the period. In the folded light curve, the horizontal axis spans a value of 0.089 days. Rather than be shown all from left to right in time, the data points go back to the left side of the graph every 0.089 days; that’s why it’s “folded.”</p>
 <div class="cell docutils container">
@@ -1394,12 +998,6 @@ function(Bokeh) {
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_stitched</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Phase [JD]&#39;, ylabel=&#39;Normalized Flux&#39;&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/c586f308dc42035a9d8f20b082b36803216b7f073b0c0c3c752c812544aa27cc.png" src="../../../_images/c586f308dc42035a9d8f20b082b36803216b7f073b0c0c3c752c812544aa27cc.png" />
 </div>
 </div>
 <p>There appear to be two separate light curves: one with higher variation from the normalized flux, and one with lower variation. These correspond, respectively, to the first and second sectors, where the mean brightness of the asteroid was notably different. We can confirm this by examining each folded light curve separately.</p>
@@ -1410,13 +1008,6 @@ function(Bokeh) {
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Phase [JD]&#39;, ylabel=&#39;Flux [$\\mathrm{e^{-}\\,s^{-1}}$]&#39;&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/a5aba9e1079004192aff97fc8fb3e3179702fa16ffa525a1b86ddebfbf4a52b2.png" src="../../../_images/a5aba9e1079004192aff97fc8fb3e3179702fa16ffa525a1b86ddebfbf4a52b2.png" />
-<img alt="../../../_images/29f4300780ffc6ca98cd40c334aa0ef5185de0c2e8643910433468f8a5e08cff.png" src="../../../_images/29f4300780ffc6ca98cd40c334aa0ef5185de0c2e8643910433468f8a5e08cff.png" />
-</div>
 </div>
 <p>The folded light curve for the second sector looks a little suspicious because the same point in the phase (around 0.02) seems to show two different levels of flux. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..247...26P/abstract">Pál et al. 2020</a>, found a rotation period of 4.27735 hours; their period is almost a perfectly integer multiple of ours (times 2), which is known as a harmonic. Their period corresponds to second highest peak in our periodogram. We can view the difference this makes by looking at the folded light curve with our period times two:</p>
 <div class="cell docutils container">
@@ -1425,13 +1016,6 @@ function(Bokeh) {
 <span class="n">lcc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Phase [JD]&#39;, ylabel=&#39;Flux [$\\mathrm{e^{-}\\,s^{-1}}$]&#39;&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/96392f4974b9ca8b276bd48425c3071b35558bd1253156d5069ae7cf981486fd.png" src="../../../_images/96392f4974b9ca8b276bd48425c3071b35558bd1253156d5069ae7cf981486fd.png" />
-<img alt="../../../_images/ddd704600c5961349df20ad495ce43412dd03eadaa7e025dac243a74a7ff892a.png" src="../../../_images/ddd704600c5961349df20ad495ce43412dd03eadaa7e025dac243a74a7ff892a.png" />
 </div>
 </div>
 <p>The accepted period (the second one we viewed) produced better folded light curves. It’s possible that our result was off by a factor of two due to a kind of symmetry in the asteroid. A more easily understandable example of this would be an eclipsing binary system; if the stars are a similar size, we will measure the period as being half of the true value. Dips of similar sizes might be counted as <em>the same</em> transit when they are in reality two distinct transits, which is likely what happened above. See the somewhat rudimentary diagram below for a visual explanation.</p>

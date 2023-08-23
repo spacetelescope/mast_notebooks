@@ -244,6 +244,10 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../notebooks/Kepler/lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
@@ -301,6 +305,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
 
 
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
 <ul class="nav bd-sidenav">
@@ -648,7 +653,7 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -687,7 +692,7 @@ document.write(`
 <p>For example, if we wanted to query for data from MAST for Kepler we might do something like:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keplerObs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">target_name</span><span class="o">=</span><span class="s1">&#39;kplr008957091&#39;</span><span class="p">,</span> <span class="n">obs_collection</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keplerObs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">target_name</span><span class="o">=</span><span class="s1">&#39;kplr008957091&#39;</span><span class="p">,</span> <span class="n">obs_collection</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span>
 <span class="n">keplerProds</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">keplerObs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">yourProd</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">keplerProds</span><span class="p">,</span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;kplr008957091-2012277125453_lpd-targ.fits.gz&#39;</span><span class="p">,</span>
                                         <span class="n">mrp_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -701,39 +706,19 @@ document.write(`
 <p>Where possible (if the code supports it), use code examples that visually display the data in the tutorial. For example, if you are showing an object such as a Table, display a preview of the table:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yourProd</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">yourProd</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table masked=True length=1</i>
-<table id="table140055929147104" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th></tr></thead>
-<thead><tr><th>str6</th><th>str6</th><th>str10</th><th>str36</th><th>str59</th><th>str1</th><th>str110</th><th>str7</th><th>str28</th><th>str8</th><th>str1</th><th>str6</th><th>str1</th><th>str7</th><th>str44</th><th>int64</th><th>str6</th><th>str6</th><th>int64</th></tr></thead>
-<tr><td>549936</td><td>Kepler</td><td>timeseries</td><td>kplr008957091_lc_Q000000000011111111</td><td>Target Pixel Long Cadence (TPL) - Q14</td><td>C</td><td>mast:KEPLER/url/missions/kepler/target_pixel_files/0089/008957091/kplr008957091-2012277125453_lpd-targ.fits.gz</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>LPD-TARG</td><td>--</td><td>Kepler</td><td>--</td><td>GO30032</td><td>kplr008957091-2012277125453_lpd-targ.fits.gz</td><td>4365449</td><td>549936</td><td>PUBLIC</td><td>2</td></tr>
-</table></div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download the products</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download the products</span>
 <span class="n">output</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">yourProd</span><span class="p">,</span> <span class="n">mrp_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">output</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:KEPLER/url/missions/kepler/target_pixel_files/0089/008957091/kplr008957091-2012277125453_lpd-targ.fits.gz to ./mastDownload/Kepler/kplr008957091_lc_Q000000000011111111/kplr008957091-2012277125453_lpd-targ.fits.gz ...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
-</pre></div>
-</div>
-<div class="output text_html"><div><i>Table length=1</i>
-<table id="table140056862678976" class="table-striped table-bordered table-condensed">
-<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
-<thead><tr><th>str103</th><th>str8</th><th>object</th><th>object</th></tr></thead>
-<tr><td>./mastDownload/Kepler/kplr008957091_lc_Q000000000011111111/kplr008957091-2012277125453_lpd-targ.fits.gz</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
-</table></div></div></div>
 </div>
 <p>Explain pertinent details about the file you’ve just downloaded. For example, if working with Kepler light curves, explain what’s in the different file extensions:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">No</span><span class="o">.</span> <span class="mi">0</span> <span class="p">(</span><span class="n">Primary</span><span class="p">):</span> <span class="n">This</span> <span class="n">HDU</span> <span class="n">contains</span> <span class="n">metadata</span> <span class="n">related</span> <span class="n">to</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">file</span><span class="o">.</span>
@@ -749,26 +734,12 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The HDU list of our output file:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The HDU list of our output file:
-
-Filename: ./mastDownload/Kepler/kplr008957091_lc_Q000000000011111111/kplr008957091-2012277125453_lpd-targ.fits.gz
-No.    Name      Ver    Type      Cards   Dimensions   Format
-  0  PRIMARY       1 PrimaryHDU      58   ()      
-  1  TARGETTABLES    1 BinTableHDU    287   4757R x 13C   [D, E, J, 64J, 64E, 64E, 64E, 64E, 64E, J, E, E, 40E]   
-  2  APERTURE      1 ImageHDU        48   (8, 8)   int32   
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
 </pre></div>
 </div>
 </div>
@@ -781,7 +752,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <p>Let’s plot the first four images of the Kepler TPF we just downloaded to see where the center of the PSF is located…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imgs</span> <span class="o">=</span> <span class="mi">4</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">imgs</span> <span class="o">=</span> <span class="mi">4</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 
@@ -795,14 +766,11 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../../_images/98feaf508cd311f0916ab686f2fa99ae7226ca2b243dd2d64897f4458a81c23f.png" src="../../_images/98feaf508cd311f0916ab686f2fa99ae7226ca2b243dd2d64897f4458a81c23f.png" />
-</div>
 </div>
 <p>Looks like it’s typically located around (x,y)=(4,4). Let’s gather all the images and extract the flux at (4,4) from each of them to patch our lightcurve together…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lightcurve</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lightcurve</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
     
@@ -814,7 +782,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lightcurve</span><span class="p">)</span>
 
@@ -826,9 +794,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/668cb66420e67450d509b4aab6cadfa4831a16d24cc41659b4eb347040410439.png" src="../../_images/668cb66420e67450d509b4aab6cadfa4831a16d24cc41659b4eb347040410439.png" />
 </div>
 </div>
 </section>

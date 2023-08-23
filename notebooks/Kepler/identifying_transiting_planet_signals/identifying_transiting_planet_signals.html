@@ -246,6 +246,10 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../lightkurve.html">Lightkurve</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
@@ -303,6 +307,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
 
 
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
 <ul class="nav bd-sidenav">
@@ -630,8 +635,8 @@ document.write(`
 <p>This tutorial requires the <a class="reference external" href="http://docs.lightkurve.org/"><strong>Lightkurve</strong></a> package, which uses <a class="reference external" href="https://matplotlib.org/"><strong>Matplotlib</strong></a> for plotting.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 </pre></div>
 </div>
 </div>
@@ -643,7 +648,7 @@ document.write(`
 <p>As an example, we will download all available <a class="reference external" href="https://archive.stsci.edu/kepler"><em>Kepler</em></a> observations for a known multi-planet system, <a class="reference external" href="https://iopscience.iop.org/article/10.1088/0004-637X/768/2/101">Kepler-69</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search for Kepler observations of Kepler-69</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search for Kepler observations of Kepler-69</span>
 <span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;Kepler-69&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">cadence</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
 <span class="c1"># Download all available Kepler light curves</span>
 <span class="n">lc_collection</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
@@ -651,66 +656,18 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">LightkurveError</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;Kepler-69&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">cadence</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Download all available Kepler light curves</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">lc_collection</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">lc_collection</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/utils.py:563,</span> in <span class="ni">suppress_stdout.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">561</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">devnull</span>
-<span class="g g-Whitespace">    </span><span class="mi">562</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">563</span>     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">564</span> <span class="c1"># restore to default</span>
-<span class="g g-Whitespace">    </span><span class="mi">565</span> <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">566</span>     <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">old_out</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/search.py:494,</span> in <span class="ni">SearchResult.download_all</span><span class="nt">(self, quality_bitmask, download_dir, cutout_size, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">491</span> <span class="n">products</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="g g-Whitespace">    </span><span class="mi">492</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)):</span>
-<span class="g g-Whitespace">    </span><span class="mi">493</span>     <span class="n">products</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">494</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_download_one</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">495</span>             <span class="n">table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-<span class="g g-Whitespace">    </span><span class="mi">496</span>             <span class="n">quality_bitmask</span><span class="o">=</span><span class="n">quality_bitmask</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">497</span>             <span class="n">download_dir</span><span class="o">=</span><span class="n">download_dir</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">498</span>             <span class="n">cutout_size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">499</span>             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">500</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">501</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">502</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">products</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TargetPixelFile</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="k">return</span> <span class="n">TargetPixelFileCollection</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
-
-<span class="nn">File /usr/share/miniconda/lib/python3.10/site-packages/lightkurve/search.py:348,</span> in <span class="ni">SearchResult._download_one</span><span class="nt">(self, table, quality_bitmask, download_dir, cutout_size, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">344</span> <span class="n">download_response</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">345</span>     <span class="n">table</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">mrp_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download_dir</span><span class="o">=</span><span class="n">download_dir</span>
-<span class="g g-Whitespace">    </span><span class="mi">346</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">347</span> <span class="k">if</span> <span class="n">download_response</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;COMPLETE&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">348</span>     <span class="k">raise</span> <span class="n">LightkurveError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">349</span>         <span class="sa">f</span><span class="s2">&quot;Download of </span><span class="si">{</span><span class="n">download_url</span><span class="si">}</span><span class="s2"> failed. &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">350</span>         <span class="sa">f</span><span class="s2">&quot;MAST returns </span><span class="si">{</span><span class="n">download_response</span><span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">download_response</span><span class="p">[</span><span class="s1">&#39;Message&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">351</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">352</span> <span class="n">path</span> <span class="o">=</span> <span class="n">download_response</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">353</span> <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Finished downloading.&quot;</span><span class="p">)</span>
-
-<span class="ne">LightkurveError</span>: Download of http://archive.stsci.edu/missions/kepler/lightcurves/0086/008692861/kplr008692861_lc_Q011111111111111111.tar failed. MAST returns ERROR: HTTPError: 404 Client Error: Not Found for url: https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:KEPLER/url/missions/kepler/lightcurves/0086/008692861/kplr008692861-2009259160929_llc.fits
-</pre></div>
-</div>
-</div>
 </div>
 <p>Each observation has a different offset, so in order to successfully search this light curve for transits, we first need to normalize and flatten the full observation. This can be performed on a stitched light curve. For more information about combining multiple observations of the same target, please see the companion tutorial on combining multiple quarters of <em>Kepler</em> data with Lightkurve.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flatten the light curve </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flatten the light curve </span>
 <span class="n">lc</span> <span class="o">=</span> <span class="n">lc_collection</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">window_length</span><span class="o">=</span><span class="mi">901</span><span class="p">)</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
 <span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
@@ -735,7 +692,7 @@ document.write(`
 <p>To create a <code class="docutils literal notranslate"><span class="pre">BoxLeastSquaresPeriodogram</span></code>, use the <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> method <code class="docutils literal notranslate"><span class="pre">to_periodogram</span></code>, and pass in the string <code class="docutils literal notranslate"><span class="pre">'bls'</span></code> to specify the type of periodogram object you want to create. This method also optionally takes an array of periods (in days) to search, which we will set from 1–20 days to limit our search to short-period planets. We do so using the <code class="docutils literal notranslate"><span class="pre">numpy.linspace</span></code> function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1"># Create array of periods to search</span>
 <span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
 <span class="c1"># Create a BLSPeriodogram</span>
@@ -749,7 +706,7 @@ document.write(`
 <p>We can pull out the most likely BLS parameters by taking their values at maximum power — we will refer to this transiting object as “planet b.”</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planet_b_period</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">period_at_max_power</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">planet_b_period</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">period_at_max_power</span>
 <span class="n">planet_b_t0</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">transit_time_at_max_power</span>
 <span class="n">planet_b_dur</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">duration_at_max_power</span>
 
@@ -762,7 +719,7 @@ document.write(`
 <p>To confirm that this period and transit time (epoch) correspond to a transit signal, we can phase-fold the light curve using these values and plot it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -776,7 +733,7 @@ document.write(`
 <p>We can create a cadence mask for the light curve using the transit parameters from the <code class="docutils literal notranslate"><span class="pre">BoxLeastSquaresPeriodogram</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a cadence mask using the BLS parameters</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a cadence mask using the BLS parameters</span>
 <span class="n">planet_b_mask</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_mask</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> 
                                      <span class="n">transit_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">,</span> 
                                      <span class="n">duration</span><span class="o">=</span><span class="n">planet_b_dur</span><span class="p">)</span>
@@ -787,7 +744,7 @@ document.write(`
 <p>Now, we can create a masked version of the light curve to search for additional transit signals. The light curve is shown below, with masked cadences marked in red.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">masked_lc</span> <span class="o">=</span> <span class="n">lc</span><span class="p">[</span><span class="o">~</span><span class="n">planet_b_mask</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">masked_lc</span> <span class="o">=</span> <span class="n">lc</span><span class="p">[</span><span class="o">~</span><span class="n">planet_b_mask</span><span class="p">]</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
 <span class="n">lc</span><span class="p">[</span><span class="n">planet_b_mask</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Masked&#39;</span><span class="p">);</span>
 </pre></div>
@@ -797,7 +754,7 @@ document.write(`
 <p>We can also create a BLS model to visualize the transit fit. This returns a <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> object with the BLS model in the flux column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a BLS model using the BLS parameters</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a BLS model using the BLS parameters</span>
 <span class="n">planet_b_model</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_model</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> 
                                        <span class="n">transit_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">,</span> 
                                        <span class="n">duration</span><span class="o">=</span><span class="n">planet_b_dur</span><span class="p">)</span>
@@ -808,7 +765,7 @@ document.write(`
 <p>We can plot this over the folded light curve to confirm that it accurately represents the transit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
 <span class="n">planet_b_model</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
 </pre></div>
@@ -821,7 +778,7 @@ document.write(`
 <p>Now that we have created a light curve with the first identified planet masked out, we can search the remaining light curve for additional transit signals. Here, we search for long-period planets by increasing our range of periods to 1–300 days.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
 <span class="n">bls</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="s1">&#39;bls&#39;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
 <span class="n">bls</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
@@ -831,7 +788,7 @@ document.write(`
 <p>While no peaks in this BLS periodogram display a power as high as the previous transit signal, there is a definite peak near ~240 days. We can pull out the corresponding period and transit time to check the signal.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planet_c_period</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">period_at_max_power</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">planet_c_period</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">period_at_max_power</span>
 <span class="n">planet_c_t0</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">transit_time_at_max_power</span>
 <span class="n">planet_c_dur</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">duration_at_max_power</span>
 
@@ -844,7 +801,7 @@ document.write(`
 <p>We can again plot the phase-folded light curve to examine the transit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_c_period</span><span class="p">,</span> <span class="n">planet_c_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_c_period</span><span class="p">,</span> <span class="n">planet_c_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
 <span class="n">masked_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_c_period</span><span class="p">,</span> <span class="n">planet_c_t0</span><span class="p">)</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
                                                           <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Binned Flux&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
@@ -856,7 +813,7 @@ document.write(`
 <p>We have now successfully identified two planets in the same system! We can use the BLS models to visualize the transit timing in the light curve.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planet_c_model</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_model</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_c_period</span><span class="p">,</span> 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">planet_c_model</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_model</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_c_period</span><span class="p">,</span> 
                                        <span class="n">transit_time</span><span class="o">=</span><span class="n">planet_c_t0</span><span class="p">,</span> 
                                        <span class="n">duration</span><span class="o">=</span><span class="n">planet_c_dur</span><span class="p">)</span>
 </pre></div>
@@ -865,7 +822,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
 <span class="n">planet_b_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;dodgerblue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Planet b Transit Model&#39;</span><span class="p">);</span>
 <span class="n">planet_c_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Planet c Transit Model&#39;</span><span class="p">);</span>
 </pre></div>
@@ -890,7 +847,7 @@ document.write(`
 <p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or its dependencies in your published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
