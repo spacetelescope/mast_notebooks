@@ -35,8 +35,8 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -175,6 +175,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="../../astroquery/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
 </ul>
 </li>
 </ul>
@@ -225,6 +226,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_astroquery_api.html">Find Existing and Planned JWST Observations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
 
 
@@ -618,6 +620,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
+</pre></div>
+</div>
+</div>
 </div>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
@@ -653,11 +660,46 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/e401e561c2d035b05ce5d894e252fcd9/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      44   ()      
+  1  LIGHTCURVE    1 BinTableHDU    167   18684R x 20C   [D, E, J, E, E, E, E, E, E, J, D, E, D, E, D, E, D, E, E, E]   
+  2  APERTURE      1 ImageHDU        49   (11, 11)   int32   
+</pre></div>
+</div>
+</div>
 </div>
 <p>Let’s examine the binary table in the first FITS extension, since that contains the arrays of timestamps and fluxes we want to plot.  We will use the astropy.fits <code class="docutils literal notranslate"><span class="pre">getdata</span></code> function to access the table from the first extension HDU, and then show the columns of the table.  We can see included in the table are columns for the timestamps in TESS BJD format (<strong>TIME</strong>), SAP flux (<strong>SAP_FLUX</strong>), and PDCSAP flux (<strong>PDCSAP_FLUX</strong>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
+    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2457000, days&#39;; disp = &#39;D14.7&#39;
+    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
+    name = &#39;SAP_FLUX&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SAP_FLUX_ERR&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SAP_BKG&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SAP_BKG_ERR&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;PDCSAP_FLUX&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;PDCSAP_FLUX_ERR&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B16.16&#39;
+    name = &#39;PSF_CENTR1&#39;; format = &#39;D&#39;; unit = &#39;pixel&#39;; disp = &#39;F10.5&#39;
+    name = &#39;PSF_CENTR1_ERR&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;PSF_CENTR2&#39;; format = &#39;D&#39;; unit = &#39;pixel&#39;; disp = &#39;F10.5&#39;
+    name = &#39;PSF_CENTR2_ERR&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;MOM_CENTR1&#39;; format = &#39;D&#39;; unit = &#39;pixel&#39;; disp = &#39;F10.5&#39;
+    name = &#39;MOM_CENTR1_ERR&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;MOM_CENTR2&#39;; format = &#39;D&#39;; unit = &#39;pixel&#39;; disp = &#39;F10.5&#39;
+    name = &#39;MOM_CENTR2_ERR&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
+    name = &#39;POS_CORR1&#39;; format = &#39;E&#39;; unit = &#39;pixels&#39;; disp = &#39;E14.7&#39;
+    name = &#39;POS_CORR2&#39;; format = &#39;E&#39;; unit = &#39;pixels&#39;; disp = &#39;E14.7&#39;
+)
 </pre></div>
 </div>
 </div>
@@ -710,6 +752,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/369dbc54d40a5e475f3c352254b9e03c56209331e0703467c2bc969b104b7c3c.png" src="../../../_images/369dbc54d40a5e475f3c352254b9e03c56209331e0703467c2bc969b104b7c3c.png" />
+</div>
 </div>
 </section>
 <section id="understanding-light-curve-flags">
@@ -748,6 +793,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ac07bea729247416b76a6a0734d82567122decec23301fc0fee1653e1a0b3883.png" src="../../../_images/ac07bea729247416b76a6a0734d82567122decec23301fc0fee1653e1a0b3883.png" />
+</div>
 </div>
 <p>Indeed, almost all the fluxes with quality flags set to non-zero have NaN fluxes, and thus don’t show up in our plot anyways.  Intringuingly, there is one measurement with a finite flux that does have one or more flags set.  It’s one of the largest outliers in the positive flux direction: is this a bad measurement that should be excised from the time series?  Finding out the quality flag value and converting the value to its consitutent bit masks to understand why this point was flagged would be the first step.  We encourage you to do this as a follow-up to this tutorial.</p>
 </section>
@@ -780,6 +828,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/37ff5c673636f9f83a68856de2fcc86e7e9f450b118fc6215ab97bfb26d8bd45.png" src="../../../_images/37ff5c673636f9f83a68856de2fcc86e7e9f450b118fc6215ab97bfb26d8bd45.png" />
+</div>
 </div>
 </section>
 <section id="understanding-the-aperture-pixel-values">
@@ -791,6 +842,11 @@ document.write(`
 <span class="c1"># constituent bits.</span>
 <span class="n">bitmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="mi">267</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">bitmask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100001011
 </pre></div>
 </div>
 </div>
