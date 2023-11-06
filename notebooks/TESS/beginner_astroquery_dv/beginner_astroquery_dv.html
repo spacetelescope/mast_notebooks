@@ -707,12 +707,17 @@ called <code class="docutils literal notranslate"><span class="pre">sequence_num
 <h2>Use Astroquery to Dowload DV Products<a class="headerlink" href="#use-astroquery-to-dowload-dv-products" title="Permalink to this heading">#</a></h2>
 <p>Use <code class="docutils literal notranslate"><span class="pre">Observations.get_product_list</span></code> to get a list of data products associated with the observations of interest. Each individual observation is associated with several data products, only some of which are the DV products we are interested in. In this case we want those data products that have “productSubGroupDescription” set to either DVT, DVM, DVS or DVR.</p>
 <p>Next, we use <code class="docutils literal notranslate"><span class="pre">Observations.download_products</span></code> to download our selected data files. This function returns a manifest, a table that contains the local path to the files that are downloaded.</p>
-<p><strong>Note:</strong> this will download 115 files, which are roughly 1 GB.</p>
+<p><strong>Note:</strong> If you keep all results, this will download 115 files, which are roughly 1 GB. This is slightly excessive for a Notebook, so we’re artificially selecting a set of ten files that contain our file of interest. You should not do this in your own search.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">observations</span><span class="p">[</span><span class="n">obs_wanted</span><span class="p">])</span>
 <span class="n">products_wanted</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">data_products</span><span class="p">,</span> 
                                     <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DVT&quot;</span><span class="p">,</span><span class="s2">&quot;DVM&quot;</span><span class="p">,</span><span class="s2">&quot;DVS&quot;</span><span class="p">,</span><span class="s2">&quot;DVR&quot;</span><span class="p">])</span>
+
+<span class="c1"># Keep ten results from the list for smaller download size</span>
+<span class="n">products_wanted</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;obsID&#39;</span><span class="p">)</span>
+<span class="n">products_wanted</span> <span class="o">=</span> <span class="n">products_wanted</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+
 
 <span class="nb">print</span><span class="p">(</span><span class="n">products_wanted</span><span class="p">[</span><span class="s2">&quot;productFilename&quot;</span><span class="p">])</span>
 <span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">products_wanted</span><span class="p">)</span>
@@ -722,152 +727,55 @@ called <code class="docutils literal notranslate"><span class="pre">sequence_num
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                        productFilename                        
 ---------------------------------------------------------------
-   tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.pdf
-   tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.xml
-   tess2019114105919-s0001-s0006-0000000307210830-00196_dvm.pdf
-tess2018206190142-s0001-s0006-0000000307210830-01-00196_dvs.pdf
-tess2018206190142-s0001-s0006-0000000307210830-02-00196_dvs.pdf
-tess2018206190142-s0001-s0006-0000000307210830-03-00196_dvs.pdf
-  tess2018206190142-s0001-s0006-0000000307210830-00196_dvt.fits
-   tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.pdf
-   tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.xml
-   tess2019135213217-s0001-s0009-0000000307210830-00205_dvm.pdf
-                                                            ...
-   tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.xml
-   tess2019141104532-s0012-s0012-0000000307210830-00219_dvm.pdf
-   tess2019141104532-s0012-s0012-0000000307210830-00437_dvm.pdf
-tess2019141104532-s0012-s0012-0000000307210830-01-00219_dvs.pdf
-tess2019141104532-s0012-s0012-0000000307210830-01-00437_dvs.pdf
-tess2019141104532-s0012-s0012-0000000307210830-02-00219_dvs.pdf
-tess2019141104532-s0012-s0012-0000000307210830-02-00437_dvs.pdf
-tess2019141104532-s0012-s0012-0000000307210830-03-00219_dvs.pdf
-tess2019141104532-s0012-s0012-0000000307210830-03-00437_dvs.pdf
+   tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.pdf
   tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits
-  tess2019141104532-s0012-s0012-0000000307210830-00437_dvt.fits
-Length = 115 rows
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.xml to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019114105919-s0001-s0006-0000000307210830-00196_dvm.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2019114105919-s0001-s0006-0000000307210830-00196_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0006-0000000307210830-01-00196_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-01-00196_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0006-0000000307210830-02-00196_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-02-00196_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0006-0000000307210830-03-00196_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-03-00196_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0006-0000000307210830-00196_dvt.fits to ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-00196_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.xml to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019135213217-s0001-s0009-0000000307210830-00205_dvm.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2019135213217-s0001-s0009-0000000307210830-00205_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0009-0000000307210830-01-00205_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-01-00205_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0009-0000000307210830-02-00205_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-02-00205_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0009-0000000307210830-03-00205_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-03-00205_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0009-0000000307210830-00205_dvt.fits to ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-00205_dvt.fits ... [Done]
+   tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.pdf
+  tess2018206190142-s0001-s0013-0000000307210830-00226_dvt.fits
+   tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.pdf
+   tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.xml
+   tess2018206190142-s0001-s0013-0000000307210830-00226_dvm.pdf
+tess2018206190142-s0001-s0013-0000000307210830-01-00226_dvs.pdf
+tess2018206190142-s0001-s0013-0000000307210830-02-00226_dvs.pdf
+tess2018206190142-s0001-s0013-0000000307210830-03-00226_dvs.pdf
+Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.pdf ... [Done]
+Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits ... [Done]
+Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.pdf ... [Done]
+Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-00226_dvt.fits to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvt.fits ... [Done]
 Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.pdf ... [Done]
 Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.xml to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.xml ... [Done]
 Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-00226_dvm.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvm.pdf ... [Done]
 Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-01-00226_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-01-00226_dvs.pdf ... [Done]
 Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-02-00226_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-02-00226_dvs.pdf ... [Done]
 Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-03-00226_dvs.pdf to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-03-00226_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018206190142-s0001-s0013-0000000307210830-00226_dvt.fits to ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00109_dvr.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00109_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00109_dvr.xml to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00109_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00372_dvr.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00372_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00372_dvr.xml to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00372_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00109_dvm.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00109_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00372_dvm.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00372_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-01-00109_dvs.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-01-00109_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-01-00372_dvs.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-01-00372_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-02-00109_dvs.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-02-00109_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-02-00372_dvs.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-02-00372_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-03-00109_dvs.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-03-00109_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-03-00372_dvs.pdf to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-03-00372_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00109_dvt.fits to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00109_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018235142541-s0002-s0002-0000000307210830-00372_dvt.fits to ./mastDownload/TESS/tess2018234235059-s0002-0000000307210830-0121-s/tess2018235142541-s0002-s0002-0000000307210830-00372_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112538-s0005-s0005-0000000307210830-00413_dvr.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112538-s0005-s0005-0000000307210830-00413_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112538-s0005-s0005-0000000307210830-00413_dvr.xml to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112538-s0005-s0005-0000000307210830-00413_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112539-s0005-s0005-0000000307210830-00140_dvr.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112539-s0005-s0005-0000000307210830-00140_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112539-s0005-s0005-0000000307210830-00140_dvr.xml to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112539-s0005-s0005-0000000307210830-00140_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112538-s0005-s0005-0000000307210830-00413_dvm.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112538-s0005-s0005-0000000307210830-00413_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019043094057-s0005-s0005-0000000307210830-00140_dvm.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2019043094057-s0005-s0005-0000000307210830-00140_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112538-s0005-s0005-0000000307210830-01-00413_dvs.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112538-s0005-s0005-0000000307210830-01-00413_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112538-s0005-s0005-0000000307210830-02-00413_dvs.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112538-s0005-s0005-0000000307210830-02-00413_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112539-s0005-s0005-0000000307210830-01-00140_dvs.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112539-s0005-s0005-0000000307210830-01-00140_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112539-s0005-s0005-0000000307210830-02-00140_dvs.pdf to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112539-s0005-s0005-0000000307210830-02-00140_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112538-s0005-s0005-0000000307210830-00413_dvt.fits to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112538-s0005-s0005-0000000307210830-00413_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2018319112539-s0005-s0005-0000000307210830-00140_dvt.fits to ./mastDownload/TESS/tess2018319095959-s0005-0000000307210830-0125-s/tess2018319112539-s0005-s0005-0000000307210830-00140_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00182_dvr.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00182_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00182_dvr.xml to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00182_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00401_dvr.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00401_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00401_dvr.xml to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00401_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00182_dvm.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00182_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00401_dvm.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00401_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-01-00182_dvs.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-01-00182_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-01-00401_dvs.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-01-00401_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-02-00182_dvs.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-02-00182_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-02-00401_dvs.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-02-00401_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-03-00401_dvs.pdf to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-03-00401_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00182_dvt.fits to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00182_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019033200935-s0008-s0008-0000000307210830-00401_dvt.fits to ./mastDownload/TESS/tess2019032160000-s0008-0000000307210830-0136-s/tess2019033200935-s0008-s0008-0000000307210830-00401_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00198_dvr.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00198_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00198_dvr.xml to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00198_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00403_dvr.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00403_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00403_dvr.xml to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00403_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00403_dvm.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00403_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019121093502-s0009-s0009-0000000307210830-00198_dvm.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019121093502-s0009-s0009-0000000307210830-00198_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-01-00198_dvs.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-01-00198_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-01-00403_dvs.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-01-00403_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-02-00198_dvs.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-02-00198_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-02-00403_dvs.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-02-00403_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-03-00198_dvs.pdf to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-03-00198_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00198_dvt.fits to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00198_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019059170935-s0009-s0009-0000000307210830-00403_dvt.fits to ./mastDownload/TESS/tess2019058134432-s0009-0000000307210830-0139-s/tess2019059170935-s0009-s0009-0000000307210830-00403_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00212_dvr.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00212_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00212_dvr.xml to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00212_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00446_dvr.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00446_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00446_dvr.xml to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00446_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00446_dvm.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00446_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019149095427-s0010-s0010-0000000307210830-00212_dvm.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019149095427-s0010-s0010-0000000307210830-00212_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-01-00212_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-01-00212_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-01-00446_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-01-00446_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-02-00212_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-02-00212_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-02-00446_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-02-00446_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-03-00212_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-03-00212_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-03-00446_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-03-00446_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-04-00446_dvs.pdf to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-04-00446_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00212_dvt.fits to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00212_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019085221934-s0010-s0010-0000000307210830-00446_dvt.fits to ./mastDownload/TESS/tess2019085135100-s0010-0000000307210830-0140-s/tess2019085221934-s0010-s0010-0000000307210830-00446_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00214_dvr.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00214_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00214_dvr.xml to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00214_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00442_dvr.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00442_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00442_dvr.xml to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00442_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00442_dvm.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00442_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019162095717-s0011-s0011-0000000307210830-00214_dvm.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019162095717-s0011-s0011-0000000307210830-00214_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-01-00214_dvs.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-01-00214_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-01-00442_dvs.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-01-00442_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-02-00214_dvs.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-02-00214_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-02-00442_dvs.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-02-00442_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-03-00214_dvs.pdf to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-03-00214_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00214_dvt.fits to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00214_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019113062933-s0011-s0011-0000000307210830-00442_dvt.fits to ./mastDownload/TESS/tess2019112060037-s0011-0000000307210830-0143-s/tess2019113062933-s0011-s0011-0000000307210830-00442_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.xml to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.xml to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.xml ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00219_dvm.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00437_dvm.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvm.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-01-00219_dvs.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-01-00219_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-01-00437_dvs.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-01-00437_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-02-00219_dvs.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-02-00219_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-02-00437_dvs.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-02-00437_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-03-00219_dvs.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-03-00219_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-03-00437_dvs.pdf to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-03-00437_dvs.pdf ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits ... [Done]
-Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019141104532-s0012-s0012-0000000307210830-00437_dvt.fits to ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvt.fits ... [Done]
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">products_wanted</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">&lt;MaskedColumn name=&apos;size&apos; dtype=&apos;float64&apos; length=10&gt;
+<table>
+<tr><td>36.27755</td></tr>
+<tr><td>5.8464</td></tr>
+<tr><td>35.710625</td></tr>
+<tr><td>68.11488</td></tr>
+<tr><td>68.94206</td></tr>
+<tr><td>1.595489</td></tr>
+<tr><td>34.180506</td></tr>
+<tr><td>3.451461</td></tr>
+<tr><td>2.890345</td></tr>
+<tr><td>3.506768</td></tr>
+</table></div></div>
+</div>
 </section>
 <section id="download-complete">
 <h2>Download Complete<a class="headerlink" href="#download-complete" title="Permalink to this heading">#</a></h2>
-<p>You have now downloaded ALL of the TESS DV products for this star and their locations can be seen by printing the “Local Path” in the manifest.  Notice that because this star was observed in many sectors, there are many different sets of DV products, one set for each range of sectors searched.</p>
+<p>You have now downloaded a subset of the TESS DV products for this star and their locations can be seen by printing the “Local Path” in the manifest. Notice that because this star was observed in many sectors, there are many different sets of DV products, one set for each range of sectors searched.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span> <span class="n">manifest</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">]</span> <span class="p">)</span>
@@ -875,31 +783,18 @@ Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/prod
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                             Local Path                                                            
------------------------------------------------------------------------------------------------------------------------------------
-    ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.pdf
-    ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-00196_dvr.xml
-    ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2019114105919-s0001-s0006-0000000307210830-00196_dvm.pdf
- ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-01-00196_dvs.pdf
- ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-02-00196_dvs.pdf
- ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-03-00196_dvs.pdf
-   ./mastDownload/TESS/tess2018206190142-s0001-s0006-0000000307210830/tess2018206190142-s0001-s0006-0000000307210830-00196_dvt.fits
-    ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.pdf
-    ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2018206190142-s0001-s0009-0000000307210830-00205_dvr.xml
-    ./mastDownload/TESS/tess2018206190142-s0001-s0009-0000000307210830/tess2019135213217-s0001-s0009-0000000307210830-00205_dvm.pdf
-                                                                                                                                ...
-   ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.xml
-   ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvm.pdf
-   ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvm.pdf
-./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-01-00219_dvs.pdf
-./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-01-00437_dvs.pdf
-./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-02-00219_dvs.pdf
-./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-02-00437_dvs.pdf
-./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-03-00219_dvs.pdf
-./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-03-00437_dvs.pdf
-  ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits
-  ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvt.fits
-Length = 115 rows
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                            Local Path                                                            
+----------------------------------------------------------------------------------------------------------------------------------
+  ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvr.pdf
+ ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00219_dvt.fits
+  ./mastDownload/TESS/tess2019140104343-s0012-0000000307210830-0144-s/tess2019141104532-s0012-s0012-0000000307210830-00437_dvr.pdf
+  ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvt.fits
+   ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.pdf
+   ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvr.xml
+   ./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-00226_dvm.pdf
+./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-01-00226_dvs.pdf
+./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-02-00226_dvs.pdf
+./mastDownload/TESS/tess2018206190142-s0001-s0013-0000000307210830/tess2018206190142-s0001-s0013-0000000307210830-03-00226_dvs.pdf
 </pre></div>
 </div>
 </div>
@@ -947,29 +842,16 @@ Length = 115 rows
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>index   sectors   fileType
 ----- ----------- --------
-    0 s0001-s0006 _dvr.pdf
-    1 s0001-s0006 _dvr.xml
-    2 s0001-s0006 _dvm.pdf
-    3 s0001-s0006 _dvs.pdf
-    4 s0001-s0006 _dvs.pdf
-    5 s0001-s0006 _dvs.pdf
-    6 s0001-s0006 dvt.fits
-    7 s0001-s0009 _dvr.pdf
-    8 s0001-s0009 _dvr.xml
-    9 s0001-s0009 _dvm.pdf
-  ...         ...      ...
-  104 s0012-s0012 _dvr.xml
-  105 s0012-s0012 _dvm.pdf
-  106 s0012-s0012 _dvm.pdf
-  107 s0012-s0012 _dvs.pdf
-  108 s0012-s0012 _dvs.pdf
-  109 s0012-s0012 _dvs.pdf
-  110 s0012-s0012 _dvs.pdf
-  111 s0012-s0012 _dvs.pdf
-  112 s0012-s0012 _dvs.pdf
-  113 s0012-s0012 dvt.fits
-  114 s0012-s0012 dvt.fits
-Length = 115 rows
+    0 s0012-s0012 _dvr.pdf
+    1 s0012-s0012 dvt.fits
+    2 s0012-s0012 _dvr.pdf
+    3 s0001-s0013 dvt.fits
+    4 s0001-s0013 _dvr.pdf
+    5 s0001-s0013 _dvr.xml
+    6 s0001-s0013 _dvm.pdf
+    7 s0001-s0013 _dvs.pdf
+    8 s0001-s0013 _dvs.pdf
+    9 s0001-s0013 _dvs.pdf
 </pre></div>
 </div>
 </div>
@@ -987,13 +869,13 @@ Length = 115 rows
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>index   sectors   fileType
 ----- ----------- --------
-   14 s0001-s0013 _dvr.pdf
-   15 s0001-s0013 _dvr.xml
-   16 s0001-s0013 _dvm.pdf
-   17 s0001-s0013 _dvs.pdf
-   18 s0001-s0013 _dvs.pdf
-   19 s0001-s0013 _dvs.pdf
-   20 s0001-s0013 dvt.fits
+    3 s0001-s0013 dvt.fits
+    4 s0001-s0013 _dvr.pdf
+    5 s0001-s0013 _dvr.xml
+    6 s0001-s0013 _dvm.pdf
+    7 s0001-s0013 _dvs.pdf
+    8 s0001-s0013 _dvs.pdf
+    9 s0001-s0013 _dvs.pdf
 </pre></div>
 </div>
 </div>
@@ -1085,9 +967,8 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </section>
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
-<p><strong>Authors:</strong>
-<br>Susan E. Mullally, STScI
-<br><strong>Updated On:</strong> 2019-09-13</p>
+<p><strong>Authors:</strong> Susan E. Mullally, STScI
+<br><strong>Last updated</strong>: Aug 2023</p>
 <p><span class="xref myst">Top of Page</span>
 <a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
 </section>

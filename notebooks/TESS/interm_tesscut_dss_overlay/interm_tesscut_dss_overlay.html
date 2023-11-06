@@ -725,7 +725,8 @@ document.write(`
 <p><a id="download_tesscut"></a></p>
 <section id="use-astroquery-to-retrieve-the-tesscut-image">
 <h3>Use Astroquery to retrieve the TESSCut image<a class="headerlink" href="#use-astroquery-to-retrieve-the-tesscut-image" title="Permalink to this heading">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">download_cutouts</span></code> method requires as input an Astropy SkyCoord object, a cutout size in pixels and optionally accepts a download path.  This will download the custom cutout into the specified path and returns and Astropy table object with the paths to all the downloaded files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">download_cutouts</span></code> method requires as input an Astropy SkyCoord object, a cutout size in pixels and optionally accepts a download path. This will download the custom cutout into the specified path and returns and Astropy table object with the paths to all the downloaded files.</p>
+<p>We are limiting this cutout to sector 27 so that this Notebook runs quickly; if you do not specify a sector, all matching targets will be returned.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a sky coordinate object</span>
@@ -733,7 +734,7 @@ document.write(`
     
 <span class="c1"># download the files and get the list of local paths</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">download_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">cutout_coords</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">download_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">cutout_coords</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: Could not download cutouts: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 <span class="k">else</span><span class="p">:</span>
@@ -872,31 +873,6 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The TESS FFI images currently have an issue with its WCS that shift transformations by ~1 pixel.  To illustrate this point, we’ll compare the TESS cutout overlay with the TIC objects in pixel coordinates and world coordinates.  The left panel plots the cutout with the correct overlay of TIC objects.  The right panel plots the cutout using its WCS transformation.  The TIC objects are shifted by about a pixel relative to the underlying cutout.  This issue will present itself when using the WCS to overlay the cutout onto other data or vice versa.  The underlying cause of this issue is still being explored.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pixel plot</span>
-<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>  <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TessCut-Pixel&#39;</span><span class="p">)</span>
-
-<span class="c1"># WCS plot</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>  <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s1">&#39;Right Ascension&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s1">&#39;Declination&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">tic_ra</span><span class="p">,</span> <span class="n">tic_dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax2</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TessCut-WCS&#39;</span><span class="p">)</span>
-
-<span class="n">ax1</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p><a id="get_dss"></a></p>
 </section>
 </section>
@@ -983,7 +959,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Let’s display the DSS image and overlay the TIC catalog objects as a sanity check.  We use the same matplotlib plotting methods as before.  As before, this uses <a class="reference external" href="http://docs.astropy.org/en/stable/visualization/wcsaxes/index.html#wcsaxes">WCSAxes</a> from Astropy to create a plot with correct WCS and overlay coordinate objects.  This time we create a DSS WCS object and use that when creating the plot.  We can also directly pass into a coordinate list of RA, Dec and transform the coordinates into the proper pixels using the DSS WCS.</p>
+<p>Let’s display the DSS image and overlay the TIC catalog objects as a coherence check. We use the same matplotlib plotting methods as before. As before, this uses <a class="reference external" href="http://docs.astropy.org/en/stable/visualization/wcsaxes/index.html#wcsaxes">WCSAxes</a> from Astropy to create a plot with correct WCS and overlay coordinate objects. This time we create a DSS WCS object and use that when creating the plot. We can also directly pass into a coordinate list of RA, Dec and transform the coordinates into the proper pixels using the DSS WCS.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dss</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1067,20 +1043,32 @@ document.write(`
 </div>
 </div>
 </div>
-<p>We use ipywidgets to create an interactive slider widget for the alpha/opacity of the TESS cutout image.  We use the <a class="reference external" href="https://ipywidgets.readthedocs.io/en/stable/examples/Using%20Interact.html#interactive">interactive</a> function to produce an interactive widget.  It takes as input the main function we want to make interactive, in our case, <code class="docutils literal notranslate"><span class="pre">create_plot</span></code>.  You also need to pass in all the inputs to your custom function.</p>
+<p>Let’s do a quick test of our <code class="docutils literal notranslate"><span class="pre">create_plot</span></code> overlay function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">create_plot</span><span class="p">(</span><span class="n">background_img</span><span class="o">=</span><span class="n">dss_data</span><span class="p">,</span> <span class="n">foreground_img</span><span class="o">=</span><span class="n">reproj_tesscut</span><span class="p">,</span> 
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">dss_wcs</span><span class="p">,</span> 
+            <span class="n">ra</span><span class="o">=</span><span class="n">tic_ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">tic_dec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see the “grainy” TESS pixels overlayed on the DSS background. The light from the bright star at the center of the DSS image spreads out over many TESS pixels.</p>
+<p>Now let’s use ipywidgets to create an interactive slider widget for the alpha/opacity of the TESS cutout image.  We use the <a class="reference external" href="https://ipywidgets.readthedocs.io/en/stable/examples/Using%20Interact.html#interactive">interactive</a> function to produce an interactive widget.  It takes as input the main function we want to make interactive, in our case, <code class="docutils literal notranslate"><span class="pre">create_plot</span></code>.  You also need to pass in all the inputs to your custom function.</p>
 <p>To create a slider for alpha we pass in a tuple of <strong>(min, max)</strong> representing the minimum and maximum slider ranges.  All other inputs to our <code class="docutils literal notranslate"><span class="pre">create_plot</span></code> function should be fixed.  We do not want interaction on these elements.  So we wrap all other inputs in the <a class="reference external" href="https://ipywidgets.readthedocs.io/en/stable/examples/Using%20Interact.html#Fixing-arguments-using-fixed">fixed</a> function from <code class="docutils literal notranslate"><span class="pre">ipywidgets</span></code>.  This tells ipywidgets to use fix those inputs.</p>
 <p>Our input background data is the DSS image data, <code class="docutils literal notranslate"><span class="pre">dss_data</span></code>.  The input image to overlay on top is the reprojected TESS data, <code class="docutils literal notranslate"><span class="pre">reproj_tesscut</span></code>.  We also pass in <code class="docutils literal notranslate"><span class="pre">norm</span></code>, the TESS cutout image normalization from before, as well as DSS wcs (<code class="docutils literal notranslate"><span class="pre">dss_wcs</span></code>), and the list of RA and Dec of the TIC objects, <code class="docutils literal notranslate"><span class="pre">tic_ra,</span> <span class="pre">tic_dec</span></code>.</p>
 <p>Try moving the slider back and forth to control the opacity of the TESS cutout image against the DSS image.</p>
+<p><strong>Note:</strong> this interactive widget does not work in our rendered HTML, and so has been commented out. Un-comment it if you are running this locally.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create an interactive ipywidget plot for the opacity of tesscut</span>
-<span class="n">interactive_plot</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">create_plot</span><span class="p">,</span> <span class="n">background_img</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">dss_data</span><span class="p">),</span> <span class="n">foreground_img</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">reproj_tesscut</span><span class="p">),</span> 
-                               <span class="n">alpha</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">norm</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">norm</span><span class="p">),</span> <span class="n">wcs</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">dss_wcs</span><span class="p">),</span> 
-                               <span class="n">ra</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">tic_ra</span><span class="p">),</span> <span class="n">dec</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">tic_dec</span><span class="p">))</span>
-<span class="c1"># display the plot</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">interactive_plot</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">output</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;500px&#39;</span>
-<span class="n">interactive_plot</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # create an interactive ipywidget plot for the opacity of tesscut</span>
+<span class="c1"># interactive_plot = interactive(create_plot, background_img=fixed(dss_data), foreground_img=fixed(reproj_tesscut), </span>
+<span class="c1">#                                alpha=(0.0,1.0), norm=fixed(norm), wcs=fixed(dss_wcs), </span>
+<span class="c1">#                                ra=fixed(tic_ra), dec=fixed(tic_dec))</span>
+<span class="c1"># # display the plot</span>
+<span class="c1"># output = interactive_plot.children[-1]</span>
+<span class="c1"># output.layout.height = &#39;500px&#39;</span>
+<span class="c1"># interactive_plot</span>
 </pre></div>
 </div>
 </div>
@@ -1098,7 +1086,7 @@ document.write(`
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
 <p><strong>Author:</strong> Brian Cherinka, STScI Archive Scientist
-<br><strong>Last Updated:</strong> May 2023</p>
+<br><strong>Last Updated:</strong> Nov 2023</p>
 <p><span class="xref myst">Top of Page</span>
 <a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
 </section>
