@@ -1,4 +1,4 @@
-[![Scheduled Notebook Execution](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_scheduled.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_scheduled.yml)
+[![Scheduled Notebook Execution](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_nightly.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_scheduled.yml)
 [![Build HTML](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_html_build.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_html_build.yml)
 
 # MAST Notebooks
