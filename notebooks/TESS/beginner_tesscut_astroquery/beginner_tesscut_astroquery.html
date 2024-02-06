@@ -636,7 +636,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-which-sectors-are-available">Query Which Sectors are Available</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-pixel-timeseries-cutout-from-tess-ffis">Request pixel timeseries cutout from TESS FFIs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-first-image-of-the-time-series">Plot the First Image of the Time Series</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-the-first-image-of-the-second-file">Show the first image of the second file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-the-first-image-with-wcs-information">Show the first image with WCS information</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-light-curve-from-the-cutout">Create a Light Curve from the Cutout</a><ul class="nav section-nav flex-column">
@@ -670,7 +670,6 @@ document.write(`
 <a class="reference internal" href="#lightcurve"><span class="xref myst">Create Light Curve</span></a> <br>
 <a class="reference internal" href="#resources_ID"><span class="xref myst">Additional Resources</span></a> <br>
 <a class="reference internal" href="#about_ID"><span class="xref myst">About this Notebook</span></a></p>
-<p><font color="red">Automated testing has found an error in this Notebook. The authors have been notified and are working on the issue; in the meantime, please use this as a reference only.</font></p>
 </section>
 <hr class="docutils" />
 <section id="import-statements">
@@ -750,18 +749,18 @@ Using the TESS sector information service, we make a request to determine which 
 </div>
 </div>
 </div>
-<p>The resulting table shows that this target was observed in two different sectors using the same camera and CCD.</p>
+<p>Wow! This target is well-observed by TESS.</p>
 <hr class="docutils" />
 <p><a id="tesscut_ID"></a></p>
 </section>
 <section id="request-pixel-timeseries-cutout-from-tess-ffis">
 <h2>Request pixel timeseries cutout from TESS FFIs<a class="headerlink" href="#request-pixel-timeseries-cutout-from-tess-ffis" title="Link to this heading">#</a></h2>
-<p>Astrocut is the tool that runs the cutout service around the RA and Dec that were requested. It delivers a zipped file containing a cutout for each set of FFIs as listed above. It is also possible to request only one sector using the “sector” parameter.<br />
-<br>
-For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><strong>y</strong></em> refers to the CCD rows. Distance can be input in a variety of units, I chose pixels (“px”).</p>
+<p>Astrocut is the tool that runs the cutout service around the RA and Dec that were requested. It delivers a zipped file containing a cutout for each set of FFIs as listed above. It is also possible to request only one sector using the “sector” parameter.</p>
+<p>Since 28 sectors of data is quite a lot, let’s only get data from the first sector.
+<br></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -772,13 +771,6 @@ For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><stro
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;SECTOR&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -820,18 +812,16 @@ For tesscut, <em><strong>x</strong></em> refers to the CCD columns and <em><stro
 </div>
 </div>
 </div>
-<section id="show-the-first-image-of-the-second-file">
-<h3>Show the first image of the second file<a class="headerlink" href="#show-the-first-image-of-the-second-file" title="Link to this heading">#</a></h3>
+<section id="show-the-first-image-with-wcs-information">
+<h3>Show the first image with WCS information<a class="headerlink" href="#show-the-first-image-with-wcs-information" title="Link to this heading">#</a></h3>
 <p>We also add a WCS to the image and mark the requested star as well as nearby stars.
 We use the WCS in the header to place a red dot on the image for the catalog position of the star on the figure as a demonstration of the WCS. The orange dots are the nearby stars found in the cone search done above.</p>
 <p><strong>Note. The WCS is based on the WCS stored in the FFI file for the central part of the time series and there can be some motion during a sector of observation.</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdu2</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">firstImage</span> <span class="o">=</span> <span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">firstImage</span> <span class="o">=</span> <span class="n">hdu2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdu2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+<span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdu1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">wcs</span><span class="p">)</span>
@@ -922,7 +912,6 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">bkgFlux1</span><span class="p">,</span> <span class="s1">&#39;r.-&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">2155</span><span class="p">,</span> <span class="mi">2160</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Estimate of Background&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Background Flux&#39;</span><span class="p">)</span>
@@ -941,7 +930,6 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">bkgSubFlux</span><span class="p">,</span><span class="s1">&#39;.-k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">2155</span><span class="p">,</span> <span class="mi">2160</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (e-/s)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Background Subtracted Flux&#39;</span><span class="p">)</span>
@@ -964,7 +952,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <p><strong>Author:</strong> Susan E. Mullally, STScI Archive Scientist
-<br><strong>Updated On:</strong> 2018-12-03</p>
+<br><strong>Last Updated:</strong> 2023 November</p>
 <p><a class="reference internal" href="#title_ID"><span class="xref myst">Top of Page</span></a>
 <a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
 </section>
@@ -1040,7 +1028,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-which-sectors-are-available">Query Which Sectors are Available</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-pixel-timeseries-cutout-from-tess-ffis">Request pixel timeseries cutout from TESS FFIs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-first-image-of-the-time-series">Plot the First Image of the Time Series</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-the-first-image-of-the-second-file">Show the first image of the second file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-the-first-image-with-wcs-information">Show the first image with WCS information</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-light-curve-from-the-cutout">Create a Light Curve from the Cutout</a><ul class="nav section-nav flex-column">
