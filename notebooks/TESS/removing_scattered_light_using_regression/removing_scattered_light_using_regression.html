@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Removing Scattered Light from TESS Data Using the Lightkurve RegressionCorrector &#8212; MAST Notebook Repository</title>
   
@@ -28,33 +29,35 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -67,19 +70,7 @@ const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){ dataLayer.push(arguments); }
-                gtag('js', new Date());
-                gtag('config', 'G-SK672ZMP7G');
-            </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -177,18 +168,7 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -669,11 +649,11 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="removing-scattered-light-from-tess-data-using-the-lightkurve-regressioncorrector">
-<h1>Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code><a class="headerlink" href="#removing-scattered-light-from-tess-data-using-the-lightkurve-regressioncorrector" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="removing-scattered-light-from-tess-data-using-the-lightkurve-regressioncorrector">
+<h1>Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code><a class="headerlink" href="#removing-scattered-light-from-tess-data-using-the-lightkurve-regressioncorrector" title="Permalink to this heading">#</a></h1>
 <hr class="docutils" />
 <section id="learning-goals">
-<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this heading">#</a></h2>
 <p>By the end of this tutorial, you will:</p>
 <ul class="simple">
 <li><p>Be familiar with the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>.</p></li>
@@ -682,12 +662,12 @@ document.write(`
 </ul>
 </section>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>Lightkurve offers several tools to the community for removing instrument noise and systematics from data from the <em>Kepler</em>, <em>K2</em>, and <em>TESS</em> missions. This tutorial will demonstrate the use of Lightkurve’s <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> class to remove the scattered light and spacecraft motion noise from <em>TESS</em> Full Frame Images (FFIs).</p>
 <p><em>TESS</em> FFIs have an additive scattered light background that has not been removed by the pipeline. This scattered light must be removed by the user. This can be done in a few ways, including a basic median subtraction. In this tutorial, we’ll show you how to use Lightkurve’s corrector tools to remove the scattered light.</p>
 </section>
 <section id="imports">
-<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
 <p>This tutorial requires the <a class="reference external" href="http://docs.lightkurve.org/"><strong>Lightkurve</strong></a> package, and also makes use of <strong><a class="reference external" href="https://numpy.org/">NumPy</a></strong> and <strong><a class="reference external" href="https://matplotlib.org/">Matplotlib</a></strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -702,7 +682,7 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="using-regressioncorrector-on-tesscut-ffi-cutouts">
-<h2>1. Using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> on TESSCut FFI Cutouts<a class="headerlink" href="#using-regressioncorrector-on-tesscut-ffi-cutouts" title="Link to this heading">#</a></h2>
+<h2>1. Using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> on TESSCut FFI Cutouts<a class="headerlink" href="#using-regressioncorrector-on-tesscut-ffi-cutouts" title="Permalink to this heading">#</a></h2>
 <p>For this tutorial we will use the <em>TESS</em> Sector 15 data of <a class="reference external" href="https://en.wikipedia.org/wiki/Tabby%27s_Star">KIC 8462852</a> (also known as Boyajian’s Star).
 We’ll start by downloading the FFI data using MAST’s TESSCut service, querying it through Lightkurve.</p>
 <div class="cell docutils container">
@@ -753,7 +733,7 @@ We’ll start by downloading the FFI data using MAST’s TESSCut service, queryi
 </div>
 </section>
 <section id="creating-a-designmatrix-from-pixel-regressors">
-<h2>2. Creating a <code class="docutils literal notranslate"><span class="pre">DesignMatrix</span></code> from Pixel Regressors<a class="headerlink" href="#creating-a-designmatrix-from-pixel-regressors" title="Link to this heading">#</a></h2>
+<h2>2. Creating a <code class="docutils literal notranslate"><span class="pre">DesignMatrix</span></code> from Pixel Regressors<a class="headerlink" href="#creating-a-designmatrix-from-pixel-regressors" title="Permalink to this heading">#</a></h2>
 <p>The flux in the aperture appears to be dominated by scattered light. We can tell because <em>TESS</em> orbits Earth twice in each sector, thus patterns which appear twice within a sector are typically related to the <em>TESS</em> orbit (such as the scattered light effect).</p>
 <p>To remove this light, we are going to detrend the light curve against some vectors which we think are predictive of this systematic noise.</p>
 <p>In this case, we can use the <strong>pixels outside the aperture</strong> as vectors that are highly predictive of the systematic noise, that is, we will make the assumption that these pixels do not contain any flux from our target.</p>
@@ -843,7 +823,7 @@ We’ll start by downloading the FFI data using MAST’s TESSCut service, queryi
 </div>
 </section>
 <section id="removing-background-scattered-light-using-linear-regression">
-<h2>3. Removing Background Scattered Light Using Linear Regression<a class="headerlink" href="#removing-background-scattered-light-using-linear-regression" title="Link to this heading">#</a></h2>
+<h2>3. Removing Background Scattered Light Using Linear Regression<a class="headerlink" href="#removing-background-scattered-light-using-linear-regression" title="Permalink to this heading">#</a></h2>
 <p>Now that we have a design matrix, we only need to pass it into a <code class="docutils literal notranslate"><span class="pre">lightkurve.Corrector</span></code>. To use our design matrix, we can pass it to the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>, which will detrend the input light curve against the vectors we’ve built.</p>
 <p>Please consult the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.correctors.RegressionCorrector.html">RegressionCorrector page</a> in the API docs for the full details on the methods and features provided by this class.</p>
 <div class="cell docutils container">
@@ -880,7 +860,7 @@ We’ll start by downloading the FFI data using MAST’s TESSCut service, queryi
 <p>As shown above, the scattered light from the background has been removed. If we want to take a more in-depth look at the correction, we can use the <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> method to see what the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> found as the best fitting solution.</p>
 </section>
 <section id="diagnosing-the-correction">
-<h2>4. Diagnosing the Correction<a class="headerlink" href="#diagnosing-the-correction" title="Link to this heading">#</a></h2>
+<h2>4. Diagnosing the Correction<a class="headerlink" href="#diagnosing-the-correction" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">corrector</span><span class="o">.</span><span class="n">diagnose</span><span class="p">();</span>
@@ -983,7 +963,7 @@ We’ll start by downloading the FFI data using MAST’s TESSCut service, queryi
 </div>
 </section>
 <section id="using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files">
-<h2>5. Using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> on <em>TESS</em> Two-Minute Cadence Target Pixel Files<a class="headerlink" href="#using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files" title="Link to this heading">#</a></h2>
+<h2>5. Using <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> on <em>TESS</em> Two-Minute Cadence Target Pixel Files<a class="headerlink" href="#using-regressioncorrector-on-tess-two-minute-cadence-target-pixel-files" title="Permalink to this heading">#</a></h2>
 <p><em>TESS</em> releases high-time resolution TPFs of interesting targets. These higher time resolution TPFs have background removed for users by the pipeline. However, there are still common trends in TPF pixels that are not due to scattered light, but could be from, for example, spacecraft motion.</p>
 <p><code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> can be used in exactly the same way to remove these common trends.</p>
 <div class="cell docutils container">
@@ -1051,7 +1031,7 @@ We’ll start by downloading the FFI data using MAST’s TESSCut service, queryi
 </div>
 </section>
 <section id="should-i-use-regressioncorrector-or-pldcorrector">
-<h2>6. Should I use <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> or <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>?<a class="headerlink" href="#should-i-use-regressioncorrector-or-pldcorrector" title="Link to this heading">#</a></h2>
+<h2>6. Should I use <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> or <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>?<a class="headerlink" href="#should-i-use-regressioncorrector-or-pldcorrector" title="Permalink to this heading">#</a></h2>
 <p>In addition to the corrector demonstrated in this tutorial, Lightkurve has a special case of <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> called <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>. PLD, or Pixel Level Decorrelation, is a method of removing systematic noise from light curves using linear regression, with a design matrix constructed from a combination of pixel-level light curves.</p>
 <p>For more information about the <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code>, please see the tutorial specifically on removing instrumental noise from <em>K2</em> and <em>TESS</em> light curves using PLD.</p>
 <p>For <em>TESS</em>, the <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> works in a very similar way to the <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code>. The major difference between them is that <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> constructs its own design matrix, making it a streamlined, versatile tool to apply to any <em>TESS</em> or <em>K2</em> light curve.</p>
@@ -1087,13 +1067,13 @@ We’ll start by downloading the FFI data using MAST’s TESSCut service, queryi
 <p>When considering which corrector to use, remember that <code class="docutils literal notranslate"><span class="pre">PLDCorrector</span></code> is minimal and designed to be effective at removing both background scattered light from <em>TESS</em> and motion noise from <em>K2</em>, while <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code> is flexible and gives you more control over the creation of the design matrix and the correction.</p>
 </section>
 <section id="about-this-notebook">
-<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
 <p><strong>Authors:</strong> Christina Hedges (christinalouisehedges&#64;gmail.com), Nicholas Saunders (nksaun&#64;hawaii.edu), Geert Barentsen</p>
 <p><strong>Updated On:</strong> 2020-09-28</p>
 </section>
 </section>
-<section id="citing-lightkurve-and-its-dependencies">
-<h1>Citing Lightkurve and its Dependencies<a class="headerlink" href="#citing-lightkurve-and-its-dependencies" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="citing-lightkurve-and-its-dependencies">
+<h1>Citing Lightkurve and its Dependencies<a class="headerlink" href="#citing-lightkurve-and-its-dependencies" title="Permalink to this heading">#</a></h1>
 <p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or its dependencies for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
