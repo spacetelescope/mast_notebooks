@@ -1,5 +1,4 @@
 [![Scheduled Notebook Execution](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_nightly.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_nightly.yml)
-[![Build HTML](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_html_build.yml/badge.svg)](https://github.com/spacetelescope/mast_notebooks/actions/workflows/ci_html_build.yml)
 
 # MAST Notebooks
 These notebooks are produced and maintained by the team at MAST, the [Mikulski Archive for Space Telescopes](https://archive.stsci.edu).
