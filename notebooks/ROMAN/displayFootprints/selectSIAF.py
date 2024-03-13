@@ -22,8 +22,7 @@ def defineApertures(selectedTelescope, selectedInstrument, selectedAperture):
             if selectedAperture.lower() == 'all' :
                  apertureNames = ['WFI01_FULL', 'WFI02_FULL', 'WFI03_FULL', 'WFI04_FULL', 'WFI05_FULL', 'WFI06_FULL', 
                                   'WFI07_FULL', 'WFI08_FULL', 'WFI09_FULL', 'WFI10_FULL', 'WFI11_FULL', 'WFI12_FULL', 
-                                  'WFI13_FULL', 'WFI14_FULL', 'WFI15_FULL', 'WFI16_FULL', 'WFI17_FULL', 'WFI18_FULL',
-                                  'WFI_CEN','WFI_TILE']
+                                  'WFI13_FULL', 'WFI14_FULL', 'WFI15_FULL', 'WFI16_FULL', 'WFI17_FULL', 'WFI18_FULL']
                  V2Ref = telescopeSiaf.apertures['WFI_CEN'].V2Ref
                  V3Ref = telescopeSiaf.apertures['WFI_CEN'].V3Ref
             else:
@@ -38,7 +37,7 @@ def defineApertures(selectedTelescope, selectedInstrument, selectedAperture):
             apertureNames = ['WFI01_FULL', 'WFI02_FULL', 'WFI03_FULL', 'WFI04_FULL', 'WFI05_FULL', 'WFI06_FULL', 
                              'WFI07_FULL', 'WFI08_FULL', 'WFI09_FULL', 'WFI10_FULL', 'WFI11_FULL', 'WFI12_FULL', 
                              'WFI13_FULL', 'WFI14_FULL', 'WFI15_FULL', 'WFI16_FULL', 'WFI17_FULL', 'WFI18_FULL',
-                             'BORESIGHT', 'CGI_CEN', 'WFI_CEN','WFI_TILE']
+                             'BORESIGHT', 'CGI_CEN']
             V2Ref = 0.0
             V3Ref = 0.0
         else:
