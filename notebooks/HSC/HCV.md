@@ -1,0 +1,2 @@
+# Hubble Catalog of Variables (HCV) Queries
+The [Hubble Catalog of Variables](https://archive.stsci.edu/hlsp/hcv) is the first full, homogeneous, catalog of variable sources found in the Hubble Source Catalog (HSC). The HCV contains 84,428 variable stars, out of the 3.7 million searched for variability.
