@@ -6,4 +6,4 @@ These notebooks dive a little deeper into TESS [Full Frame Images](https://heasa
 |-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Overlay a Cutout of FFIs with DSS imaging | Create a cutout and light curve from an FFI, then overlay an image from DSS.                                                                                 |
 | Create a TESS FFI Cutout using Requests   | This method of requesting cutouts may be informative, but has largely been superceded by the "Generating Cubes and Cutouts" tutorial in the astrocut folder. |
-
+| Generating Cubes & Cutouts from TESS FFIs | Use [astrocut](https://astrocut.readthedocs.io/en/latest/) to cut cubes out of stacked TESS FFIs; this is a quick method to get TPF-like results from FFIs.  |
