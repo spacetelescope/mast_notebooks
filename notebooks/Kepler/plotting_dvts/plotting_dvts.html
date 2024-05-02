@@ -656,7 +656,7 @@ document.write(`
 <p>This notebook tutorial demonstrates how to load and plot the contents of a Kepler data validation timeseries (dvt) file.  We will plot the flux timeseries contained within the file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -684,7 +684,7 @@ document.write(`
 <p>We will read the data validation file of KIC 11446443 (also known as TrES-2, which has at least one planet, TrES-2 b) using the MAST URL location.  So that we can get started with understanding the file contents without reviewing how to automatically search for and retrieve Kepler files, we won’t show how to search and retrieve Kepler DVT files in this tutorial.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
 <span class="n">dvt_file</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/kepler/dv_files/0114/011446443/kplr011446443-20160128150956_dvt.fits&quot;</span>
 </pre></div>
 </div>
@@ -696,7 +696,16 @@ document.write(`
 <p>The DVT FITS file consits of a primary HDU with metadata stored in the header, and one FITS extension HDU per TCE found in the light curve of the specified KIC ID.  These extensions contain the detrended flux time series phased to the orbital period of the signal, stored as a binary FITS table.  The last extension HDU always contains some additional statistics about the search, also stored in a binary FITS table.  Let’s examine the structure of the FITS file using the astropy.fits <code class="docutils literal notranslate"><span class="pre">info</span></code> function, which shows the FITS file format in more detail.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/c56907f3f143ecacc3cd62997839d56d/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      56   ()      
+  1  TCE_1         1 BinTableHDU    106   71427R x 10C   [D, E, J, E, E, E, E, E, E, E]   
+  2  Statistics    1 BinTableHDU    221   71427R x 50C   [D, E, J, E, E, E, E, J, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E]   
 </pre></div>
 </div>
 </div>
@@ -704,7 +713,23 @@ document.write(`
 <p>In this case, KIC 011446443 has a single TCE identified, and the “statistics” extension in the last HDU, as expected.  Let’s examine the TCE extension in more detail using the astropy.fits <code class="docutils literal notranslate"><span class="pre">getdata</span></code> function and see what columns are available.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
+    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2454833&#39;; disp = &#39;D14.7&#39;
+    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E13.6&#39;
+    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
+    name = &#39;PHASE&#39;; format = &#39;E&#39;; unit = &#39;days&#39;; disp = &#39;E14.7&#39;
+    name = &#39;LC_INIT&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = &#39;LC_INIT_ERR&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = &#39;LC_WHITE&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = &#39;LC_DETREND&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = &#39;MODEL_INIT&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = &#39;MODEL_WHITE&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+)
 </pre></div>
 </div>
 </div>
@@ -716,7 +741,7 @@ document.write(`
 <p>Let’s open the FITS file and extract some metadata from the headers, and also store some of the columns from the TCE signal for use later when we plot the results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
     
     <span class="c1"># Extract stellar parameters from the primary header.  We&#39;ll get the effective temperature, surface gravity,</span>
     <span class="c1"># and Kepler magnitude.</span>
@@ -745,7 +770,7 @@ document.write(`
 <p>Let’s make a plot of the detrended fluxes and model fluxes vs. orbital phase.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First sort the phase and flux arrays by phase so we can draw the connecting lines between points.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First sort the phase and flux arrays by phase so we can draw the connecting lines between points.</span>
 <span class="n">sort_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">phases</span><span class="p">)</span>
 
 <span class="c1"># Start figure and axis.</span>
@@ -774,6 +799,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/8b979e61bf7711c4a320b4079a1a5b69e59a812dafcf302cf27cbad273b585b8.png" src="../../../_images/8b979e61bf7711c4a320b4079a1a5b69e59a812dafcf302cf27cbad273b585b8.png" />
+</div>
 </div>
 </section>
 <section id="examining-the-statistics-extension">
@@ -781,7 +809,63 @@ document.write(`
 <p>The statistics extension HDU contains the Single Event Statistics (“SES”) correlation time series and the SES normalization time series for each of the pipeline’s search durations.  For this target, since there is only one TCE, the statistics extension is in HDU extension #2. For more information, see <a class="reference external" href="http://adsabs.harvard.edu/abs/2012ApJS..199...24T">Tenebaum et al. 2012, ApJS, 199, 24</a> and <a class="reference external" href="http://adsabs.harvard.edu/abs/2018PASP..130f4502T">Twicken et al. 2018, PASP, 130, 6</a> for a description of the DV statistics. These statistics are used to calculate the Combined Differential Photometric Precision (“CDPP”) time series (<a class="reference external" href="http://adsabs.harvard.edu/abs/2011ApJS..197....6G">Gilliland et al. 2011, ApJS, 197, 6</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
+    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2454833&#39;; disp = &#39;D14.7&#39;
+    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
+    name = &#39;PDCSAP_FLUX&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;PDCSAP_FLUX_ERR&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
+    name = &#39;RESIDUAL_LC&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = &#39;DEWEIGHTS&#39;; format = &#39;E&#39;; unit = &#39;proportion&#39;; disp = &#39;E14.7&#39;
+    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B24.24&#39;
+    name = &#39;SES_CORR_1_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_2_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_2_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_3_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_3_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_4_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_5_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_6_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_7_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_9_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_10_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_12_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_12_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_CORR_15_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_1_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_2_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_2_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_3_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_3_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_4_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_5_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_6_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_7_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_9_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_10_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_12_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_12_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;SES_NORM_15_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_1_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_2_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_2_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_3_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_3_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_4_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_5_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_6_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_7_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_9_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_10_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_12_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_12_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = &#39;CDPP_15_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+)
 </pre></div>
 </div>
 </div>
