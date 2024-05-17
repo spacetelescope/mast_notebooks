@@ -244,7 +244,7 @@ def getVertices(apertureSiaf):
         xVertices = apertureSiaf.V2Ref       
         yVertices = apertureSiaf.V3Ref
     if (apertureSiaf.observatory == 'HST' and apertureSiaf.AperShape == 'PICK'):
-        print('Unsupported shape ',apertureSiaf.AperShape)
+        print('Unsupported shape ', apertureSiaf.AperShape)
         xVertices = None       
         yVertices = None
             
@@ -258,9 +258,6 @@ def computeStcsFootprint(apertureSiaf, skyRa, skyDec):
     elif apertureSiaf.AperShape == 'CIRC':
         radius = apertureSiaf.maj/3600.0
         apertureSregion = 'CIRCLE ICRS {} {} {} '.format(skyRa, skyDec, radius)
-    #elif apertureSiaf.AperShape == 'PICK':
-        #radius = apertureSiaf.maj/3600.0
-        #apertureSregion = 'POLYGON ICRS {} {} {} '.format(skyRa, skyDec, radius)
     else:
         print('Unsupported shape {}').format(apertureSiaf.AperShape)
 
