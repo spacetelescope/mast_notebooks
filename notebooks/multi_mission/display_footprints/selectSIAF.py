@@ -2,12 +2,15 @@
 # ASB-25623 Notebook to display Telescope/Instrument footprints on sky viewer
 #
 # ASB-25623     Brian McLean    Initial prototype v0.1 2024-02-29
+# ASB-27005     Brian McLean    Add DS9 region output  2024-05-15
 ###############################################################
 # Imports
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pysiaf
+from astropy.coordinates import SkyCoord
+from regions import CircleSkyRegion, PolygonSkyRegion
 ###############################################################
 # Take user input to create list of aperture siaf info and v2,v3 reference points
 
@@ -262,4 +265,19 @@ def computeStcsFootprint(apertureSiaf, skyRa, skyDec):
         print('Unsupported shape {}').format(apertureSiaf.AperShape)
 
     return apertureSregion
+###############################################################
+# Take the sky coordinates of the aperture vertices and convert to an SkyCoord region object
+
+def computeRegionFootprint(apertureSiaf, skyRa, skyDec):
+    if (apertureSiaf.AperShape == 'QUAD' or apertureSiaf.AperShape == 'RECT'):
+        vertices = SkyCoord([skyRa[0], skyRa[1],skyRa[2], skyRa[3]],[skyDec[0], skyDec[1], skyDec[2], skyDec[3]], unit='deg')
+        region_sky = PolygonSkyRegion(vertices=vertices)
+    elif apertureSiaf.AperShape == 'CIRC':
+        radius = apertureSiaf.maj/3600.0
+        center_sky = SkyCoord(skyRa, skyDec, unit='deg')
+        region_sky = CircleSkyRegion(center=center_sky, radius=radius)
+    else:
+        print('Unsupported shape {}').format(apertureSiaf.AperShape)
+
+    return region_sky
 ###############################################################
