@@ -35,8 +35,8 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -705,38 +705,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/ec0e845560e8e75754a996e0a58d2177/contents
-No.    Name      Ver    Type      Cards   Dimensions   Format
-  0  PRIMARY       1 PrimaryHDU      44   ()      
-  1  PIXELS        1 BinTableHDU    248   20076R x 11C   [D, E, J, 121J, 121E, 121E, 121E, 121E, J, E, E]   
-  2  APERTURE      1 ImageHDU        49   (11, 11)   int32   
-  3  TARGET COSMIC RAY    1 BinTableHDU     27   0R x 4C   [J, I, I, E]   
-</pre></div>
-</div>
-</div>
 </div>
 <p>Let’s examine the binary table in the first FITS extension, since that contains the arrays of timestamps and fluxes for each cadence.  We will use the astropy.fits <code class="docutils literal notranslate"><span class="pre">getdata</span></code> function to access the table from the first extension HDU, and then show the columns of the table.  We can see included in the table are columns for the timestamps in TESS BJD format (<strong>TIME</strong>), raw counts (<strong>RAW_CNTS</strong>), and calibrated fluxes (<strong>FLUX</strong>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
-    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2457000, days&#39;; disp = &#39;D14.7&#39;
-    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
-    name = &#39;RAW_CNTS&#39;; format = &#39;121J&#39;; unit = &#39;count&#39;; null = -1; disp = &#39;I8&#39;; dim = &#39;(11,11)&#39;
-    name = &#39;FLUX&#39;; format = &#39;121E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(11,11)&#39;
-    name = &#39;FLUX_ERR&#39;; format = &#39;121E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(11,11)&#39;
-    name = &#39;FLUX_BKG&#39;; format = &#39;121E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(11,11)&#39;
-    name = &#39;FLUX_BKG_ERR&#39;; format = &#39;121E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;; dim = &#39;(11,11)&#39;
-    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B16.16&#39;
-    name = &#39;POS_CORR1&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
-    name = &#39;POS_CORR2&#39;; format = &#39;E&#39;; unit = &#39;pixel&#39;; disp = &#39;E14.7&#39;
-)
 </pre></div>
 </div>
 </div>
@@ -764,22 +737,11 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;numpy.ndarray&#39;&gt;
-(20076, 11, 11)
-</pre></div>
-</div>
-</div>
 </div>
 <p>So these data are stored as a numpy array.  The first dimension is the number of cadences, followed by the size of the readout.  Thus, accessing <code class="docutils literal notranslate"><span class="pre">calibrated_fluxes[4,:,:]</span></code> should return to us the 11x11 grid of pixels from the <strong>fifth</strong> cadence (remember Python is zero-indexed, so the first cadence is stored in the zeroth index, the second in the first index, etc.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calibrated_fluxes</span><span class="p">[</span><span class="mi">4</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(11, 11)
 </pre></div>
 </div>
 </div>
@@ -804,9 +766,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/736296056ef647f4e77056fdb77a3d6154a867c573244de50603cd5ee51bf396.png" src="../../../_images/736296056ef647f4e77056fdb77a3d6154a867c573244de50603cd5ee51bf396.png" />
 </div>
 </div>
 </section>
@@ -839,9 +798,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/44a19a4d6def55e0f76d78b310bfa3d3b924848d926d909a5fdd5a9782bb28dc.png" src="../../../_images/44a19a4d6def55e0f76d78b310bfa3d3b924848d926d909a5fdd5a9782bb28dc.png" />
-</div>
 </div>
 </section>
 <section id="understanding-the-aperture-pixel-values">
@@ -852,11 +808,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Break down a pixel value of 267 (yellow pixels displayed above) into its constituent bits.</span>
 <span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="mi">267</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100001011
 </pre></div>
 </div>
 </div>
@@ -909,9 +860,6 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/c3655b780c94fa6c7de4cd6606ee24d7248e1dea46d8905dad11bfbabe21fc8d.png" src="../../../_images/c3655b780c94fa6c7de4cd6606ee24d7248e1dea46d8905dad11bfbabe21fc8d.png" />
 </div>
 </div>
 </section>
