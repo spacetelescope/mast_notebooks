@@ -80,7 +80,7 @@ def gsss_stcsSearch(stcs, catalog='GSC30', format='votable'):
     if format not in ('votable', 'csv'):
         raise ValueError('format must be one of votable, csv')
 
-   # set up request with parameters
+    # set up request with parameters
     params = dict(cat=catalog, stcs=stcs, format=format)
     r = requests.get(serviceurl, params=params)
     # raise exception on error
@@ -106,7 +106,7 @@ def gsss_idSearch(catID, catalog='GSC30', format='votable'):
     if format not in ('votable', 'csv'):
         raise ValueError('format must be one of votable, csv')
 
-   # set up request with parameters
+    # set up request with parameters
     params = dict(id=catID, cat=catalog,  format=format)
     r = requests.get(serviceurl, params=params)
     # raise exception on error
@@ -128,7 +128,7 @@ def gsss_stcsSearchUrl(stcs, catalog='GSC30', format='votable'):
         raise ValueError(
             'catalog must be one of GSC11, GSC243, GSC30, 2MASS, GAIADR3')
 
-   # build simple parameterized request url
+    # build simple parameterized request url
     stcs = stcs.rstrip()
     stcs = stcs.replace(' ', '+')
     url = serviceurl + '?CAT=' + catalog + '&FORMAT=' + format + '&STCS=' + stcs

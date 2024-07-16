@@ -6,7 +6,6 @@
 ###############################################################
 # Imports
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pysiaf
 from astropy.coordinates import SkyCoord
