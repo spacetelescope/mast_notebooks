@@ -675,7 +675,7 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
 <span class="kn">from</span> <span class="nn">astropy.wcs</span> <span class="kn">import</span> <span class="n">WCS</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -702,7 +702,7 @@ document.write(`
 <p>We will read the calibrated full frame image from Campaign 1 using the MAST URL location.  So that we can get started with understanding the file contents without reviewing how to automatically search for and retrieve K2 files, we won’t show how to search and retrieve K2 FFIs in this tutorial.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
 <span class="n">fits_file</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/k2/ffi/ktwo2015092174954-c04_ffi-cal.fits&quot;</span>
 </pre></div>
 </div>
@@ -714,98 +714,7 @@ document.write(`
 <p>K2 FFI FITS files contain a primary HDU with metadata stored in the header.  There are then 84 extensions (21 modules * 4 channels per module) that contain more metadata in the header and stores the full frame image for that module+channel.  Note that all 84 modules are included in the FFI FITS file, even if some of them do not have image data.  Let’s examine the structure of the FITS file using the astropy.fits <code class="docutils literal notranslate"><span class="pre">info</span></code> function, which shows the FITS file format in more detail. Note this file is quite large and may take a few moments to dowload.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/7133df9c8b3174c962d802cbd0cc912a/contents
-No.    Name      Ver    Type      Cards   Dimensions   Format
-  0  PRIMARY       1 PrimaryHDU      60   ()      
-  1  MOD.OUT 2.1    1 ImageHDU       101   (1132, 1070)   float32   
-  2  MOD.OUT 2.2    1 ImageHDU       101   (1132, 1070)   float32   
-  3  MOD.OUT 2.3    1 ImageHDU       101   (1132, 1070)   float32   
-  4  MOD.OUT 2.4    1 ImageHDU       101   (1132, 1070)   float32   
-  5  MOD.OUT 3.1    1 ImageHDU        68   (1132, 1070)   float32   
-  6  MOD.OUT 3.2    1 ImageHDU        68   (1132, 1070)   float32   
-  7  MOD.OUT 3.3    1 ImageHDU        68   (1132, 1070)   float32   
-  8  MOD.OUT 3.4    1 ImageHDU        68   (1132, 1070)   float32   
-  9  MOD.OUT 4.1    1 ImageHDU       101   (1132, 1070)   float32   
- 10  MOD.OUT 4.2    1 ImageHDU       101   (1132, 1070)   float32   
- 11  MOD.OUT 4.3    1 ImageHDU       101   (1132, 1070)   float32   
- 12  MOD.OUT 4.4    1 ImageHDU       101   (1132, 1070)   float32   
- 13  MOD.OUT 6.1    1 ImageHDU       101   (1132, 1070)   float32   
- 14  MOD.OUT 6.2    1 ImageHDU       101   (1132, 1070)   float32   
- 15  MOD.OUT 6.3    1 ImageHDU       101   (1132, 1070)   float32   
- 16  MOD.OUT 6.4    1 ImageHDU       101   (1132, 1070)   float32   
- 17  MOD.OUT 7.1    1 ImageHDU        68   (1132, 1070)   float32   
- 18  MOD.OUT 7.2    1 ImageHDU        68   (1132, 1070)   float32   
- 19  MOD.OUT 7.3    1 ImageHDU        68   (1132, 1070)   float32   
- 20  MOD.OUT 7.4    1 ImageHDU        68   (1132, 1070)   float32   
- 21  MOD.OUT 8.1    1 ImageHDU       101   (1132, 1070)   float32   
- 22  MOD.OUT 8.2    1 ImageHDU       101   (1132, 1070)   float32   
- 23  MOD.OUT 8.3    1 ImageHDU       101   (1132, 1070)   float32   
- 24  MOD.OUT 8.4    1 ImageHDU       101   (1132, 1070)   float32   
- 25  MOD.OUT 9.1    1 ImageHDU       101   (1132, 1070)   float32   
- 26  MOD.OUT 9.2    1 ImageHDU       101   (1132, 1070)   float32   
- 27  MOD.OUT 9.3    1 ImageHDU       101   (1132, 1070)   float32   
- 28  MOD.OUT 9.4    1 ImageHDU       101   (1132, 1070)   float32   
- 29  MOD.OUT 10.1    1 ImageHDU       101   (1132, 1070)   float32   
- 30  MOD.OUT 10.2    1 ImageHDU       101   (1132, 1070)   float32   
- 31  MOD.OUT 10.3    1 ImageHDU       101   (1132, 1070)   float32   
- 32  MOD.OUT 10.4    1 ImageHDU       101   (1132, 1070)   float32   
- 33  MOD.OUT 11.1    1 ImageHDU       101   (1132, 1070)   float32   
- 34  MOD.OUT 11.2    1 ImageHDU       101   (1132, 1070)   float32   
- 35  MOD.OUT 11.3    1 ImageHDU       101   (1132, 1070)   float32   
- 36  MOD.OUT 11.4    1 ImageHDU       101   (1132, 1070)   float32   
- 37  MOD.OUT 12.1    1 ImageHDU       101   (1132, 1070)   float32   
- 38  MOD.OUT 12.2    1 ImageHDU       101   (1132, 1070)   float32   
- 39  MOD.OUT 12.3    1 ImageHDU       101   (1132, 1070)   float32   
- 40  MOD.OUT 12.4    1 ImageHDU       101   (1132, 1070)   float32   
- 41  MOD.OUT 13.1    1 ImageHDU       101   (1132, 1070)   float32   
- 42  MOD.OUT 13.2    1 ImageHDU       101   (1132, 1070)   float32   
- 43  MOD.OUT 13.3    1 ImageHDU       101   (1132, 1070)   float32   
- 44  MOD.OUT 13.4    1 ImageHDU       101   (1132, 1070)   float32   
- 45  MOD.OUT 14.1    1 ImageHDU       101   (1132, 1070)   float32   
- 46  MOD.OUT 14.2    1 ImageHDU       101   (1132, 1070)   float32   
- 47  MOD.OUT 14.3    1 ImageHDU       101   (1132, 1070)   float32   
- 48  MOD.OUT 14.4    1 ImageHDU       101   (1132, 1070)   float32   
- 49  MOD.OUT 15.1    1 ImageHDU       101   (1132, 1070)   float32   
- 50  MOD.OUT 15.2    1 ImageHDU       101   (1132, 1070)   float32   
- 51  MOD.OUT 15.3    1 ImageHDU       101   (1132, 1070)   float32   
- 52  MOD.OUT 15.4    1 ImageHDU       101   (1132, 1070)   float32   
- 53  MOD.OUT 16.1    1 ImageHDU       101   (1132, 1070)   float32   
- 54  MOD.OUT 16.2    1 ImageHDU       101   (1132, 1070)   float32   
- 55  MOD.OUT 16.3    1 ImageHDU       101   (1132, 1070)   float32   
- 56  MOD.OUT 16.4    1 ImageHDU       101   (1132, 1070)   float32   
- 57  MOD.OUT 17.1    1 ImageHDU       101   (1132, 1070)   float32   
- 58  MOD.OUT 17.2    1 ImageHDU       101   (1132, 1070)   float32   
- 59  MOD.OUT 17.3    1 ImageHDU       101   (1132, 1070)   float32   
- 60  MOD.OUT 17.4    1 ImageHDU       101   (1132, 1070)   float32   
- 61  MOD.OUT 18.1    1 ImageHDU       101   (1132, 1070)   float32   
- 62  MOD.OUT 18.2    1 ImageHDU       101   (1132, 1070)   float32   
- 63  MOD.OUT 18.3    1 ImageHDU       101   (1132, 1070)   float32   
- 64  MOD.OUT 18.4    1 ImageHDU       101   (1132, 1070)   float32   
- 65  MOD.OUT 19.1    1 ImageHDU       101   (1132, 1070)   float32   
- 66  MOD.OUT 19.2    1 ImageHDU       101   (1132, 1070)   float32   
- 67  MOD.OUT 19.3    1 ImageHDU       101   (1132, 1070)   float32   
- 68  MOD.OUT 19.4    1 ImageHDU       101   (1132, 1070)   float32   
- 69  MOD.OUT 20.1    1 ImageHDU       101   (1132, 1070)   float32   
- 70  MOD.OUT 20.2    1 ImageHDU       101   (1132, 1070)   float32   
- 71  MOD.OUT 20.3    1 ImageHDU       101   (1132, 1070)   float32   
- 72  MOD.OUT 20.4    1 ImageHDU       101   (1132, 1070)   float32   
- 73  MOD.OUT 22.1    1 ImageHDU       101   (1132, 1070)   float32   
- 74  MOD.OUT 22.2    1 ImageHDU       101   (1132, 1070)   float32   
- 75  MOD.OUT 22.3    1 ImageHDU       101   (1132, 1070)   float32   
- 76  MOD.OUT 22.4    1 ImageHDU       101   (1132, 1070)   float32   
- 77  MOD.OUT 23.1    1 ImageHDU       101   (1132, 1070)   float32   
- 78  MOD.OUT 23.2    1 ImageHDU       101   (1132, 1070)   float32   
- 79  MOD.OUT 23.3    1 ImageHDU       101   (1132, 1070)   float32   
- 80  MOD.OUT 23.4    1 ImageHDU       101   (1132, 1070)   float32   
- 81  MOD.OUT 24.1    1 ImageHDU       101   (1132, 1070)   float32   
- 82  MOD.OUT 24.2    1 ImageHDU       101   (1132, 1070)   float32   
- 83  MOD.OUT 24.3    1 ImageHDU       101   (1132, 1070)   float32   
- 84  MOD.OUT 24.4    1 ImageHDU       101   (1132, 1070)   float32   
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -819,23 +728,17 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <p>The following command opens the file, extracts the WCS and Image data and then closes the file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fits_file</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
     <span class="n">wcs_info</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
     <span class="n">cal_image</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
     <span class="n">header</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: FITSFixedWarning: &#39;datfix&#39; made the change &#39;Set MJD-OBS to 57114.722560 from DATE-OBS.
-Set MJD-END to 57114.742994 from DATE-END&#39;. [astropy.wcs.wcs]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the header to determine the mid-point of the exposure time for this FFI.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the header to determine the mid-point of the exposure time for this FFI.</span>
 <span class="n">mid_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTOP&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTART&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -848,7 +751,7 @@ Set MJD-END to 57114.742994 from DATE-END&#39;. [astropy.wcs.wcs]
 We also imprint the WCS on top of the image.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">wcs_info</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cal_image</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cal_image</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cal_image</span><span class="p">,</span> <span class="mi">98</span><span class="p">),</span><span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span>
@@ -857,12 +760,6 @@ We also imprint the WCS on top of the image.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;K2 Calibrated FFI for Module 2, Channel 1, Timestamp </span><span class="si">%f</span><span class="s2"> BKJD&quot;</span> <span class="o">%</span> <span class="n">mid_time</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;K2 Calibrated FFI for Module 2, Channel 1, Timestamp 2282.233908 BKJD&#39;)
-</pre></div>
-</div>
-<img alt="../../../_images/4c51bbe9924ace1901fc5e21595acd6f0a18a1c4972228301ecca32832ea59de.png" src="../../../_images/4c51bbe9924ace1901fc5e21595acd6f0a18a1c4972228301ecca32832ea59de.png" />
 </div>
 </div>
 </section>
