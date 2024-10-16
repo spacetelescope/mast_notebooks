@@ -14,4 +14,5 @@ For full details about missions, including links to relevant documentation, plea
 | **K2**         | The extended Kepler mission, following its second reaction wheel failure in 2013.                                                                       |
 | **Kepler**     | The original Kepler mission, which searched for exoplanets from 2009-2013.                                                                              |
 | **PanSTARRS**  | Panoramic Survey Telescope and Rapid Response System, a wide-field imaging survey based in Hawaii.                                                      |
+| **SDSS**       | Sloan Digital Sky Survey. This folder has examples of how to access and download SDSS data hosted at MAST.                                                           |
 | **TESS**       | Transiting Exoplanet Survey Satellite, designed to hunt planets in orbit around nearby stars.                                                           |
