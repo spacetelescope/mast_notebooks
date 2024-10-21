@@ -699,10 +699,10 @@ document.write(`
 <p>We’ll use <a class="reference external" href="https://docs.lightkurve.org/">Lightkurve</a> for downloading and handling <em>Kepler</em> data throughout this tutorial. We’ll also use <a class="reference external" href="https://numpy.org/">NumPy</a> to handle arrays for aperture masks, and <a class="reference external" href="https://matplotlib.org">Matplotlib</a> for visualizing data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightkurve</span> <span class="k">as</span> <span class="nn">lk</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -721,18 +721,21 @@ document.write(`
 <p>KIC 2435971 is a star of <a class="reference external" href="https://keplerscience.arc.nasa.gov/the-kepler-space-telescope.html#flux-calibration"><em>Kepler</em> magnitude</a> Kp = 14.7, with a massive signal. It’s not impossible that this signal comes from the star, but KIC 2435971 is in the field of open cluster NGC 6791, which means it’s subject to a  higher level of crowding than much of the <em>Kepler</em> field. This could be a case of contamination; to be absolutely certain, we’re going to use this star for our signal verification exercise. Let’s begin by downloading a light curve; then we can produce a Lomb-Scargle Periodogram to search for repeating signals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lcs</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span>  <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcs</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span>  <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
 <span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">()</span>
 <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b46ad1934813ed28221c36c406642c02bf77148a7b6bf52ce5cb182d56fb4d73.png" src="../../../_images/b46ad1934813ed28221c36c406642c02bf77148a7b6bf52ce5cb182d56fb4d73.png" />
 </div>
 </div>
 <p>These high-amplitude, narrow peaks in the periodogram suggests a compact binary star.</p>
@@ -742,16 +745,19 @@ document.write(`
 <p>Often, the identification of a much brighter target in the frame is enough to confirm contamination. Let’s begin by looking at the target pixel file (TPF) we’re going to be working with:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 2435971&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/a0b8600a496740efb751e9d1ac1b52e57b0cc4dc5b0ca5da1dfb5d1444861d48.png" src="../../../_images/a0b8600a496740efb751e9d1ac1b52e57b0cc4dc5b0ca5da1dfb5d1444861d48.png" />
 </div>
 </div>
 <p>As you can see, there’s another star very close by, at the top of the frame. This star is brighter than our target in the center, and could conceivably produce a high-amplitude periodic signal. But it’s not a huge difference in flux, so we should double-check before we go ahead and claim that this is our contaminant.</p>
@@ -759,26 +765,35 @@ document.write(`
 <p>Let’s have a look at what the function does at its most basic:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/aa0d68917676fc05986f82e1a40b1dba4b2d6a55467c77f3e0a90453e3db34e8.png" src="../../../_images/aa0d68917676fc05986f82e1a40b1dba4b2d6a55467c77f3e0a90453e3db34e8.png" />
 </div>
 </div>
 <p>These are the light curves in every pixel of this TPF, for Quarter 9. We can’t tell much just by looking at this, but we can give <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code> a corrector function to flatten these light curves. To create the corrector function, we use a Python construction called a <a class="reference external" href="https://docs.python.org/3/howto/functional.html#small-functions-and-the-lambda-expression">lambda function</a>. This kind of function is known as an “anonymous” function, as it has no name. Lambda functions are just one line of code, so they’re very useful for when we want a function to take another function as an argument. Here, we take a variable <code class="docutils literal notranslate"><span class="pre">x</span></code> and, assuming it’s a <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> object, we can apply methods like <code class="docutils literal notranslate"><span class="pre">.remove_outliers()</span></code> as normal.</p>
 <p>We can also overlay the TPF colors to remind us of the stars we’re looking at:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/29b8a5da8077c1bd4b15466222886fced607945c686766fe6d14722a6c2cdd96.png" src="../../../_images/29b8a5da8077c1bd4b15466222886fced607945c686766fe6d14722a6c2cdd96.png" />
 </div>
 </div>
 <p>Looking at it like this, we can start to see some evidence of the signal from our periodogram above, but not enough to make a call. Let’s go back to <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code>: we can tell the function to compute a periodogram for each pixel, which should make it clear where the signal is strongest. This time, we’re also going to overlay the pipeline aperture, which is the selection of pixels that went into producing the light curve for this quarter of data. The pipeline aperture is shown by red boxes around all included pixels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">periodogram</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">periodogram</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_flux</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/7fa1ee955f3b90ae4830f267d96cbdf9ee01396ec2b63bd6fcc51a280a5e8a9e.png" src="../../../_images/7fa1ee955f3b90ae4830f267d96cbdf9ee01396ec2b63bd6fcc51a280a5e8a9e.png" />
 </div>
 </div>
 <p>We can see the two high-amplitude peaks in most of the pixels in this TPF. The key feature is the ratio of that signal’s amplitude to the noise level: pixels with higher signal-to-noise ratios contain more flux from the source of the signal. This is often something we can check by eye; here, we can confirm that the signal is coming from our target star, KIC 2435971. The bright star at the top of the frame, in the yellow pixel, shows a significantly higher noise level than the green pixels below it, and the placement of the pipeline aperture reflects this.</p>
@@ -789,19 +804,25 @@ document.write(`
 <p>For this exercise, we’re going to switch to a different star. KIC 7024511 was flagged as a <em>Kepler</em> Object of Interest (KOI) in Quarter 6 of the mission, and given the designation KOI 311. This means that it’s a potential exoplanet host, based on transits detected. Let’s have a look at one quarter of data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 <span class="n">lc_koi</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/39f15b169695ed259d41c37c0292d0c6f40d4110edf24f935687ec3d766596a3.png" src="../../../_images/39f15b169695ed259d41c37c0292d0c6f40d4110edf24f935687ec3d766596a3.png" />
 </div>
 </div>
 <p>It’s hard to pick out the transits by eye, but you should be able to see one point lower than the others around 1030 BKJD (Barycentric <em>Kepler</em> Julian Date). This dip has a depth of less than 0.01%, which is consistent with the signal coming from an exoplanet. Unfortunately, it’s also consistent with the diulted signal of a nearby eclipsing binary — dilution here referring to the diffuse flux towards the edges of a star’s spread on the detector, where the amplitude of any variable signal can decrease. We can look at the TPF using <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code> to confirm whether or not this is the case:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tpf_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf_koi</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 <span class="n">tpf_koi</span><span class="o">.</span><span class="n">plot_pixels</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">,</span> <span class="n">corrector_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">());</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b3efd664e7cbbd18d431dad09a35c0737bf495aed5063fd2f8df089ccc43d063.png" src="../../../_images/b3efd664e7cbbd18d431dad09a35c0737bf495aed5063fd2f8df089ccc43d063.png" />
 </div>
 </div>
 <p>In this case, we can clearly see an eclipse to the left of our target. The eclipsing binary is outside of the pipeline aperture, but the signal is strong enough to have contaminated it. And sure enough, if we check on the <a class="reference external" href="https://exoplanetarchive.ipac.caltech.edu/cgi-bin/DisplayOverview/nph-DisplayOverview?objname=K00311.01&amp;type=KEPLER_CANDIDATE">NASA Exoplanet Archive</a>, KOI 311 was designated a false positive in the first data release it was included in.</p>
@@ -810,18 +831,30 @@ document.write(`
 <p>Making a rough guess from the size of the TPF above, we set a search radius of 20 arcseconds. And we’re only going to search Quarter 11, as otherwise the function will return an entry for every available quarter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024511&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">SearchResult containing 2 data products.
+
+<table id="table140108023549712">
+<thead><tr><th>#</th><th>mission</th><th>year</th><th>author</th><th>exptime</th><th>target_name</th><th>distance</th></tr></thead>
+<thead><tr><th></th><th></th><th></th><th></th><th>s</th><th></th><th>arcsec</th></tr></thead>
+<tr><td>0</td><td>Kepler Quarter 11</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr007024511</td><td>0.0</td></tr>
+<tr><td>1</td><td>Kepler Quarter 11</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr007024530</td><td>1.7</td></tr>
+</table></div></div>
 </div>
 <p>Sure enough, there’s a nearby target. The <strong>distance</strong> column in the search result tells us that this star is about 1.8 arcseconds away. Let’s have a look at it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lc_contam</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024530&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_contam</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 7024530&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 <span class="n">lc_contam</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/d49bc6c49bab8ab6029eef733ebfb8c161496f2260f2f9b057ee3a5db3f5d100.png" src="../../../_images/d49bc6c49bab8ab6029eef733ebfb8c161496f2260f2f9b057ee3a5db3f5d100.png" />
 </div>
 </div>
 <p>That’s our eclipse, and it seems like there’s a rotational period here too. We can also confirm this by looking in the <a class="reference external" href="http://keplerebs.villanova.edu/overview/?k=7024530"><em>Kepler</em> Eclipsing Binary Catalog</a>, or on <a class="reference external" href="http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=KIC+7024530">Simbad</a>. Simbad shows an image of the contaminant, where we can see KOI 311, fainter, just beside it.</p>
@@ -837,17 +870,26 @@ document.write(`
 <p>Let’s go back to KIC 2435971. We’re going to use the TPF we downloaded above for difference imaging; as it’s a pixel-level method, we can only use one quarter or campaign of <em>Kepler</em> data at a time. But for difference imaging to work well, we need as much data as possible to extract the period for differencing, so we’ll use the stitched light curve we prepared earlier. We’ve already downloaded the data above, so let’s remind ourselves of what the periodogram looks like:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b46ad1934813ed28221c36c406642c02bf77148a7b6bf52ce5cb182d56fb4d73.png" src="../../../_images/b46ad1934813ed28221c36c406642c02bf77148a7b6bf52ce5cb182d56fb4d73.png" />
 </div>
 </div>
 <p>From this, we can extract the period of the highest amplitude signal; you will have seen the <code class="docutils literal notranslate"><span class="pre">period_at_max_power</span></code> argument in one of the periodogram tutorials.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">peak</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">frequency_at_max_power</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">peak</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">frequency_at_max_power</span>
 <span class="n">period</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">period_at_max_power</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frequency: </span><span class="si">{</span><span class="n">peak</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s1">Period: </span><span class="si">{</span><span class="n">period</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency: 7.358 1 / d
+Period: 0.136 d
 </pre></div>
 </div>
 </div>
@@ -859,19 +901,25 @@ document.write(`
 <p>Note that when we phase-fold the curve below, we use the <code class="docutils literal notranslate"><span class="pre">epoch_time</span></code> argument to shift the phase curve’s zero position. This helps us pick out the maxima and minima of the phase curve more clearly; however, it’s a matter of trial and error to choose a suitable epoch time for any given target. In many cases, it will suffice not to set the argument at all. An alternative to experimenting with the epoch time is appending the phased light curve to itself, which guarantees at least one clear maximum and one clear minimum. This is a better method for an automated difference imaging pipeline, but is more complicated to implement.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">folded</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folded</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">folded</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b350604f26e5208cffc3cc02740a5ec9f6371c610c6638ef2a5c318b1335eab9.png" src="../../../_images/b350604f26e5208cffc3cc02740a5ec9f6371c610c6638ef2a5c318b1335eab9.png" />
 </div>
 </div>
 <p>This looks promising, but there’s still a great deal of noise in the light curve. When we smooth the light curve by putting it into 0.001-day bins, we can see the sinusoidal trend more clearly:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">folded2</span> <span class="o">=</span> <span class="n">folded</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="n">time_bin_size</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folded2</span> <span class="o">=</span> <span class="n">folded</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="n">time_bin_size</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 <span class="n">folded2</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/043a0fc74b2908f9afb8dc71d3f727de792f0818fddce4f4e957ca0980fe7926.png" src="../../../_images/043a0fc74b2908f9afb8dc71d3f727de792f0818fddce4f4e957ca0980fe7926.png" />
 </div>
 </div>
 <p>We’re going to identify the maxima and minima using the binned phase curve. Once we have identified two ranges in phase space, we’ll collect the timestamps within those ranges from the original phase curve. Then we’ll compare those timestamps to our TPF data to pick out the corresponding flux frames for each range.</p>
@@ -879,7 +927,7 @@ document.write(`
 <p>This next part uses some Python tricks to help us quickly determine which timestamps to use in calculating our difference image. If you find the code below unfamiliar, it might be helpful to read up on <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.where.html">NumPy <code class="docutils literal notranslate"><span class="pre">where()</span></code></a> and <a class="reference external" href="https://www.pythonforbeginners.com/basics/list-comprehensions-in-python">list comprehension</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">full_phase_range</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_phase_range</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">folded2</span><span class="o">.</span><span class="n">phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
 <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">full_phase_range</span>
 <span class="n">min_phase</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">folded2</span><span class="o">.</span><span class="n">flux</span><span class="p">)]</span><span class="o">.</span><span class="n">value</span> 
 <span class="n">max_phase</span> <span class="o">=</span> <span class="n">folded2</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">folded2</span><span class="o">.</span><span class="n">flux</span><span class="p">)]</span><span class="o">.</span><span class="n">value</span>
@@ -891,10 +939,15 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: TimeDeltaMissingUnitWarning: Numerical value without unit or explicit format passed to TimeDelta, assuming days [astropy.time.core]
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">one_quarter_minima</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">min_timestamps</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">one_quarter_minima</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">min_timestamps</span><span class="p">]</span>
 <span class="n">one_quarter_maxima</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">max_timestamps</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -906,7 +959,7 @@ document.write(`
 <p>Now that we have identified the maximum and minimum phase timestamps to use, we can calculate our difference image! We’re also going to calculate an average of the whole quarter, and we can use Matplotlib to display them side by side for clear comparison. Note that we’re also flipping the images, so that they have the same orientation as the Lightkurve TPF plots.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">avg_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">avg_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">diff_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">one_quarter_maxima</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">one_quarter_minima</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -914,7 +967,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">avg_image</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Quarter 9 average&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">diff_image</span><span class="p">))</span>
@@ -922,6 +975,9 @@ document.write(`
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/1de9dd3b1975b5f405313e6fe66903edb53582c9dc86c267a91a280e2c4c7065.png" src="../../../_images/1de9dd3b1975b5f405313e6fe66903edb53582c9dc86c267a91a280e2c4c7065.png" />
 </div>
 </div>
 <p>Let’s take a moment to think about what these images tell us. In the average image, we can see our two stars, the target and the brighter star at the top of the frame. In the difference image, the pixel with the highest difference flux is one of the central pixels, indicating that the signal is coming from the target star, just as we saw when we looked at pixel-level periodograms with <code class="docutils literal notranslate"><span class="pre">plot_pixels()</span></code>.</p>
@@ -940,10 +996,194 @@ document.write(`
 <p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<style>
+    button {
+        border: 1px solid;
+        padding: 0.2em;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.8em;
+        margin: 0.2em;
+        cursor: pointer;
+    }
+
+    .citation-button-1 {background-color: #4CAF50;} /* Green */
+    .citation-button-2 {background-color: #008CBA;} /* Blue */
+</style>
+
+<script type="text/javascript">
+    function copyBibtex(package) {
+        var copyText = document.getElementById(package + "Text");
+        copyText.select();
+        document.execCommand("copy");
+        alert("BibTex has been copied to your clipboard")
+    }
+</script>
+</head>
+
+<body>
+    <textarea id="lightkurveText" style="position: absolute; left: -9999px; z-index: -9999;">
+@MISC{2018ascl.soft12013L,
+    author = {{Lightkurve Collaboration} and {Cardoso}, J.~V.~d.~M. and
+                {Hedges}, C. and {Gully-Santiago}, M. and {Saunders}, N. and
+                {Cody}, A.~M. and {Barclay}, T. and {Hall}, O. and
+                {Sagear}, S. and {Turtelboom}, E. and {Zhang}, J. and
+                {Tzanidakis}, A. and {Mighell}, K. and {Coughlin}, J. and
+                {Bell}, K. and {Berta-Thompson}, Z. and {Williams}, P. and
+                {Dotson}, J. and {Barentsen}, G.},
+    title = "{Lightkurve: Kepler and TESS time series analysis in Python}",
+    keywords = {Software, NASA},
+howpublished = {Astrophysics Source Code Library},
+        year = 2018,
+    month = dec,
+archivePrefix = "ascl",
+    eprint = {1812.013},
+    adsurl = {http://adsabs.harvard.edu/abs/2018ascl.soft12013L},
+}
+    </textarea>
+    <textarea id="astropyText" style="position: absolute; left: -9999px; z-index: -9999;">
+@ARTICLE{astropy:2022,
+       author = {{Astropy Collaboration} and {Price-Whelan}, Adrian M. and {Lim}, Pey
+       Lian and {Earl}, Nicholas and {Starkman}, Nathaniel and {Bradley}, Larry and
+       {Shupe}, David L. and {Patil}, Aarya A. and {Corrales}, Lia and {Brasseur}, C.~E.
+       and {N{\"o}the}, Maximilian and {Donath}, Axel and {Tollerud}, Erik and {Morris},
+       Brett M. and {Ginsburg}, Adam and {Vaher}, Eero and {Weaver}, Benjamin A. and
+       {Tocknell}, James and {Jamieson}, William and {van Kerkwijk}, Marten H. and
+       {Robitaille}, Thomas P. and {Merry}, Bruce and {Bachetti}, Matteo and
+       {G{\"u}nther}, H. Moritz and {Aldcroft}, Thomas L. and {Alvarado-Montes}, Jaime
+       A. and {Archibald}, Anne M. and {B{\'o}di}, Attila and {Bapat}, Shreyas and
+       {Barentsen}, Geert and {Baz{\'a}n}, Juanjo and {Biswas}, Manish and {Boquien},
+       M{\'e}d{\'e}ric and {Burke}, D.~J. and {Cara}, Daria and {Cara}, Mihai and
+       {Conroy}, Kyle E. and {Conseil}, Simon and {Craig}, Matthew W. and {Cross},
+       Robert M. and {Cruz}, Kelle L. and {D'Eugenio}, Francesco and {Dencheva}, Nadia
+       and {Devillepoix}, Hadrien A.~R. and {Dietrich}, J{\"o}rg P. and {Eigenbrot},
+       Arthur Davis and {Erben}, Thomas and {Ferreira}, Leonardo and {Foreman-Mackey},
+       Daniel and {Fox}, Ryan and {Freij}, Nabil and {Garg}, Suyog and {Geda}, Robel and
+       {Glattly}, Lauren and {Gondhalekar}, Yash and {Gordon}, Karl D. and {Grant},
+       David and {Greenfield}, Perry and {Groener}, Austen M. and {Guest}, Steve and
+       {Gurovich}, Sebastian and {Handberg}, Rasmus and {Hart}, Akeem and
+       {Hatfield-Dodds}, Zac and {Homeier}, Derek and {Hosseinzadeh}, Griffin and
+       {Jenness}, Tim and {Jones}, Craig K. and {Joseph}, Prajwel and {Kalmbach}, J.
+       Bryce and {Karamehmetoglu}, Emir and {Ka{\l}uszy{\'n}ski}, Miko{\l}aj and
+       {Kelley}, Michael S.~P. and {Kern}, Nicholas and {Kerzendorf}, Wolfgang E. and
+       {Koch}, Eric W. and {Kulumani}, Shankar and {Lee}, Antony and {Ly}, Chun and
+       {Ma}, Zhiyuan and {MacBride}, Conor and {Maljaars}, Jakob M. and {Muna}, Demitri
+       and {Murphy}, N.~A. and {Norman}, Henrik and {O'Steen}, Richard and {Oman}, Kyle
+       A. and {Pacifici}, Camilla and {Pascual}, Sergio and {Pascual-Granado}, J. and
+       {Patil}, Rohit R. and {Perren}, Gabriel I. and {Pickering}, Timothy E. and
+       {Rastogi}, Tanuj and {Roulston}, Benjamin R. and {Ryan}, Daniel F. and {Rykoff},
+       Eli S. and {Sabater}, Jose and {Sakurikar}, Parikshit and {Salgado}, Jes{\'u}s
+       and {Sanghi}, Aniket and {Saunders}, Nicholas and {Savchenko}, Volodymyr and
+       {Schwardt}, Ludwig and {Seifert-Eckert}, Michael and {Shih}, Albert Y. and
+       {Jain}, Anany Shrey and {Shukla}, Gyanendra and {Sick}, Jonathan and {Simpson},
+       Chris and {Singanamalla}, Sudheesh and {Singer}, Leo P. and {Singhal}, Jaladh and
+       {Sinha}, Manodeep and {Sip{\H{o}}cz}, Brigitta M. and {Spitler}, Lee R. and
+       {Stansby}, David and {Streicher}, Ole and {{\v{S}}umak}, Jani and {Swinbank},
+       John D. and {Taranu}, Dan S. and {Tewary}, Nikita and {Tremblay}, Grant R. and
+       {Val-Borro}, Miguel de and {Van Kooten}, Samuel J. and {Vasovi{\'c}}, Zlatan and
+       {Verma}, Shresth and {de Miranda Cardoso}, Jos{\'e} Vin{\'\i}cius and {Williams},
+       Peter K.~G. and {Wilson}, Tom J. and {Winkel}, Benjamin and {Wood-Vasey}, W.~M.
+       and {Xue}, Rui and {Yoachim}, Peter and {Zhang}, Chen and {Zonca}, Andrea and
+       {Astropy Project Contributors}}, title = "{The Astropy Project: Sustaining and
+       Growing a Community-oriented Open-source Project and the Latest Major Release
+       (v5.0) of the Core Package}",
+      journal = {\apj},
+     keywords = {Astronomy software, Open source software, Astronomy data analysis, 1855, 1866, 1858, Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = 2022,
+        month = aug,
+       volume = {935},
+       number = {2},
+          eid = {167},
+        pages = {167},
+          doi = {10.3847/1538-4357/ac7c74},
+archivePrefix = {arXiv},
+       eprint = {2206.14220},
+ primaryClass = {astro-ph.IM},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022ApJ...935..167A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+    </textarea>
+    <textarea id="astroqueryText" style="position: absolute; left: -9999px; z-index: -9999;">
+@ARTICLE{2019AJ....157...98G,
+   author = {{Ginsburg}, A. and {Sip{\H o}cz}, B.~M. and {Brasseur}, C.~E. and
+	{Cowperthwaite}, P.~S. and {Craig}, M.~W. and {Deil}, C. and
+	{Guillochon}, J. and {Guzman}, G. and {Liedtke}, S. and {Lian Lim}, P. and
+	{Lockhart}, K.~E. and {Mommert}, M. and {Morris}, B.~M. and
+	{Norman}, H. and {Parikh}, M. and {Persson}, M.~V. and {Robitaille}, T.~P. and
+	{Segovia}, J.-C. and {Singer}, L.~P. and {Tollerud}, E.~J. and
+	{de Val-Borro}, M. and {Valtchanov}, I. and {Woillez}, J. and
+	{The Astroquery collaboration} and {a subset of the astropy collaboration}
+	},
+    title = "{astroquery: An Astronomical Web-querying Package in Python}",
+  journal = {\aj},
+archivePrefix = "arXiv",
+   eprint = {1901.04520},
+ primaryClass = "astro-ph.IM",
+ keywords = {astronomical databases: miscellaneous, virtual observatory tools},
+     year = 2019,
+    month = mar,
+   volume = 157,
+      eid = {98},
+    pages = {98},
+      doi = {10.3847/1538-3881/aafc33},
+   adsurl = {https://adsabs.harvard.edu/abs/2019AJ....157...98G},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+    </textarea>
+    <textarea id="tesscutText" style="position: absolute; left: -9999px; z-index: -9999;">
+@MISC{2019ascl.soft05007B,
+        author = {{Brasseur}, C.~E. and {Phillip}, Carlita and {Fleming}, Scott W. and
+          {Mullally}, S.~E. and {White}, Richard L.},
+         title = "{Astrocut: Tools for creating cutouts of TESS images}",
+      keywords = {Software},
+          year = 2019,
+         month = may,
+           eid = {ascl:1905.007},
+         pages = {ascl:1905.007},
+ archivePrefix = {ascl},
+        eprint = {1905.007},
+        adsurl = {https://ui.adsabs.harvard.edu/abs/2019ascl.soft05007B},
+       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+ }
+    </textarea>
+
+    <p>
+        When using Lightkurve, we kindly request that you cite the following packages:
+        <ul>
+            <li>
+                <a href="https://docs.lightkurve.org">lightkurve</a>
+                <button onclick="copyBibtex('lightkurve')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+            </li>
+            <li>
+                <a href="https://astropy.org">astropy</a>
+                <button onclick="copyBibtex('astropy')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+            </li>
+            <li>
+                <a href="https://astroquery.readthedocs.io">astroquery</a>
+                <button onclick="copyBibtex('astroquery')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+                —  if you are using <i>search_lightcurve()</i> or <i>search_targetpixelfile()</i>.
+            </li>
+            <li>
+                <a href="https://mast.stsci.edu/tesscut/">tesscut</a>
+                <button onclick="copyBibtex('tesscut')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+                — if you are using <i>search_tesscut()</i>.
+            </li>
+        </ul>
+    </p>
+</body>
+</div></div>
 </div>
 <a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a>
 </section>
