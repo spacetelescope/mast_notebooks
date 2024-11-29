@@ -21,31 +21,78 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy-accessible-book:
+  build-accessible-nb:
     runs-on: ubuntu-latest
     steps:
+    
     # step 0: checkout the repo
     - name: checkout repo
       uses: actions/checkout@v4
+    
     # step 1: using the notebook name, find the directory
     - name: get notebook directory
       run: |
         # find the location of the notebook, THEN do a regular expression to get everything before the final "/"
         notebook_directory=$(find notebooks -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")
-        # set the nb_dir locatoin
-        echo "notebook_directory=$notebook_directory" >> "$GITHUB_ENV"
         
-        # notebook_directory=$(find notebooks -name ${{ inputs.filename }})
-        # echo "notebook_directory=$notebook_directory" >> "$GITHUB_ENV"
-        # # echo "notebook_directory=$(find notebooks -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")" >> "$GITHUB_ENV"
+        # generate the file paths of the nb and its requirement file
+        nb_path = $notebook_directory/${{ inputs.filename }}
+        reqs_path = $notebook_directory/requirements.txt
+        
+        # set the path values in the github environment
+        echo "nb_path=$nb_path" >> "$GITHUB_ENV"
+        echo "reqs_path=$reqs_path" >> "$GITHUB_ENV"
+   
+    # step 2: testing purposes only. print values calculated above
     - name: print nb directory
       run: |
-        echo nb_dir: $notebook_directory
-        #printf '%s\n' "$notebook_directory"
-        ## now save this so we can use it later
-        # echo "notebook_directory : $notebook_directory"
-        # test: print this value
-        # echo The directory is $notebook_directory
+        echo nb_path: $nb_path
+        echo reqs_path: $reqs_path
+
+    # step 3: create python env
+    - name: create Python environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: "pip"
+
+    # step 4: install packages into environment
+    - name: install packages
+      run: |
+        pip install -r ${{ reqs_path }}
+        pip install jupyter
+        pip install nbconvert-a11y
+
+    # step 5: run nbconvert to create a11y format
+    - name: run nbconvert
+      run: |
+        jupyter nbconvert --execute --to=a11y --output-dir=./_site ${{ nb_path }}
+
+    # step 6: setup pages
+    - name: setup pages
+      id: pages
+      uses: actions/configure-pages@v3
+
+    # step 7:
+    - name: upload artifact
+      uses: actions/upload-pages-artifact@v3
+
+  # now do the deploy step
+  deploy-accessible-notebook:
+    needs: build-accessible-nb
+    permissions:
+      pages: write
+      id-token: write
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to GitHub pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+    
+ 
     
     # # step 1: use directory to create full file paths
     # - name: get full file paths for nb and requirements
