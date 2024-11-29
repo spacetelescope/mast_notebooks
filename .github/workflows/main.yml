@@ -12,13 +12,22 @@ on:
         required: false
         type: string
 
+
 jobs:
   print-username:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Print the input name to STDOUT
-        run: echo The username is $username.
+      - name: Set the value
+        id: step_one
+        run: |
+          echo "action_state=yellow" >> "$GITHUB_ENV"
+      - name: Use the value
+        id: step_two
+        run: |
+          printf '%s\n' "$action_state" # This will output 'yellow'
+    # steps:
+    #   - name: Print the input name to STDOUT
+    #     run: echo The username is $username.
   
 
 # on:
