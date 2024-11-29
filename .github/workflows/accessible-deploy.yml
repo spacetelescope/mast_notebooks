@@ -28,10 +28,12 @@ jobs:
     # step 0: using the notebook name, find the directory
     - name: get notebook directory
       run: |
-        echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
-        printf '%s\n' "$SELECTED_COLOR"
-        ## find the location of the notebook, THEN do a regular expression to get everything before the final "/"
-        # echo "notebook_directory=$(find -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")" >> "$GITHUB_ENV"
+        # find the location of the notebook, THEN do a regular expression to get everything before the final "/"
+        echo "notebook_directory=$(find -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")" >> "$GITHUB_ENV"
+    - name: print nb directory
+      run: |
+        printf '%s\n' "$notebook_directory"
+        echo nb_dir: $notebook_directory
         ## now save this so we can use it later
         # echo "notebook_directory : $notebook_directory"
         # test: print this value
