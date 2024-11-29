@@ -1,26 +1,43 @@
 name: test-output
 
 on:
-  workflow_dispatch
-    # Inputs the workflow accepts.
+  workflow_dispatch:
     inputs:
-      # the notebook file name; no directories necessary, as this is handled below
-      name:
-        description: "your name"
-        required: true
-        default: mis_mosaic.ipynb
-
-env:
-  DAY_OF_WEEK: Monday
-
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'john-doe'
+        required: false
+        type: string
 
 jobs:
-  greeting_job:
+  print-username:
     runs-on: ubuntu-latest
-    env:
-      Greeting: Hello
+
     steps:
-      - name: "Say Hello Mona it's Monday"
-        run: echo "$Greeting $inputs.name. Today is $DAY_OF_WEEK!"
-        env:
-          First_Name: Mona
+      - name: Print the input name to STDOUT
+        run: echo The username is ${{ inputs.username }}
+  
+
+# on:
+#   workflow_dispatch
+#     inputs:
+#       # the notebook file name; no directories necessary, as this is handled below
+#       name:
+#         description: "your name"
+#         required: true
+#         default: mis_mosaic.ipynb
+
+# env:
+#   DAY_OF_WEEK: Monday
+
+
+# jobs:
+#   greeting_job:
+#     runs-on: ubuntu-latest
+#     env:
+#       Greeting: Hello
+#     steps:
+#       - name: "Say Hello Mona it's Monday"
+#         run: echo "$Greeting $inputs.name. Today is $DAY_OF_WEEK!"
+#         env:
+#           First_Name: Mona
