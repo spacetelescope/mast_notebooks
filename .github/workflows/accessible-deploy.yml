@@ -24,16 +24,20 @@ jobs:
   deploy-accessible-book:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    # step 0: using the notebook name, find the directory
+    # step 0: checkout the repo
+    - name: checkout repo
+      uses: actions/checkout@v4
+    # step 1: using the notebook name, find the directory
     - name: get notebook directory
       run: |
         # find the location of the notebook, THEN do a regular expression to get everything before the final "/"
-        #echo "notebook_directory=yellow" >> "$GITHUB_ENV"
-        notebook_directory=$(find notebooks -name ${{ inputs.filename }})
+        notebook_directory=$(find notebooks -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")
+        # set the nb_dir locatoin
         echo "notebook_directory=$notebook_directory" >> "$GITHUB_ENV"
-        # echo "notebook_directory=$(find notebooks -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")" >> "$GITHUB_ENV"
+        
+        # notebook_directory=$(find notebooks -name ${{ inputs.filename }})
+        # echo "notebook_directory=$notebook_directory" >> "$GITHUB_ENV"
+        # # echo "notebook_directory=$(find notebooks -name ${{ inputs.filename }} | sed -nE "s/(.*\/).*$/\1/p")" >> "$GITHUB_ENV"
     - name: print nb directory
       run: |
         echo nb_dir: $notebook_directory
