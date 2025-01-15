@@ -339,10 +339,20 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
 <ul class="nav bd-sidenav">
@@ -785,21 +795,21 @@ document.write(`
 <p>This script prompts for your Casjobs user ID and password during initialization if the environment variables are not defined.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
-<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gridspec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogNorm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="c1"># check that version of mastcasjobs is new enough</span>
 <span class="c1"># we are using some features not in version 0.0.1</span>
-<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">get_distribution</span>
-<span class="kn">from</span> <span class="nn">packaging.version</span> <span class="kn">import</span> <span class="n">Version</span> <span class="k">as</span> <span class="n">V</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pkg_resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_distribution</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">Version</span> <span class="k">as</span> <span class="n">V</span>
 
 <span class="k">assert</span> <span class="n">V</span><span class="p">(</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;mastcasjobs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">V</span><span class="p">(</span><span class="s1">&#39;0.0.2&#39;</span><span class="p">),</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">A newer version of mastcasjobs is required.</span>
@@ -807,22 +817,22 @@ document.write(`
 <span class="s2">pip install --upgrade git+git://github.com/rlwastro/mastcasjobs@master</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">mastcasjobs</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mastcasjobs</span>
 
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
 
 <span class="c1">## For handling ordinary astropy Tables</span>
-<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">Table</span>
-<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span><span class="p">,</span> <span class="n">ascii</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span><span class="p">,</span> <span class="n">ascii</span>
 
-<span class="kn">from</span> <span class="nn">fastkde</span> <span class="kn">import</span> <span class="n">fastKDE</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RectBivariateSpline</span>
-<span class="kn">from</span> <span class="nn">astropy.modeling</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fitting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastkde</span><span class="w"> </span><span class="kn">import</span> <span class="n">fastKDE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">RectBivariateSpline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fitting</span>
 
 <span class="c1"># There are a number of relatively unimportant warnings that </span>
 <span class="c1"># show up, so for now, suppress them:</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
 <span class="c1"># set width for pprint</span>
@@ -855,7 +865,7 @@ document.write(`
 <p>Set up Casjobs environment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;CASJOBS_USERID&#39;</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;CASJOBS_USERID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter Casjobs UserID:&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;CASJOBS_PW&#39;</span><span class="p">):</span>
@@ -1333,7 +1343,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function</span>
-<span class="k">def</span> <span class="nf">positions</span><span class="p">(</span><span class="n">Obj</span><span class="p">,</span> <span class="n">jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">positions</span><span class="p">(</span><span class="n">Obj</span><span class="p">,</span> <span class="n">jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    input parameter Obj is the value of the ObjID </span>
 <span class="sd">    optional jobs parameter re-uses casjobs jobs variable</span>
@@ -1564,7 +1574,7 @@ Plotting 250596 of 443502 points
 <p>Note that we reduce the R-I range to 0-3 here because there are very few objects left bluer than R-I = 0 or redder than R-I = 3.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">noisecut</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">noisecut</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return boolean array with noise cut in f606w and f814w using model</span>
 <span class="sd">    factor is normalization factor to use (&gt;1 means allow more noise)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1839,7 +1849,7 @@ Plotting 250596 of 443502 points
 <span class="c1"># define useful functions for the ridge line</span>
 
 
-<span class="k">def</span> <span class="nf">ridge_color</span><span class="p">(</span><span class="n">f606w</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">yoff</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="n">x1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ridge_color</span><span class="p">(</span><span class="n">f606w</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">yoff</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="n">x1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return R-I position of ridge line as a function of f606w magnitude</span>
 <span class="sd">    </span>
 <span class="sd">    function, yoff, x0, x1 are from polynomial fit above</span>
@@ -1856,7 +1866,7 @@ Plotting 250596 of 443502 points
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mag_domain   </span><span class="si">{</span><span class="n">mag_domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">ridge_mag</span><span class="p">(</span><span class="n">RminusI</span><span class="p">,</span> <span class="n">xgrid</span><span class="o">=</span><span class="n">rxgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="o">=</span><span class="n">rygrid</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ridge_mag</span><span class="p">(</span><span class="n">RminusI</span><span class="p">,</span> <span class="n">xgrid</span><span class="o">=</span><span class="n">rxgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="o">=</span><span class="n">rygrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return f606w position of ridge line as a function of R-I color</span>
 <span class="sd">    </span>
 <span class="sd">    Uses simple linear interpolation to get approximate value</span>
@@ -2676,7 +2686,7 @@ Proper motions are measured relative to the main sequence sample (Galactic cente
 <p>See the documentation on <a class="reference external" href="http://hla.stsci.edu/hla_help.html#services">HLA VO services</a> and the <a class="reference external" href="http://hla.stsci.edu/fitscutcgi_interface.html">fitscut image cutout service</a> for more information on the web services being used.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">query_hla</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">imagetype</span><span class="o">=</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="n">inst</span><span class="o">=</span><span class="s2">&quot;ACS&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">query_hla</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">imagetype</span><span class="o">=</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="n">inst</span><span class="o">=</span><span class="s2">&quot;ACS&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
               <span class="n">spectral_elt</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;f814w&quot;</span><span class="p">,</span> <span class="s2">&quot;f606w&quot;</span><span class="p">),</span> <span class="n">autoscale</span><span class="o">=</span><span class="mf">95.0</span><span class="p">,</span> <span class="n">asinh</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">naxis</span><span class="o">=</span><span class="mi">33</span><span class="p">):</span>
     <span class="c1"># convert a list of filters to a comma-separated string</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spectral_elt</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -2690,7 +2700,7 @@ Proper motions are measured relative to the main sequence sample (Galactic cente
     <span class="k">return</span> <span class="n">votable</span>
 
 
-<span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_image</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get image from a URL&quot;&quot;&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>

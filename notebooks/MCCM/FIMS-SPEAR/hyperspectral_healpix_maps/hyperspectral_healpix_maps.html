@@ -74,7 +74,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps';</script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Mapping Galaxy Properties with MaNGA + HST" href="../../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html" />
+    <link rel="next" title="Sloan Digital Sky Survey (SDSS)" href="../../../SDSS/sdss.html" />
     <link rel="prev" title="Removing Instrumental Noise from K2 and TESS Light Curves Using Pixel Level Decorrelation (PLD)" href="../../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -337,10 +337,20 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
 <ul class="nav bd-sidenav">
@@ -694,33 +704,33 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># healpy software for wrangling HEALPix maps</span>
-<span class="kn">import</span> <span class="nn">healpy</span> <span class="k">as</span> <span class="nn">hp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">healpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hp</span>
 
 <span class="c1"># arrays</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># table operations to help with wrangling hyperspectral HEALPix maps</span>
-<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">Table</span>
-<span class="kn">from</span> <span class="nn">astropy.table.pprint</span> <span class="kn">import</span> <span class="n">conf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table.pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">conf</span>
 
 <span class="c1"># FITS</span>
-<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
 
 <span class="c1"># deep copy operations</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 <span class="c1"># plotting</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
 
 <span class="c1"># spectrum smoothing</span>
-<span class="kn">from</span> <span class="nn">specutils</span> <span class="kn">import</span> <span class="n">Spectrum1D</span>
-<span class="kn">import</span> <span class="nn">specutils.manipulation</span>
-<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Spectrum1D</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specutils.manipulation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
 
 <span class="c1"># downloads</span>
-<span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Observations</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 </pre></div>
 </div>
 </div>
@@ -1130,7 +1140,7 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
 <p><strong>Important:</strong> we need to use numpy.nansum, numpy.nanmean etc. when integrating over the spatial axis, to handle the HEALPixels without sky coverage. So let’s first define a NaN-compatible function to compute an exposure-weighted average spectrum:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">weighted_spatial_average</span><span class="p">(</span><span class="n">inten</span><span class="p">,</span> <span class="n">exp</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">weighted_spatial_average</span><span class="p">(</span><span class="n">inten</span><span class="p">,</span> <span class="n">exp</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">((</span><span class="n">inten</span><span class="o">.</span><span class="n">T</span><span class="o">*</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 
 <span class="c1"># Inputs: hyperspectral intensity map (2D), exposure map (1D)</span>
@@ -1855,11 +1865,11 @@ COMMENT In Python: astropy.Table.read(filename, hdu=1).filled(numpy.NaN)
       </div>
     </a>
     <a class="right-next"
-       href="../../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html"
+       href="../../../SDSS/sdss.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Mapping Galaxy Properties with MaNGA + HST</p>
+        <p class="prev-next-title">Sloan Digital Sky Survey (SDSS)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

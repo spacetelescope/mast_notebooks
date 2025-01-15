@@ -337,10 +337,20 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
 <ul class="nav bd-sidenav">
@@ -689,10 +699,10 @@ document.write(`
 <h2>Code to retrieve a TESS PRF image<a class="headerlink" href="#code-to-retrieve-a-tess-prf-image" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -701,7 +711,7 @@ document.write(`
 <h3>Determine the name of the PRF based on ccd camera and sector<a class="headerlink" href="#determine-the-name-of-the-prf-based-on-ccd-camera-and-sector" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pathLookup</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">pathLookup</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets the datestring and the subdirectory for the specified PRF. </span>
 <span class="sd">    The datestring and directory name can be found from the ccd, camera and sector.</span>
@@ -758,7 +768,7 @@ document.write(`
 <h3>Read in one PRF FITS File<a class="headerlink" href="#read-in-one-prf-fits-file" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">readOnePrfFitsFile</span><span class="p">(</span><span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">datestring</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    reads in the full, interleaved prf Array for a single row,col,ccd,camera location.</span>
 <span class="sd">    </span>
@@ -790,7 +800,7 @@ document.write(`
 
     <span class="k">return</span> <span class="n">prfArray</span>
 
-<span class="k">def</span> <span class="nf">determineFourClosestPrfLoc</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">determineFourClosestPrfLoc</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the four pairs of col,row positions of your target. </span>
 <span class="sd">    These are specific to TESS and where they chose to report their PRFs.</span>
@@ -827,7 +837,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getOffsetsFromPixelFractions</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">getOffsetsFromPixelFractions</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine just the fractional part (the intra-pixel part) of the col,row position.  </span>
 <span class="sd">    For example, if (col, row) = (123.4, 987.6), then</span>
@@ -858,7 +868,7 @@ document.write(`
 
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">colOffset</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">rowOffset</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">getRegSampledPrfFitsByOffset</span><span class="p">(</span><span class="n">prfArray</span><span class="p">,</span> <span class="n">colOffset</span><span class="p">,</span> <span class="n">rowOffset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The 13x13 pixel PRFs on at each grid location are sampled at a 9x9 intra-pixel grid, to</span>
 <span class="sd">    describe how the PRF changes as the star moves by a fraction of a pixel in row or column.</span>
@@ -906,7 +916,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">interpolatePrf</span><span class="p">(</span><span class="n">regPrfArray</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">imagePos</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">interpolatePrf</span><span class="p">(</span><span class="n">regPrfArray</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">imagePos</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolate between 4 images to find the best PRF at the specified column and row.</span>
 <span class="sd">    This is a simple linear interpolation.</span>
@@ -956,7 +966,7 @@ document.write(`
 <p>We define two main functions.  The first, <code class="docutils literal notranslate"><span class="pre">getNearestPrfFits</span></code>, returns only the PRF in the grid of 25x25 PRF locations provided by the mission that is nearest to the (column, row) location specified.  The second, <code class="docutils literal notranslate"><span class="pre">getPrfAtColRowFits</span></code>, does a linear interpolation between the four PRFs nearest to the location specified and returns that PRF.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getNearestPrfFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">getNearestPrfFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main Function</span>
 <span class="sd">    Return a 13x13 PRF image for a single location. No interpolation</span>
@@ -1005,7 +1015,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">getPrfAtColRowFits</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">ccd</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">sector</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main Function</span>
 <span class="sd">    Lookup a 13x13 PRF image for a single location</span>
@@ -1191,8 +1201,8 @@ document.write(`
 <p>In the following we pull down the image of a star observed by TESS. We do this using TessCut and Catalogs, both are packages available through astroquery.mast. MAST maintains a separate tutorial on how to use these tools. Tesscut cuts out a timeseries of a subsection of the TESS FFIs.  We plot that image and attmept to estimate a PRF for that star. This examples is done for TIC 307214209. It is chosen because it is relatively isolated in the field, making it easier to match the PRFs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Tesscut</span>
-<span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="kn">import</span> <span class="n">Catalogs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tesscut</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Catalogs</span>
 
 <span class="n">ticid</span> <span class="o">=</span> <span class="mi">307214209</span>
 <span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;TIC </span><span class="si">%u</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ticid</span>
