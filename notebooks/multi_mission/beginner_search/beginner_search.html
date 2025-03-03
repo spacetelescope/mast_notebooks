@@ -35,8 +35,8 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -641,10 +641,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-goals">Introduction and Goals:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-ways-to-search-for-mast-observations">Three Ways to Search for MAST Observations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-region">1. By Region</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-object-name">2. By Object Name</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-other-criteria-with-or-without-name-region-a-id-crit-a">3. By Other Criteria (with or without name/region) <a id="crit"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-methods-to-search-for-mast-observations">Three Methods to Search for MAST Observations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-region">1. Query by Region</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-object-name">2. Query by Object Name</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-other-criteria-with-or-without-name-region-a-id-crit-a">3. Query by Other Criteria (with or without name/region) <a id="crit"></a></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-associated-data-products">Getting Associated Data Products</a><ul class="nav section-nav flex-column">
@@ -706,7 +706,7 @@ document.write(`
 <p>Let’s start by importing the packages we need for this notebook.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> to access the MAST API</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">astropy</span></code> to create <a class="reference external" href="https://docs.astropy.org/en/stable/coordinates/index.html">coordinate objects</a> and access the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">astropy</span></code> to create <a class="reference external" href="https://docs.astropy.org/en/stable/coordinates/index.html">coordinate objects</a> and read fits files</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> to plot the data</p></li>
 </ul>
 <div class="cell docutils container">
@@ -724,17 +724,17 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="three-ways-to-search-for-mast-observations">
-<h2>Three Ways to Search for MAST Observations<a class="headerlink" href="#three-ways-to-search-for-mast-observations" title="Permalink to this heading">#</a></h2>
-<section id="by-region">
-<h3>1. By Region<a class="headerlink" href="#by-region" title="Permalink to this heading">#</a></h3>
-<p>To search by coordinates (and a radius), you can use <code class="docutils literal notranslate"><span class="pre">query_region</span></code>.</p>
-<p>The coordinates can be given as a string or <code class="docutils literal notranslate"><span class="pre">astropy.coordinates</span></code> object, and the radius as a string or float object. If no radius is specified, the default is 0.2 degrees.</p>
-<p>Let’s try an example search with the coordinates (322.49324, 12.16683) and no radius.</p>
+<section id="three-methods-to-search-for-mast-observations">
+<h2>Three Methods to Search for MAST Observations<a class="headerlink" href="#three-methods-to-search-for-mast-observations" title="Permalink to this heading">#</a></h2>
+<p>All three searches outlined below use <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html"><code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a>, an astronomer-friendly wrapper for <a class="reference external" href="https://mast.stsci.edu/api/v0/">our pure Python API</a>. Specifically, these searches use the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast_obsquery.html">Observations</a> class, which queries our entire multi-mission collection.</p>
+<section id="query-by-region">
+<h3>1. Query by Region<a class="headerlink" href="#query-by-region" title="Permalink to this heading">#</a></h3>
+<p>To search by coordinates (and a radius), you can use <code class="docutils literal notranslate"><span class="pre">Observations.query_region</span></code>. The coordinates can be given as a string or <code class="docutils literal notranslate"><span class="pre">astropy.coordinates</span></code> object; the radius, as a string or float. If no radius is specified, the default is 0.2 degrees.</p>
+<p>Let’s try an example search with the coordinates <code class="docutils literal notranslate"><span class="pre">[290.213503,</span> <span class="pre">-11.800746]</span></code> (arbitrarily chosen) and no radius.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This will give a warning that the coordinates are being interpreted as an ICRS coordinate provided in degrees</span>
-<span class="n">obsByRegion</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="s2">&quot;322.49324 12.16683&quot;</span><span class="p">)</span>
+<span class="n">obsByRegion</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="s2">&quot;290.213503 -11.800746&quot;</span><span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">obsByRegion</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -743,12 +743,12 @@ document.write(`
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: InputWarning: Coordinate string is being interpreted as an ICRS coordinate provided in degrees. [astroquery.utils.commons]
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12978
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>358
 </pre></div>
 </div>
 </div>
 </div>
-<p>Excellent! At the time of writing, this search returns 2240 results. As the MAST archive grows, this number increases; you might see a larger value. Let’s take a look a subset of the results.</p>
+<p>Excellent! At the time of writing, this search returns 358 results. As the MAST archive grows, this number increases; you might see a larger value. Let’s take a look a subset of the results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview the first 3 results</span>
@@ -758,16 +758,16 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table masked=True length=3</i>
-<table id="table139703284220688" class="table-striped table-bordered table-condensed">
+<table id="table139710994953488" class="table-striped table-bordered table-condensed">
 <thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>distance</th></tr></thead>
-<thead><tr><th>str11</th><th>str11</th><th>str31</th><th>str13</th><th>str12</th><th>str27</th><th>str16</th><th>str33</th><th>str56</th><th>str92</th><th>float64</th><th>float64</th><th>str10</th><th>str25</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str106</th><th>float64</th><th>str20</th><th>str12</th><th>int64</th><th>str17043</th><th>str185</th><th>str186</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>float64</th></tr></thead>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0055-1-1</td><td>325.9351193555199</td><td>11.77496602082765</td><td>image</td><td>Ricker, George</td><td>3</td><td>59796.6013437963</td><td>59823.76825269676</td><td>475.199786</td><td>600.0</td><td>1000.0</td><td>--</td><td>59841.0</td><td>N/A</td><td>--</td><td>55</td><td>POLYGON 329.837843 19.006512 333.753586 8.161861 322.106193 4.225655 318.039501 15.437198 329.837843 19.006512</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>95133321</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0082-1-2</td><td>317.17154347395564</td><td>10.091041157822387</td><td>image</td><td>Ricker, George</td><td>3</td><td>60532.891556863426</td><td>60558.749996122686</td><td>158.399927</td><td>600.0</td><td>1000.0</td><td>--</td><td>60613.0</td><td>N/A</td><td>--</td><td>82</td><td>POLYGON 320.550581 17.936678 325.068597 6.875186 313.680238 2.326972 309.407072 13.006235 320.550581 17.936678</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>232881350</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>96703881</td><td>--</td><td>tess2022217014003-s0055-0000000096703881-0242-s</td><td>322.493171</td><td>12.166862</td><td>timeseries</td><td>Ricker, George</td><td>3</td><td>59796.60416888889</td><td>59823.76815293982</td><td>120.0</td><td>600.0</td><td>1000.0</td><td>--</td><td>59841.0</td><td>G04046</td><td>--</td><td>55</td><td>CIRCLE 322.493171 12.166862 0.00138889</td><td>--</td><td>mast:TESS/product/tess2022217014003-s0055-0000000096703881-0242-s_lc.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>93770500</td><td>0.0</td></tr>
+<thead><tr><th>str7</th><th>str5</th><th>str9</th><th>str13</th><th>str4</th><th>str4</th><th>str16</th><th>str18</th><th>str4</th><th>str78</th><th>float64</th><th>float64</th><th>str10</th><th>str19</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str63</th><th>float64</th><th>str6</th><th>str3</th><th>int64</th><th>str115</th><th>str120</th><th>str116</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0054-1-3</td><td>293.1472936457296</td><td>-9.71249801098487</td><td>image</td><td>Ricker, George</td><td>3</td><td>59769.40067108796</td><td>59795.62954313657</td><td>475.199781</td><td>600.0</td><td>1000.0</td><td>--</td><td>59828.0</td><td>N/A</td><td>--</td><td>54</td><td>POLYGON 288.297067 -16.349772 285.946199 -5.101134 297.968471 -2.757443 300.386369 -14.421799 288.297067 -16.349772</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>92616850</td><td>0.0</td></tr>
+<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0080-1-4</td><td>285.6629279299061</td><td>-9.094913113849628</td><td>image</td><td>Ricker, George</td><td>3</td><td>60479.387118125</td><td>60505.84107659722</td><td>158.399925</td><td>600.0</td><td>1000.0</td><td>--</td><td>60545.0</td><td>N/A</td><td>--</td><td>80</td><td>POLYGON 280.09193 -15.630142 279.064881 -3.763278 291.262336 -2.663712 292.216134 -14.120328 280.09193 -15.630142</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>229777516</td><td>0.0</td></tr>
+<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>98516825</td><td>--</td><td>tess2022190063128-s0054-0000000098516825-0227-s</td><td>290.30057005371</td><td>-11.6867245976452</td><td>timeseries</td><td>Ricker, George</td><td>3</td><td>59769.40350148148</td><td>59795.633632488425</td><td>120.0</td><td>600.0</td><td>1000.0</td><td>--</td><td>59828.0</td><td>G04103</td><td>--</td><td>54</td><td>CIRCLE 290.30057005 -11.6867246 0.00138889</td><td>--</td><td>mast:TESS/product/tess2022190063128-s0054-0000000098516825-0227-s_lc.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>91544945</td><td>507.5456440624232</td></tr>
 </table></div></div></div>
 </div>
-<p>The columns of the above table (there are many!) correspond to searchable fields in the MAST database. You can find the full list of criteria <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">here</a> and an example of performing a search by criteria <span class="xref myst">down below</span>.</p>
-<p>If we want to avoid that pesky warning from the search above we can create a <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> object and pass it to our search. Let’s try that now, and in addition, let’s add a radius of 1 arcsecond to this search.</p>
+<p>The columns of the above table (there are many!) correspond to <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">searchable fields in the MAST database</a>. You can find an example of performing a search by criteria <span class="xref myst">down below</span>.</p>
+<p>To avoid that pesky warning from the search above, we can create a <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> object and pass it to our query. Let’s try that now, and in addition, add a radius of 1 arcsecond to this search.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up our coordinates object</span>
@@ -785,8 +785,8 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Sanity check: we expect that as the radius gets smaller, we get fewer results. In this case, only 15 results are returned.</p>
-<p>Let’s take a look at the results again, but let’s limit the columns that get displayed.</p>
+<p><strong>Consistency check</strong>: we expect that as the radius gets smaller, we will get fewer results. In this case, only 11 results are returned compared to 358 above.</p>
+<p>Let’s take a look at the results again, this time limiting the displayed columns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s limit the number of columns we see at once</span>
@@ -800,7 +800,7 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=11</i>
-<table id="table139703304306768" class="table-striped table-bordered table-condensed">
+<table id="table139710994110608" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obs_collection</th><th>intentType</th><th>instrument_name</th><th>target_name</th><th>t_exptime</th><th>filters</th><th>dataproduct_type</th></tr></thead>
 <thead><tr><th>str5</th><th>str7</th><th>str10</th><th>str12</th><th>float64</th><th>str4</th><th>str5</th></tr></thead>
 <tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>475.199781</td><td>TESS</td><td>image</td></tr>
@@ -818,22 +818,17 @@ document.write(`
 </div>
 <p>This “streamlined” view is helpful: it avoids visual clutter and helps you to focus on the fields that are most relevant to your search.</p>
 </section>
-<section id="by-object-name">
-<h3>2. By Object Name<a class="headerlink" href="#by-object-name" title="Permalink to this heading">#</a></h3>
-<p>To search for an object by name, you can use the <code class="docutils literal notranslate"><span class="pre">query.object</span></code> function. This function also optionally allows you to specify a radius.</p>
+<section id="query-by-object-name">
+<h3>2. Query by Object Name<a class="headerlink" href="#query-by-object-name" title="Permalink to this heading">#</a></h3>
+<p>To search for an object by name, you can use the <code class="docutils literal notranslate"><span class="pre">query.object()</span></code> function. As before, you may optionally specify a radius.</p>
 <p>The object name is first resolved to coordinates by a call to the <a class="reference external" href="https://simbad.unistra.fr/simbad/">Simbad</a> and <a class="reference external" href="https://ned.ipac.caltech.edu/Documents/Overview">NED</a> archives. Then, the search proceeeds based on these coordinates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obsByName</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s2">&quot;M51&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;.005 deg&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of results:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obsByName</span><span class="p">))</span>
 
-<span class="n">obsByName</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="c1"># print total number of results; then show only the first five</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of results:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obsByName</span><span class="p">))</span>
+<span class="n">obsByName</span><span class="p">[</span><span class="n">columns</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -841,37 +836,37 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of results: 7503
 </pre></div>
 </div>
-<div class="output text_html"><div><i>Table masked=True length=5</i>
-<table id="table139703275372624" class="table-striped table-bordered table-condensed">
-<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>distance</th></tr></thead>
-<thead><tr><th>str11</th><th>str11</th><th>str31</th><th>str12</th><th>str13</th><th>str26</th><th>str19</th><th>str64</th><th>str49</th><th>str53</th><th>float64</th><th>float64</th><th>str10</th><th>str23</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str107</th><th>float64</th><th>str16</th><th>str13</th><th>int64</th><th>str17792</th><th>str175</th><th>str176</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>float64</th></tr></thead>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0016-4-3</td><td>200.6066940322731</td><td>50.01251405441704</td><td>image</td><td>Ricker, George</td><td>3</td><td>58738.14190212</td><td>58762.80885051</td><td>1425.599358</td><td>600.0</td><td>1000.0</td><td>--</td><td>58782.3333334</td><td>N/A</td><td>--</td><td>16</td><td>POLYGON 188.96005900 47.31461100 195.80207500 58.03466100 213.76319300 51.45788000 203.63432700 41.78187500 188.96005900 47.31461100</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>27545566</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0022-2-1</td><td>198.24826184396446</td><td>45.21473093959813</td><td>image</td><td>Ricker, George</td><td>3</td><td>58898.81559378</td><td>58925.98257992</td><td>1425.599393</td><td>600.0</td><td>1000.0</td><td>--</td><td>58945.0</td><td>N/A</td><td>--</td><td>22</td><td>POLYGON 209.81203800 45.13366400 199.37165100 36.75577700 186.47721200 44.07435900 197.22646800 53.68842400 209.81203800 45.13366400</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>27347170</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0023-2-2</td><td>206.11364361798434</td><td>41.534991636349474</td><td>image</td><td>Ricker, George</td><td>3</td><td>58927.60756876</td><td>58954.37813731</td><td>1425.599383</td><td>600.0</td><td>1000.0</td><td>--</td><td>58973.0</td><td>N/A</td><td>--</td><td>23</td><td>POLYGON 217.19928400 43.86714800 209.71103500 33.48941000 195.67778400 38.51512800 201.79979000 49.12765700 217.19928400 43.86714800</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>27386992</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0049-2-1</td><td>204.06913817292593</td><td>42.4477011962157</td><td>image</td><td>Ricker, George</td><td>3</td><td>59636.975013854164</td><td>59663.81560847222</td><td>475.199787</td><td>600.0</td><td>1000.0</td><td>--</td><td>59695.0</td><td>N/A</td><td>--</td><td>49</td><td>POLYGON 215.129288 42.6299 205.417683 34.012968 192.868429 41.149492 202.762088 50.900239 215.129288 42.6299</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>83163378</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0076-1-1</td><td>209.07126289767237</td><td>46.689635318292865</td><td>image</td><td>Ricker, George</td><td>3</td><td>60367.19414883102</td><td>60394.280102627316</td><td>158.399923</td><td>600.0</td><td>1000.0</td><td>--</td><td>60438.0</td><td>N/A</td><td>--</td><td>76</td><td>POLYGON 220.895636 46.249072 209.783858 38.201258 196.899205 45.853449 208.607539 55.186936 220.895636 46.249072</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>214650609</td><td>0.0</td></tr>
+<div class="output text_html"><div><i>Table length=5</i>
+<table id="table139710994099216" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obs_collection</th><th>intentType</th><th>instrument_name</th><th>target_name</th><th>t_exptime</th><th>filters</th><th>dataproduct_type</th></tr></thead>
+<thead><tr><th>str11</th><th>str11</th><th>str12</th><th>str64</th><th>float64</th><th>str26</th><th>str10</th></tr></thead>
+<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>1425.599358</td><td>TESS</td><td>image</td></tr>
+<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>1425.599393</td><td>TESS</td><td>image</td></tr>
+<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>1425.599383</td><td>TESS</td><td>image</td></tr>
+<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>475.199787</td><td>TESS</td><td>image</td></tr>
+<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>158.399923</td><td>TESS</td><td>image</td></tr>
 </table></div></div></div>
 </div>
-<p>For some special catalogs, like those used with Kepler, K2, and TESS, astroquery performs a direct lookup using the MAST catalog. It is important to include both the <strong><em>catalog identifier</em></strong> and number when searching one of these datasets; for example, to query the TESS Input catalog you would use “TIC 261136679”, rather than a plain
-“261136679”.</p>
+<p>For some special catalogs, like those used with Kepler, K2, and TESS, <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> performs a direct lookup using the MAST catalog. It is important to include both the <strong><em>catalog identifier</em></strong> and number when searching one of these datasets; for example, to query the TESS Input catalog you would use <code class="docutils literal notranslate"><span class="pre">&quot;TIC</span> <span class="pre">261136679&quot;</span></code>, rather than a plain <code class="docutils literal notranslate"><span class="pre">&quot;261136679&quot;</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obsByTessName</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s2">&quot;TIC 261136679&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;1s&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># As before, we use columns to limit the display</span>
+
+<span class="c1"># we&#39;ll use some new columns to de-clutter the table</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;obs_collection&#39;</span><span class="p">,</span> <span class="s1">&#39;wavelength_region&#39;</span><span class="p">,</span> <span class="s1">&#39;provenance_name&#39;</span><span class="p">,</span> <span class="s1">&#39;t_min&#39;</span><span class="p">,</span> <span class="s1">&#39;t_max&#39;</span><span class="p">,</span> <span class="s1">&#39;obsid&#39;</span><span class="p">]</span>
-<span class="n">obsByTessName</span><span class="p">[</span><span class="n">columns</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="c1"># print number of results and display the first five</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of results:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obsByTessName</span><span class="p">))</span>
+<span class="n">obsByTessName</span><span class="p">[</span><span class="n">columns</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table length=10</i>
-<table id="table139703283772624" class="table-striped table-bordered table-condensed">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of results: 3530
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=5</i>
+<table id="table139710992402000" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obs_collection</th><th>wavelength_region</th><th>provenance_name</th><th>t_min</th><th>t_max</th><th>obsid</th></tr></thead>
 <thead><tr><th>str11</th><th>str10</th><th>str17</th><th>float64</th><th>float64</th><th>str9</th></tr></thead>
 <tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58324.81304390046</td><td>58352.666903854166</td><td>60865631</td></tr>
@@ -879,46 +874,50 @@ document.write(`
 <tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58516.85312458334</td><td>58541.49921487269</td><td>62468248</td></tr>
 <tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58596.27096596065</td><td>58623.37541814815</td><td>65153352</td></tr>
 <tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58624.45954434028</td><td>58652.37651001157</td><td>65180725</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58653.41816987268</td><td>58681.85536055556</td><td>65462606</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>59035.7791077</td><td>59060.13994723</td><td>27797249</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>59061.34744424</td><td>59086.59716169</td><td>27844486</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>59144.0128561</td><td>59169.44312553</td><td>28131771</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>59228.2486492</td><td>59253.56140963</td><td>28364165</td></tr>
 </table></div></div></div>
 </div>
-<p>It’s worth noting that even though we queried using the TESS Input Catalog, not all of the results are from the TESS mission. The TIC is a catalog like any other, and the MAST Archive resolves the input name to a location on the sky. Other missions that have observed the same region will also return results.</p>
-<p>To search for results that are specific to TESS, or your mission of choice, see the ‘by other criteria’ section below.</p>
-</section>
-<section id="by-other-criteria-with-or-without-name-region-a-id-crit-a">
-<h3>3. By Other Criteria (with or without name/region) <a id="crit"></a><a class="headerlink" href="#by-other-criteria-with-or-without-name-region-a-id-crit-a" title="Permalink to this heading">#</a></h3>
-<p>To search for observations based on additonal parameters, you can use <code class="docutils literal notranslate"><span class="pre">query_criteria</span></code>. In a sense, this is a more powerful version of the tools above, as you can still search by coordinates and objectname; however, you can inculde additional desired criteria. You may also run the search without specifying a name or coordinates.</p>
-<p>To perform the search, give your critera as keyword arguments. Valid criteria and their descriptions are listed <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">here</a>. (Note that these are columns of the results tables we saw above!) Some relevant examples are: “filters”, “t_exptime” (exposure time), instrument_name, “provenance_name”, and “sequence_number”.</p>
-<p>Let’s for TESS Sector 9 data with an exposure time between 1400 and 1500s.</p>
+<p>It’s worth noting that even though we queried using the TESS Input Catalog, not all of the results are from the TESS mission.  In fact, we can see exactly which missions are returned using Python’s built-in <code class="docutils literal notranslate"><span class="pre">set</span></code> function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obsByCriteria</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">obs_collection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TESS&quot;</span><span class="p">],</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-                                            <span class="n">t_exptime</span><span class="o">=</span><span class="p">[</span><span class="mi">1400</span><span class="p">,</span> <span class="mi">1500</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># return the unique set of missions found in this query</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">obsByTessName</span><span class="p">[</span><span class="s1">&#39;obs_collection&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;GALEX&#39;, &#39;HLSP&#39;, &#39;SPITZER_SHA&#39;, &#39;SWIFT&#39;, &#39;TESS&#39;}
 </pre></div>
 </div>
 </div>
 </div>
+<p>The TIC is a catalog like any other, and the MAST Archive resolves the input name to a location on the sky. Other missions that have observed the same region will also return results.</p>
+<p>To search for results that are specific to TESS, or your mission of choice, see the ‘by other criteria’ section below.</p>
+</section>
+<section id="query-by-other-criteria-with-or-without-name-region-a-id-crit-a">
+<h3>3. Query by Other Criteria (with or without name/region) <a id="crit"></a><a class="headerlink" href="#query-by-other-criteria-with-or-without-name-region-a-id-crit-a" title="Permalink to this heading">#</a></h3>
+<p>To search for observations based on additonal parameters, you can use <code class="docutils literal notranslate"><span class="pre">query_criteria()</span></code>. In a sense, this is a more powerful version of the tools above, as you can still search by coordinates and objectname; however, you can inculde additional desired criteria. You may also run the search without specifying a name or coordinates.</p>
+<p>To perform the search, give your critera as keyword arguments. There are many <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">valid criteria for MAST searches</a> . (Note that these are columns of the results tables we saw above!) Some relevant examples are: “filters”, “t_exptime” (exposure time), instrument_name, “provenance_name”, and “sequence_number”.</p>
+<p>Let’s query for TESS Sector 9 data with an exposure time between 1400 and 1500s.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;target_name&#39;</span><span class="p">,</span> <span class="s1">&#39;s_ra&#39;</span><span class="p">,</span> <span class="s1">&#39;s_dec&#39;</span><span class="p">,</span> <span class="s1">&#39;t_exptime&#39;</span><span class="p">,</span> <span class="s1">&#39;obsid&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obsByCriteria</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">obs_collection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TESS&quot;</span><span class="p">],</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                                            <span class="n">t_exptime</span><span class="o">=</span><span class="p">[</span><span class="mi">1400</span><span class="p">,</span> <span class="mi">1500</span><span class="p">])</span>
+
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;target_name&#39;</span><span class="p">,</span> <span class="s1">&#39;s_ra&#39;</span><span class="p">,</span> <span class="s1">&#39;s_dec&#39;</span><span class="p">,</span> <span class="s1">&#39;t_exptime&#39;</span><span class="p">,</span> <span class="s1">&#39;obsid&#39;</span><span class="p">]</span>
 <span class="n">obsByCriteria</span><span class="p">[</span><span class="n">columns</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table139703078504016" class="table-striped table-bordered table-condensed">
+<table id="table139710992418640" class="table-striped table-bordered table-condensed">
 <thead><tr><th>target_name</th><th>s_ra</th><th>s_dec</th><th>t_exptime</th><th>obsid</th></tr></thead>
 <thead><tr><th>str8</th><th>float64</th><th>float64</th><th>float64</th><th>str8</th></tr></thead>
-<tr><td>TESS FFI</td><td>148.8381670809981</td><td>-53.640196587551905</td><td>1425.599414</td><td>62895676</td></tr>
-<tr><td>TESS FFI</td><td>162.4696250638618</td><td>-5.425652707919927</td><td>1425.599414</td><td>62892977</td></tr>
-<tr><td>TESS FFI</td><td>151.37494470193366</td><td>-26.74595469529746</td><td>1425.599414</td><td>62895165</td></tr>
-<tr><td>TESS FFI</td><td>173.83652057983417</td><td>-10.27752013936934</td><td>1425.599414</td><td>62892431</td></tr>
+<tr><td>TESS FFI</td><td>133.67905448025425</td><td>-46.18239603008324</td><td>1425.599414</td><td>62896230</td></tr>
+<tr><td>TESS FFI</td><td>119.47374170204309</td><td>-54.111065646216794</td><td>1425.599414</td><td>62896721</td></tr>
 <tr><td>TESS FFI</td><td>169.0707180032819</td><td>-21.387226979894706</td><td>1425.599414</td><td>62891912</td></tr>
+<tr><td>TESS FFI</td><td>157.48628713094715</td><td>-43.22571855614874</td><td>1425.599414</td><td>62894034</td></tr>
+<tr><td>TESS FFI</td><td>162.4696250638618</td><td>-5.425652707919927</td><td>1425.599414</td><td>62892977</td></tr>
 </table></div></div></div>
 </div>
 <p>There’s no limit on the number of filters you can apply in a search. It may be an interesting exercise for the reader to go through the example below and figure out what exactly we’re searching for.</p>
@@ -930,20 +929,15 @@ document.write(`
 <span class="n">exByCriteria</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">obs_collection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HLA&quot;</span><span class="p">],</span> <span class="n">s_dec</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> 
                                            <span class="n">calib_level</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">proposal_pi</span><span class="o">=</span><span class="s2">&quot;Mould*&quot;</span><span class="p">,</span> 
                                            <span class="n">dataproduct_type</span><span class="o">=</span><span class="s2">&quot;IMAGE&quot;</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="p">[</span><span class="mi">49800</span><span class="p">,</span> <span class="mi">49820</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;obs_collection&#39;</span><span class="p">,</span> <span class="s1">&#39;obs_id&#39;</span><span class="p">,</span> <span class="s1">&#39;target_name&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;instrument_name&#39;</span><span class="p">,</span> <span class="s1">&#39;proposal_id&#39;</span><span class="p">]</span>
+
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;obs_collection&#39;</span><span class="p">,</span> <span class="s1">&#39;obs_id&#39;</span><span class="p">,</span> <span class="s1">&#39;target_name&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;instrument_name&#39;</span><span class="p">,</span> <span class="s1">&#39;proposal_id&#39;</span><span class="p">]</span>
 <span class="n">exByCriteria</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=4</i>
-<table id="table139703078511952" class="table-striped table-bordered table-condensed">
+<table id="table139710992488016" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obs_collection</th><th>obs_id</th><th>target_name</th><th>filters</th><th>instrument_name</th><th>proposal_id</th></tr></thead>
 <thead><tr><th>str3</th><th>str27</th><th>str12</th><th>str9</th><th>str9</th><th>str4</th></tr></thead>
 <tr><td>HLA</td><td>hst_05766_04_wfpc2_f555w_pc</td><td>NGC5457-FLD2</td><td>F555W</td><td>WFPC2/PC</td><td>5766</td></tr>
@@ -956,10 +950,10 @@ document.write(`
 </section>
 <section id="getting-associated-data-products">
 <h2>Getting Associated Data Products<a class="headerlink" href="#getting-associated-data-products" title="Permalink to this heading">#</a></h2>
+<p>Each observation returned from a MAST query can have one or more associated data products. For example, a JWST observation might return an <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Supplemental+Products">uncalibrated file</a>, <a class="reference external" href="https://jwst-docs.stsci.edu/jwst-observatory-characteristics-and-performance/jwst-pointing-performance/jwst-guide-stars">a guide-star file</a>, and the science data you’re searching for.</p>
 <section id="performing-a-product-query">
 <h3>Performing a Product Query<a class="headerlink" href="#performing-a-product-query" title="Permalink to this heading">#</a></h3>
-<p>Each observation returned from a MAST query can have one or more associated data products. For example, a JWST observation might return an <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Supplemental+Products">uncalibrated file</a>, <a class="reference external" href="https://jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-guide-stars">a guide-star file</a>, and the science data you’re searching for.</p>
-<p>You can input a table of observations or list of observation ids (“obs_id”) and <code class="docutils literal notranslate"><span class="pre">get_product_list</span></code> will return a table containing the associated data products.</p>
+<p>Using an astropy table of observations, or a list of observation ids (“obs_ids”), <code class="docutils literal notranslate"><span class="pre">get_product_list()</span></code> will return a table containing the associated data products.</p>
 <p>Since we already have a list of observations, we can use that as the starting point for our query. To keep it simple, let’s look at only the last observation from our search above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -968,19 +962,15 @@ document.write(`
 
 <span class="c1"># Now we get the list of products associated with that observation</span>
 <span class="n">dataProducts</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">newObsList</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataProducts</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="c1"># preview the first five</span>
+<span class="n">dataProducts</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table masked=True length=5</i>
-<table id="table139703275374224" class="table-striped table-bordered table-condensed">
+<table id="table139710992408912" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
 <thead><tr><th>str8</th><th>str3</th><th>str5</th><th>str30</th><th>str67</th><th>str1</th><th>str96</th><th>str9</th><th>str28</th><th>str8</th><th>str1</th><th>str8</th><th>str19</th><th>str4</th><th>str43</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
 <tr><td>25153181</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_f555w_wf_02</td><td>Preview-Full</td><td>S</td><td>mast:HLA/url/cgi-bin/preview.cgi?dataset=hst_05766_04_wfpc2_f555w_wf_02</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_f555w_wf_02_drz.jpg</td><td>--</td><td>25579950</td><td>PUBLIC</td><td>2</td><td>F555W</td></tr>
@@ -993,25 +983,19 @@ document.write(`
 </section>
 <section id="filtering-the-data-products">
 <h3>Filtering the Data Products<a class="headerlink" href="#filtering-the-data-products" title="Permalink to this heading">#</a></h3>
-<p>After the data products have been retrieved, you can use <code class="docutils literal notranslate"><span class="pre">filter_products</span></code> to download only data products that meet your given criteria. Available filters are listed <a class="reference external" href="https://mast.stsci.edu/api/v0/_productsfields.html">here</a>. Some examples are: “mrp_only” (Minimum Recommended Products) and “extension” (file extension).</p>
-<p>A note on filtering: each listed filter is joined with an AND, but each option within that filter is joined with an OR. For example, the search below will return any products that are ‘science’ type <strong>and</strong> have a calibration level of 2 <strong>or</strong> 3.</p>
+<p>After the data products have been retrieved, you can use <code class="docutils literal notranslate"><span class="pre">filter_products</span></code> to download only data products that meet your given criteria. There are many <a class="reference external" href="https://mast.stsci.edu/api/v0/_productsfields.html">filters for MAST products</a>. Some examples are: <code class="docutils literal notranslate"><span class="pre">mrp_only</span></code> (Minimum Recommended Products) and <code class="docutils literal notranslate"><span class="pre">extension</span></code> (file extension).</p>
+<p>A note on filtering: each listed filter is joined with an AND, but each option within that filter is joined with an OR. For example, the search below will return any products that are ‘science’ type <strong>AND</strong> have a calibration level of 2 <strong>OR</strong> 3.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scienceProducts</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">dataProducts</span><span class="p">,</span> <span class="n">productType</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;SCIENCE&quot;</span><span class="p">],</span>
                                                <span class="n">calib_level</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">mrp_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scienceProducts</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">scienceProducts</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table masked=True length=5</i>
-<table id="table139703077516368" class="table-striped table-bordered table-condensed">
+<table id="table139710992357456" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
 <thead><tr><th>str8</th><th>str3</th><th>str5</th><th>str30</th><th>str67</th><th>str1</th><th>str96</th><th>str9</th><th>str28</th><th>str8</th><th>str1</th><th>str8</th><th>str19</th><th>str4</th><th>str43</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
 <tr><td>25153181</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_f555w_wf_02</td><td>HLA simple fits science image</td><td>S</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>SCIENCE</td><td>--</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>10281600</td><td>25579950</td><td>PUBLIC</td><td>2</td><td>F555W</td></tr>
@@ -1025,10 +1009,8 @@ document.write(`
 </section>
 <section id="downloading-products">
 <h2>Downloading Products<a class="headerlink" href="#downloading-products" title="Permalink to this heading">#</a></h2>
-<p>Passing a table of products (like the one above) to <code class="docutils literal notranslate"><span class="pre">download_products</span></code> will download the entire table. You can also pass a list of Observation IDs (obs_id) if you know them.</p>
-<p><code class="docutils literal notranslate"><span class="pre">download_products</span></code> also allows you to filter data as you request the download. In the example below, we will only download the drizzled files (drz.fits).</p>
-<p>Products will by default be downloaded into the current working directory, in a subdirectory called “mastDownload.”<br>
-The full local file paths will have the form “mastDownload/Mission/Observation ID/file.”</p>
+<p>Passing a table of products (like the one above) to <code class="docutils literal notranslate"><span class="pre">download_products()</span></code> will download the entire table. You can also pass a list of Observation IDs (obs_id) if you know them. <code class="docutils literal notranslate"><span class="pre">download_products()</span></code> also allows you to filter data as you request the download. In the example below, we will only download the drizzled files (<code class="docutils literal notranslate"><span class="pre">drz.fits</span></code>).</p>
+<p>Products will, by default, be downloaded into the current working directory, in a subdirectory called <code class="docutils literal notranslate"><span class="pre">mastDownload.</span></code>The full local file paths will have the form <code class="docutils literal notranslate"><span class="pre">mastDownload/Mission/Observation</span> <span class="pre">ID/file</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is the filtered download of the scienceProducts table</span>
@@ -1063,7 +1045,7 @@ The full local file paths will have the form “mastDownload/Mission/Observation
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=2</i>
-<table id="table139703284221200" class="table-striped table-bordered table-condensed">
+<table id="table139710752557904" class="table-striped table-bordered table-condensed">
 <thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
 <thead><tr><th>str89</th><th>str8</th><th>object</th><th>object</th></tr></thead>
 <tr><td>./mastDownload/HLA/hst_05766_04_wfpc2_f555w_wf_02/hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
@@ -1089,36 +1071,41 @@ The full local file paths will have the form “mastDownload/Mission/Observation
 </div>
 </div>
 </div>
+<p>With the files opened, we can create a plot:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize the plot</span>
+<span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># set height and width</span>
 <span class="n">f</span><span class="o">.</span><span class="n">set_figheight</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">f</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># plot the data</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">file1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">SymLogNorm</span><span class="p">(</span><span class="n">linthresh</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">file2</span><span class="p">[</span><span class="s1">&#39;SCI&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">SymLogNorm</span><span class="p">(</span><span class="n">linthresh</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f0f28508850&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f10f1e9abd0&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/efc1a22a2a620d0aeaab86c67a97692be19a5ca0ebd01f52f94450cc440ad665.png" src="../../../_images/efc1a22a2a620d0aeaab86c67a97692be19a5ca0ebd01f52f94450cc440ad665.png" />
 </div>
 </div>
-<p>We see the same region of the sky, with subtle differences caused by the differing filters.</p>
+<p>We’ve plotted the same region of the sky, with subtle differences caused by the differing filters.</p>
 </section>
 <section id="further-reading">
 <h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">#</a></h2>
-<p>Full documentation on <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> can be found <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">here</a>.</p>
+<p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astoquery.mast readthedocs</a></p>
 </section>
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
 <p>For additonal questions, comments, or feedback, please email <code class="docutils literal notranslate"><span class="pre">archive&#64;stsci.edu</span></code>.</p>
 <p><strong>Authors:</strong> Thomas Dutkiewicz, Scott Fleming <br>
 <strong>Keywords:</strong> MAST, astroquery <br>
-<strong>Latest update</strong> Oct 2022 <br>
-<strong>Next Review:</strong> Apr 2023</p>
+<strong>Latest update</strong> Mar 2025 <br></p>
 <p><span class="xref myst">Top of Page</span>
 <a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
 </section>
@@ -1191,10 +1178,10 @@ The full local file paths will have the form “mastDownload/Mission/Observation
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-goals">Introduction and Goals:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-ways-to-search-for-mast-observations">Three Ways to Search for MAST Observations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-region">1. By Region</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-object-name">2. By Object Name</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-other-criteria-with-or-without-name-region-a-id-crit-a">3. By Other Criteria (with or without name/region) <a id="crit"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-methods-to-search-for-mast-observations">Three Methods to Search for MAST Observations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-region">1. Query by Region</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-object-name">2. Query by Object Name</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-other-criteria-with-or-without-name-region-a-id-crit-a">3. Query by Other Criteria (with or without name/region) <a id="crit"></a></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-associated-data-products">Getting Associated Data Products</a><ul class="nav section-nav flex-column">
