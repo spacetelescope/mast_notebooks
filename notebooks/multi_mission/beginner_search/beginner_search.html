@@ -739,14 +739,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: InputWarning: Coordinate string is being interpreted as an ICRS coordinate provided in degrees. [astroquery.utils.commons]
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>358
-</pre></div>
-</div>
-</div>
 </div>
 <p>Excellent! At the time of writing, this search returns 358 results. As the MAST archive grows, this number increases; you might see a larger value. Let’s take a look a subset of the results.</p>
 <div class="cell docutils container">
@@ -756,15 +748,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table masked=True length=3</i>
-<table id="table139710994953488" class="table-striped table-bordered table-condensed">
-<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>distance</th></tr></thead>
-<thead><tr><th>str7</th><th>str5</th><th>str9</th><th>str13</th><th>str4</th><th>str4</th><th>str16</th><th>str18</th><th>str4</th><th>str78</th><th>float64</th><th>float64</th><th>str10</th><th>str19</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str63</th><th>float64</th><th>str6</th><th>str3</th><th>int64</th><th>str115</th><th>str120</th><th>str116</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>float64</th></tr></thead>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0054-1-3</td><td>293.1472936457296</td><td>-9.71249801098487</td><td>image</td><td>Ricker, George</td><td>3</td><td>59769.40067108796</td><td>59795.62954313657</td><td>475.199781</td><td>600.0</td><td>1000.0</td><td>--</td><td>59828.0</td><td>N/A</td><td>--</td><td>54</td><td>POLYGON 288.297067 -16.349772 285.946199 -5.101134 297.968471 -2.757443 300.386369 -14.421799 288.297067 -16.349772</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>92616850</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TESS FFI</td><td>--</td><td>tess-s0080-1-4</td><td>285.6629279299061</td><td>-9.094913113849628</td><td>image</td><td>Ricker, George</td><td>3</td><td>60479.387118125</td><td>60505.84107659722</td><td>158.399925</td><td>600.0</td><td>1000.0</td><td>--</td><td>60545.0</td><td>N/A</td><td>--</td><td>80</td><td>POLYGON 280.09193 -15.630142 279.064881 -3.763278 291.262336 -2.663712 292.216134 -14.120328 280.09193 -15.630142</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>229777516</td><td>0.0</td></tr>
-<tr><td>science</td><td>TESS</td><td>SPOC</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>98516825</td><td>--</td><td>tess2022190063128-s0054-0000000098516825-0227-s</td><td>290.30057005371</td><td>-11.6867245976452</td><td>timeseries</td><td>Ricker, George</td><td>3</td><td>59769.40350148148</td><td>59795.633632488425</td><td>120.0</td><td>600.0</td><td>1000.0</td><td>--</td><td>59828.0</td><td>G04103</td><td>--</td><td>54</td><td>CIRCLE 290.30057005 -11.6867246 0.00138889</td><td>--</td><td>mast:TESS/product/tess2022190063128-s0054-0000000098516825-0227-s_lc.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>91544945</td><td>507.5456440624232</td></tr>
-</table></div></div></div>
 </div>
 <p>The columns of the above table (there are many!) correspond to <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">searchable fields in the MAST database</a>. You can find an example of performing a search by criteria <span class="xref myst">down below</span>.</p>
 <p>To avoid that pesky warning from the search above, we can create a <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> object and pass it to our query. Let’s try that now, and in addition, add a radius of 1 arcsecond to this search.</p>
@@ -776,11 +759,6 @@ document.write(`
 <span class="c1"># Same search as above, now with a radius of 1 arcsecond</span>
 <span class="n">obsByRegion2</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s1">&#39;1s&#39;</span><span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">obsByRegion2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11
 </pre></div>
 </div>
 </div>
@@ -798,23 +776,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table length=11</i>
-<table id="table139710994110608" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obs_collection</th><th>intentType</th><th>instrument_name</th><th>target_name</th><th>t_exptime</th><th>filters</th><th>dataproduct_type</th></tr></thead>
-<thead><tr><th>str5</th><th>str7</th><th>str10</th><th>str12</th><th>float64</th><th>str4</th><th>str5</th></tr></thead>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>475.199781</td><td>TESS</td><td>image</td></tr>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>158.399925</td><td>TESS</td><td>image</td></tr>
-<tr><td>PS1</td><td>science</td><td>GPC1</td><td>1126.007</td><td>731.0</td><td>g</td><td>image</td></tr>
-<tr><td>PS1</td><td>science</td><td>GPC1</td><td>1126.007</td><td>900.0</td><td>i</td><td>image</td></tr>
-<tr><td>PS1</td><td>science</td><td>GPC1</td><td>1126.007</td><td>876.0</td><td>r</td><td>image</td></tr>
-<tr><td>PS1</td><td>science</td><td>GPC1</td><td>1126.007</td><td>580.0</td><td>y</td><td>image</td></tr>
-<tr><td>PS1</td><td>science</td><td>GPC1</td><td>1126.007</td><td>480.0</td><td>z</td><td>image</td></tr>
-<tr><td>HLSP</td><td>science</td><td>Photometer</td><td>TICA FFI</td><td>475.2</td><td>TESS</td><td>image</td></tr>
-<tr><td>HLSP</td><td>science</td><td>Photometer</td><td>TICA FFI</td><td>158.4</td><td>TESS</td><td>image</td></tr>
-<tr><td>GALEX</td><td>science</td><td>GALEX</td><td>AIS_246_1_35</td><td>176.0</td><td>NUV</td><td>image</td></tr>
-<tr><td>GALEX</td><td>science</td><td>GALEX</td><td>AIS_246_1_35</td><td>176.0</td><td>FUV</td><td>image</td></tr>
-</table></div></div></div>
 </div>
 <p>This “streamlined” view is helpful: it avoids visual clutter and helps you to focus on the fields that are most relevant to your search.</p>
 </section>
@@ -832,20 +793,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of results: 7503
-</pre></div>
-</div>
-<div class="output text_html"><div><i>Table length=5</i>
-<table id="table139710994099216" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obs_collection</th><th>intentType</th><th>instrument_name</th><th>target_name</th><th>t_exptime</th><th>filters</th><th>dataproduct_type</th></tr></thead>
-<thead><tr><th>str11</th><th>str11</th><th>str12</th><th>str64</th><th>float64</th><th>str26</th><th>str10</th></tr></thead>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>1425.599358</td><td>TESS</td><td>image</td></tr>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>1425.599393</td><td>TESS</td><td>image</td></tr>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>1425.599383</td><td>TESS</td><td>image</td></tr>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>475.199787</td><td>TESS</td><td>image</td></tr>
-<tr><td>TESS</td><td>science</td><td>Photometer</td><td>TESS FFI</td><td>158.399923</td><td>TESS</td><td>image</td></tr>
-</table></div></div></div>
 </div>
 <p>For some special catalogs, like those used with Kepler, K2, and TESS, <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> performs a direct lookup using the MAST catalog. It is important to include both the <strong><em>catalog identifier</em></strong> and number when searching one of these datasets; for example, to query the TESS Input catalog you would use <code class="docutils literal notranslate"><span class="pre">&quot;TIC</span> <span class="pre">261136679&quot;</span></code>, rather than a plain <code class="docutils literal notranslate"><span class="pre">&quot;261136679&quot;</span></code>.</p>
 <div class="cell docutils container">
@@ -861,31 +808,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of results: 3530
-</pre></div>
-</div>
-<div class="output text_html"><div><i>Table length=5</i>
-<table id="table139710992402000" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obs_collection</th><th>wavelength_region</th><th>provenance_name</th><th>t_min</th><th>t_max</th><th>obsid</th></tr></thead>
-<thead><tr><th>str11</th><th>str10</th><th>str17</th><th>float64</th><th>float64</th><th>str9</th></tr></thead>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58324.81304390046</td><td>58352.666903854166</td><td>60865631</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58410.41593530092</td><td>58436.33232072917</td><td>61132377</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58516.85312458334</td><td>58541.49921487269</td><td>62468248</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58596.27096596065</td><td>58623.37541814815</td><td>65153352</td></tr>
-<tr><td>TESS</td><td>Optical</td><td>SPOC</td><td>58624.45954434028</td><td>58652.37651001157</td><td>65180725</td></tr>
-</table></div></div></div>
 </div>
 <p>It’s worth noting that even though we queried using the TESS Input Catalog, not all of the results are from the TESS mission.  In fact, we can see exactly which missions are returned using Python’s built-in <code class="docutils literal notranslate"><span class="pre">set</span></code> function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># return the unique set of missions found in this query</span>
 <span class="nb">set</span><span class="p">(</span><span class="n">obsByTessName</span><span class="p">[</span><span class="s1">&#39;obs_collection&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;GALEX&#39;, &#39;HLSP&#39;, &#39;SPITZER_SHA&#39;, &#39;SWIFT&#39;, &#39;TESS&#39;}
 </pre></div>
 </div>
 </div>
@@ -908,17 +836,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table length=5</i>
-<table id="table139710992418640" class="table-striped table-bordered table-condensed">
-<thead><tr><th>target_name</th><th>s_ra</th><th>s_dec</th><th>t_exptime</th><th>obsid</th></tr></thead>
-<thead><tr><th>str8</th><th>float64</th><th>float64</th><th>float64</th><th>str8</th></tr></thead>
-<tr><td>TESS FFI</td><td>133.67905448025425</td><td>-46.18239603008324</td><td>1425.599414</td><td>62896230</td></tr>
-<tr><td>TESS FFI</td><td>119.47374170204309</td><td>-54.111065646216794</td><td>1425.599414</td><td>62896721</td></tr>
-<tr><td>TESS FFI</td><td>169.0707180032819</td><td>-21.387226979894706</td><td>1425.599414</td><td>62891912</td></tr>
-<tr><td>TESS FFI</td><td>157.48628713094715</td><td>-43.22571855614874</td><td>1425.599414</td><td>62894034</td></tr>
-<tr><td>TESS FFI</td><td>162.4696250638618</td><td>-5.425652707919927</td><td>1425.599414</td><td>62892977</td></tr>
-</table></div></div></div>
 </div>
 <p>There’s no limit on the number of filters you can apply in a search. It may be an interesting exercise for the reader to go through the example below and figure out what exactly we’re searching for.</p>
 <p>(Hint: check the <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">field descriptions</a>)</p>
@@ -935,16 +852,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table length=4</i>
-<table id="table139710992488016" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obs_collection</th><th>obs_id</th><th>target_name</th><th>filters</th><th>instrument_name</th><th>proposal_id</th></tr></thead>
-<thead><tr><th>str3</th><th>str27</th><th>str12</th><th>str9</th><th>str9</th><th>str4</th></tr></thead>
-<tr><td>HLA</td><td>hst_05766_04_wfpc2_f555w_pc</td><td>NGC5457-FLD2</td><td>F555W</td><td>WFPC2/PC</td><td>5766</td></tr>
-<tr><td>HLA</td><td>hst_05766_04_wfpc2_f555w_wf</td><td>NGC5457-FLD2</td><td>F555W</td><td>WFPC2/WFC</td><td>5766</td></tr>
-<tr><td>HLA</td><td>hst_05766_04_wfpc2_total_pc</td><td>NGC5457-FLD2</td><td>DETECTION</td><td>WFPC2/PC</td><td>5766</td></tr>
-<tr><td>HLA</td><td>hst_05766_04_wfpc2_total_wf</td><td>NGC5457-FLD2</td><td>DETECTION</td><td>WFPC2/WFC</td><td>5766</td></tr>
-</table></div></div></div>
 </div>
 </section>
 </section>
@@ -968,17 +875,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table masked=True length=5</i>
-<table id="table139710992408912" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
-<thead><tr><th>str8</th><th>str3</th><th>str5</th><th>str30</th><th>str67</th><th>str1</th><th>str96</th><th>str9</th><th>str28</th><th>str8</th><th>str1</th><th>str8</th><th>str19</th><th>str4</th><th>str43</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
-<tr><td>25153181</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_f555w_wf_02</td><td>Preview-Full</td><td>S</td><td>mast:HLA/url/cgi-bin/preview.cgi?dataset=hst_05766_04_wfpc2_f555w_wf_02</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_f555w_wf_02_drz.jpg</td><td>--</td><td>25579950</td><td>PUBLIC</td><td>2</td><td>F555W</td></tr>
-<tr><td>25153181</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_f555w_wf_02</td><td>HLA simple fits science image</td><td>S</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>SCIENCE</td><td>--</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>10281600</td><td>25579950</td><td>PUBLIC</td><td>2</td><td>F555W</td></tr>
-<tr><td>25579950</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_total_wf</td><td>Preview-Full</td><td>C</td><td>mast:HLA/url/cgi-bin/preview.cgi?dataset=hst_05766_04_wfpc2_total_wf</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_total_wf_drz.jpg</td><td>--</td><td>25579950</td><td>PUBLIC</td><td>3</td><td>DETECTION</td></tr>
-<tr><td>25579950</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_total_wf</td><td>HLA DAOPHOT Catalog</td><td>C</td><td>mast:HLA/url/cgi-bin/getdata.cgi?download=1&amp;filename=hst_05766_04_wfpc2_total_wf_daophot_trm.cat</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DAOPHOT</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_total_wf_daophot_trm.cat</td><td>--</td><td>25579950</td><td>PUBLIC</td><td>3</td><td>DETECTION</td></tr>
-<tr><td>25579950</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_total_wf</td><td>HLA simple fits science image</td><td>C</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_total_wf_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_total_wf_drz.fits</td><td>30798720</td><td>25579950</td><td>PUBLIC</td><td>3</td><td>DETECTION</td></tr>
-</table></div></div></div>
 </div>
 </section>
 <section id="filtering-the-data-products">
@@ -993,17 +889,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table masked=True length=5</i>
-<table id="table139710992357456" class="table-striped table-bordered table-condensed">
-<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
-<thead><tr><th>str8</th><th>str3</th><th>str5</th><th>str30</th><th>str67</th><th>str1</th><th>str96</th><th>str9</th><th>str28</th><th>str8</th><th>str1</th><th>str8</th><th>str19</th><th>str4</th><th>str43</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
-<tr><td>25153181</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_f555w_wf_02</td><td>HLA simple fits science image</td><td>S</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>SCIENCE</td><td>--</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>10281600</td><td>25579950</td><td>PUBLIC</td><td>2</td><td>F555W</td></tr>
-<tr><td>25579950</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_total_wf</td><td>HLA DAOPHOT Catalog</td><td>C</td><td>mast:HLA/url/cgi-bin/getdata.cgi?download=1&amp;filename=hst_05766_04_wfpc2_total_wf_daophot_trm.cat</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DAOPHOT</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_total_wf_daophot_trm.cat</td><td>--</td><td>25579950</td><td>PUBLIC</td><td>3</td><td>DETECTION</td></tr>
-<tr><td>25579950</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_total_wf</td><td>HLA simple fits science image</td><td>C</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_total_wf_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_total_wf_drz.fits</td><td>30798720</td><td>25579950</td><td>PUBLIC</td><td>3</td><td>DETECTION</td></tr>
-<tr><td>25579950</td><td>HLA</td><td>image</td><td>hst_05766_04_wfpc2_total_wf</td><td>HLA SExtractor Catalog</td><td>C</td><td>mast:HLA/url/cgi-bin/getdata.cgi?download=1&amp;filename=hst_05766_04_wfpc2_total_wf_sexphot_trm.cat</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>SEXPHOT</td><td>--</td><td>HLA</td><td>--</td><td>5766</td><td>hst_05766_04_wfpc2_total_wf_sexphot_trm.cat</td><td>--</td><td>25579950</td><td>PUBLIC</td><td>3</td><td>DETECTION</td></tr>
-<tr><td>24556184</td><td>HST</td><td>image</td><td>u2ms0402t</td><td>DADS C0F file - Calibrated exposure WFPC/WFPC2/FOC/FOS/GHRS/HSP</td><td>S</td><td>mast:HST/product/u2ms0402t_c0f.fits</td><td>SCIENCE</td><td>--</td><td>C0F</td><td>--</td><td>CALWFPC2</td><td>2.5.3 (Sep 4, 2008)</td><td>5766</td><td>u2ms0402t_c0f.fits</td><td>10307520</td><td>25579950</td><td>PUBLIC</td><td>2</td><td>F555W</td></tr>
-</table></div></div></div>
 </div>
 </section>
 </section>
@@ -1021,20 +906,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_f555w_wf_02_drz.fits to ./mastDownload/HLA/hst_05766_04_wfpc2_f555w_wf_02/hst_05766_04_wfpc2_f555w_wf_02_drz.fits ...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_05766_04_wfpc2_total_wf_drz.fits to ./mastDownload/HLA/hst_05766_04_wfpc2_total_wf/hst_05766_04_wfpc2_total_wf_drz.fits ...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
-</pre></div>
-</div>
-</div>
 </div>
 <p>Note: <code class="docutils literal notranslate"><span class="pre">download_products</span></code> includes caching by default. If you have downloaded the files before, they will not be downloaded again unless caching is turned off. This may cause issues if the data is updated and the filename remains the same!</p>
 <div class="cell docutils container">
@@ -1043,14 +914,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><i>Table length=2</i>
-<table id="table139710752557904" class="table-striped table-bordered table-condensed">
-<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
-<thead><tr><th>str89</th><th>str8</th><th>object</th><th>object</th></tr></thead>
-<tr><td>./mastDownload/HLA/hst_05766_04_wfpc2_f555w_wf_02/hst_05766_04_wfpc2_f555w_wf_02_drz.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
-<tr><td>./mastDownload/HLA/hst_05766_04_wfpc2_total_wf/hst_05766_04_wfpc2_total_wf_drz.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
-</table></div></div></div>
 </div>
 <p>The manifest returns useful information about the status of the files. You can find the local path, along with a status. This will either be COMPLETE, SKIPPED, or ERROR. If the status is ERROR, there will be additional information in the ‘Message’ column. The URL field includes a link to directly download the data.</p>
 </section>
@@ -1086,12 +949,6 @@ document.write(`
 <span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">file2</span><span class="p">[</span><span class="s1">&#39;SCI&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">SymLogNorm</span><span class="p">(</span><span class="n">linthresh</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f10f1e9abd0&gt;
-</pre></div>
-</div>
-<img alt="../../../_images/efc1a22a2a620d0aeaab86c67a97692be19a5ca0ebd01f52f94450cc440ad665.png" src="../../../_images/efc1a22a2a620d0aeaab86c67a97692be19a5ca0ebd01f52f94450cc440ad665.png" />
 </div>
 </div>
 <p>We’ve plotted the same region of the sky, with subtle differences caused by the differing filters.</p>
