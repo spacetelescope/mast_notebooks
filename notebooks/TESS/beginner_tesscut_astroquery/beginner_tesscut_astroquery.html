@@ -733,6 +733,17 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    ID      Tmag   Jmag         ra               dec        objType
+--------- ------- ------ ---------------- ----------------- -------
+261105201  8.3629   7.74 82.8273670408244 -79.0087723001529    STAR
+724151530 18.7511    nan 82.8150127457216 -79.0132058191133    STAR
+261105202 15.6838 13.738  82.807947620659 -79.0136350375361    STAR
+724151528 20.1425    nan   82.79364170498 -79.0085739998184    STAR
+724151541 19.6238    nan 82.8606445683429 -79.0110416543022    STAR
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -742,6 +753,11 @@ document.write(`
 <span class="c1"># Make it a list of Ra, Dec pairs of the bright ones. This is now a list of nearby bright stars.</span>
 <span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12
 </pre></div>
 </div>
 </div>
@@ -758,6 +774,34 @@ Using the TESS sector information service, we make a request to determine which 
 
 <span class="n">sectorTable</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_sectors</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sectorTable</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  sectorName   sector camera ccd
+-------------- ------ ------ ---
+tess-s0001-4-2      1      4   2
+tess-s0002-4-2      2      4   2
+tess-s0004-4-3      4      4   3
+tess-s0005-4-3      5      4   3
+tess-s0007-4-4      7      4   4
+tess-s0008-4-4      8      4   4
+tess-s0009-4-4      9      4   4
+tess-s0011-4-1     11      4   1
+tess-s0012-4-1     12      4   1
+tess-s0013-3-3     13      3   3
+           ...    ...    ... ...
+tess-s0061-4-4     61      4   4
+tess-s0062-4-4     62      4   4
+tess-s0063-4-1     63      4   1
+tess-s0064-4-1     64      4   1
+tess-s0065-4-1     65      4   1
+tess-s0066-3-4     66      3   4
+tess-s0067-3-3     67      3   3
+tess-s0068-4-2     68      4   2
+tess-s0087-4-4     87      4   4
+tess-s0088-4-4     88      4   4
+Length = 30 rows
 </pre></div>
 </div>
 </div>
@@ -784,6 +828,18 @@ Using the TESS sector information service, we make a request to determine which 
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;SECTOR&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: &lt;class &#39;_io.BytesIO&#39;&gt;
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      57   ()      
+  1  PIXELS        1 BinTableHDU    281   1282R x 12C   [D, E, J, 400J, 400E, 400E, 400E, 400E, J, E, E, 38A]   
+  2  APERTURE      1 ImageHDU        82   (20, 20)   int32   
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
@@ -824,6 +880,12 @@ Using the TESS sector information service, we make a request to determine which 
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Image Row&#39;)
+</pre></div>
+</div>
+<img alt="../../../_images/6d2f289db1df2845255490caefb9b62d3103ecc66b53eea7e18666ef62ed683d.png" src="../../../_images/6d2f289db1df2845255490caefb9b62d3103ecc66b53eea7e18666ef62ed683d.png" />
+</div>
 </div>
 <section id="show-the-first-image-with-wcs-information">
 <h3>Show the first image with WCS information<a class="headerlink" href="#show-the-first-image-with-wcs-information" title="Permalink to this heading">#</a></h3>
@@ -853,6 +915,12 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
             <span class="n">s</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f57557f7bd0&gt;
+</pre></div>
+</div>
+<img alt="../../../_images/dbab10cc0c0b6fa48f61c95b2e7f4ce33d1253a62dbaefea7310f2bde0d2a7ee.png" src="../../../_images/dbab10cc0c0b6fa48f61c95b2e7f4ce33d1253a62dbaefea7310f2bde0d2a7ee.png" />
 </div>
 </div>
 <p><a id="lightcurve"></a></p>
@@ -909,6 +977,12 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Flux in Photometric Aperture&#39;)
+</pre></div>
+</div>
+<img alt="../../../_images/0458d9b86a2e5fc750269b901cfc89a06629b5d715cee0801a36b31b33409541.png" src="../../../_images/0458d9b86a2e5fc750269b901cfc89a06629b5d715cee0801a36b31b33409541.png" />
+</div>
 </div>
 </section>
 <section id="estimate-the-background">
@@ -931,6 +1005,12 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Background Flux&#39;)
+</pre></div>
+</div>
+<img alt="../../../_images/f8d80d68a6623031270f7ec92a1324af25ab57e85b5fb9a8541c134c8a273587.png" src="../../../_images/f8d80d68a6623031270f7ec92a1324af25ab57e85b5fb9a8541c134c8a273587.png" />
+</div>
 </div>
 </section>
 <section id="subtract-the-background-from-the-flux-time-series">
@@ -948,6 +1028,12 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Background Subtracted Flux&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Background Subtracted Flux&#39;)
+</pre></div>
+</div>
+<img alt="../../../_images/d3eea64b5130f78984318c918aeef671cad60f58a8b7c05f306f06fcf5c309e8.png" src="../../../_images/d3eea64b5130f78984318c918aeef671cad60f58a8b7c05f306f06fcf5c309e8.png" />
 </div>
 </div>
 <p><a id="resources_ID"></a></p>
