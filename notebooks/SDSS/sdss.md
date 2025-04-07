@@ -14,9 +14,8 @@ For more general information relating to SDSS, the documentation is available at
 
 | Notebook        | Description                                                                                                                                                  |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [MaNGA HST Tutorial](https://github.com/spacetelescope/mast_notebooks/blob/main/notebooks/SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.ipynb) | Tutorial for how to search and download MaNGA data at MAST using `astroquery.mast`. Combines H-alpha emission maps from MaNGA and images from HST to make galaxy maps for for interacting galaxy pair Mrk-848B. |
-| [APOGEE TESS Tutorial](https://github.com/spacetelescope/mast_notebooks/blob/main/notebooks/SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.ipynb) | Tutorial for how to search and download APOGEE data at MAST using `astroquery.mast`. Combines infrared spectra from APOGEE and corresponding lightcurves from TESS to characterize different types of variable stars. |
-
+| [MaNGA and HST Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html) | Tutorial for how to search and download MaNGA data at MAST using `astroquery.mast`. Combines H-alpha emission maps from MaNGA and images from HST to make galaxy maps for for interacting galaxy pair Mrk-848B. |
+| [APOGEE and TESS Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html) | Tutorial for how to search and download APOGEE data at MAST using `astroquery.mast`. Combines infrared spectra from APOGEE and corresponding lightcurves from TESS to characterize different types of variable stars. |
+| [eBOSS and JWST Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html) | Tutorial for how to search and download eBOSS data at MAST using `astroquery.mast`. Characterizing emission lines in high-redshift quasars using optical spectra from eBOSS and infrared spectra from JWST. |
 
 More SDSS notebooks will be coming soon!
-
