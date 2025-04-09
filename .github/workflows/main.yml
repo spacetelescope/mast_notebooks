@@ -1,0 +1,55 @@
+name: test-output
+
+env:
+  username: test
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'thomas'
+        required: false
+        type: string
+
+
+jobs:
+  print-username:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set the value
+        id: step_one
+        run: |
+          echo "action_state=yellow" >> "$GITHUB_ENV"
+      - name: Use the value
+        id: step_two
+        run: |
+          printf '%s\n' "$action_state" # This will output 'yellow'
+    # steps:
+    #   - name: Print the input name to STDOUT
+    #     run: echo The username is $username.
+  
+
+# on:
+#   workflow_dispatch
+#     inputs:
+#       # the notebook file name; no directories necessary, as this is handled below
+#       name:
+#         description: "your name"
+#         required: true
+#         default: mis_mosaic.ipynb
+
+# env:
+#   DAY_OF_WEEK: Monday
+
+
+# jobs:
+#   greeting_job:
+#     runs-on: ubuntu-latest
+#     env:
+#       Greeting: Hello
+#     steps:
+#       - name: "Say Hello Mona it's Monday"
+#         run: echo "$Greeting $inputs.name. Today is $DAY_OF_WEEK!"
+#         env:
+#           First_Name: Mona
