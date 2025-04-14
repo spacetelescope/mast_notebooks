@@ -699,7 +699,6 @@ document.write(`
 </li>
 <li><p><span class="xref myst">FITS cutouts</span></p></li>
 </ul>
-<p><font color="red">Automated testing has found an error in this Notebook. The authors have been notified and are working on the issue; in the meantime, please use this as a reference only.</font></p>
 </section>
 <section id="import-statements">
 <h2>Import Statements<a class="headerlink" href="#import-statements" title="Permalink to this heading">#</a></h2>
@@ -743,6 +742,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (189.49206, 62.20615)&gt;
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="query-for-available-surveys">
@@ -752,6 +757,11 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">survey_list</span> <span class="o">=</span> <span class="n">Zcut</span><span class="o">.</span><span class="n">get_surveys</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">survey_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;candels_gn_60mas&#39;, &#39;candels_gn_30mas&#39;, &#39;goods_north&#39;, &#39;3dhst_goods-n&#39;]
 </pre></div>
 </div>
 </div>
@@ -768,6 +778,30 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL https://mast.stsci.edu/zcut/api/v0.1/astrocut?ra=189.49206&amp;dec=62.20615&amp;y=500&amp;x=300&amp;units=px&amp;survey=3dhst_goods-n&amp;format=jpg to ./zcut_20250414165105.zip ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                Local Path                                                
+----------------------------------------------------------------------------------------------------------
+   ./hlsp_3dhst_spitzer_irac_goods-n_irac1_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+./hlsp_3dhst_spitzer_irac_goods-n-s2_irac3_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+./hlsp_3dhst_spitzer_irac_goods-n-s1_irac4_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+   ./hlsp_3dhst_spitzer_irac_goods-n_irac2_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+      ./hlsp_3dhst_mayall_mosaic_goods-n_u_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+ ./hlsp_3dhst_subaru_suprimecam_goods-n_rc_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+  ./hlsp_3dhst_subaru_suprimecam_goods-n_v_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+ ./hlsp_3dhst_subaru_suprimecam_goods-n_ic_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+ ./hlsp_3dhst_subaru_suprimecam_goods-n_zp_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+  ./hlsp_3dhst_subaru_suprimecam_goods-n_b_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+      ./hlsp_3dhst_subaru_moircs_goods-n_j_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+      ./hlsp_3dhst_subaru_moircs_goods-n_h_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg
+</pre></div>
+</div>
+</div>
 </div>
 <p>This list of filenames looks overwhelming at first glance, but they follow a pattern: HLSP, telescope name, filter, then v4.0, the coordinates, and resolution. This is helpful, as we can create a function to match a filter to filename.</p>
 <p>For the example below, we’ll use Subaru’s suprime-cam, which has five <a class="reference external" href="https://subarutelescope.org/Observing/Instruments/SCam/sensitivity.html">available filters</a> for this observation. We’ll select the ones that correspond (roughly) to red, green, and blue light. After we look at the individual cutouts, we can process them into a true-color image.</p>
@@ -777,7 +811,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">imgname</span><span class="p">(</span><span class="n">filt</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;./hlsp_3dhst_subaru_suprimecam_goods-n_&quot;</span>
             <span class="o">+</span> <span class="n">filt</span>
-            <span class="o">+</span> <span class="s2">&quot;_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut.jpg&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;_v4.0_sc_189.492060_62.206150_300.0pix-x-500.0pix_astrocut_0.jpg&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">name</span>
 
 
@@ -795,6 +829,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/e7ef8a7f601803d9a89437c27c8ab5e0c8ea0ae818a6d2b46cd7d6fc542fec92.png" src="../../../_images/e7ef8a7f601803d9a89437c27c8ab5e0c8ea0ae818a6d2b46cd7d6fc542fec92.png" />
+</div>
 </div>
 <p>Next, we combine the three <code class="docutils literal notranslate"><span class="pre">.jpg</span></code> cutouts into a single, colorized image:</p>
 <div class="cell docutils container">
@@ -802,6 +839,9 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">red</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">green</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">blue</span><span class="p">)])</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b3c35e93a213d310152a81e4a8dbb7a38eb48ed9e483eb892a13d4566318b8b7.png" src="../../../_images/b3c35e93a213d310152a81e4a8dbb7a38eb48ed9e483eb892a13d4566318b8b7.png" />
 </div>
 </div>
 <p>If instead you want to create and colorize images from FITS files, you can use the built-in functions in <code class="docutils literal notranslate"><span class="pre">astropy.visualization</span></code>. More details are available <a class="reference external" href="https://docs.astropy.org/en/stable/visualization/rgb.html">here</a>.</p>
@@ -862,6 +902,9 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/d506e7400fc86f9c4460158c99834c0ec74763f91dc6fc8f034b5746599a6dfd.png" src="../../../_images/d506e7400fc86f9c4460158c99834c0ec74763f91dc6fc8f034b5746599a6dfd.png" />
 </div>
 </div>
 <p>It’s interesting to note that Gaia recognises two stars in the brightest spot of the image. At the same time, the far fainter point in the lower right is not in the Gaia catalog at all!</p>

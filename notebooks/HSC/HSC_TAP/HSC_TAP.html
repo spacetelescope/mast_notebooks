@@ -713,13 +713,8 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
 
-<span class="c1">## For handling ordinary astropy Tables in responses</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
-
 <span class="c1"># For displaying and manipulating some types of results</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">astropy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -806,10 +801,10 @@ Interface vr:WebBrowser
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">HSC_tables</span> <span class="o">=</span> <span class="n">HSC_service</span><span class="o">.</span><span class="n">tables</span>
 <span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">HSC_tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>  
+    <span class="k">if</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>  
         <span class="c1"># No descriptions are available for these tables; this will just print the name</span>
         <span class="n">HSC_tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span> 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Columns=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">k</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">HSC_tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span> <span class="p">])))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Columns=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">k</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">HSC_tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">])))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -825,9 +820,7 @@ dbo.hcvdetailedview
 
 Columns=[&#39;ci&#39;, &#39;corrmag&#39;, &#39;d&#39;, &#39;filter&#39;, &#39;imagename&#39;, &#39;mag&#39;, &#39;magerr&#39;, &#39;matchid&#39;, &#39;mjd&#39;]
 ----
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dbo.hcvsummaryview
+dbo.hcvsummaryview
     Summary list of Hubble Catalog of Variables parameters
 
 Columns=[&#39;autoclass&#39;, &#39;chi2&#39;, &#39;dec&#39;, &#39;expertclass&#39;, &#39;filter&#39;, &#39;filterdetflag&#39;, &#39;groupid&#39;, &#39;mad&#39;, &#39;matchid&#39;, &#39;meancorrmag&#39;, &#39;meanmag&#39;, &#39;numlc&#39;, &#39;ra&#39;, &#39;subgroupid&#39;, &#39;varqualflag&#39;]
@@ -884,8 +877,8 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=10</i>
-<table id="table140573490234384" class="table-striped table-bordered table-condensed">
-<thead><tr><th>matchra</th><th>matchdec</th><th>targetname</th><th>starttime</th><th>stoptime</th></tr></thead>
+<table id="table139674527297680" class="table-striped table-bordered table-condensed">
+<thead><tr><th>MatchRA</th><th>MatchDec</th><th>TargetName</th><th>StartTime</th><th>StopTime</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th></tr></thead>
 <tr><td>129.2301415929065</td><td>7.950695449211841</td><td>J083655+075712</td><td>2009-12-07 16:10:34.380000</td><td>2009-12-07 16:53:36.620000</td></tr>
@@ -916,8 +909,8 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=10</i>
-<table id="table140573487159440" class="table-striped table-bordered table-condensed">
-<thead><tr><th>matchid</th><th>matchra</th><th>matchdec</th><th>targetname</th><th>starttime</th><th>stoptime</th></tr></thead>
+<table id="table139674529474384" class="table-striped table-bordered table-condensed">
+<thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>TargetName</th><th>StartTime</th><th>StopTime</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th></tr></thead>
 <tr><td>25671973</td><td>129.23292107651497</td><td>7.994530012714008</td><td>SDSSJ0837+0801</td><td>2015-03-15 14:22:48.950000</td><td>2015-03-15 14:55:27.980000</td></tr>
@@ -954,8 +947,8 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=21720</i>
-<table id="table140573486251792" class="table-striped table-bordered table-condensed">
-<thead><tr><th>matchid</th><th>matchra</th><th>matchdec</th><th>targetname</th><th>numimages</th><th>numvisits</th><th>a_f475w</th><th>a_f475w_mad</th><th>a_f475w_n</th></tr></thead>
+<table id="table139674529750736" class="table-striped table-bordered table-condensed">
+<thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>TargetName</th><th>NumImages</th><th>NumVisits</th><th>A_F475W</th><th>A_F475W_MAD</th><th>A_F475W_N</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th></th><th></th><th></th><th>mag</th><th>mag</th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>object</th><th>int32</th><th>int32</th><th>float64</th><th>float64</th><th>int32</th></tr></thead>
 <tr><td>2773895</td><td>16.117561379987404</td><td>2.162183863356067</td><td>IC1613</td><td>26</td><td>14</td><td>23.48359966278076</td><td>0.13920021057128906</td><td>12</td></tr>
@@ -982,8 +975,8 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;a_f475w&#39;</span><span class="p">],</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;a_f475w_mad&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;A_F475W&#39;</span><span class="p">],</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;A_F475W_MAD&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;A_F475W&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;A_F475W_MAD&#39;</span><span class="p">)</span>
 </pre></div>
@@ -998,12 +991,12 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">madvalues</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;a_f475w_mad&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">madvalues</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;A_F475W_MAD&#39;</span><span class="p">]</span>
 <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">madvalues</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">HSC_results</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-<span class="n">matchid</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;matchid&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+<span class="n">matchid</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;MatchID&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
 <span class="n">details</span> <span class="o">=</span> <span class="n">HSC_service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT SourceID, ImageID, SourceRA, SourceDec, D, Filter, Detector, MagAper2, StartMJD</span>
 <span class="s2">FROM dbo.DetailedCatalog</span>
@@ -1016,7 +1009,7 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 <span class="n">HSC_details</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">HSC_details</span><span class="p">[</span><span class="s1">&#39;StartMJD&#39;</span><span class="p">],</span> <span class="n">HSC_details</span><span class="p">[</span><span class="s1">&#39;MagAper2&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;MJD&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;A_F475W&#39;</span><span class="p">)</span>
@@ -1024,7 +1017,7 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> matchid       matchra            matchdec      targetname numimages numvisits      a_f475w          a_f475w_mad     a_f475w_n
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MatchID       MatchRA            MatchDec      TargetName NumImages NumVisits      A_F475W          A_F475W_MAD     A_F475W_N
                  deg                deg                                               mag                mag                  
 --------- ------------------ ------------------ ---------- --------- --------- ------------------ ------------------ ---------
 102334412 16.130003898898327 2.1655152822114365     IC1613        26        14 20.970849990844727 0.5844001770019531        12
@@ -1059,12 +1052,12 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Query completed in 66.8 sec
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Query completed in 41.2 sec
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=100000</i>
-<table id="table140573482664976" class="table-striped table-bordered table-condensed">
-<thead><tr><th>matchid</th><th>matchra</th><th>matchdec</th><th>ci</th><th>a_f555w</th><th>a_f814w</th></tr></thead>
+<table id="table139674526903248" class="table-striped table-bordered table-condensed">
+<thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>CI</th><th>A_F555W</th><th>A_F814W</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mag</th><th>mag</th><th>mag</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>87193895</td><td>13.024000412138577</td><td>-72.92968859326582</td><td>1.443580271285257</td><td>24.840599060058594</td><td>24.58449935913086</td></tr>
@@ -1091,21 +1084,21 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 <p>Next, plot the color-magnitude diagram for the ~100k points retrieved from the database. This uses kernel density estimate for the crowded plot. As a preview for the demo, we are only working with 1/25th of the data so that the notebook executes quickly. You can switch the commented-out lines to call gaussian_kde for the full plot, which can take a few minutes to complete.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f555w</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;a_f555w&#39;</span><span class="p">]</span>
-<span class="n">f814w</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;a_f814w&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f555w</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;A_F555W&#39;</span><span class="p">]</span>
+<span class="n">f814w</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;A_F814W&#39;</span><span class="p">]</span>
 <span class="n">VminusI</span> <span class="o">=</span> <span class="n">f555w</span><span class="o">-</span><span class="n">f814w</span>
-<span class="n">CI</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;ci&#39;</span><span class="p">]</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">CI</span><span class="o">&gt;</span><span class="mf">0.9</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">CI</span><span class="o">&lt;</span><span class="mf">1.6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">VminusI</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">VminusI</span> <span class="o">&lt;</span> <span class="mf">1.5</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="s2">&quot;points remaining after CI and V-I filtering&quot;</span><span class="p">)</span>
+<span class="n">CI</span> <span class="o">=</span> <span class="n">HSC_results</span><span class="p">[</span><span class="s1">&#39;CI&#39;</span><span class="p">]</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">CI</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">CI</span> <span class="o">&lt;</span> <span class="mf">1.6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">VminusI</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">VminusI</span> <span class="o">&lt;</span> <span class="mf">1.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s2">&quot;points remaining after CI and V-I filtering&quot;</span><span class="p">)</span>
 
 <span class="c1"># Calculate the point density</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">VminusI</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f555w</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
-<span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">])</span>
+<span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="n">z</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="p">::</span><span class="mi">25</span><span class="p">])(</span><span class="n">xy</span><span class="p">)</span> <span class="c1">#to do the KDE on only the full dataset, comment out this and uncomment below:</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="p">::</span><span class="mi">25</span><span class="p">])(</span><span class="n">xy</span><span class="p">)</span> <span class="c1"># to do the KDE on only the full dataset, comment out this and uncomment below:</span>
 <span class="c1">#z = gaussian_kde(xy)(xy) #uncomment this line to do the KDE on the full dataset</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;kde took </span><span class="si">{:.1f}</span><span class="s2"> sec&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">))</span>
@@ -1128,16 +1121,16 @@ Columns=[&#39;image_filedate&#39;, &#39;image_name&#39;, &#39;image_published&#3
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">autoscale</span><span class="p">(</span><span class="n">tight</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;V-I&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">.17</span><span class="p">,</span><span class="mf">.93</span><span class="p">,</span><span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> stars in SMC&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
-       <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-       <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">.17</span><span class="p">,</span> <span class="mf">.93</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> stars in SMC&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
+         <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+         <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
 <span class="c1">#plt.savefig(&quot;smc_colormag.png&quot;)</span>
 </pre></div>
 </div>
