@@ -16,5 +16,5 @@ The [`astroquery.mast` readthedocs](https://astroquery.readthedocs.io/en/latest/
 | Beginner ZCut   | The `zcut` feature enables you to request cutouts from [various deep field surveys](https://mast.stsci.edu/zcut/).                                           |
 | Large Downloads | When downloading large datasets, you may encounter timeout errors. This Notebook demonstrates robust queries that are less likely to encounter these issues. |
 | Historic Quasar Observations | Much of the data in MAST is archival; from no longer operational missions. Learn to check for archival coverage of your target and analyze the results. |
-| Searching for Mission-Specific Data with Astroquery | Learn the basic workflow for searching mission datasets, retrieving data products, and 
-downloading data products with the `MastMissions` class, a wrapper around the [MAST Search API.](https://mast.stsci.edu/search/docs/) |
+| Searching for Mission-Specific Data with Astroquery | Learn the basic workflow for searching mission datasets, retrieving data products, and downloading data products with the `MastMissions` class, a wrapper around the [MAST Search API.](https://mast.stsci.edu/search/docs/) |
+| Resolving Named Objects with Astroquery | Learn how to resolve named objects using the `astroquery.mast` module and specify which resolver to use in queries. |
