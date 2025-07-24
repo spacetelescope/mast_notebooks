@@ -1,0 +1,1853 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Creating a Color-Magnitude Diagram for Messier 13 &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Astroquery" href="../../multi_mission/astroquery.html" />
+    <link rel="prev" title="Calculating the Hubble Constant with eBOSS" href="../eBOSS_HST_hubbles_law/hubbles_law.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../sdss.html">Sloan Digital Sky Survey (SDSS)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Creating a Color-Magnitude Diagram for Messier 13</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-sdss-legacy-imaging-survey-data-from-mast">Accessing SDSS Legacy Imaging Survey Data from MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-sdss-legacy-imaging-survey">Querying SDSS Legacy Imaging Survey</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-sdss-legacy-imaging-survey-for-m13">Sampling SDSS Legacy Imaging Survey for M13</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-sdss-legacy-imaging-survey-data-products">Downloading SDSS Legacy Imaging Survey Data Products</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-color-magnitude-diagram-of-m13">Creating a Color-Magnitude Diagram of M13</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-distance-to-m13-using-data-from-gaia">Finding the Distance to M13 Using Data from Gaia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-age-of-m13-using-stellar-isochrone-matching">Determining the Age of M13 Using Stellar Isochrone Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solutions">Exercise Solutions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addtional-resources">Addtional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="creating-a-color-magnitude-diagram-for-messier-13">
+<h1>Creating a Color-Magnitude Diagram for Messier 13<a class="headerlink" href="#creating-a-color-magnitude-diagram-for-messier-13" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to use <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> to download the SDSS Legacy Imaging Survey Data from the MAST archive.</p></li>
+<li><p>Plot a Color-Magnitude Diagram of Messier 13</p></li>
+<li><p>Calculate the distance to Messier 13 using the Gaia catalog</p></li>
+<li><p>Approximate the age of Messier 13 using stellar isochrones</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span class="xref myst">Introduction</span></p></li>
+<li><p><span class="xref myst">Imports</span></p></li>
+<li><p><span class="xref myst">Accessing SDSS Legacy Imaging Survey Data from MAST</span></p>
+<ul>
+<li><p><span class="xref myst">Querying SDSS Legacy Imaging Survey</span></p></li>
+<li><p><span class="xref myst">Sampling SDSS Legacy Imaging Survey for M13</span></p></li>
+<li><p><span class="xref myst">Downloading Data Products</span></p></li>
+<li><p><span class="xref myst">Creating a Color-Magnitude Diagram</span></p></li>
+</ul>
+</li>
+<li><p><span class="xref myst">Finding the Distance to M13 Using Gaia</span></p></li>
+<li><p><span class="xref myst">Determining the Age of M13 Using Stellar Isochrone Matching</span></p></li>
+<li><p><span class="xref myst">End of Tutorial</span></p></li>
+<li><p><span class="xref myst">Exercises</span></p></li>
+<li><p><span class="xref myst">Exercise Solutions</span></p></li>
+<li><p><span class="xref myst">Additional Resources</span></p></li>
+<li><p><span class="xref myst">Citations</span></p></li>
+<li><p><span class="xref myst">About this Notebook</span></p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>The Hertzsprung-Russell (HR) Diagram was independently discovered by Ejnar Hertzsprung and Henry Norris Russell in the early 20th century. This diagram effectively plots a star’s theoretical luminosity against its temperature.
+By examining the position of stars on the HR diagram, we can infer stellar properties such as age, metallicity, or mass. An HR Diagram is also useful for tracking the life cycle of stars. Stars in their hydrogen-core burning phases evolve leftwards on the HR diagram. Eventually, they leave the main sequence to start their red giant phases and move upwards as they begin burning helium in their cores <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/h/hertzsprung-russell+diagram">[1]</a>.</p>
+<p>An observational variation of the HR Diagram is the <em>Color-Magnitude Diagram</em> (CMD), which uses color (a proxy for temperature) and magnitude (a proxy for luminosity). We can use photometric data from a star cluster to create a CMD, and then estimate the age by comparing the main sequence tracks and red giant branch to theoretical isochrones — curves that represent stars of the same age but with different masses, mapping their expected positions at various evolutionary stages. For example, an older cluster will have more stars on the red giant branch whereas a younger cluster will have more stars on the main sequence. The transition between the two evolutionary stages, called the <em>Main Sequence Turn-Off</em>, is the key to determining the age of a stellar cluster <a class="reference external" href="https://astronomyonline.org/Astrophotography/CMDDiagram.asp">[2]</a></p>
+<figure style="text-align: center;">
+  <img src="https://www.researchgate.net/profile/Lawrence-Krauss/publication/10964320/figure/fig2/AS:601699240644635@1520467686671/A-schematic-color-magnitude-diagram-for-a-typical-globular-cluster-33-showing-the.png" alt="Color Magnitude Diagram for Globular Clusters" width="400px" height="450px"/>
+  <figcaption>
+  Color Magnitude Diagram for Global Clusters from L. Krauss and B. Chaboyer
+  <a href="https://www.science.org/doi/10.1126/science.1075631" target="_blank">[3].</a>
+  </figcaption>
+</figure>
+<p>Messier 13 (M13) is a globular cluster located in the constellation Hercules <a class="reference external" href="https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-13/">[4]</a>. M13 is estimated to contain over 100,000 stars with a total metallicity ([Fe/H]) of approximately -1.33 dex <a class="reference external" href="https://academic.oup.com/mnras/article/404/3/1203/1049211?login=true#92596831">[5]</a>. This is consistent with the ancient stellar populations found in other globular clusters <a class="reference external" href="https://science.nasa.gov/universe/star-clusters-inside-the-universes-stellar-collections/">[6]</a>.</p>
+<p>In this notebook, we’ll estimate the age of M13 using photometric data from the Sloan Digital Sky Survey’s (SDSS) Legacy Imaging Survey and stellar isochrones from the PARSEC database <a class="reference external" href="https://www.aanda.org/articles/aa/full_html/2022/09/aa44166-22/aa44166-22.html">[7]</a>. By plotting isochrone tracks for a range of ages and comparing them to the observed stellar distribution of M13, we can identify the isochrone that best fits the cluster’s data and thereby estimate its age.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<p>The main packages and their use-cases in this tutorial are as follows:</p>
+<ul class="simple">
+<li><p><em>numpy</em> to handle array functions</p></li>
+<li><p><em>matplotlib.pyplot</em> for plotting data</p></li>
+<li><p><em>matplotlib.image</em> for displaying .jpg images</p></li>
+<li><p><em>astroquery.mast.Observations</em> to access SDSS data from MAST</p></li>
+<li><p><em>astroquery.mast.Catalogs</em> to access data Gaia data from MAST</p></li>
+<li><p><em>pandas</em> to handle large data tables</p></li>
+<li><p><em>astropy.io.fits</em> for accessing FITS files</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Catalogs</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.io.fits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fits</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you’re not sure if you have the required versions of packages installed on your device, you can run the following cell:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;requirements.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Required packages for this notebook:</span><span class="se">\n</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Required packages for this notebook:
+pandas &gt;= 2.3.0
+astroquery &gt;= 0.4.9
+matplotlib &gt;= 3.9.1
+numpy &gt;= 1.26.4
+</pre></div>
+</div>
+</div>
+</div>
+<p>To ensure these requirements are installed, you can run the following command in the terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="accessing-sdss-legacy-imaging-survey-data-from-mast">
+<h2>Accessing SDSS Legacy Imaging Survey Data from MAST<a class="headerlink" href="#accessing-sdss-legacy-imaging-survey-data-from-mast" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://archive.stsci.edu/">Mikulski Archive for Space Telescopes (MAST)</a> hosts a large array of data from several telescope missions. In this tutorial, we will be specifically focusing on data from the Sloan Digital Sky Survey’s (SDSS) Imaging Survey.</p>
+<p>The <a class="reference external" href="https://www.sdss.org/dr18/imaging/">SDSS Legacy Imaging Survey</a> was the first SDSS survey completed! Beginning in 1998, the SDSS Legacy Imaging Survey captured around 35,000 square degrees of images until 2009, which covers about one-third of the whole sky. To do this, the survey took millions of 10 by 13 arcminute pictures (called “fields”). Not only does the SDSS Legacy Imaging Survey data at MAST provide users with preview images in .jpg format, but it also has photometric data in all five broad band SDSS filters (u, g, r, i, and z). For more information about the data and products from the SDSS Legacy Imaging Survey, you can check out the <a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Imaging">SDSS Imaging Archive Manual</a>.</p>
+<section id="querying-sdss-legacy-imaging-survey">
+<h3>Querying SDSS Legacy Imaging Survey<a class="headerlink" href="#querying-sdss-legacy-imaging-survey" title="Permalink to this heading">#</a></h3>
+<p>You can query data from MAST using the <a class="reference external" href="https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html">website portal</a>. You can also query MAST data in Python using the package <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code>!</p>
+<p>We can query all of the SDSS Legacy Imaging data using <code class="docutils literal notranslate"><span class="pre">Observations.query_criteria</span></code> with <code class="docutils literal notranslate"><span class="pre">provenance_name</span> <span class="pre">=</span> <span class="pre">&quot;SDSS</span> <span class="pre">Legacy</span> <span class="pre">Imaging&quot;</span></code>. Since there is a large amount of data in the SDSS Legacy Imaging archive, we can display the first 10 results using the <code class="docutils literal notranslate"><span class="pre">pagesize</span></code> parameter as well as the <code class="docutils literal notranslate"><span class="pre">page</span></code> parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Querying SDSS Legacy Imaging</span>
+<span class="n">imaging_data</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="c1"># Display first 10 entries</span>
+<span class="n">imaging_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=10</i>
+<table id="table140267903673168" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str200</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007717-4-0315</td><td>FIELD</td><td>sdss_image_007717-4-0315</td><td>357.84507764</td><td>2.58518766108</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54742.21465555556</td><td>54742.218596614075</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 357.7637945767952 2.4721866506915697 357.76250395299587 2.6972405587761523 357.92637579676614 2.6980735316005893 357.9276373614702 2.473019459077397 357.7637945767952 2.4721866506915697</td><td>mast:SDSS/sdss/imaging/7717/4/315/frame-irg-007717-4-0315.jpg</td><td>mast:SDSS/sdss/imaging/7717/4/315/photoObj-007717-4-0315.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203385</td><td>873721046</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>005976-2-0162</td><td>FIELD</td><td>sdss_image_005976-2-0162</td><td>175.047798047</td><td>-3.51847194862</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53742.49218206019</td><td>53742.496123118704</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 175.1068267406994 -3.6446218519570257 174.9093899640828 -3.5356195000006796 174.98888176379162 -3.3923715725465087 175.18629748543233 -3.5013571490138453 175.1068267406994 -3.6446218519570257</td><td>mast:SDSS/sdss/imaging/5976/2/162/frame-irg-005976-2-0162.jpg</td><td>mast:SDSS/sdss/imaging/5976/2/162/photoObj-005976-2-0162.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203386</td><td>873721062</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>002709-1-0137</td><td>FIELD</td><td>sdss_image_002709-1-0137</td><td>40.301947676</td><td>-1.15450593069</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52225.28942916667</td><td>52225.293370572406</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 40.22011758197997 -1.2671086791327724 40.220094151389176 -1.042040721430817 40.38377130608685 -1.0420107780135595 40.383807694410464 -1.2670787339943028 40.22011758197997 -1.2671086791327724</td><td>mast:SDSS/sdss/imaging/2709/1/137/frame-irg-002709-1-0137.jpg</td><td>mast:SDSS/sdss/imaging/2709/1/137/photoObj-002709-1-0137.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203387</td><td>873721069</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>005655-3-0158</td><td>FIELD</td><td>sdss_image_005655-3-0158</td><td>330.173333721</td><td>5.85125085075</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53641.196319560186</td><td>53641.200260850186</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 330.0997625700674 5.732887223291726 330.0828526511704 5.957304681358464 330.2469442605038 5.969495259149637 330.26378869388896 5.745072900146519 330.0997625700674 5.732887223291726</td><td>mast:SDSS/sdss/imaging/5655/3/158/frame-irg-005655-3-0158.jpg</td><td>mast:SDSS/sdss/imaging/5655/3/158/photoObj-005655-3-0158.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203388</td><td>873721076</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007717-4-0328</td><td>FIELD</td><td>sdss_image_007717-4-0328</td><td>359.793208368</td><td>2.59431068569</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54742.22004583333</td><td>54742.223986891855</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 359.7117705533915 2.481395491112495 359.7108082730886 2.7064634866406356 359.8746611834554 2.7071106953700435 359.8755943031752 2.482042577304682 359.7117705533915 2.481395491112495</td><td>mast:SDSS/sdss/imaging/7717/4/328/frame-irg-007717-4-0328.jpg</td><td>mast:SDSS/sdss/imaging/7717/4/328/photoObj-007717-4-0328.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203389</td><td>873721082</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>005976-2-0216</td><td>FIELD</td><td>sdss_image_005976-2-0216</td><td>178.967837696</td><td>3.55554635839</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53742.51457245371</td><td>53742.51851351222</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 179.0266777376772 3.429350998266974 178.82939621483078 3.538560846013763 178.90907794489866 3.6816846285222913 179.10638064887104 3.5724577951299246 179.0266777376772 3.429350998266974</td><td>mast:SDSS/sdss/imaging/5976/2/216/frame-irg-005976-2-0216.jpg</td><td>mast:SDSS/sdss/imaging/5976/2/216/photoObj-005976-2-0216.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203390</td><td>873721088</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>002709-1-0159</td><td>FIELD</td><td>sdss_image_002709-1-0159</td><td>43.5954315769</td><td>-1.15455722924</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52225.29855219908</td><td>52225.30249302611</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 43.51360484633988 -1.2671506149905893 43.513594049805874 -1.0420728800824464 43.677251837872525 -1.0420714441214984 43.677275591745236 -1.2671491780354405 43.51360484633988 -1.2671506149905893</td><td>mast:SDSS/sdss/imaging/2709/1/159/frame-irg-002709-1-0159.jpg</td><td>mast:SDSS/sdss/imaging/2709/1/159/photoObj-002709-1-0159.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203391</td><td>873721094</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>005655-3-0105</td><td>FIELD</td><td>sdss_image_005655-3-0105</td><td>322.228825118</td><td>5.20292108898</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53641.17434398148</td><td>53641.17828527148</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 322.1570110668668 5.0835397429472815 322.1369383020021 5.307706452883977 322.3006762050393 5.322184791086341 322.3206911070623 5.098012909072261 322.1570110668668 5.0835397429472815</td><td>mast:SDSS/sdss/imaging/5655/3/105/frame-irg-005655-3-0105.jpg</td><td>mast:SDSS/sdss/imaging/5655/3/105/photoObj-005655-3-0105.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203392</td><td>873721114</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007717-4-0485</td><td>FIELD</td><td>sdss_image_007717-4-0485</td><td>23.3209919588</td><td>2.47788187671</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54742.28514409722</td><td>54742.28908515574</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 23.23758679664416 2.366411991785223 23.240588374863165 2.5914836364205063 23.404409685504273 2.5892365650637386 23.401380266549932 2.3641652928087398 23.23758679664416 2.366411991785223</td><td>mast:SDSS/sdss/imaging/7717/4/485/frame-irg-007717-4-0485.jpg</td><td>mast:SDSS/sdss/imaging/7717/4/485/photoObj-007717-4-0485.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203393</td><td>873721126</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>005976-2-0219</td><td>FIELD</td><td>sdss_image_005976-2-0219</td><td>179.186565458</td><td>3.94817703556</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53742.51581643519</td><td>53742.519757493705</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 179.24540836643362 3.8219634628778825 179.04807448752464 3.931245888669562 179.1278010804017 4.074333071836946 179.32515847370678 3.9650317800503783 179.24540836643362 3.8219634628778825</td><td>mast:SDSS/sdss/imaging/5976/2/219/frame-irg-005976-2-0219.jpg</td><td>mast:SDSS/sdss/imaging/5976/2/219/photoObj-005976-2-0219.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295203394</td><td>873721137</td></tr>
+</table></div></div></div>
+</div>
+<p>The table above provides some basic information for each object:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">instrument_name</span></code>: <code class="docutils literal notranslate"><span class="pre">SDSS</span> <span class="pre">Camera</span></code> indicates that the imaging data were collected using the SDSS camera.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filters</span></code>: Indicates the SDSS filters used in the survey (u, g, r, i, and z).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wavelength_region</span></code>: Indicates the region of the electromagnetic spectrum observed. This should be <code class="docutils literal notranslate"><span class="pre">OPTICAL</span></code>, since the SDSS Legacy Imaging Survey observed in the optical wavelength range.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_classification</span></code>: <code class="docutils literal notranslate"><span class="pre">FIELD</span></code> indicates the survey captured images of the sky.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obs_id</span></code>: Observation ID associated with the image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s_ra</span></code> and <code class="docutils literal notranslate"><span class="pre">s_dec</span></code>: Right ascension and declination.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataproduct_type</span></code>: This should be <code class="docutils literal notranslate"><span class="pre">image</span></code> since we’re focusing on an imaging survey.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t_min</span></code> and <code class="docutils literal notranslate"><span class="pre">t_max</span></code>: The modified Julian dates indicating the start and end times of the exposures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">em_min</span></code> and <code class="docutils literal notranslate"><span class="pre">em_max</span></code>: The minimum and maximum wavelengths observed by the survey. For the SDSS Legacy Imaging survey, this range is approximately 304.8 - 1083.3 nanometers (optical).</p></li>
+</ul>
+</section>
+<section id="sampling-sdss-legacy-imaging-survey-for-m13">
+<h3>Sampling SDSS Legacy Imaging Survey for M13<a class="headerlink" href="#sampling-sdss-legacy-imaging-survey-for-m13" title="Permalink to this heading">#</a></h3>
+<p>In this tutorial, we will be gathering g-band and r-band magnitudes of stars in M13 measured by the SDSS Legacy Imaging survey by querying and downloading data through MAST. We’ll plot these on a CMD where the apparent r-band magnitude is on the y-axis, and color (g-band minus r-band) is on the x-axis. We’ll later plot this CMD with a CMD of isochrones from the <a class="reference external" href="https://stev.oapd.inaf.it/cgi-bin/cmd">PARSEC database</a>.</p>
+<p>For the purpose of this tutorial, we will only focus on querying by object name. We can query the SDSS Legacy Imaging Survey for M13 data using <code class="docutils literal notranslate"><span class="pre">objectname=&quot;M13&quot;</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Querying SDSS Legacy Imaging for M13</span>
+<span class="n">obs_table</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">objectname</span><span class="o">=</span><span class="s2">&quot;M13&quot;</span><span class="p">,</span> <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Displaying the table</span>
+<span class="n">obs_table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=17</i>
+<table id="table140267903917968" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th><th>objID1</th><th>distance</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str195</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th><th>str9</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>002328-1-0077</td><td>FIELD</td><td>sdss_image_002328-1-0077</td><td>250.531849896</td><td>36.5546030081</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52052.38049456019</td><td>52052.38443573444</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.35859561201013 36.5540642416826 250.5849169880205 36.68707104123642 250.7049953700791 36.55482636287762 250.47885415962534 36.422046570943465 250.35859561201013 36.5540642416826</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-irg-002328-1-0077.jpg</td><td>mast:SDSS/sdss/imaging/2328/1/77/photoObj-002328-1-0077.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131541</td><td>872833152</td><td>872833152</td><td>45.926438874565356</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>002328-1-0078</td><td>FIELD</td><td>sdss_image_002328-1-0078</td><td>250.641575802</td><td>36.4336890977</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52052.380909375</td><td>52052.38485043352</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.46857394708124 36.433292936339456 250.69477708949267 36.56611004476571 250.81446826187815 36.43377099259526 250.58844552127275 36.30117975030792 250.46857394708124 36.433292936339456</td><td>mast:SDSS/sdss/imaging/2328/1/78/frame-irg-002328-1-0078.jpg</td><td>mast:SDSS/sdss/imaging/2328/1/78/photoObj-002328-1-0078.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131545</td><td>872833370</td><td>872833370</td><td>165.0330293374257</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>002328-1-0079</td><td>FIELD</td><td>sdss_image_002328-1-0079</td><td>250.750952787</td><td>36.3126609264</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52052.38132395833</td><td>52052.38526501685</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.578252364172 36.31247050799863 250.80425448876198 36.44501655574568 250.92354299824817 36.312538406297975 250.69772164198693 36.180216970539945 250.578252364172 36.31247050799863</td><td>mast:SDSS/sdss/imaging/2328/1/79/frame-irg-002328-1-0079.jpg</td><td>mast:SDSS/sdss/imaging/2328/1/79/photoObj-002328-1-0079.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131548</td><td>872833580</td><td>872833580</td><td>698.8182536420179</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003226-5-0126</td><td>FIELD</td><td>sdss_image_003226-5-0126</td><td>250.393866981</td><td>36.6493290806</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.38493240741</td><td>52434.38887323444</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.22044996940195 36.64428282774371 250.44154003131922 36.7830573250709 250.5671980243839 36.65405635086531 250.34625148107756 36.51551412556894 250.22044996940195 36.64428282774371</td><td>mast:SDSS/sdss/imaging/3226/5/126/frame-irg-003226-5-0126.jpg</td><td>mast:SDSS/sdss/imaging/3226/5/126/photoObj-003226-5-0126.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131553</td><td>872834007</td><td>872834007</td><td>291.37717938143663</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003226-5-0127</td><td>FIELD</td><td>sdss_image_003226-5-0127</td><td>250.508705852</td><td>36.5313775037</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.38534710648</td><td>52434.38928770203</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.33553477042537 36.52648700305302 250.55648135804705 36.66507314658227 250.68179021520078 36.53595013848635 250.46098757081998 36.397595183888505 250.33553477042537 36.52648700305302</td><td>mast:SDSS/sdss/imaging/3226/5/127/frame-irg-003226-5-0127.jpg</td><td>mast:SDSS/sdss/imaging/3226/5/127/photoObj-003226-5-0127.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131557</td><td>872834246</td><td>872834246</td><td>0.0</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003226-5-0128</td><td>FIELD</td><td>sdss_image_003226-5-0128</td><td>250.623202081</td><td>36.4133581779</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.38576168982</td><td>52434.38970240111</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.45026832382496 36.40860979104661 250.67107742007923 36.547001839458886 250.79604843682253 36.417789795153695 250.57538360434452 36.27962787829743 250.45026832382496 36.40860979104661</td><td>mast:SDSS/sdss/imaging/3226/5/128/frame-irg-003226-5-0128.jpg</td><td>mast:SDSS/sdss/imaging/3226/5/128/photoObj-003226-5-0128.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131561</td><td>872834493</td><td>872834493</td><td>197.2958680603298</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>002328-1-0076</td><td>FIELD</td><td>sdss_image_002328-1-0076</td><td>250.421761559</td><td>36.6753974425</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52052.38007997685</td><td>52052.38402115111</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.24825412597377 36.67468245014842 250.47469149264754 36.80794394562259 250.59516092735302 36.67579584579734 250.36890336174514 36.54276250299432 250.24825412597377 36.67468245014842</td><td>mast:SDSS/sdss/imaging/2328/1/76/frame-irg-002328-1-0076.jpg</td><td>mast:SDSS/sdss/imaging/2328/1/76/photoObj-002328-1-0076.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>295131565</td><td>872834928</td><td>872834928</td><td>333.0209007636813</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003225-4-0263</td><td>FIELD</td><td>sdss_image_003225-4-0263</td><td>250.131581565</td><td>36.5763631387</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.2860869213</td><td>52434.290028327036</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 249.9584663869535 36.57087345241625 250.17866018972612 36.7102635461507 250.30461310469724 36.58153460434509 250.08455864103615 36.442376203777485 249.9584663869535 36.57087345241625</td><td>mast:SDSS/sdss/imaging/3225/4/263/frame-irg-003225-4-0263.jpg</td><td>mast:SDSS/sdss/imaging/3225/4/263/photoObj-003225-4-0263.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297954450</td><td>881848318</td><td>881848318</td><td>552.7628408052574</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003225-4-0266</td><td>FIELD</td><td>sdss_image_003225-4-0266</td><td>250.475912605</td><td>36.2228649182</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.28733101852</td><td>52434.291272424256</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.3035437634285 36.217875087370984 250.52334971401882 36.35664194279063 250.6481953945402 36.22753993420965 250.42853037114884 36.08900145821686 250.3035437634285 36.217875087370984</td><td>mast:SDSS/sdss/imaging/3225/4/266/frame-irg-003225-4-0266.jpg</td><td>mast:SDSS/sdss/imaging/3225/4/266/photoObj-003225-4-0266.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297954617</td><td>881849320</td><td>881849320</td><td>475.1195995236801</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003225-4-0265</td><td>FIELD</td><td>sdss_image_003225-4-0265</td><td>250.361497186</td><td>36.340810178</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.28691631944</td><td>52434.29085772519</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.18888442184692 36.33566994315121 250.4088170275986 36.47465028763916 250.53402462257387 36.34563447238449 250.31423253225782 36.20688359738639 250.18888442184692 36.33566994315121</td><td>mast:SDSS/sdss/imaging/3225/4/265/frame-irg-003225-4-0265.jpg</td><td>mast:SDSS/sdss/imaging/3225/4/265/photoObj-003225-4-0265.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297954625</td><td>881849368</td><td>881849368</td><td>3.866197461580117</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003225-4-0264</td><td>FIELD</td><td>sdss_image_003225-4-0264</td><td>250.246710451</td><td>36.4586237958</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.28650173611</td><td>52434.29044314185</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.07380618478217 36.45332038759552 250.29390605041334 36.59250454483102 250.4195301652173 36.463610007146634 250.19957027912378 36.32465655078415 250.07380618478217 36.45332038759552</td><td>mast:SDSS/sdss/imaging/3225/4/264/frame-irg-003225-4-0264.jpg</td><td>mast:SDSS/sdss/imaging/3225/4/264/photoObj-003225-4-0264.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297955206</td><td>881852918</td><td>881852918</td><td>14.088016661483353</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003225-5-0265</td><td>FIELD</td><td>sdss_image_003225-5-0265</td><td>250.772697343</td><td>36.5988511392</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.28691631944</td><td>52434.29085772519</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.59946781174085 36.59430692699014 250.82094276799123 36.732493216455595 250.945838402895 36.603077335526315 250.72451085188032 36.46512219070452 250.59946781174085 36.59430692699014</td><td>mast:SDSS/sdss/imaging/3225/5/265/frame-irg-003225-5-0265.jpg</td><td>mast:SDSS/sdss/imaging/3225/5/265/photoObj-003225-5-0265.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297955991</td><td>881857628</td><td>881857628</td><td>695.9044368869569</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003225-5-0264</td><td>FIELD</td><td>sdss_image_003225-5-0264</td><td>250.658183453</td><td>36.7170700025</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52434.28650173611</td><td>52434.29044314185</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.48467210361827 36.712352507710065 250.7062922106185 36.8507365527109 250.8316071569812 36.72146825665738 250.61013383419206 36.58331657086478 250.48467210361827 36.712352507710065</td><td>mast:SDSS/sdss/imaging/3225/5/264/frame-irg-003225-5-0264.jpg</td><td>mast:SDSS/sdss/imaging/3225/5/264/photoObj-003225-5-0264.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297956572</td><td>881861114</td><td>881861114</td><td>696.0625286367105</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003206-5-0048</td><td>FIELD</td><td>sdss_image_003206-5-0048</td><td>250.498361731</td><td>36.5421282405</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52424.39194606482</td><td>52424.39588677611</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.3251783392619 36.53722296813955 250.5460945557796 36.67581178341232 250.67145849499735 36.54671558141969 250.4506860481943 36.408358051183676 250.3251783392619 36.53722296813955</td><td>mast:SDSS/sdss/imaging/3206/5/48/frame-irg-003206-5-0048.jpg</td><td>mast:SDSS/sdss/imaging/3206/5/48/photoObj-003206-5-0048.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298315544</td><td>885157501</td><td>885157501</td><td>0.0</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003206-5-0050</td><td>FIELD</td><td>sdss_image_003206-5-0050</td><td>250.727105633</td><td>36.3059574758</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52424.392775231485</td><td>52424.39671629</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.55442273973065 36.301364449432214 250.77506303756408 36.43955055679796 250.89970041241125 36.31023484630317 250.67920474779717 36.172277813761866 250.55442273973065 36.301364449432214</td><td>mast:SDSS/sdss/imaging/3206/5/50/frame-irg-003206-5-0050.jpg</td><td>mast:SDSS/sdss/imaging/3206/5/50/photoObj-003206-5-0050.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298315811</td><td>885160096</td><td>885160096</td><td>687.4444027605829</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003206-5-0049</td><td>FIELD</td><td>sdss_image_003206-5-0049</td><td>250.612893043</td><td>36.4240856059</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52424.392360763886</td><td>52424.3963012437</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.43997310231262 36.41934331740604 250.66076727431061 36.557717739869794 250.78572556890498 36.42851114443372 250.5650757278609 36.29036684119189 250.43997310231262 36.41934331740604</td><td>mast:SDSS/sdss/imaging/3206/5/49/frame-irg-003206-5-0049.jpg</td><td>mast:SDSS/sdss/imaging/3206/5/49/photoObj-003206-5-0049.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298315923</td><td>885161315</td><td>885161315</td><td>148.4875090756533</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003206-5-0047</td><td>FIELD</td><td>sdss_image_003206-5-0047</td><td>250.383483804</td><td>36.6600485065</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52424.39153148148</td><td>52424.395472077034</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 250.21006556260414 36.65497749936012 250.43111640889498 36.79378288075555 250.55681621645243 36.66480048402042 250.33590870037474 36.526227436667 250.21006556260414 36.65497749936012</td><td>mast:SDSS/sdss/imaging/3206/5/47/frame-irg-003206-5-0047.jpg</td><td>mast:SDSS/sdss/imaging/3206/5/47/photoObj-003206-5-0047.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298315987</td><td>885162046</td><td>885162046</td><td>340.1997581534808</td></tr>
+</table></div></div></div>
+</div>
+<p>From the query results, we can see that there are 17 SDSS fields that cover M13! The distance column shows how far each field is from the center of the cluster in arcseconds.</p>
+</section>
+<section id="downloading-sdss-legacy-imaging-survey-data-products">
+<h3>Downloading SDSS Legacy Imaging Survey Data Products<a class="headerlink" href="#downloading-sdss-legacy-imaging-survey-data-products" title="Permalink to this heading">#</a></h3>
+<p>For each image, there are 7 available products: The preview .jpg image, the FITS files in each respective SDSS filter (u, g, r, i, and z), and the full FITS file with all five filters combined. The full FITS file is listed as <code class="docutils literal notranslate"><span class="pre">SDSS</span> <span class="pre">Imaging</span> <span class="pre">Catalogs</span></code> for the <code class="docutils literal notranslate"><span class="pre">productSubGroupDescription</span></code> parameter.</p>
+<p>For more information about products available at MAST, you can check out the <a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Imaging+Data+Products">SDSS Legacy Imaging Survey Documentation</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Viewing available products</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs_table</span><span class="p">)</span>
+<span class="n">products</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=153</i>
+<table id="table140267904303568" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str9</th><th>str4</th><th>str12</th><th>str28</th><th>str246</th><th>str1</th><th>str64</th><th>str7</th><th>str28</th><th>str21</th><th>str48</th><th>str19</th><th>str3</th><th>str3</th><th>str30</th><th>int64</th><th>str9</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>Preview-Full</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-irg-002328-1-0077.jpg</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-irg-002328-1-0077.jpg</td><td>1195118</td><td>295131541</td><td>PUBLIC</td><td>3</td><td>u;g;r;i;z</td></tr>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-g-002328-1-0077.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-g-002328-1-0077.fits.bz2</td><td>3466198</td><td>295131541</td><td>PUBLIC</td><td>2</td><td>g</td></tr>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-i-002328-1-0077.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-i-002328-1-0077.fits.bz2</td><td>3731895</td><td>295131541</td><td>PUBLIC</td><td>2</td><td>i</td></tr>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-r-002328-1-0077.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-r-002328-1-0077.fits.bz2</td><td>3206091</td><td>295131541</td><td>PUBLIC</td><td>2</td><td>r</td></tr>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-u-002328-1-0077.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-u-002328-1-0077.fits.bz2</td><td>3331655</td><td>295131541</td><td>PUBLIC</td><td>2</td><td>u</td></tr>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/frame-z-002328-1-0077.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-z-002328-1-0077.fits.bz2</td><td>3077494</td><td>295131541</td><td>PUBLIC</td><td>2</td><td>z</td></tr>
+<tr><td>295131541</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0077</td><td>SDSS Legacy Imaging photoObj catalog. This contains the full, calibrated outputs of the SDSS Imaging Pipeline including source detection, classification, magnitude measurements, and quality flags for each field and all five filters in that field.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/77/photoObj-002328-1-0077.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoObj-002328-1-0077.fits</td><td>8640</td><td>295131541</td><td>PUBLIC</td><td>3</td><td>u;g;r;i;z</td></tr>
+<tr><td>295131545</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0078</td><td>Preview-Full</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/78/frame-irg-002328-1-0078.jpg</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-irg-002328-1-0078.jpg</td><td>1150088</td><td>295131545</td><td>PUBLIC</td><td>3</td><td>u;g;r;i;z</td></tr>
+<tr><td>295131545</td><td>SDSS</td><td>image</td><td>sdss_image_002328-1-0078</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/2328/1/78/frame-g-002328-1-0078.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-g-002328-1-0078.fits.bz2</td><td>3251645</td><td>295131545</td><td>PUBLIC</td><td>2</td><td>g</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>297954450</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>297954617</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>297954625</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>297955206</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>297955991</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>297956572</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>298315544</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>298315811</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>298315923</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>298436348</td><td>SDSS</td><td>measurements</td><td>sdss_image_photorunall</td><td>SDSS Legacy Imaging PhotoRunAll summary catalog. This contains observation dates, coordinates, run identifiers, and reference information for all photometric runs completed during the survey.</td><td>D</td><td>mast:SDSS/sdss/imaging/photoRunAll-dr13.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoRunAll-dr13.fits</td><td>187200</td><td>298315987</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+</table></div></div></div>
+</div>
+<p>We can examine the preview image of the field of stars we’ll be creating a CMD with! We’ll download the preview .jpg file to your directory using the parameter <code class="docutils literal notranslate"><span class="pre">flat=True</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Selecting .jpg image</span>
+<span class="n">img_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span>
+    <span class="n">products</span><span class="p">,</span>
+    <span class="c1"># Select .jpg file for photoObj</span>
+    <span class="n">productFilename</span><span class="o">=</span><span class="s2">&quot;frame-irg-003226-5-0126.jpg&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Downloading preview images</span>
+<span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">img_products</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=1</i>
+<table id="table140267912596752" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>str29</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>./frame-irg-003226-5-0126.jpg</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+<p>Now we can preview the image!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;frame-irg-003226-5-0126.jpg&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">imgplot</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Preview Image of M13&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/c1329aa10fd83e06aa04def1414456e018cdc8e0a3c6f218e651d8ead697c184.png" src="../../../_images/c1329aa10fd83e06aa04def1414456e018cdc8e0a3c6f218e651d8ead697c184.png" />
+</div>
+</div>
+<p>While the field isn’t directly capturing the center of cluster, it will contain enough cluster stars to create a CMD with! We’ll now download the full FITS files and select <code class="docutils literal notranslate"><span class="pre">photoObj-003226-5-0126.fits</span></code> due to its CMD congruency.</p>
+<p>Each photoObj FITS file follows the following naming scheme: <code class="docutils literal notranslate"><span class="pre">photoObj-{RUN}-{CAMCOL}-{FIELD}</span></code> where <code class="docutils literal notranslate"><span class="pre">RUN</span></code> is the zero-padded, six-digit identification number for that photometric run, <code class="docutils literal notranslate"><span class="pre">CAMCOL</span></code> is the camera column identifying the scanline within the run, and <code class="docutils literal notranslate"><span class="pre">FIELD</span></code> is field number for that observation. The photoObj file contains the fully calibrated FITS files from the <a class="reference external" href="https://www.sdss4.org/dr17/imaging/pipeline/">SDSS Imaging Pipeline</a> and other respective measurements such as photometry in all five SDSS filters (u, g, r, i, and z), source classification, and quality flags. There is one photoObj file for each run-camcol-field combination.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Masking the data to extract only the full FITS file</span>
+<span class="n">new_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span>
+    <span class="n">products</span><span class="p">,</span>
+    <span class="c1"># Specify FITS files only</span>
+    <span class="n">productGroupDescription</span><span class="o">=</span><span class="s2">&quot;Minimum Recommended Products&quot;</span><span class="p">,</span>
+    <span class="c1"># Select photoObj files (ugriz)</span>
+    <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="s2">&quot;SDSS Imaging Catalogs&quot;</span><span class="p">,</span>
+    <span class="c1"># Select photoObj-003226-5-0126.fits</span>
+    <span class="n">productFilename</span><span class="o">=</span><span class="s2">&quot;photoObj-003226-5-0126.fits&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Downloading photoObj-003226-5-0126.fits</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">new_products</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now open the file and examine it. For this tutorial, we will focus on the g-band and r-band magnitudes provided in the first file extension.</p>
+<p>The various file extensions are broken down on the <a class="reference external" href="https://data.sdss.org/datamodel/files/BOSS_PHOTOOBJ/RERUN/RUN/CAMCOL/photoObj.html">SDSS website</a>:</p>
+<ul class="simple">
+<li><p>HDU 0: The primary header information.</p></li>
+<li><p>HDU 1: The photoObj table. This contains information such as magnitudes, coordinates, and flux.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Opening file</span>
+<span class="n">star_array</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Display header info</span>
+<span class="n">star_array</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: ./mastDownload/SDSS/sdss_image_003226-5-0126/photoObj-003226-5-0126.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      39   ()      
+  1                1 BinTableHDU    302   2677R x 139C   [19A, 19A, 19A, B, B, B, I, 3A, B, I, I, I, I, J, E, J, J, E, E, E, E, E, E, E, E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5J, 5J, 5J, 5E, 5J, 75E, 75E, 5E, 5E, 5E, 5J, 5E, D, D, D, D, D, D, D, D, D, 5E, 5E, 5E, J, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 5E, 40E, 40E, 5J, 5J, 5E, 5E, 5D, J, J, J, J, J, J, J, E]   
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-a-color-magnitude-diagram-of-m13">
+<h3>Creating a Color-Magnitude Diagram of M13<a class="headerlink" href="#creating-a-color-magnitude-diagram-of-m13" title="Permalink to this heading">#</a></h3>
+<p>To obtain magnitudes from the FITS file, we’ll be using <code class="docutils literal notranslate"><span class="pre">PSFMAG</span></code> from the first file extension. Within <code class="docutils literal notranslate"><span class="pre">PSFMAG</span></code> there are 5 total columns, each one corresponding to the apparent magnitudes in the u, g, r, i, or z filters. We’ll extract the g-band magnitudes from the second column and the r-band magnitudes from the third column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sending the PSFMAG data to a numpy array</span>
+<span class="n">magnitudes</span> <span class="o">=</span> <span class="n">star_array</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;PSFMAG&quot;</span><span class="p">]</span>
+<span class="n">magnitudes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">)</span>
+
+<span class="c1"># Creating arrays for g-band and r-band magnitudes</span>
+<span class="n">g_band</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">r_band</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Calculating color (g - r)</span>
+<span class="n">color_data1</span> <span class="o">=</span> <span class="n">g_band</span> <span class="o">-</span> <span class="n">r_band</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To create a CMD, we simply need to plot the r-band magnitudes against the color (g-r) for these stars!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the CMD</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">color_data1</span><span class="p">,</span> <span class="n">r_band</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;M13 data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;CMD of M13&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Apparent Magnitude (r-band)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Color (g - r)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b22d7c3e8e8324f3a2b2d71c60855687163311da95cbefa9c5f22c11e703f89c.png" src="../../../_images/b22d7c3e8e8324f3a2b2d71c60855687163311da95cbefa9c5f22c11e703f89c.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="finding-the-distance-to-m13-using-data-from-gaia">
+<h2>Finding the Distance to M13 Using Data from Gaia<a class="headerlink" href="#finding-the-distance-to-m13-using-data-from-gaia" title="Permalink to this heading">#</a></h2>
+<p>Gaia was launched by the European Space Agency (ESA) in December 2013. Orbiting at L2, its main purpose is to observe billions of stars to create a 3D map of our galaxy. Gaia provides data such as astrometry, photometry, and radial velocities For more information about Gaia, visit the <a class="reference external" href="https://www.esa.int/Science_Exploration/Space_Science/Gaia">ESA website</a>.</p>
+<p>We’ll query Gaia for M13 data using a search radius of 0.375 degrees. This narrows our search so that we focus on the cluster stars rather than foreground stars, allowing us to get a more accurate distance.</p>
+<p>The catalog search should take around a minute or so.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># querying Gaia</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="s2">&quot;16h41m41.24s 36d27m35.5s&quot;</span>  <span class="c1"># Coordinates of M13</span>
+<span class="n">catalog_data</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s2">&quot;GaiaDR3&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.375</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: InputWarning: Coordinate string is being interpreted as an ICRS coordinate. [astroquery.utils.commons]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Gaia provides parallax measurements for a wide variety of astronomical objects. Stellar parallax is the apparent shift in position of a nearby star caused by Earth’s motion around the Sun.</p>
+<figure style="text-align: center;">
+  <img src="https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit1/Images/parallax_sm.png" alt="Stellar Parallax" width="450px" height="320px"/>
+  <figcaption>
+  Stellar Parallax Diagram by R. Pogge
+  <a href="https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit1/distances.html" target="_blank">[8].</a>
+  </figcaption>
+</figure>
+<p>We can determine the distance to these objects from the parallax angle using small-angle approximation:</p>
+<div class="math notranslate nohighlight">
+\[
+d = \frac{1}{p}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(d\)</span> is distance in parsecs and <span class="math notranslate nohighlight">\(p\)</span> is parallax in arcseconds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting parallax measurements from Gaia</span>
+<span class="n">parallax</span> <span class="o">=</span> <span class="n">catalog_data</span><span class="p">[</span><span class="s2">&quot;parallax&quot;</span><span class="p">]</span>  <span class="c1"># in milliarcseconds</span>
+<span class="n">distance_array</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">parallax</span>  <span class="c1"># distance array from parallax (kiloparsecs)</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="n">catalog_data</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">]</span>  <span class="c1"># right ascension</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="n">catalog_data</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">]</span>  <span class="c1"># declination</span>
+
+<span class="c1"># Sorting data</span>
+<span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distance_array</span><span class="p">)</span>
+<span class="n">ra_sorted</span> <span class="o">=</span> <span class="n">ra</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+<span class="n">dec_sorted</span> <span class="o">=</span> <span class="n">dec</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+<span class="n">distance_sorted</span> <span class="o">=</span> <span class="n">distance_array</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+
+<span class="c1"># Creating a histogram of the parallax measurements and RA/DEC map</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Histogram</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">parallax</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">parallax</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Median Parallax </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">parallax</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> milliarcsec&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Parallax (milliarcseconds)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Histogram of M13 Parallax Measurements from Gaia&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># RA/DEC map</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">ra_sorted</span><span class="p">,</span>
+    <span class="n">dec_sorted</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">distance_sorted</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">plot</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Distance (kpc)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;RA (degrees)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;DEC (degrees)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Position of Parallax Measurements Colored by Distance&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:4049: UserWarning: Warning: &#39;partition&#39; will ignore the &#39;mask&#39; of the MaskedColumn.
+  part.partition(kth)
+</pre></div>
+</div>
+<img alt="../../../_images/da0be14ae5dd57550bd3f554bcf47a3d389f6664efc81a9ffab5e68cb4037ab3.png" src="../../../_images/da0be14ae5dd57550bd3f554bcf47a3d389f6664efc81a9ffab5e68cb4037ab3.png" />
+</div>
+</div>
+<p>The histogram above shows the distribution of the various parallax measurements Gaia made for M13. We’ll take the median of these measurements to use as a general distance for the cluster.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Finding the median parallax of the data</span>
+<span class="n">cluster_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">parallax</span><span class="p">)</span>
+
+<span class="c1"># Calculating distance using stellar parallax formula</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">cluster_median</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median Parallax: </span><span class="si">{</span><span class="n">cluster_median</span><span class="si">}</span><span class="s2"> milliarcseconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance to M13: </span><span class="si">{</span><span class="n">distance</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> kpc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Median Parallax: 0.1299530647655502 milliarcseconds
+Distance to M13: 7.6951 kpc
+</pre></div>
+</div>
+</div>
+</div>
+<p>Therefore, according to Gaia data, the distance to M13 is approximately 7.6951 kpc. We can now use this to convert the isochrones to apparent magnitudes in the next steps.</p>
+</section>
+<hr class="docutils" />
+<section id="determining-the-age-of-m13-using-stellar-isochrone-matching">
+<h2>Determining the Age of M13 Using Stellar Isochrone Matching<a class="headerlink" href="#determining-the-age-of-m13-using-stellar-isochrone-matching" title="Permalink to this heading">#</a></h2>
+<p>We can determine the approximate age of M13 by plotting its CMD with isochrones of varying ages, and match the best fit isochrone track to the M13 data.</p>
+<p>The isochrones are located in the .txt file <code class="docutils literal notranslate"><span class="pre">isochrones.txt</span></code>. These were the result of generating isochrones from the <a class="reference external" href="https://stev.oapd.inaf.it/cgi-bin/cmd">PARSEC database</a> with a metallicity of -1.33 dex and ages from 2 billion years old to 14 billion years old in step sizes of 1 billion years. The other settings were left as default.</p>
+<p>Since the SDSS Legacy Survey observed apparent magnitudes, we’ll need to convert the absolute magnitudes from the isochrones to apparent magnitudes. We’ll use the distance modulus formula since we know the approximate distance to M13 <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/d/Distance+Modulusx">[9]</a>:
+$<span class="math notranslate nohighlight">\(
+m-M=5log_{10}(\frac{d}{10})
+\)</span><span class="math notranslate nohighlight">\(
+where \)</span>m<span class="math notranslate nohighlight">\( is apparent magnitude, \)</span>M<span class="math notranslate nohighlight">\( is absolute magnitude, and \)</span>d$ is the distance to the object in parsecs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Distance to M13</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># parsecs</span>
+
+
+<span class="c1"># Converting absolute magnitudes from isochrones to apparent</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">app_mag</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">M</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importing isochrone .txt file</span>
+<span class="n">parsec_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;isochrones.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+
+<span class="c1"># Converting the data file to an array</span>
+<span class="n">parsec_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parsec_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The isochrone data file is broken up into age bins</span>
+<span class="n">log_age</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mf">9.30103</span><span class="p">,</span>
+    <span class="mf">9.47712</span><span class="p">,</span>
+    <span class="mf">9.60206</span><span class="p">,</span>
+    <span class="mf">9.69897</span><span class="p">,</span>
+    <span class="mf">9.77815</span><span class="p">,</span>
+    <span class="mf">9.84510</span><span class="p">,</span>
+    <span class="mf">9.90309</span><span class="p">,</span>
+    <span class="mf">9.95424</span><span class="p">,</span>
+    <span class="mf">10.00000</span><span class="p">,</span>
+    <span class="mf">10.04139</span><span class="p">,</span>
+    <span class="mf">10.07918</span><span class="p">,</span>
+    <span class="mf">10.11394</span><span class="p">,</span>
+    <span class="mf">10.14613</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Setting up a dictionary</span>
+<span class="n">age_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Looping through .txt file to separate by age</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">log_age</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">age_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;age</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsec_data</span><span class="p">[</span><span class="n">parsec_data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">age</span><span class="p">]</span>
+
+<span class="c1"># Extracting g and r magnitudes, applying distance modulus formula</span>
+<span class="c1"># Setting up arrays</span>
+<span class="n">r_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">g_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">color_data2</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Sending g and r magnitudes and color to an array</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_age</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">age_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;age</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="n">g_mag</span> <span class="o">=</span> <span class="n">app_mag</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">29</span><span class="p">])</span>
+    <span class="n">r_mag</span> <span class="o">=</span> <span class="n">app_mag</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">30</span><span class="p">])</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">g_mag</span> <span class="o">-</span> <span class="n">r_mag</span>
+
+    <span class="n">r_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_mag</span><span class="p">)</span>
+    <span class="n">g_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g_mag</span><span class="p">)</span>
+    <span class="n">color_data2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+
+<span class="c1"># Plotting the isochrones</span>
+<span class="n">color</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;brown&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pink&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;magenta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;navy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;darkturquoise&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;teal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;olive&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lightcoral&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">color_data2</span><span class="p">,</span> <span class="n">r_data</span><span class="p">,</span> <span class="n">log_age</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="n">j</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> billion years old&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">r</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Plotting the data</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">color_data1</span><span class="p">,</span>
+    <span class="n">r_band</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SDSS data of M13&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Apparent Magnitude (r-band)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Color (g - r)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Color - Magnitude Diagram of M13 with Isochrones&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ba30dcd11c6ad05d7405f2dd20b829aa0d8dd3108367d1ed420b6499cb5da63a.png" src="../../../_images/ba30dcd11c6ad05d7405f2dd20b829aa0d8dd3108367d1ed420b6499cb5da63a.png" />
+</div>
+</div>
+<p>While the isochrones extend beyond 27.5 r-band magnitude, the M13 data doesn’t quite reach this far due to the limiting magnitude of the SDSS camera.</p>
+<p>We’ll create a zoomed-in plot to further study the terminal age main sequence (TAMS) and main sequence turnoff phases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replotting with different x and y limits</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Adding annotation for main sequence turnoff</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+    <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">17.75</span><span class="p">),</span>
+    <span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Main Sequence Turnoff&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s2">&quot;Main Sequence Turnoff&quot;</span><span class="p">,</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">17.75</span><span class="p">),</span>
+    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">17.75</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">),</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">),</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/1afe6e768c0b493dacf471f729af5325c88c918e463bc74a41363b053adec4ef.png" src="../../../_images/1afe6e768c0b493dacf471f729af5325c88c918e463bc74a41363b053adec4ef.png" />
+</div>
+</div>
+<p>From examining the data and isochrones within the main sequence turnoff circle, it appears the data follow the orange track, indicating the cluster is approximately <strong>12 billion years old</strong>. This isn’t far from the 11.65 billion year old estimate made by D. Forbes and T. Bridges in <em>Accreted Versus in situ Milky Way Globular Clusters</em> <a class="reference external" href="https://academic.oup.com/mnras/article/404/3/1203/1049211?login=true#92596831">[5]</a>.</p>
+</section>
+<hr class="docutils" />
+<section id="end-of-tutorial">
+<h2>End of Tutorial<a class="headerlink" href="#end-of-tutorial" title="Permalink to this heading">#</a></h2>
+<p>Congratulations, you now know how to determine the age of a star cluster from isochrone matching using the SDSS Legacy Imaging Survey!</p>
+</section>
+<hr class="docutils" />
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<p>Now it’s your turn to determine the age of <strong>Messier 3</strong>! M3 has a metallicity of -1.34 dex, which is nearly identical to M13, so you can use the same isochrone file <code class="docutils literal notranslate"><span class="pre">isochrones.txt</span></code> <a class="reference external" href="https://academic.oup.com/mnras/article/404/3/1203/1049211?login=true#92596831">[5]</a>.</p>
+<p>There are six different fields available for M3, you can choose whichever one visually has the best looking CMD when plotted, so answers can vary slightly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query SDSS Legacy Imaging Survey for M3 data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View available products</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download products</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot CMD of M3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find distance to M3 using Gaia</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot CMD with isochrones</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exercise-solutions">
+<h2>Exercise Solutions<a class="headerlink" href="#exercise-solutions" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query SDSS Legacy Imaging Survey for M3 data</span>
+
+<span class="n">obs_table2</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">objectname</span><span class="o">=</span><span class="s2">&quot;M3&quot;</span><span class="p">,</span> <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Displaying the table</span>
+<span class="n">obs_table2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=10</i>
+<table id="table140267419086352" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th><th>objID1</th><th>distance</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str197</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th><th>str9</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004649-3-0147</td><td>FIELD</td><td>sdss_image_004649-3-0147</td><td>205.657671944</td><td>28.0589023561</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53148.29295949074</td><td>53148.29690089648</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.54394470283248 27.962474450750673 205.5888145108555 28.184009933873277 205.77158117037538 28.15512819922499 205.72634720424867 27.933652309716898 205.54394470283248 27.962474450750673</td><td>mast:SDSS/sdss/imaging/4649/3/147/frame-irg-004649-3-0147.jpg</td><td>mast:SDSS/sdss/imaging/4649/3/147/photoObj-004649-3-0147.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297003774</td><td>876981454</td><td>876981454</td><td>707.4595416072544</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004649-3-0146</td><td>FIELD</td><td>sdss_image_004649-3-0146</td><td>205.490651819</td><td>28.085188819</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53148.292544791664</td><td>53148.29648631315</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.37706850623056 27.988627871719682 205.42159486278487 28.210231791472925 205.60441753406982 28.181547849750537 205.5595262109013 27.960003124274728 205.37706850623056 27.988627871719682</td><td>mast:SDSS/sdss/imaging/4649/3/146/frame-irg-004649-3-0146.jpg</td><td>mast:SDSS/sdss/imaging/4649/3/146/photoObj-004649-3-0146.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297016644</td><td>877000851</td><td>877000851</td><td>662.4582359914772</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004649-3-0145</td><td>FIELD</td><td>sdss_image_004649-3-0145</td><td>205.323553735</td><td>28.1112790851</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53148.29213043981</td><td>53148.296071498335</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.2100784323227 28.01456697081828 205.25425945894472 28.23622770285823 205.43721195883117 28.207789375478082 205.392665007371 27.986187458585785 205.2100784323227 28.01456697081828</td><td>mast:SDSS/sdss/imaging/4649/3/145/frame-irg-004649-3-0145.jpg</td><td>mast:SDSS/sdss/imaging/4649/3/145/photoObj-004649-3-0145.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297021749</td><td>877008987</td><td>877008987</td><td>704.6808153444647</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004649-4-0147</td><td>FIELD</td><td>sdss_image_004649-4-0147</td><td>205.741895083</td><td>28.47212241</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53148.292959375</td><td>53148.29690078074</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.62768552230045 28.37577168647357 205.67284676286525 28.597293482580454 205.85629075716403 28.568269370809166 205.81075776098697 28.346808356990465 205.62768552230045 28.37577168647357</td><td>mast:SDSS/sdss/imaging/4649/4/147/frame-irg-004649-4-0147.jpg</td><td>mast:SDSS/sdss/imaging/4649/4/147/photoObj-004649-4-0147.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297041189</td><td>877038782</td><td>877038782</td><td>251.12717566712155</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004649-4-0146</td><td>FIELD</td><td>sdss_image_004649-4-0146</td><td>205.574278356</td><td>28.4985213252</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53148.292544791664</td><td>53148.29648619741</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.4602440816663 28.401990585237147 205.50501052174238 28.623614315047135 205.68849923575618 28.594848487893643 205.64336014259345 28.37328506246469 205.4602440816663 28.401990585237147</td><td>mast:SDSS/sdss/imaging/4649/4/146/frame-irg-004649-4-0146.jpg</td><td>mast:SDSS/sdss/imaging/4649/4/146/photoObj-004649-4-0146.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297055298</td><td>877061020</td><td>877061020</td><td>38.70436560786968</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004649-4-0145</td><td>FIELD</td><td>sdss_image_004649-4-0145</td><td>205.406518204</td><td>28.5247113578</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53148.29212997685</td><td>53148.296071382596</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.29256303409997 28.428055614125235 205.33703079237077 28.649688467782617 205.52066047872054 28.621163594869746 205.47581916619885 28.399590727008345 205.29256303409997 28.428055614125235</td><td>mast:SDSS/sdss/imaging/4649/4/145/frame-irg-004649-4-0145.jpg</td><td>mast:SDSS/sdss/imaging/4649/4/145/photoObj-004649-4-0145.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297060525</td><td>877069703</td><td>877069703</td><td>243.55720045892613</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004646-3-0082</td><td>FIELD</td><td>sdss_image_004646-3-0082</td><td>205.656308884</td><td>28.2721588412</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53147.302064814816</td><td>53147.306005641854</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.5423832905099 28.175729968111437 205.58730682675895 28.39725991057679 205.77041863016308 28.368384857511558 205.7251269725764 28.146914991664634 205.5423832905099 28.175729968111437</td><td>mast:SDSS/sdss/imaging/4646/3/82/frame-irg-004646-3-0082.jpg</td><td>mast:SDSS/sdss/imaging/4646/3/82/photoObj-004646-3-0082.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298416340</td><td>886143838</td><td>886143838</td><td>108.59459460943275</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004646-3-0081</td><td>FIELD</td><td>sdss_image_004646-3-0081</td><td>205.488943252</td><td>28.2984535321</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53147.30165</td><td>53147.305590595555</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.3751517797895 28.20190784674507 205.41974839794054 28.423509196402975 205.60291927098706 28.394796490690652 205.55795372445033 28.173254838069173 205.3751517797895 28.20190784674507</td><td>mast:SDSS/sdss/imaging/4646/3/81/frame-irg-004646-3-0081.jpg</td><td>mast:SDSS/sdss/imaging/4646/3/81/photoObj-004646-3-0081.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298416749</td><td>886147617</td><td>886147617</td><td>0.0</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004646-3-0080</td><td>FIELD</td><td>sdss_image_004646-3-0080</td><td>205.321501743</td><td>28.3245630156</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53147.301235416664</td><td>53147.305176127964</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.20778823297513 28.22786559996562 205.2520733711031 28.449521548371912 205.43540036111 28.421057749901465 205.39074528505412 28.1994611700242 205.20778823297513 28.22786559996562</td><td>mast:SDSS/sdss/imaging/4646/3/80/frame-irg-004646-3-0080.jpg</td><td>mast:SDSS/sdss/imaging/4646/3/80/photoObj-004646-3-0080.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298418227</td><td>886162128</td><td>886162128</td><td>379.99380206335434</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004646-3-0083</td><td>FIELD</td><td>sdss_image_004646-3-0083</td><td>205.823590943</td><td>28.2456434759</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53147.302479398146</td><td>53147.306420225184</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 205.7095285185484 28.149375294418277 205.75479948691986 28.370854782021958 205.93783702450116 28.341708656515983 205.89219879256294 28.120289646216374 205.7095285185484 28.149375294418277</td><td>mast:SDSS/sdss/imaging/4646/3/83/frame-irg-004646-3-0083.jpg</td><td>mast:SDSS/sdss/imaging/4646/3/83/photoObj-004646-3-0083.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298419600</td><td>886176841</td><td>886176841</td><td>647.5256341960012</td></tr>
+</table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download products</span>
+<span class="n">products2</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs_table2</span><span class="p">)</span>
+
+<span class="c1"># Download products</span>
+<span class="n">new_products2</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span>
+    <span class="n">products2</span><span class="p">,</span>
+    <span class="c1"># Specify FITS files only</span>
+    <span class="n">productGroupDescription</span><span class="o">=</span><span class="s2">&quot;Minimum Recommended Products&quot;</span><span class="p">,</span>
+    <span class="c1"># Select photoObj files (ugriz)</span>
+    <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="s2">&quot;SDSS Imaging Catalogs&quot;</span><span class="p">,</span>
+    <span class="c1"># Select photoObj-003226-5-0126.fits</span>
+    <span class="n">productFilename</span><span class="o">=</span><span class="s2">&quot;photoObj-004649-4-0145.fits&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Downloading photoObj-003226-5-0126.fits</span>
+<span class="n">manifest2</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">new_products2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:SDSS/sdss/imaging/4649/4/145/photoObj-004649-4-0145.fits to ./mastDownload/SDSS/sdss_image_004649-4-0145/photoObj-004649-4-0145.fits ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot CMD of M3</span>
+
+<span class="c1"># Opening file</span>
+<span class="n">star_array2</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">manifest2</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Sending the PSFMAG data to a numpy array</span>
+<span class="n">magnitudes2</span> <span class="o">=</span> <span class="n">star_array2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;PSFMAG&quot;</span><span class="p">]</span>
+<span class="n">magnitudes2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">magnitudes2</span><span class="p">)</span>
+
+<span class="c1"># Creating arrays for g-band and r-band magnitudes</span>
+<span class="n">g_band2</span> <span class="o">=</span> <span class="n">magnitudes2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">r_band2</span> <span class="o">=</span> <span class="n">magnitudes2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Calculating color (g - r)</span>
+<span class="n">color_data3</span> <span class="o">=</span> <span class="n">g_band2</span> <span class="o">-</span> <span class="n">r_band2</span>
+
+<span class="c1"># Plotting the CMD</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">color_data3</span><span class="p">,</span> <span class="n">r_band2</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;M3 Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;CMD of M3&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Apparent Magnitude (r-band)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Color (g - r)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/43aa61b2beba145f45ce7f5f73fc9f0ad3146c26979ce50f26a2cce1781d2791.png" src="../../../_images/43aa61b2beba145f45ce7f5f73fc9f0ad3146c26979ce50f26a2cce1781d2791.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find distance to M3 using Gaia</span>
+
+<span class="c1"># querying Gaia</span>
+<span class="n">coordinates2</span> <span class="o">=</span> <span class="s2">&quot;13h42m11.80s 28d22m31.69s&quot;</span>  <span class="c1"># Coordinates of M3</span>
+
+<span class="n">catalog_data2</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span>
+    <span class="n">coordinates2</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s2">&quot;GaiaDR3&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.35</span>
+<span class="p">)</span>
+
+<span class="c1"># Extracting parallax measurements from Gaia</span>
+<span class="n">parallax2</span> <span class="o">=</span> <span class="n">catalog_data2</span><span class="p">[</span><span class="s2">&quot;parallax&quot;</span><span class="p">]</span>  <span class="c1"># in milliarcseconds</span>
+<span class="n">distance_array2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">parallax2</span>  <span class="c1"># distance array from parallax (kiloparsecs)</span>
+<span class="n">ra2</span> <span class="o">=</span> <span class="n">catalog_data2</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">]</span>  <span class="c1"># right ascension</span>
+<span class="n">dec2</span> <span class="o">=</span> <span class="n">catalog_data2</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">]</span>  <span class="c1"># declination</span>
+
+<span class="c1"># Sorting data</span>
+<span class="n">sorted_indices2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distance_array2</span><span class="p">)</span>
+<span class="n">ra_sorted2</span> <span class="o">=</span> <span class="n">ra2</span><span class="p">[</span><span class="n">sorted_indices2</span><span class="p">]</span>
+<span class="n">dec_sorted2</span> <span class="o">=</span> <span class="n">dec2</span><span class="p">[</span><span class="n">sorted_indices2</span><span class="p">]</span>
+<span class="n">distance_sorted2</span> <span class="o">=</span> <span class="n">distance_array2</span><span class="p">[</span><span class="n">sorted_indices2</span><span class="p">]</span>
+
+<span class="c1"># Creating a histogram of the parallax measurements and RA/DEC map</span>
+<span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Histogram</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">parallax2</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">parallax2</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Median Parallax </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">parallax2</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> milliarcsec&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Parallax (milliarcseconds)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Histogram of M3 Parallax Measurements from Gaia&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># RA/DEC map</span>
+<span class="n">plot2</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">ra_sorted2</span><span class="p">,</span>
+    <span class="n">dec_sorted2</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">distance_sorted2</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cbar2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">plot2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">cbar2</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Distance (kpc)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;RA (degrees)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;DEC (degrees)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Position of Parallax Measurements Colored by Distance&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Finding the median parallax of the data</span>
+<span class="n">cluster_median2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">parallax2</span><span class="p">)</span>
+
+<span class="c1"># Calculating distance using stellar parallax formula</span>
+<span class="n">distance2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">cluster_median2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median Parallax: </span><span class="si">{</span><span class="n">cluster_median2</span><span class="si">}</span><span class="s2"> milliarcseconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance to M3: </span><span class="si">{</span><span class="n">distance2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> kpc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Distance to M3</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">distance2</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># parsecs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: InputWarning: Coordinate string is being interpreted as an ICRS coordinate. [astroquery.utils.commons]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:4049: UserWarning: Warning: &#39;partition&#39; will ignore the &#39;mask&#39; of the MaskedColumn.
+  part.partition(kth)
+/tmp/ipykernel_2175/104144980.py:49: UserWarning: Adding colorbar to a different Figure &lt;Figure size 1500x600 with 3 Axes&gt; than &lt;Figure size 1000x800 with 1 Axes&gt; which fig.colorbar is called on.
+  cbar2 = fig.colorbar(plot2, ax=ax2[1])
+</pre></div>
+</div>
+<img alt="../../../_images/2cc4e053736acf8c1716d8aa387d5e2cc436b88c7466b48634989798fdc65425.png" src="../../../_images/2cc4e053736acf8c1716d8aa387d5e2cc436b88c7466b48634989798fdc65425.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Median Parallax: 0.09967599714927582 milliarcseconds
+Distance to M3: 10.0325 kpc
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot CMD with isochrones</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">app_mag2</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">M</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d2</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+
+
+<span class="n">r_data2</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">g_data2</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">color_data4</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_age</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">age_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;age</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="n">g_mag</span> <span class="o">=</span> <span class="n">app_mag2</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">29</span><span class="p">])</span>
+    <span class="n">r_mag</span> <span class="o">=</span> <span class="n">app_mag2</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">30</span><span class="p">])</span>
+    <span class="n">color2</span> <span class="o">=</span> <span class="n">g_mag</span> <span class="o">-</span> <span class="n">r_mag</span>
+
+    <span class="n">r_data2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_mag</span><span class="p">)</span>
+    <span class="n">g_data2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g_mag</span><span class="p">)</span>
+    <span class="n">color_data4</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color2</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">color_data4</span><span class="p">,</span> <span class="n">r_data2</span><span class="p">,</span> <span class="n">log_age</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="n">j</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> billion years old&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">r</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Plotting the data</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">color_data3</span><span class="p">,</span>
+    <span class="n">r_band2</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SDSS data of M3&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Apparent Magnitude (r-band)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Color (g - r)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Color - Magnitude Diagram of M3 with Isochrones&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/2b25ca890f228c32c2a3bd9c2042ddadb8dd87b8e88d0ec30f1fcb650cb1ebde.png" src="../../../_images/2b25ca890f228c32c2a3bd9c2042ddadb8dd87b8e88d0ec30f1fcb650cb1ebde.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replotting with different x and y limits</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Adding annotation for main sequence turnoff</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+    <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">18.25</span><span class="p">),</span>
+    <span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Main Sequence Turnoff&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s2">&quot;Main Sequence Turnoff&quot;</span><span class="p">,</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">18.25</span><span class="p">),</span>
+    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">17.75</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">),</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">),</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/a04801dae17847e7daae40fa8b12ae2fae070fb17f3b3e3ff9b3d49f572210cc.png" src="../../../_images/a04801dae17847e7daae40fa8b12ae2fae070fb17f3b3e3ff9b3d49f572210cc.png" />
+</div>
+</div>
+<p><strong>Results:</strong>
+The data for M3 appear to fit between the yellow and orange lines. Therefore, M3 is between 11-12 billion years old!</p>
+<p>This matches the <a class="reference external" href="https://www.kopernik.org/images/archive/m3.htm">age estimates</a> of approximately 8-11.4 billion years.</p>
+</section>
+<hr class="docutils" />
+<section id="addtional-resources">
+<h2>Addtional Resources<a class="headerlink" href="#addtional-resources" title="Permalink to this heading">#</a></h2>
+<p>Additional resources are linked below:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive.stsci.edu/missions-and-data/sdss">SDSS Legacy Archive at MAST</a></p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/The+SDSS+Legacy+Archive+at+MAST">SDSS Legacy Archive at MAST User Manual</a></p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Imaging">SDSS Legacy Imaging Archive User Manual</a></p></li>
+<li><p><a class="reference external" href="https://www.sdss.org/dr18/imaging/">SDSS Imaging Documentation</a></p></li>
+<li><p><a class="reference external" href="https://voyages.sdss.org/expeditions/expedition-to-the-milky-way/star-clusters/hr-diagrams/">SDSS Voyages HR Diagram Tutorial</a></p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.mast User Manual</a></p></li>
+<li><p><a class="reference external" href="https://mast.stsci.edu/api/v0/index.html">MAST API</a></p></li>
+</ul>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Permalink to this heading">#</a></h2>
+<p>If you use data from MAST for published research, please see the following links for information on which citations to include in your paper:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://sdss.org/collaboration/citing-sdss/">Citing SDSS</a></p></li>
+<li><p><a class="reference external" href="https://archive.stsci.edu/publishing/mission-acknowledgements">Citing MAST</a></p></li>
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing astropy</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Author(s):</strong> Natalie Haugen (nhaugen&#64;terpmail.umd.edu) and Julie Imig (jimig&#64;stsci.edu) <br>
+<strong>Keyword(s):</strong> Tutorial, SDSS, SDSS Legacy Imaging Survey, stars, HR diagram, CMD, imaging <br>
+<strong>First published:</strong> July 2025 <br>
+<strong>Last updated:</strong> July 2025 <br></p>
+<hr class="docutils" />
+<p><span class="xref myst">Top of Page</span>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/SDSS/SDSS_LEGACY_IMAGING_cmd"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../eBOSS_HST_hubbles_law/hubbles_law.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Calculating the Hubble Constant with eBOSS</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../multi_mission/astroquery.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Astroquery</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-sdss-legacy-imaging-survey-data-from-mast">Accessing SDSS Legacy Imaging Survey Data from MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-sdss-legacy-imaging-survey">Querying SDSS Legacy Imaging Survey</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-sdss-legacy-imaging-survey-for-m13">Sampling SDSS Legacy Imaging Survey for M13</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-sdss-legacy-imaging-survey-data-products">Downloading SDSS Legacy Imaging Survey Data Products</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-color-magnitude-diagram-of-m13">Creating a Color-Magnitude Diagram of M13</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-distance-to-m13-using-data-from-gaia">Finding the Distance to M13 Using Data from Gaia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-age-of-m13-using-stellar-isochrone-matching">Determining the Age of M13 Using Stellar Isochrone Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solutions">Exercise Solutions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addtional-resources">Addtional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
