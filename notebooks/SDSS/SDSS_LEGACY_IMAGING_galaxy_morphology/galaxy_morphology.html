@@ -1,0 +1,1803 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Galaxy Morphology with SDSS and Astrocut &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Astroquery" href="../../multi_mission/astroquery.html" />
+    <link rel="prev" title="Creating a Color-Magnitude Diagram for Messier 13" href="../SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../sdss.html">Sloan Digital Sky Survey (SDSS)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Galaxy Morphology with SDSS and Astrocut</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Galaxy Morphology with SDSS and Astrocut</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-sdss-legacy-imaging-survey-data-from-mast">Accessing SDSS Legacy Imaging Survey Data from MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-sdss-legacy-imaging-survey">Querying SDSS Legacy Imaging Survey</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gathering-galaxies-from-the-sdss-legacy-imaging-survey">Gathering Galaxies from the SDSS Legacy Imaging Survey</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elliptical-galaxies">Elliptical Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lenticular-galaxies">Lenticular Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spiral-galaxies">Spiral Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#barred-spiral-galaxies">Barred Spiral Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#irregular-galaxies">Irregular Galaxies</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-sdss-legacy-imaging-survey-data-products">Downloading SDSS Legacy Imaging Survey Data Products</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-cutout-images-using-astrocut">Creating the Cutout Images Using Astrocut</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-the-hubble-tuning-fork-diagram">Making the Hubble Tuning Fork Diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solution">Exercise Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="galaxy-morphology-with-sdss-and-astrocut">
+<h1>Galaxy Morphology with SDSS and Astrocut<a class="headerlink" href="#galaxy-morphology-with-sdss-and-astrocut" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to use <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> to download the SDSS Legacy Imaging Survey Data from the MAST archive.</p></li>
+<li><p>Utilize <code class="docutils literal notranslate"><span class="pre">astrocut</span></code> to create colorized cropped images from 12 different galaxies.</p></li>
+<li><p>Construct a Hubble Tuning Fork Diagram from the cropped images to learn about galaxy morphology.</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span class="xref myst">Introduction</span></p></li>
+<li><p><span class="xref myst">Imports</span></p></li>
+<li><p><span class="xref myst">Accessing SDSS Legacy Imaging Survey Data from MAST</span></p>
+<ul>
+<li><p><span class="xref myst">Querying SDSS Legacy Imaging Survey</span></p></li>
+<li><p><span class="xref myst">Gathering Galaxies from the SDSS Legacy Imaging Survey</span></p>
+<ul>
+<li><p><span class="xref myst">Elliptical Galaxies</span></p></li>
+<li><p><span class="xref myst">Lenticular Galaxies</span></p></li>
+<li><p><span class="xref myst">Spiral Galaxies</span></p></li>
+<li><p><span class="xref myst">Barred Spiral Galaxies</span></p></li>
+<li><p><span class="xref myst">Irregular Galaxies</span></p></li>
+</ul>
+</li>
+<li><p><span class="xref myst">Downloading Data Products</span></p></li>
+</ul>
+</li>
+<li><p><span class="xref myst">Creating the Cutout Images Using Astrocut</span></p></li>
+<li><p><span class="xref myst">Making the Hubble Tuning Fork Diagram</span></p></li>
+<li><p><span class="xref myst">End of Tutorial</span></p></li>
+<li><p><span class="xref myst">Exercise</span></p></li>
+<li><p><span class="xref myst">Exercise Solution</span></p></li>
+<li><p><span class="xref myst">Additional Resources</span></p></li>
+<li><p><span class="xref myst">Citations</span></p></li>
+<li><p><span class="xref myst">About this Notebook</span></p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<figure style="text-align: center;">
+  <img src="https://skyserver.sdss.org/dr1/en/proj/advanced/galaxies/images/TuningFork.jpg" alt="Hubble Tuning Fork Diagram" width="520px" height="475px"/>
+  <figcaption>
+  Hubble Tuning Fork Diagram
+  <a href="https://skyserver.sdss.org/dr1/en/proj/advanced/galaxies/tuningfork.asp" target="_blank">[1].</a>
+  </figcaption>
+</figure>
+<p>In the early 1900s, most astronomers believed objects such as the Andromeda galaxy were nebulous clouds within our galaxy. In 1923, Edwin Hubble proved Andromeda was outside the Milky Way using the period-luminosity relationship with Cepheid variables <a class="reference external" href="https://lco.global/spacebook/galaxies/history-discovery/">[2]</a>. Once Hubble discovered most “nebulae” visible in the sky were actually galaxies, he created a classification scheme known as the <em>Hubble Tuning Fork</em>, or the <em>Hubble Sequence</em>. Hubble initially separated galaxies into two main groups: elliptical galaxies and spiral galaxies. Elliptical galaxies lack spiral arms, but are ellipses in shape. Hubble classified them by their ellipticity; the more elongated the galaxy, the higher its classification number (i.e. E0 to E7).</p>
+<p>Spiral galaxies, which have prominent spiral arms, were further divided into two types based on the presence of a central bar: barred spirals (with a bar) and normal spirals (without). Both types were then categorized as early, intermediate, or late, depending on how tightly wound their arms were. Galaxies that lacked both a central nucleus and spiral structure were classified as “irregular” <a class="reference external" href="https://adsabs.harvard.edu/pdf/1934ApJ....79....8H">[3]</a>.</p>
+<p>Hubble initially proposed that galaxies evolved from left to right on his tuning fork diagram, starting at E0 ellipticals and ending at late-type spiral/barred spiral galaxies. However, we now know this to be incorrect! Despite this, the Hubble Sequence remains a widely used tool for galaxy morphological classification <a class="reference external" href="https://skyserver.sdss.org/dr1/en/proj/advanced/galaxies/tuningfork.asp">[1]</a>.</p>
+<p>In this notebook, we’ll construct our own Hubble Tuning Fork Diagram based on this classification scheme using imaging data from the SDSS Legacy Imaging Survey. We can utilize the <code class="docutils literal notranslate"><span class="pre">Astrocut</span></code> package to crop selected fields and generate color cutouts of various galaxies for our diagram.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<p>The main packages and their use-cases in this tutorial are as follows:</p>
+<ul class="simple">
+<li><p><em>numpy</em> to handle array functions</p></li>
+<li><p><em>matplotlib.pyplot</em> for plotting data</p></li>
+<li><p><em>matplotlib.image</em> to handle .png images</p></li>
+<li><p><em>astroquery.mast.Observations</em> to access SDSS data from MAST</p></li>
+<li><p><em>astrocut.FITSCutout</em> to mosaic images</p></li>
+<li><p><em>astropy</em> for handling FITS files</p></li>
+<li><p><em>astropy.table.vstack</em> for combining Astropy tables</p></li>
+<li><p><em>warnings</em> to suppress FITS warnings</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astrocut</span><span class="w"> </span><span class="kn">import</span> <span class="n">FITSCutout</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">vstack</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you’re not sure if you have the required versions of packages installed on your device, you can run the following cell:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;requirements.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Required packages for this notebook:</span><span class="se">\n</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Required packages for this notebook:
+numpy &gt;= 1.26.4
+matplotlib &gt;= 3.9.1
+astroquery &gt;= 0.4.9
+astropy &gt;= 5.3
+astrocut &gt;= 1.0.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>To ensure these requirements are installed, you can run the following command in the terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="accessing-sdss-legacy-imaging-survey-data-from-mast">
+<h2>Accessing SDSS Legacy Imaging Survey Data from MAST<a class="headerlink" href="#accessing-sdss-legacy-imaging-survey-data-from-mast" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://archive.stsci.edu/">Mikulski Archive for Space Telescopes (MAST)</a> hosts a large array of data from several telescope missions. In this tutorial, we will be specifically focusing on data from the Sloan Digital Sky Survey’s (SDSS) Imaging Survey.</p>
+<p>The <a class="reference external" href="https://www.sdss.org/dr18/imaging/">SDSS Legacy Imaging Survey</a> was the first SDSS survey completed! Beginning in 1998, the SDSS Legacy Imaging Survey captured around 35,000 square degrees of images until 2009, which covers about one-third of the whole sky. To do this, the survey took millions of 10 by 13 arcminute pictures (called “fields”). Not only does the SDSS Legacy Imaging Survey data at MAST provide users with preview images in .jpg format, but it also has photometric data in all five broad band SDSS filters (u, g, r, i, and z). For more information about the data and products from the SDSS Legacy Imaging Survey, you can check out the <a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Imaging">SDSS Imaging Archive Manual</a>.</p>
+<section id="querying-sdss-legacy-imaging-survey">
+<h3>Querying SDSS Legacy Imaging Survey<a class="headerlink" href="#querying-sdss-legacy-imaging-survey" title="Permalink to this heading">#</a></h3>
+<p>You can query data from MAST using the <a class="reference external" href="https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html">website portal</a>. You can also query MAST data in Python using the module <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code>!</p>
+<p>We can query all of the SDSS Legacy Imaging data using the <code class="docutils literal notranslate"><span class="pre">Observations.query_criteria()</span></code> function with the parameter <code class="docutils literal notranslate"><span class="pre">provenance_name</span> <span class="pre">=</span> <span class="pre">&quot;SDSS</span> <span class="pre">Legacy</span> <span class="pre">Imaging&quot;</span></code>. Since there is a large amount of data in the SDSS Legacy Imaging archive, we can display the first 10 results using the <code class="docutils literal notranslate"><span class="pre">pagesize</span></code> parameter as well as the <code class="docutils literal notranslate"><span class="pre">page</span></code> parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Querying SDSS Legacy Imaging</span>
+<span class="n">imaging_data</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="c1"># Display first 10 entries</span>
+<span class="n">imaging_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=10</i>
+<table id="table140167298961424" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str205</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003813-6-0114</td><td>FIELD</td><td>sdss_image_003813-6-0114</td><td>161.256965885</td><td>43.6730188079</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52722.14304861111</td><td>52722.146989322406</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 161.19293898985515 43.54175154170026 161.10404362837286 43.757457411617686 161.32131668430569 43.80414473992446 161.40950083119574 43.58827144725442 161.19293898985515 43.54175154170026</td><td>mast:SDSS/sdss/imaging/3813/6/114/frame-irg-003813-6-0114.jpg</td><td>mast:SDSS/sdss/imaging/3813/6/114/photoObj-003813-6-0114.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753088</td><td>879470265</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004128-3-0219</td><td>FIELD</td><td>sdss_image_004128-3-0219</td><td>14.37234962</td><td>-0.105009301473</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52908.32024212963</td><td>52908.32418295667</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 14.290508657071905 -0.21760863667375938 14.290490580799519 0.0074846379981012255 14.45419000278696 0.007480285741926783 14.45420925773586 -0.2176129888320864 14.290508657071905 -0.21760863667375938</td><td>mast:SDSS/sdss/imaging/4128/3/219/frame-irg-004128-3-0219.jpg</td><td>mast:SDSS/sdss/imaging/4128/3/219/photoObj-004128-3-0219.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753089</td><td>879470277</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007784-1-0054</td><td>FIELD</td><td>sdss_image_007784-1-0054</td><td>338.506574629</td><td>7.81020459671</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54771.26022534722</td><td>54771.26416640574</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 338.432990751311 7.691621429797669 338.41543506225344 7.916006816089061 338.5802088329412 7.928665413853886 338.5976765628896 7.7042732492043635 338.432990751311 7.691621429797669</td><td>mast:SDSS/sdss/imaging/7784/1/54/frame-irg-007784-1-0054.jpg</td><td>mast:SDSS/sdss/imaging/7784/1/54/photoObj-007784-1-0054.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753090</td><td>879470283</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>001755-6-0297</td><td>FIELD</td><td>sdss_image_001755-6-0297</td><td>348.156732613</td><td>0.923293243796</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>51819.32029456019</td><td>51819.32423515574</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 348.07483205317493 0.8106821614584868 348.0749213469939 1.0357854372653248 348.23863831262076 1.0357924726731422 348.2385386532089 0.8106892012150833 348.07483205317493 0.8106821614584868</td><td>mast:SDSS/sdss/imaging/1755/6/297/frame-irg-001755-6-0297.jpg</td><td>mast:SDSS/sdss/imaging/1755/6/297/photoObj-001755-6-0297.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753091</td><td>879470303</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003813-6-0207</td><td>FIELD</td><td>sdss_image_003813-6-0207</td><td>180.65807554</td><td>46.0731162462</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52722.18160949074</td><td>52722.18555020203</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 180.54918169422623 45.95623884336808 180.5313988906496 46.180980477354815 180.76743963811995 46.18977999619046 180.7842658540158 45.96500281477243 180.54918169422623 45.95623884336808</td><td>mast:SDSS/sdss/imaging/3813/6/207/frame-irg-003813-6-0207.jpg</td><td>mast:SDSS/sdss/imaging/3813/6/207/photoObj-003813-6-0207.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753092</td><td>879470324</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004128-3-0149</td><td>FIELD</td><td>sdss_image_004128-3-0149</td><td>3.89258315022</td><td>-0.104863414641</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52908.291217592596</td><td>52908.29515853537</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 3.8107654247057003 -0.21744348852048187 3.810759586905214 0.007618425005043115 3.9744002907002565 0.00760692615392844 3.9744073049536315 -0.21745498733790294 3.8107654247057003 -0.21744348852048187</td><td>mast:SDSS/sdss/imaging/4128/3/149/frame-irg-004128-3-0149.jpg</td><td>mast:SDSS/sdss/imaging/4128/3/149/photoObj-004128-3-0149.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753093</td><td>879470333</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007784-1-0315</td><td>FIELD</td><td>sdss_image_007784-1-0315</td><td>17.9917600555</td><td>8.59331258529</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54771.368446064815</td><td>54771.37238712333</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 17.904602281705028 8.484008284578472 17.913513458855533 8.708867057063072 18.07896368861514 8.702487440722745 18.06995457003197 8.47763248976334 17.904602281705028 8.484008284578472</td><td>mast:SDSS/sdss/imaging/7784/1/315/frame-irg-007784-1-0315.jpg</td><td>mast:SDSS/sdss/imaging/7784/1/315/photoObj-007784-1-0315.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753094</td><td>879470341</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>001755-6-0659</td><td>FIELD</td><td>sdss_image_001755-6-0659</td><td>42.3554028336</td><td>0.923426342939</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>51819.47039155092</td><td>51819.474332840924</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 42.27353257439871 0.8108198578501935 42.27360739366872 1.03593200150311 42.437278238285586 1.0359209713587783 42.43719305444086 0.8108088313879613 42.27353257439871 0.8108198578501935</td><td>mast:SDSS/sdss/imaging/1755/6/659/frame-irg-001755-6-0659.jpg</td><td>mast:SDSS/sdss/imaging/1755/6/659/photoObj-001755-6-0659.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753095</td><td>879470364</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003813-6-0524</td><td>FIELD</td><td>sdss_image_003813-6-0524</td><td>239.992464999</td><td>31.2572385392</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52722.3130494213</td><td>52722.31699001685</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 239.8381197857097 31.212761866519052 239.99069466092368 31.396316569223874 240.14688067428054 31.301441077744816 239.99415566332053 31.1180708612701 239.8381197857097 31.212761866519052</td><td>mast:SDSS/sdss/imaging/3813/6/524/frame-irg-003813-6-0524.jpg</td><td>mast:SDSS/sdss/imaging/3813/6/524/photoObj-003813-6-0524.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753096</td><td>879470383</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004128-3-0212</td><td>FIELD</td><td>sdss_image_004128-3-0212</td><td>13.324332535</td><td>-0.104995401693</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52908.317339814814</td><td>52908.32128075759</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 13.242510693981902 -0.21758142244793688 13.24251633402178 0.007488953864016896 13.40615378457626 0.00748088213386401 13.406149322490872 -0.21758949420451543 13.242510693981902 -0.21758142244793688</td><td>mast:SDSS/sdss/imaging/4128/3/212/frame-irg-004128-3-0212.jpg</td><td>mast:SDSS/sdss/imaging/4128/3/212/photoObj-004128-3-0212.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297753097</td><td>879470390</td></tr>
+</table></div></div></div>
+</div>
+<p>The table above provides some basic information for each object:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">instrument_name</span></code>: <code class="docutils literal notranslate"><span class="pre">SDSS</span> <span class="pre">Camera</span></code> indicates that the imaging data were collected using the SDSS camera.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filters</span></code>: Indicates the SDSS filters used in the survey (u, g, r, i, and z).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wavelength_region</span></code>: Indicates the region of the electromagnetic spectrum observed. This should be <code class="docutils literal notranslate"><span class="pre">OPTICAL</span></code>, since the SDSS Legacy Imaging Survey observed in the optical wavelength range.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_classification</span></code>: <code class="docutils literal notranslate"><span class="pre">FIELD</span></code> indicates the survey captured images of the sky.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obs_id</span></code>: Observation ID associated with the image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s_ra</span></code> and <code class="docutils literal notranslate"><span class="pre">s_dec</span></code>: Right ascension and declination.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataproduct_type</span></code>: This should be <code class="docutils literal notranslate"><span class="pre">image</span></code> since we’re focusing on an imaging survey.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t_min</span></code> and <code class="docutils literal notranslate"><span class="pre">t_max</span></code>: The modified Julian dates indicating the start and end times of the exposures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">em_min</span></code> and <code class="docutils literal notranslate"><span class="pre">em_max</span></code>: The minimum and maximum wavelengths observed by the survey. For the SDSS Legacy Imaging survey, this range is approximately 304.8 - 1083.3 nanometers (optical).</p></li>
+</ul>
+</section>
+<section id="gathering-galaxies-from-the-sdss-legacy-imaging-survey">
+<h3>Gathering Galaxies from the SDSS Legacy Imaging Survey<a class="headerlink" href="#gathering-galaxies-from-the-sdss-legacy-imaging-survey" title="Permalink to this heading">#</a></h3>
+<p>In this tutorial, we’ll be gathering a variety of galaxies to make a Hubble Tuning Fork Diagram. We’ll select the following galaxies:</p>
+<ul class="simple">
+<li><p>Elliptical:</p>
+<ul>
+<li><p>M89 (E0)</p></li>
+<li><p>NGC 5982 (E3)</p></li>
+<li><p>NGC 4697 (E6)</p></li>
+</ul>
+</li>
+<li><p>Lenticular:</p>
+<ul>
+<li><p>NGC 3384 (S0)</p></li>
+</ul>
+</li>
+<li><p>Spiral:</p>
+<ul>
+<li><p>NGC 488 (Sa)</p></li>
+<li><p>M88 (Sb)</p></li>
+<li><p>M99 (Sc)</p></li>
+</ul>
+</li>
+<li><p>Barred Spiral:</p>
+<ul>
+<li><p>NGC 109 (SBa)</p></li>
+<li><p>M91 (SBb)</p></li>
+<li><p>NGC 5068 (SBc)</p></li>
+</ul>
+</li>
+<li><p>Irregular:</p>
+<ul>
+<li><p>IC 3583</p></li>
+<li><p>NGC 7292</p></li>
+</ul>
+</li>
+</ul>
+<p>These galaxies were selected based on their <a class="reference external" href="https://ned.ipac.caltech.edu/">NED</a> classification as well as how they fit in an SDSS field using the <a class="reference external" href="https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html">MAST Portal Astroview</a>.</p>
+<p>We can query MAST using the target name directly! We’ll use M89 as an example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Querying MAST for M89 using search radius of 0</span>
+<span class="n">m89</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">objectname</span><span class="o">=</span><span class="s2">&quot;M89&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span>
+<span class="p">)</span>
+<span class="c1"># Displaying the results</span>
+<span class="n">m89</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=3</i>
+<table id="table140167296697424" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th><th>objID1</th><th>distance</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str194</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th><th>str9</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003805-4-0012</td><td>FIELD</td><td>sdss_image_003805-4-0012</td><td>188.898701441</td><td>12.5764587394</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52721.22948229167</td><td>52721.23342288722</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 188.8132288137322 12.46506119358693 188.81649298124918 12.690134070168584 188.98424657174562 12.687719213107714 188.9808354852855 12.462648412357575 188.8132288137322 12.46506119358693</td><td>mast:SDSS/sdss/imaging/3805/4/12/frame-irg-003805-4-0012.jpg</td><td>mast:SDSS/sdss/imaging/3805/4/12/photoObj-003805-4-0012.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297084970</td><td>877110806</td><td>877110806</td><td>0.0</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003064-4-0048</td><td>FIELD</td><td>sdss_image_003064-4-0048</td><td>188.888058594</td><td>12.5775588961</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52356.43429236111</td><td>52356.43823341963</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 188.80250968110988 12.46618524586542 188.80590815690954 12.69122285024466 188.97368000165366 12.688795440850217 188.97013460213253 12.463759996247843 188.80250968110988 12.46618524586542</td><td>mast:SDSS/sdss/imaging/3064/4/48/frame-irg-003064-4-0048.jpg</td><td>mast:SDSS/sdss/imaging/3064/4/48/photoObj-003064-4-0048.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297485968</td><td>878009148</td><td>878009148</td><td>0.0</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003804-4-0207</td><td>FIELD</td><td>sdss_image_003804-4-0207</td><td>188.89762961</td><td>12.5766093494</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52721.21609756944</td><td>52721.220038743704</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 188.81217294825396 12.46522271055066 188.81545014737785 12.690283256904873 188.98315874867606 12.687858932000672 188.97973467649607 12.46280046903323 188.81217294825396 12.46522271055066</td><td>mast:SDSS/sdss/imaging/3804/4/207/frame-irg-003804-4-0207.jpg</td><td>mast:SDSS/sdss/imaging/3804/4/207/photoObj-003804-4-0207.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297868245</td><td>880840069</td><td>880840069</td><td>0.0</td></tr>
+</table></div></div></div>
+</div>
+<p>There are three fields available for M89, but we’ll be using the field with <code class="docutils literal notranslate"><span class="pre">target_name=003804-4-0207</span></code> since it completely captures the galaxy. For the rest of the tutorial, we’ll be querying by target name (field) as we preselected these from the MAST Portal depending on how the galaxy fit into each field.</p>
+<section id="elliptical-galaxies">
+<h4>Elliptical Galaxies<a class="headerlink" href="#elliptical-galaxies" title="Permalink to this heading">#</a></h4>
+<p>Elliptical galaxies have a distinct nucleus, but do not have a disk or spiral arms. Due to the minimal dust and gas present, these galaxies are mostly made up of <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/*/Population+II">population II stars</a>. Elliptical galaxies are categorized by number, with E0 being the most round in shape, and E7 being the most elliptical in shape. The elliptical galaxy classification numbers are derived from the equation:</p>
+<div class="math notranslate nohighlight">
+\[
+n = 10(\frac{b}{a})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the classification number, <span class="math notranslate nohighlight">\(b\)</span> is the projected length of the semi-minor axis on the sky, and <span class="math notranslate nohighlight">\(a\)</span> is the projected length of the semi-major axis on the sky <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/*/Elliptical+Galaxy">[4]</a>. However, this system is sensitive to the angle at which we observe the galaxy. A galaxy that appears highly elliptical when viewed edge-on may be more circular when viewed face-on. Although this classification scheme remains in use, it’s important to remember the limitations imposed by our viewing perspective.</p>
+<p>We’ll use the following fields for each galaxy:</p>
+<ul class="simple">
+<li><p>M89 field: <code class="docutils literal notranslate"><span class="pre">003804-4-0207</span></code></p></li>
+<li><p>NGC 5982 field: <code class="docutils literal notranslate"><span class="pre">004679-1-0034</span></code></p></li>
+<li><p>NGC 4697 field: <code class="docutils literal notranslate"><span class="pre">006121-1-0124</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Elliptical Galaxies</span>
+<span class="n">ellipticals</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;003804-4-0207&quot;</span><span class="p">,</span>  <span class="c1"># M89</span>
+        <span class="s2">&quot;004679-1-0034&quot;</span><span class="p">,</span>  <span class="c1"># NGC 5982</span>
+        <span class="s2">&quot;006121-1-0124&quot;</span><span class="p">,</span>  <span class="c1"># NGC 4697</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">ellipticals</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=3</i>
+<table id="table140167296769744" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str196</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003804-4-0207</td><td>FIELD</td><td>sdss_image_003804-4-0207</td><td>188.89762961</td><td>12.5766093494</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52721.21609756944</td><td>52721.220038743704</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 188.81217294825396 12.46522271055066 188.81545014737785 12.690283256904873 188.98315874867606 12.687858932000672 188.97973467649607 12.46280046903323 188.81217294825396 12.46522271055066</td><td>mast:SDSS/sdss/imaging/3804/4/207/frame-irg-003804-4-0207.jpg</td><td>mast:SDSS/sdss/imaging/3804/4/207/photoObj-003804-4-0207.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297868245</td><td>880840069</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004679-1-0034</td><td>FIELD</td><td>sdss_image_004679-1-0034</td><td>234.574548776</td><td>59.3448234453</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53170.30600509259</td><td>53170.309946266854</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 234.3046197895768 59.32444261506588 234.62038966365222 59.481940250855786 234.84464256375884 59.36456934478688 234.52892307987 59.20761382067637 234.3046197895768 59.32444261506588</td><td>mast:SDSS/sdss/imaging/4679/1/34/frame-irg-004679-1-0034.jpg</td><td>mast:SDSS/sdss/imaging/4679/1/34/photoObj-004679-1-0034.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298084026</td><td>883250573</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>006121-1-0124</td><td>FIELD</td><td>sdss_image_006121-1-0124</td><td>192.206354543</td><td>-5.7765959424</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53856.28209305555</td><td>53856.28603411408</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 192.31583595794746 -5.863292886582556 192.08978940731004 -5.853419106917138 192.0970170390151 -5.689882899407467 192.32299845386115 -5.699753837522322 192.31583595794746 -5.863292886582556</td><td>mast:SDSS/sdss/imaging/6121/1/124/frame-irg-006121-1-0124.jpg</td><td>mast:SDSS/sdss/imaging/6121/1/124/photoObj-006121-1-0124.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297963442</td><td>881902351</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="lenticular-galaxies">
+<h4>Lenticular Galaxies<a class="headerlink" href="#lenticular-galaxies" title="Permalink to this heading">#</a></h4>
+<p>Lenticular galaxies are in-between elliptical and spiral galaxies. They have a central bulge and a disk similar to a spiral galaxy, but lack the spiral arm structure. These galaxies are thought to be former spiral galaxies that lost their interstellar material, likely due to interactions with other galaxies or their environments <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/L/Lenticular+Galaxy">[5]</a> <a class="reference external" href="https://science.nasa.gov/universe/galaxies/types/">[6]</a>.</p>
+<p>We’ll use the field <code class="docutils literal notranslate"><span class="pre">003631-1-0302</span></code> for NGC 3384.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lenticular Galaxy</span>
+<span class="n">lenticular</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="s2">&quot;003631-1-0302&quot;</span><span class="p">,</span>  <span class="c1"># NGC 3384</span>
+<span class="p">)</span>
+<span class="n">lenticular</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=1</i>
+<table id="table140167296825296" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str194</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003631-1-0302</td><td>FIELD</td><td>sdss_image_003631-1-0302</td><td>162.00495917</td><td>12.6948375209</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52667.431497453705</td><td>52667.43543804926</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 161.9332351533888 12.574530580964552 161.90978380682168 12.798441361659597 162.0767624598467 12.815015802635779 162.10006839174622 12.591090421528067 161.9332351533888 12.574530580964552</td><td>mast:SDSS/sdss/imaging/3631/1/302/frame-irg-003631-1-0302.jpg</td><td>mast:SDSS/sdss/imaging/3631/1/302/photoObj-003631-1-0302.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298398508</td><td>885964246</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="spiral-galaxies">
+<h4>Spiral Galaxies<a class="headerlink" href="#spiral-galaxies" title="Permalink to this heading">#</a></h4>
+<p>Spiral galaxies have distinct spiral arms that protrude from a central bulge of older stars. Within the spiral arms lie stellar “nurseries” of gas and dust that fuel young star formation. Spiral galaxies are classified into <em>Sa, Sb,</em> or <em>Sc</em> groups based on how tightly wound their spirals are, the thickness of the spiral arms, and the size of the central bulge. <em>Sa</em> spirals have large bulges and faint, small spiral arms whereas <em>Sc</em> spirals have smaller bulges, but larger, loose spiral arms <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/S/Spiral+Galaxy">[7]</a>.</p>
+<p>We’ll use the following fields for each galaxy:</p>
+<ul class="simple">
+<li><p>NGC 488 field: <code class="docutils literal notranslate"><span class="pre">007727-5-0202</span></code></p></li>
+<li><p>M88 field: <code class="docutils literal notranslate"><span class="pre">004381-2-0114</span></code></p></li>
+<li><p>M99 field: <code class="docutils literal notranslate"><span class="pre">004381-2-0093</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spiral Galaxies</span>
+<span class="n">spirals</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;007727-5-0202&quot;</span><span class="p">,</span>  <span class="c1"># NGC 488</span>
+        <span class="s2">&quot;004381-2-0114&quot;</span><span class="p">,</span>  <span class="c1"># M88</span>
+        <span class="s2">&quot;004381-2-0093&quot;</span><span class="p">,</span>  <span class="c1"># M99</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">spirals</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=3</i>
+<table id="table140167296985872" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str195</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004381-2-0093</td><td>FIELD</td><td>sdss_image_004381-2-0093</td><td>184.719136049</td><td>14.4769892626</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53032.39776828704</td><td>53032.401709229816</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 184.63484872415157 14.364236748218197 184.6343524567763 14.58938512819659 184.80350921612668 14.589601743912382 184.80383394846027 14.364453070729992 184.63484872415157 14.364236748218197</td><td>mast:SDSS/sdss/imaging/4381/2/93/frame-irg-004381-2-0093.jpg</td><td>mast:SDSS/sdss/imaging/4381/2/93/photoObj-004381-2-0093.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298352265</td><td>885500811</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004381-2-0114</td><td>FIELD</td><td>sdss_image_004381-2-0114</td><td>187.966141332</td><td>14.457917178</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53032.40647534722</td><td>53032.41041640574</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 187.88016114963244 14.346363232959801 187.8830848748545 14.571503687912221 188.05220635612855 14.569329914111023 188.0491114033052 14.344191605583559 187.88016114963244 14.346363232959801</td><td>mast:SDSS/sdss/imaging/4381/2/114/frame-irg-004381-2-0114.jpg</td><td>mast:SDSS/sdss/imaging/4381/2/114/photoObj-004381-2-0114.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298351741</td><td>885496458</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007727-5-0202</td><td>FIELD</td><td>sdss_image_007727-5-0202</td><td>20.406804076</td><td>5.3457659483</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54747.40886678241</td><td>54747.41280784093</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 20.321964096341954 5.235060749739203 20.32725877200831 5.460113241855058 20.49167212052815 5.4563495479137645 20.48631705941364 5.231298472919874 20.321964096341954 5.235060749739203</td><td>mast:SDSS/sdss/imaging/7727/5/202/frame-irg-007727-5-0202.jpg</td><td>mast:SDSS/sdss/imaging/7727/5/202/photoObj-007727-5-0202.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298036044</td><td>882777689</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="barred-spiral-galaxies">
+<h4>Barred Spiral Galaxies<a class="headerlink" href="#barred-spiral-galaxies" title="Permalink to this heading">#</a></h4>
+<p>Barred spiral galaxies have a distinct, luminous bar/stripe across their center. This bar is thought to form either from internal dynamical instabilities or from gravitational interactions with neighboring galaxies. Like regular spiral galaxies, they are classified into <em>SBa, SBb,</em> and <em>SBc</em> types: <em>SBa</em> galaxies have tightly wound spiral arms and a larger central bulge, while <em>SBc</em> galaxies have loosely wound arms and a smaller bulge. <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/B/Bars">[8]</a>.</p>
+<p>We’ll use the following fields for each galaxy:</p>
+<ul class="simple">
+<li><p>NGC 109 field: <code class="docutils literal notranslate"><span class="pre">007932-2-0051</span></code></p></li>
+<li><p>M91 field: <code class="docutils literal notranslate"><span class="pre">004381-2-0120</span></code></p></li>
+<li><p>NGC 5068 field: <code class="docutils literal notranslate"><span class="pre">001449-5-0093</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Barred Spirals</span>
+<span class="n">barred_spirals</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;007932-2-0051&quot;</span><span class="p">,</span>  <span class="c1"># NGC 109</span>
+        <span class="s2">&quot;004381-2-0120&quot;</span><span class="p">,</span>  <span class="c1"># M91</span>
+        <span class="s2">&quot;001449-5-0093&quot;</span><span class="p">,</span>  <span class="c1"># NGC 5068</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">barred_spirals</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=3</i>
+<table id="table140167297025040" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str198</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>001449-5-0093</td><td>FIELD</td><td>sdss_image_001449-5-0093</td><td>199.759449788</td><td>-21.0895968268</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>51667.208523726855</td><td>51667.21246478537</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 199.68382220371453 -21.209641458700236 199.6605346260022 -20.98555578244084 199.83496672259864 -20.969628194410113 199.8585150712067 -21.19368991756911 199.68382220371453 -21.209641458700236</td><td>mast:SDSS/sdss/imaging/1449/5/93/frame-irg-001449-5-0093.jpg</td><td>mast:SDSS/sdss/imaging/1449/5/93/photoObj-001449-5-0093.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298381053</td><td>885786836</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>004381-2-0120</td><td>FIELD</td><td>sdss_image_004381-2-0120</td><td>188.893660009</td><td>14.4440133289</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>53032.408963194444</td><td>53032.412904368706</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 188.8072050207449 14.332814743629992 188.81110366536907 14.557938939364815 188.98019947543165 14.55507039558893 188.97612983550505 14.329949038635592 188.8072050207449 14.332814743629992</td><td>mast:SDSS/sdss/imaging/4381/2/120/frame-irg-004381-2-0120.jpg</td><td>mast:SDSS/sdss/imaging/4381/2/120/photoObj-004381-2-0120.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298353167</td><td>885509568</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>007932-2-0051</td><td>FIELD</td><td>sdss_image_007932-2-0051</td><td>6.52840089436</td><td>21.7582967467</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>54857.14674201389</td><td>54857.15068307241</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 6.439077306737359 21.646492711571536 6.441505431337264 21.87164565721037 6.617862374334172 21.869942774151156 6.615157893982057 21.644792545902753 6.439077306737359 21.646492711571536</td><td>mast:SDSS/sdss/imaging/7932/2/51/frame-irg-007932-2-0051.jpg</td><td>mast:SDSS/sdss/imaging/7932/2/51/photoObj-007932-2-0051.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>298320511</td><td>885204258</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="irregular-galaxies">
+<h4>Irregular Galaxies<a class="headerlink" href="#irregular-galaxies" title="Permalink to this heading">#</a></h4>
+<p>Irregular galaxies are galaxies that do not fit into the elliptical or spiral/barred spiral categories. They typically have chaotic or asymmetric structures, often resulting from violent interactions with other galaxies, collisions, or internal processes. Well-known examples include the Large and Small Magellanic Clouds <a class="reference external" href="https://astronomy.swin.edu.au/cosmos/I/Irregular+Galaxy">[9]</a>.</p>
+<p>We’ll use the following fields for each galaxy:</p>
+<ul class="simple">
+<li><p>IC 3583 field: <code class="docutils literal notranslate"><span class="pre">003836-5-0268</span></code></p></li>
+<li><p>NGC 7292 field: <code class="docutils literal notranslate"><span class="pre">008115-6-0118</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Irregular galaxies</span>
+<span class="n">irregulars</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;003836-5-0268&quot;</span><span class="p">,</span>  <span class="c1"># IC 3583</span>
+        <span class="s2">&quot;008115-6-0118&quot;</span><span class="p">,</span>  <span class="c1"># NGC 7292</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">irregulars</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=2</i>
+<table id="table140167297177424" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str19</th><th>str11</th><th>str4</th><th>str9</th><th>str7</th><th>str13</th><th>str5</th><th>str24</th><th>float64</th><th>float64</th><th>str5</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str197</th><th>str61</th><th>str61</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str9</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>003836-5-0268</td><td>FIELD</td><td>sdss_image_003836-5-0268</td><td>189.175059735</td><td>13.1998869096</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>52729.241773726855</td><td>52729.24571490111</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 189.08925682499807 13.088602004029513 189.09279407361726 13.313649665325844 189.26093904132443 13.311033284196608 189.25724699913016 13.085987980105468 189.08925682499807 13.088602004029513</td><td>mast:SDSS/sdss/imaging/3836/5/268/frame-irg-003836-5-0268.jpg</td><td>mast:SDSS/sdss/imaging/3836/5/268/photoObj-003836-5-0268.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297915282</td><td>881405426</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SDSS Legacy Imaging</td><td>SDSS Camera</td><td>SDSS</td><td>u;g;r;i;z</td><td>OPTICAL</td><td>008115-6-0118</td><td>FIELD</td><td>sdss_image_008115-6-0118</td><td>337.063165401</td><td>30.3475793355</td><td>image</td><td>SDSS Collaboration</td><td>3</td><td>55122.10941539352</td><td>55122.1133563363</td><td>53.907456</td><td>304.79999999999995</td><td>1083.3000000000002</td><td>Sloan Digital Sky Survey (SDSS) Legacy Imaging Data</td><td>55571.0</td><td>N/A</td><td>--</td><td>--</td><td>POLYGON 337.0043270910967 30.21800053821113 336.9384683229479 30.435781036316044 337.12219177360197 30.47702529132038 337.18766967475585 30.259153076577768 337.0043270910967 30.21800053821113</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-irg-008115-6-0118.jpg</td><td>mast:SDSS/sdss/imaging/8115/6/118/photoObj-008115-6-0118.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>297726821</td><td>879149237</td></tr>
+</table></div></div></div>
+</div>
+</section>
+</section>
+<section id="downloading-sdss-legacy-imaging-survey-data-products">
+<h3>Downloading SDSS Legacy Imaging Survey Data Products<a class="headerlink" href="#downloading-sdss-legacy-imaging-survey-data-products" title="Permalink to this heading">#</a></h3>
+<p>For each image, there are 7 available products: The preview .jpg image, the FITS files in each respective SDSS filter (u, g, r, i, and z), and a catalog file containing photometric measurements from all five filters combined. The catalog file is listed as <code class="docutils literal notranslate"><span class="pre">SDSS</span> <span class="pre">Imaging</span> <span class="pre">Catalogs</span></code> for the <code class="docutils literal notranslate"><span class="pre">productSubGroupDescription</span></code> parameter.</p>
+<p>For more information about products available at MAST, you can check out the <a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Imaging+Data+Products">SDSS Legacy Imaging Survey Documentation</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combining the Astropy tables for all galaxies</span>
+<span class="n">all_galaxies</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">ellipticals</span><span class="p">,</span> <span class="n">lenticular</span><span class="p">,</span> <span class="n">spirals</span><span class="p">,</span> <span class="n">barred_spirals</span><span class="p">,</span> <span class="n">irregulars</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Viewing available products (first 7)</span>
+<span class="n">galaxy_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">all_galaxies</span><span class="p">)</span>
+<span class="n">galaxy_products</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=7</i>
+<table id="table140168615399376" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str9</th><th>str4</th><th>str12</th><th>str28</th><th>str246</th><th>str1</th><th>str64</th><th>str7</th><th>str28</th><th>str21</th><th>str48</th><th>str19</th><th>str3</th><th>str3</th><th>str30</th><th>int64</th><th>str9</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>Preview-Full</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-irg-008115-6-0118.jpg</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-irg-008115-6-0118.jpg</td><td>1041251</td><td>297726821</td><td>PUBLIC</td><td>3</td><td>u;g;r;i;z</td></tr>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-g-008115-6-0118.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-g-008115-6-0118.fits.bz2</td><td>3077536</td><td>297726821</td><td>PUBLIC</td><td>2</td><td>g</td></tr>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-i-008115-6-0118.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-i-008115-6-0118.fits.bz2</td><td>3876498</td><td>297726821</td><td>PUBLIC</td><td>2</td><td>i</td></tr>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-r-008115-6-0118.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-r-008115-6-0118.fits.bz2</td><td>3661286</td><td>297726821</td><td>PUBLIC</td><td>2</td><td>r</td></tr>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-u-008115-6-0118.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-u-008115-6-0118.fits.bz2</td><td>3537982</td><td>297726821</td><td>PUBLIC</td><td>2</td><td>u</td></tr>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>SDSS calibrated, sky-subtracted corrected photometry frame and associated calibration metadata for each run number, camera column, and field name within SDSS.</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/frame-z-008115-6-0118.fits.bz2</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>IMAGE</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>frame-z-008115-6-0118.fits.bz2</td><td>3897222</td><td>297726821</td><td>PUBLIC</td><td>2</td><td>z</td></tr>
+<tr><td>297726821</td><td>SDSS</td><td>image</td><td>sdss_image_008115-6-0118</td><td>SDSS Legacy Imaging photoObj catalog. This contains the full, calibrated outputs of the SDSS Imaging Pipeline including source detection, classification, magnitude measurements, and quality flags for each field and all five filters in that field.</td><td>S</td><td>mast:SDSS/sdss/imaging/8115/6/118/photoObj-008115-6-0118.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>SDSS Imaging Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Imaging</td><td>DR8</td><td>N/A</td><td>photoObj-008115-6-0118.fits</td><td>5705280</td><td>297726821</td><td>PUBLIC</td><td>3</td><td>u;g;r;i;z</td></tr>
+</table></div></div></div>
+</div>
+<p>We’ll now download all FITS files, specifically focusing on the files in specific ugriz filters. For this tutorial, we’ll be using the g, r, and i filters only, so we can filter those out using the <code class="docutils literal notranslate"><span class="pre">filters</span></code> parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Downloading products</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span>
+    <span class="n">galaxy_products</span><span class="p">,</span> <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each FITS file follows the following naming scheme: <code class="docutils literal notranslate"><span class="pre">frame-{filter}-{RUN}-{CAMCOL}-{FIELD}</span></code> where <code class="docutils literal notranslate"><span class="pre">RUN</span></code> is the zero-padded, six-digit identification number for that photometric run, <code class="docutils literal notranslate"><span class="pre">CAMCOL</span></code> is the camera column identifying the scanline within the run, and <code class="docutils literal notranslate"><span class="pre">FIELD</span></code> is field number for that observation.</p>
+<p>While we won’t be using the photoObj files in this tutorial, these contain the fully calibrated outputs from the <a class="reference external" href="https://www.sdss4.org/dr17/imaging/pipeline/">SDSS Imaging Pipeline</a> and other respective measurements such as photometry in all five SDSS filters (u, g, r, i, and z), source classification, and quality flags. There is one photoObj file for each run-camcol-field combination.</p>
+</section>
+</section>
+<section id="creating-the-cutout-images-using-astrocut">
+<h2>Creating the Cutout Images Using Astrocut<a class="headerlink" href="#creating-the-cutout-images-using-astrocut" title="Permalink to this heading">#</a></h2>
+<p>Now that we downloaded the FITS files for each galaxy, we can use <code class="docutils literal notranslate"><span class="pre">Astrocut</span></code> to trim the images and create cutouts!</p>
+<p>Astrocut uses FITS files and specified center coordinates to create a trimmed image. We’ll create a dictionary of galaxy names, their target names, and center coordinates. For more information about <code class="docutils literal notranslate"><span class="pre">Astrocut</span></code>, you can view the <a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/index.html">documentation</a>.</p>
+<p>We’ll use <code class="docutils literal notranslate"><span class="pre">warnings.filterwarnings</span></code> to suppress FITS warnings due to the change in keyword names since SDSS data was created.</p>
+<p>Each Astrocut image cell takes around 3-8 minutes to run.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Suppressing FITS warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">astropy</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">FITSFixedWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to center the galaxy in our cutout, we need to know the center coordinates! We can use <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> to resolve the coordinates for each galaxy using <code class="docutils literal notranslate"><span class="pre">Observations.resolve_object</span></code>. We’ll now make a dictionary to code in the field ID and coordinates per galaxy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Making a dictionary for galaxy names with MAST target names and coordinates</span>
+<span class="n">galaxies</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;m89&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;003804-4-0207&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;m89&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc5982&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;004679-1-0034&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc5982&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc4697&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;006121-1-0124&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc4697&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc3384&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;003631-1-0302&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc3384&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc488&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;007727-5-0202&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc488&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;m88&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;004381-2-0114&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;m88&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;m99&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;004381-2-0093&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;m99&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc109&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;007932-2-0051&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc109&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;m91&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;004381-2-0120&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;m91&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc5068&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;001449-5-0093&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc5068&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ic3583&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;003836-5-0268&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ic3583&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ngc7292&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;008115-6-0118&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coord&quot;</span><span class="p">:</span> <span class="n">Observations</span><span class="o">.</span><span class="n">resolve_object</span><span class="p">(</span><span class="s2">&quot;ngc7292&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a function to locate files from download, find the r, g, and i files</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_files_for_galaxy</span><span class="p">(</span><span class="n">galaxy_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the files based on galaxy name and returns their r, g, and i FITS files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Finding the file by galaxy name</span>
+    <span class="n">galaxy_mask</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">galaxies</span><span class="p">[</span><span class="n">galaxy_name</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">][</span><span class="n">galaxy_mask</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Finding the r, g, and i files</span>
+    <span class="n">rmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">files</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;frame-r&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="n">gmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">files</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;frame-g&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="n">imask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">files</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;frame-i&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+    <span class="n">r_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="n">rmask</span><span class="p">]</span>
+    <span class="n">g_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="n">gmask</span><span class="p">]</span>
+    <span class="n">i_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="n">imask</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">i_file</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r_file</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g_file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Helper function for creating cutout images</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_cutouts</span><span class="p">(</span><span class="n">galaxy_name</span><span class="p">,</span> <span class="n">cutout_size</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes the name of the galaxy and size of the cutout,</span>
+<span class="sd">    creates cutout using Astrocut, then plots the image using matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Using previous function to get the r, g, and i files</span>
+    <span class="n">galaxy_input</span> <span class="o">=</span> <span class="n">get_files_for_galaxy</span><span class="p">(</span><span class="n">galaxy_name</span><span class="p">)</span>
+
+    <span class="c1"># Creating the cutouts</span>
+    <span class="n">galaxy_colorimage</span> <span class="o">=</span> <span class="n">FITSCutout</span><span class="p">(</span>
+        <span class="n">galaxy_input</span><span class="p">,</span> <span class="n">galaxies</span><span class="p">[</span><span class="n">galaxy_name</span><span class="p">][</span><span class="s2">&quot;coord&quot;</span><span class="p">],</span> <span class="n">cutout_size</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">get_image_cutouts</span><span class="p">(</span><span class="n">colorize</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">galaxy_colorimage</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">galaxy_name</span><span class="si">}</span><span class="s2">_cutout.png&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Capitalizing the title</span>
+    <span class="n">title_name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">upper</span><span class="p">(</span><span class="n">galaxy_name</span><span class="p">)</span>
+
+    <span class="c1"># Displaying the cutouts</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">galaxy_colorimage</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cutout of </span><span class="si">{</span><span class="n">title_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># M89</span>
+<span class="c1"># Creating and displaying the cutout image of M89!</span>
+<span class="n">m89_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;m89&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ddc9cf618e3bbab68474e352726ab6dae2e6f51c95fe30436869892a74c90a4c.png" src="../../../_images/ddc9cf618e3bbab68474e352726ab6dae2e6f51c95fe30436869892a74c90a4c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 5982</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 5982!</span>
+<span class="n">ngc5982_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc5982&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/85078e608b4a958e2236c067346005b7acc774ad652878ada77b8bcf3cfd0227.png" src="../../../_images/85078e608b4a958e2236c067346005b7acc774ad652878ada77b8bcf3cfd0227.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 4697</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 4697!</span>
+<span class="n">ngc4697_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc4697&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/9771f4f207bcd0e8440807cc24b5e0b2dce7eadaf4e33fcbd70c2f49d3ac7f4a.png" src="../../../_images/9771f4f207bcd0e8440807cc24b5e0b2dce7eadaf4e33fcbd70c2f49d3ac7f4a.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 3384</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 3384!</span>
+<span class="n">ngc3384_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc3384&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">175</span><span class="p">,</span> <span class="mi">175</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/f77cc09c47308cd0e46d7b3cd65f488ac74c394e4115fc241cb6dc5f576dc4c1.png" src="../../../_images/f77cc09c47308cd0e46d7b3cd65f488ac74c394e4115fc241cb6dc5f576dc4c1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 488</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 488!</span>
+<span class="n">ngc488_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc488&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">440</span><span class="p">,</span> <span class="mi">500</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/5e16dd4460a25d3bdeb42bf40d03112f7afc192a08932c799c61f3e4027bbc94.png" src="../../../_images/5e16dd4460a25d3bdeb42bf40d03112f7afc192a08932c799c61f3e4027bbc94.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># M88</span>
+<span class="c1"># Creating and displaying the cutout image of M88!</span>
+<span class="n">m88_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;m88&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">700</span><span class="p">,</span> <span class="mi">600</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/5210694a4e1d35c8e1d4b76bd41a4d3ec690cd81b108c7ed40f48916e79a41be.png" src="../../../_images/5210694a4e1d35c8e1d4b76bd41a4d3ec690cd81b108c7ed40f48916e79a41be.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># M99</span>
+<span class="c1"># Creating and displaying the cutout image of M99!</span>
+<span class="n">m99_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;m99&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b278be85a36b439f534e65ea898762c01e50a1dbd81f4d586b21f61f96ae7e42.png" src="../../../_images/b278be85a36b439f534e65ea898762c01e50a1dbd81f4d586b21f61f96ae7e42.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 109</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 109!</span>
+<span class="n">ngc109_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc109&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/c71744a4ac42f616d4b88a32f64e262b9013659a1dca60f396d537e6f0655125.png" src="../../../_images/c71744a4ac42f616d4b88a32f64e262b9013659a1dca60f396d537e6f0655125.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># M91</span>
+<span class="c1"># Creating and displaying the cutout image of M91!</span>
+<span class="n">m91_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;m91&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">275</span><span class="p">,</span> <span class="mi">425</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/88a2906916c123546f5c827676a8ab107587464c4dfd2861a739c1b4e757a6b7.png" src="../../../_images/88a2906916c123546f5c827676a8ab107587464c4dfd2861a739c1b4e757a6b7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 5068</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 5068!</span>
+<span class="n">ngc5068_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc5068&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/89d46c9be7e1963f4faa25cb209ef6bd5276f1a88969d492c6d4deb2e2d305a5.png" src="../../../_images/89d46c9be7e1963f4faa25cb209ef6bd5276f1a88969d492c6d4deb2e2d305a5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IC 3583</span>
+<span class="c1"># Creating and displaying the cutout image of IC 3583!</span>
+<span class="n">ic3583_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ic3583&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">150</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/8a5b5c56373534cece9111cc63630d35bdaa188aa82e616cf41e925599f9fef4.png" src="../../../_images/8a5b5c56373534cece9111cc63630d35bdaa188aa82e616cf41e925599f9fef4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NGC 7292</span>
+<span class="c1"># Creating and displaying the cutout image of NGC 7292!</span>
+<span class="n">ngc7292_img</span> <span class="o">=</span> <span class="n">create_cutouts</span><span class="p">(</span><span class="s2">&quot;ngc7292&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/9c559364aaa7139d4b463c4e121555f051cc517274ab64e1367584427f617cd4.png" src="../../../_images/9c559364aaa7139d4b463c4e121555f051cc517274ab64e1367584427f617cd4.png" />
+</div>
+</div>
+</section>
+<section id="making-the-hubble-tuning-fork-diagram">
+<h2>Making the Hubble Tuning Fork Diagram<a class="headerlink" href="#making-the-hubble-tuning-fork-diagram" title="Permalink to this heading">#</a></h2>
+<p>Now that we have our cutouts saved as .png files, we can create our Hubble Tuning Fork Diagram using <code class="docutils literal notranslate"><span class="pre">matplotlib.image</span></code> and a series of subplots!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+<span class="c1"># Reading the cutout images</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">galaxy</span> <span class="ow">in</span> <span class="n">galaxies</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">images</span><span class="p">[</span><span class="n">galaxy</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">galaxy</span><span class="si">}</span><span class="s2">_cutout.png&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ading connecting lines</span>
+<span class="c1"># Straight line</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+
+
+<span class="c1"># Plotting the images and lines</span>
+<span class="c1"># Plotting the elliptical galaxies in the center left</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;m89&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;M89</span><span class="se">\n</span><span class="s2">E0&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc5982&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC 5982</span><span class="se">\n</span><span class="s2">E3&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc4697&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC 4697</span><span class="se">\n</span><span class="s2">E6&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Plotting the connecting straight line</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Plotting the lenticular galaxy between the ellipticals and spirals</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc3384&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC 3384</span><span class="se">\n</span><span class="s2">S0&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Plotting the connecting v line</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="p">))(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Plotting the spiral galaxies in the top right</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc488&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC 488</span><span class="se">\n</span><span class="s2">Sa&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;m88&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;M88</span><span class="se">\n</span><span class="s2">Sb&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.82</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;m99&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;M99</span><span class="se">\n</span><span class="s2">Sc&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.63</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Plotting the barred spirals in the bottom right</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc109&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC 109</span><span class="se">\n</span><span class="s2">SBa&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.68</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;m91&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;M91</span><span class="se">\n</span><span class="s2">SBb&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc5068&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC5068</span><span class="se">\n</span><span class="s2">SBc&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.68</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Plotting the irregular galaxies in the bottom left</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ic3583&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;IC 3583&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">1.43</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="s2">&quot;ngc7292&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NGC 7292&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Adding labels</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.3</span><span class="p">,</span>
+    <span class="mf">0.815</span><span class="p">,</span>
+    <span class="s2">&quot;Hubble Tuning Fork Diagram&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">fontstyle</span><span class="o">=</span><span class="s2">&quot;oblique&quot;</span><span class="p">,</span>
+    <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.35</span><span class="p">,</span>
+    <span class="mf">0.78</span><span class="p">,</span>
+    <span class="s2">&quot;Made using SDSS Legacy Imaging Data at MAST&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">fontstyle</span><span class="o">=</span><span class="s2">&quot;oblique&quot;</span><span class="p">,</span>
+    <span class="c1"># fontweight=&quot;bold&quot;,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.22</span><span class="p">,</span> <span class="mf">0.57</span><span class="p">,</span> <span class="s2">&quot;Elliptical&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.475</span><span class="p">,</span> <span class="mf">0.57</span><span class="p">,</span> <span class="s2">&quot;Lenticular&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">,</span> <span class="s2">&quot;Spiral&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.725</span><span class="p">,</span>
+    <span class="mf">0.425</span><span class="p">,</span>
+    <span class="s2">&quot;Barred Spiral&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.172</span><span class="p">,</span> <span class="mf">0.27</span><span class="p">,</span> <span class="s2">&quot;Irregular&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/07ed954bd0538fac79cf3818f72defa6ad18470817b8e50937cacd1204e709cc.png" src="../../../_images/07ed954bd0538fac79cf3818f72defa6ad18470817b8e50937cacd1204e709cc.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="end-of-tutorial">
+<h2>End of Tutorial<a class="headerlink" href="#end-of-tutorial" title="Permalink to this heading">#</a></h2>
+<p>Congratulations, you’ve reached the end of this notebook! You’ve learned how to use <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> and <code class="docutils literal notranslate"><span class="pre">astrocut</span></code> to create a Hubble Tuning Fork Diagram!</p>
+</section>
+<hr class="docutils" />
+<section id="exercise">
+<h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<p>Can you classify these three galaxies referencing the Hubble Tuning Fork Diagram you constructed above?:</p>
+<ul class="simple">
+<li><p>M95</p></li>
+<li><p>NGC 4125</p></li>
+<li><p>M74</p></li>
+</ul>
+<p>To choose the right field, you can look at the AstroView on the <a class="reference external" href="https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html">MAST Portal</a>.</p>
+<p><em>(Hint: You can download just the preview image by using <code class="docutils literal notranslate"><span class="pre">Observations.filter_products</span></code> and adding the argument <code class="docutils literal notranslate"><span class="pre">productType=&quot;PREVIEW&quot;</span></code>)</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query and download data from MAST</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View preview images</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exercise-solution">
+<h2>Exercise Solution<a class="headerlink" href="#exercise-solution" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query and download data from MAST</span>
+<span class="c1"># Querying MAST</span>
+<span class="n">exercise_galaxies</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SDSS Legacy Imaging&quot;</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;003836-4-0084&quot;</span><span class="p">,</span> <span class="s2">&quot;006118-3-0168&quot;</span><span class="p">,</span> <span class="s2">&quot;007845-2-0104&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="c1"># Get product list for query</span>
+<span class="n">exercise_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">exercise_galaxies</span><span class="p">)</span>
+<span class="c1"># Filter products to get preview jpgs only</span>
+<span class="n">filtered_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span>
+    <span class="n">exercise_products</span><span class="p">,</span>
+    <span class="c1"># Selecting preview jpgs</span>
+    <span class="n">productType</span><span class="o">=</span><span class="s2">&quot;PREVIEW&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># Download products</span>
+<span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">filtered_products</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=3</i>
+<table id="table140167294151056" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>str29</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>./frame-irg-003836-4-0084.jpg</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>./frame-irg-006118-3-0168.jpg</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>./frame-irg-007845-2-0104.jpg</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Viewing the previews side-by-side</span>
+<span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ax2</span><span class="p">:</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+<span class="c1"># Reading images</span>
+<span class="n">img1</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;frame-irg-003836-4-0084.jpg&quot;</span><span class="p">)</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;frame-irg-006118-3-0168.jpg&quot;</span><span class="p">)</span>
+<span class="n">img3</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;frame-irg-007845-2-0104.jpg&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plotting images</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img1</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;M95&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="s2">&quot;NGC 4125&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span>
+<span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img3</span><span class="p">)</span>
+<span class="n">ax2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;M74&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/be351cec90b2d5da10d7d6456b60aa7586a43b83c09788d593576cea993c0999.png" src="../../../_images/be351cec90b2d5da10d7d6456b60aa7586a43b83c09788d593576cea993c0999.png" />
+</div>
+</div>
+<p><em>Assumptions:</em></p>
+<ul class="simple">
+<li><p>It appears that M95 is fairly similar to NGC 109 and M91; this must be a barred spiral galaxy! While the spiral arms are somewhat tight, M95 is most likely between an SBa and an SBb.</p></li>
+<li><p>NGC 4125 does not have spiral arms or dust lanes, so it must be elliptical. Since elliptical galaxies are classified by their ellipticity, NGC 4125 is likely between an E3 and an E6.</p></li>
+<li><p>M74 has distinct spiral arms, but no visible bar. The spiral arms are fairly loose, but not as loose as M99. M74 is likely between an Sb and an Sc galaxy.</p></li>
+</ul>
+<p><em>Results from <a class="reference external" href="https://ned.ipac.caltech.edu/byname">NED</a>:</em></p>
+<ul class="simple">
+<li><p>M95: SBb</p></li>
+<li><p>NGC 4125: E6</p></li>
+<li><p>M74: Sc</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>Additional resources are linked below:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive.stsci.edu/missions-and-data/sdss">SDSS Legacy Archive at MAST</a></p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/The+SDSS+Legacy+Archive+at+MAST">SDSS Legacy Archive at MAST User Manual</a></p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Imaging">SDSS Legacy Imaging Archive User Manual</a></p></li>
+<li><p><a class="reference external" href="https://www.sdss.org/dr18/imaging/">SDSS Imaging Documentation</a></p></li>
+<li><p><a class="reference external" href="https://skyserver.sdss.org/dr1/en/proj/advanced/galaxies/tuningfork.asp">SDSS Hubble Tuning Fork Tutorial</a></p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.mast User Manual</a></p></li>
+<li><p><a class="reference external" href="https://mast.stsci.edu/api/v0/index.html">MAST API</a></p></li>
+<li><p><a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/index.html">Astrocut Documentation</a></p></li>
+</ul>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Permalink to this heading">#</a></h2>
+<p>If you use data from MAST for published research, please see the following links for information on which citations to include in your paper:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://sdss.org/collaboration/citing-sdss/">Citing SDSS</a></p></li>
+<li><p><a class="reference external" href="https://archive.stsci.edu/publishing/mission-acknowledgements">Citing MAST</a></p></li>
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing astropy</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Permalink to this heading">#</a></h2>
+<p><strong>Author(s):</strong> Natalie Haugen (nhaugen&#64;terpmail.umd.edu) and Julie Imig (jimig&#64;stsci.edu) <br>
+<strong>Keyword(s):</strong> Tutorial, SDSS, SDSS Legacy Imaging Survey, galaxies, galaxy morphology <br>
+<strong>First published:</strong> July 2025 <br>
+<strong>Last updated:</strong> July 2025 <br></p>
+<hr class="docutils" />
+<p><span class="xref myst">Top of Page</span>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Creating a Color-Magnitude Diagram for Messier 13</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../multi_mission/astroquery.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Astroquery</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-sdss-legacy-imaging-survey-data-from-mast">Accessing SDSS Legacy Imaging Survey Data from MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-sdss-legacy-imaging-survey">Querying SDSS Legacy Imaging Survey</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gathering-galaxies-from-the-sdss-legacy-imaging-survey">Gathering Galaxies from the SDSS Legacy Imaging Survey</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elliptical-galaxies">Elliptical Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lenticular-galaxies">Lenticular Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spiral-galaxies">Spiral Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#barred-spiral-galaxies">Barred Spiral Galaxies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#irregular-galaxies">Irregular Galaxies</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-sdss-legacy-imaging-survey-data-products">Downloading SDSS Legacy Imaging Survey Data Products</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-cutout-images-using-astrocut">Creating the Cutout Images Using Astrocut</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-the-hubble-tuning-fork-diagram">Making the Hubble Tuning Fork Diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solution">Exercise Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
