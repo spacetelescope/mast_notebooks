@@ -1,7 +1,7 @@
 # Sloan Digital Sky Survey (SDSS)
 
 ## What is SDSS?
-The Sloan Digital Sky Survey (SDSS) is an international collaboration producing wide-field imaging and high-resolution spectroscopic surveys since 1998. The [SDSS Legacy Archive at MAST](https://archive.stsci.edu/missions-and-data/sdss) is the collection of science-ready SDSS data which is hosted at MAST. This includes images, spectra, catalogs and Value Added Catalogs (VACs) from all public SDSS data releases through SDSS-V.
+The Sloan Digital Sky Survey (SDSS) is an international collaboration producing wide-field imaging and high-resolution spectroscopic surveys since 1998. The [SDSS Legacy Archive at MAST](https://archive.stsci.edu/missions-and-data/sdss) is the collection of science-ready SDSS data hosted at MAST. This includes images, spectra, catalogs and Value Added Catalogs (VACs) from all public SDSS data releases through SDSS-V.
 
 ## For Further Reading
 The [SDSS Legacy Archive at MAST User Manual](https://outerspace.stsci.edu/display/SDSS/The+SDSS+Legacy+Archive+at+MAST) website contains summary information, data product overviews, descriptions of MAST tools, and tutorials on how to interact with SDSS data at MAST.
