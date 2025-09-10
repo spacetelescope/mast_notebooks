@@ -6,7 +6,7 @@ The Sloan Digital Sky Survey (SDSS) is an international collaboration producing 
 ## For Further Reading
 The [SDSS Legacy Archive at MAST User Manual](https://outerspace.stsci.edu/display/SDSS/The+SDSS+Legacy+Archive+at+MAST) website contains summary information, data product overviews, descriptions of MAST tools, and tutorials on how to interact with SDSS data at MAST.
 
-For more general information relating to SDSS, the documentation is available at [www.sdss.org](https://www.sdss.org)
+For more general information relating to SDSS, the documentation is available on [the SDSS homepage](https://www.sdss.org)
 
 
 
