@@ -1,0 +1,1729 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exploring Stellar Spectra with SDSS SEGUE &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Astroquery" href="../../multi_mission/astroquery.html" />
+    <link rel="prev" title="Galaxy Morphology with SDSS and Astrocut" href="../SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../sdss.html">Sloan Digital Sky Survey (SDSS)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Exploring Stellar Spectra with SDSS SEGUE</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-sdss-legacy-spectra-data-from-mast">Accessing SDSS Legacy Spectra Data from MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-the-sdss-legacy-spectra-survey">Querying the SDSS Legacy Spectra Survey</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-data-products">Downloading Data Products</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-spectrum">Plotting a Spectrum</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-labels-for-absorption-lines">Adding Labels for Absorption Lines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-the-plot">Enhancing the Plot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-different-spectral-classifications">Exploring Different Spectral Classifications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-classifying-a-random-spectrum">Exercise: Classifying a Random Spectrum</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solutions">Exercise Solutions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="exploring-stellar-spectra-with-sdss-segue">
+<h1>Exploring Stellar Spectra with SDSS SEGUE<a class="headerlink" href="#exploring-stellar-spectra-with-sdss-segue" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to use <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> to download data from the SDSS Legacy Spectra and SEGUE surveys</p></li>
+<li><p>Plot a stellar spectrum and label absorption lines</p></li>
+<li><p>Learn about OBAFGKM spectral classification and how to classify stars</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Introduction"><span class="xref myst">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#Imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#Accessing-SDSS-Legacy-Spectra-Data-from-MAST"><span class="xref myst">Accessing SDSS Legacy Spectra Data from MAST</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Querying-the-SDSS-Legacy-Spectra-Survey"><span class="xref myst">Querying the SDSS Legacy Spectra Survey</span></a></p></li>
+<li><p><a class="reference internal" href="#Downloading-Data-Products"><span class="xref myst">Downloading Data Products</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Plotting-a-Spectrum"><span class="xref myst">Plotting a Spectrum</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Adding-Labels-for-Absorption-Lines"><span class="xref myst">Adding Labels for Absorption Lines</span></a></p></li>
+<li><p><a class="reference internal" href="#Enhancing-the-Plot"><span class="xref myst">Enhancing the Plot</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Exploring-Different-Stellar-Classifications"><span class="xref myst">Exploring Different Stellar Classifications</span></a></p></li>
+<li><p><a class="reference internal" href="#Exercise:-Classifying-a-Random-Star"><span class="xref myst">Exercise: Classifying a Random Star</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Exercise-Solutions"><span class="xref myst">Exercise Solutions</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Additional-Resources"><span class="xref myst">Additional Resources</span></a></p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The SDSS Legacy Spectra Survey is an optical-wavelength spectroscopic survey of millions of stars, galaxies, and quasars available through the <a class="reference external" href="https://archive.stsci.edu/missions-and-data/sdss">SDSS Legacy Archive at MAST</a>. This includes data from the original <a class="reference external" href="https://classic.sdss.org/legacy/">SDSS Legacy Spectra</a> survey, the <a class="reference external" href="https://www.sdss4.org/surveys/supernova/">SDSS Supernova Survey</a>, and the <a class="reference external" href="https://www.sdss4.org/surveys/segue/">Sloan Extension for Galactic Understanding and Exploration (SEGUE)</a>, which targeted over 400,000 stars in the Milky Way with a goal of mapping out the galactic disk in abundance space. A summary of the SDSS data products available at MAST can be found in the <a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Spectra+Data+Products">SDSS Legacy Archive at MAST User Manual</a>.</p>
+<p>The primary data products from the SDSS Legacy Spectra survey and SEGUE extensions are optical-wavelength (380-920 nm) spectra with a resolution of (λ/δλ)~2000 obtained using the SDSS-I/-II Spectrograph on the SDSS-2.5m telescope (Gunn et al. 2006) at Apache Point Observatory. In this notebook, we will show how to download SEGUE data from MAST, plot a spectrum, and classify a star based on its spectral type!</p>
+<p>In 1912, astronomer Annie Jump Cannon developed a method to classify stars based on the appearance of their spectrum, which is still used today. Stars are classified as O, B, A, F, G, K, or M based on the strength and location of absorption lines in their spectrum. <a class="reference external" href="https://articles.adsabs.harvard.edu/pdf/1912AnHar..56..115C">[1]</a> These classifications also correspond to stellar temperature: O-type stars are the hottest stars, with surface temperatures of &gt;30,000 K, while M-type have the coldest temperatures of &lt; 3000 K. Our Sun is a G-type star. In this notebook, we will explore different stellar types and what their spectra look like.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>The main packages and their use-cases in this tutorial are as follows:</p>
+<ul class="simple">
+<li><p><em>numpy</em> to handle array functions and some basic math</p></li>
+<li><p><em>matplotlib</em> for plotting data and creating figures</p></li>
+<li><p><em>astropy.io</em> for reading FITS files</p></li>
+<li><p><em>astroquery.mast</em> to search and download data from MAST</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you’re not sure whether you have these packages installed on your device, you can uncomment and run the following cell to install the required versions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install -r requirements.txt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This cell updates some of the settings in <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> to use larger font sizes in the figures:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update Plotting Parameters</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;axes.labelsize&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;xtick.labelsize&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;ytick.labelsize&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;text.usetex&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;lines.linewidth&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;axes.titlesize&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+    <span class="s2">&quot;font.family&quot;</span><span class="p">:</span> <span class="s2">&quot;serif&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;font.size&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="accessing-sdss-legacy-spectra-data-from-mast">
+<h2>Accessing SDSS Legacy Spectra Data from MAST<a class="headerlink" href="#accessing-sdss-legacy-spectra-data-from-mast" title="Link to this heading">#</a></h2>
+<p>In this tutorial, we will be focusing on data from the <a class="reference external" href="https://www.sdss4.org/surveys/segue/">Sloan Extension for Galactic Understanding and Exploration (SEGUE)</a> to plot the spectra of different types of stars and learn about stellar classification. Accessing data from the <a class="reference external" href="https://archive.stsci.edu/missions-and-data/sdss">SDSS Legacy Archive at MAST</a> is easy using <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.MAST</a>, a Python package module for querying the MAST archive.</p>
+<section id="querying-the-sdss-legacy-spectra-survey">
+<h3>Querying the SDSS Legacy Spectra Survey<a class="headerlink" href="#querying-the-sdss-legacy-spectra-survey" title="Link to this heading">#</a></h3>
+<p>To search the SDSS Spectra Data available through MAST, we can use the <code class="docutils literal notranslate"><span class="pre">Observations.query_criteria()</span></code> function and search for the provenance name “SEGUE” to return all data from the SEGUE survey:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query for SDSS SEGUE Data</span>
+<span class="n">spectro_data</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SEGUE&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="c1"># Display first 10 entries</span>
+<span class="n">spectro_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=10</i>
+<table id="table139710467830672" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str5</th><th>str17</th><th>str4</th><th>str4</th><th>str7</th><th>str19</th><th>str4</th><th>str28</th><th>float64</th><th>float64</th><th>str8</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str48</th><th>str69</th><th>str64</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str10</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 3292-54943-152</td><td>STAR</td><td>sdss_spectro_3292-54943-0152</td><td>261.33779</td><td>35.212895</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54941.44521990741</td><td>54943.45390046296</td><td>6300.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>55572.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 261.33779 35.212895 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/3292/54943/0152/spec-image-3292-54943-0152.png</td><td>mast:SDSS/sdss/spectro/3292/54943/0152/spec-3292-54943-0152.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353720760</td><td>1012687679</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 2541-54481-505</td><td>STAR</td><td>sdss_spectro_2541-54481-0505</td><td>130.77624</td><td>83.816927</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54481.31706018518</td><td>54481.36547453704</td><td>3303.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 130.77624 83.816927 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/2541/54481/0505/spec-image-2541-54481-0505.png</td><td>mast:SDSS/sdss/spectro/2541/54481/0505/spec-2541-54481-0505.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353625656</td><td>1012687700</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 3292-54943-157</td><td>STAR</td><td>sdss_spectro_3292-54943-0157</td><td>261.28304</td><td>35.0749</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54941.44521990741</td><td>54943.45390046296</td><td>6300.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>55572.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 261.28304 35.0749 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/3292/54943/0157/spec-image-3292-54943-0157.png</td><td>mast:SDSS/sdss/spectro/3292/54943/0157/spec-3292-54943-0157.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353720783</td><td>1012687727</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 3292-54943-159</td><td>STAR</td><td>sdss_spectro_3292-54943-0159</td><td>261.21166</td><td>34.934269</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54941.44521990741</td><td>54943.45390046296</td><td>6300.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>55572.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 261.21166 34.934269 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/3292/54943/0159/spec-image-3292-54943-0159.png</td><td>mast:SDSS/sdss/spectro/3292/54943/0159/spec-3292-54943-0159.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353720791</td><td>1012687759</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 2541-54481-515</td><td>STAR</td><td>sdss_spectro_2541-54481-0515</td><td>132.2201</td><td>83.828086</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54481.31706018518</td><td>54481.36547453704</td><td>3303.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 132.2201 83.828086 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/2541/54481/0515/spec-image-2541-54481-0515.png</td><td>mast:SDSS/sdss/spectro/2541/54481/0515/spec-2541-54481-0515.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353625699</td><td>1012687993</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 2697-54389-49</td><td>STAR</td><td>sdss_spectro_2697-54389-0049</td><td>57.655695</td><td>9.13494</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54389.31576388889</td><td>54389.43258101852</td><td>8857.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 57.655695 9.13494 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/2697/54389/0049/spec-image-2697-54389-0049.png</td><td>mast:SDSS/sdss/spectro/2697/54389/0049/spec-2697-54389-0049.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353621463</td><td>1012688026</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 2541-54481-521</td><td>STAR</td><td>sdss_spectro_2541-54481-0521</td><td>127.15832</td><td>84.383137</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54481.31706018518</td><td>54481.36547453704</td><td>3303.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 127.15832 84.383137 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/2541/54481/0521/spec-image-2541-54481-0521.png</td><td>mast:SDSS/sdss/spectro/2541/54481/0521/spec-2541-54481-0521.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353625723</td><td>1012688037</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 2697-54389-53</td><td>STAR</td><td>sdss_spectro_2697-54389-0053</td><td>57.480322</td><td>9.567454</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54389.31576388889</td><td>54389.43258101852</td><td>8857.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 57.480322 9.567454 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/2697/54389/0053/spec-image-2697-54389-0053.png</td><td>mast:SDSS/sdss/spectro/2697/54389/0053/spec-2697-54389-0053.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353621479</td><td>1012688069</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 3292-54943-173</td><td>STAR</td><td>sdss_spectro_3292-54943-0173</td><td>260.9327</td><td>35.158364</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54941.44521990741</td><td>54943.45390046296</td><td>6300.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>55572.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 260.9327 35.158364 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/3292/54943/0173/spec-image-3292-54943-0173.png</td><td>mast:SDSS/sdss/spectro/3292/54943/0173/spec-3292-54943-0173.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353720852</td><td>1012688070</td></tr>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 2541-54481-528</td><td>STAR</td><td>sdss_spectro_2541-54481-0528</td><td>127.09083</td><td>84.448984</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54481.31706018518</td><td>54481.36547453704</td><td>3303.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 127.09083 84.448984 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/2541/54481/0528/spec-image-2541-54481-0528.png</td><td>mast:SDSS/sdss/spectro/2541/54481/0528/spec-2541-54481-0528.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353625751</td><td>1012688094</td></tr>
+</table></div></div></div>
+</div>
+<p>The table above provides some basic information for each observation:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">collection</span></code>: Tells us the mission for this data, which is <code class="docutils literal notranslate"><span class="pre">SDSS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s_ra</span></code> and <code class="docutils literal notranslate"><span class="pre">s_dec</span></code>: Celestial coordinates right ascension and declination.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instrument_name</span></code>: <code class="docutils literal notranslate"><span class="pre">SDSS</span> <span class="pre">Spectrograph</span></code> indicates that the data were collected using the SDSS Spectrograph instrument. This would be a good field to search on if you are interested in both the SEGUE survey and the original SDSS Legacy Spectra survey.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obs_id</span></code>: Observation ID associated with the object. This is based on the plate number, the modified Julian date of observation, and the fiber ID, so the observation ID will look something like <code class="docutils literal notranslate"><span class="pre">sdss_spectro_{PLATE}-{MJD}-{FIBERID}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_classification</span></code>: Indicates the type of object (<code class="docutils literal notranslate"><span class="pre">QSO</span></code>, <code class="docutils literal notranslate"><span class="pre">STAR</span></code>, or <code class="docutils literal notranslate"><span class="pre">GALAXY</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t_min</span></code> and <code class="docutils literal notranslate"><span class="pre">t_max</span></code>: The modified Julian dates indicating the start and end times of the exposures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wavelength_region</span></code>: Indicates the region of the electromagnetic spectrum observed. In this case, <code class="docutils literal notranslate"><span class="pre">OPTICAL</span></code>, since SDSS observed in the optical wavelength range.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">em_min</span></code> and <code class="docutils literal notranslate"><span class="pre">em_max</span></code>: The minimum and maximum wavelengths observed by the survey. For SDSS, this range is 380-920.0 nanometers (optical).</p></li>
+</ul>
+</section>
+<section id="downloading-data-products">
+<h3>Downloading Data Products<a class="headerlink" href="#downloading-data-products" title="Link to this heading">#</a></h3>
+<p>Let’s narrow down our search by querying for the observation ID of <code class="docutils literal notranslate"><span class="pre">obs_id='sdss_spectro_1660-53230-0023'</span></code>. This star was selected for this tutorial because it is a G2 type main sequence star, very similar to the Sun.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search for sun-like star &quot;sdss_spectro_1660-53230-0023&quot;</span>
+<span class="n">spectro_data</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SEGUE&quot;</span><span class="p">,</span> <span class="n">obs_id</span><span class="o">=</span><span class="s2">&quot;sdss_spectro_1660-53230-0023&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Display result</span>
+<span class="n">spectro_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=1</i>
+<table id="table139710467824016" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str5</th><th>str17</th><th>str4</th><th>str4</th><th>str7</th><th>str18</th><th>str4</th><th>str28</th><th>float64</th><th>float64</th><th>str8</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str48</th><th>str69</th><th>str64</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str10</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 1660-53230-23</td><td>STAR</td><td>sdss_spectro_1660-53230-0023</td><td>308.81669</td><td>76.546953</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>53228.37946759259</td><td>53230.350231481476</td><td>3000.3</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>54770.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 308.81669 76.546953 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/1660/53230/0023/spec-image-1660-53230-0023.png</td><td>mast:SDSS/sdss/spectro/1660/53230/0023/spec-1660-53230-0023.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>355050660</td><td>1016516519</td></tr>
+</table></div></div></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Observations.get_product_list()</span></code>, we can get the list of files associated with this star that are available to download:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View available products for first observation</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">spectro_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># List Products</span>
+<span class="n">products</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=6</i>
+<table id="table139710468023888" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str9</th><th>str4</th><th>str12</th><th>str31</th><th>str252</th><th>str1</th><th>str69</th><th>str7</th><th>str28</th><th>str13</th><th>str48</th><th>str19</th><th>str4</th><th>str3</th><th>str30</th><th>int64</th><th>str9</th><th>str6</th><th>int64</th><th>str4</th></tr></thead>
+<tr><td>355050660</td><td>SDSS</td><td>spectrum</td><td>sdss_spectro_1660-53230-0023</td><td>Preview-Full</td><td>S</td><td>mast:SDSS/sdss/spectro/1660/53230/0023/spec-image-1660-53230-0023.png</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>SEGUE</td><td>dr7</td><td>N/A</td><td>spec-image-1660-53230-0023.png</td><td>33778</td><td>355050660</td><td>PUBLIC</td><td>3</td><td>None</td></tr>
+<tr><td>355050660</td><td>SDSS</td><td>spectrum</td><td>sdss_spectro_1660-53230-0023</td><td>SDSS Legacy Spectra lite spectrum file containing the combined spectrum and associated metadata but not the individual exposures.</td><td>S</td><td>mast:SDSS/sdss/spectro/1660/53230/0023/spec-lite-1660-53230-0023.fits</td><td>SCIENCE</td><td>--</td><td>SPECTRA</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SEGUE</td><td>dr7</td><td>N/A</td><td>spec-lite-1660-53230-0023.fits</td><td>172800</td><td>355050660</td><td>PUBLIC</td><td>3</td><td>None</td></tr>
+<tr><td>355050660</td><td>SDSS</td><td>spectrum</td><td>sdss_spectro_1660-53230-0023</td><td>SDSS Legacy Spectra full spectrum file containing the combined spectrum, associated metadata, and the individual exposures.</td><td>S</td><td>mast:SDSS/sdss/spectro/1660/53230/0023/spec-1660-53230-0023.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>SPECTRA</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SEGUE</td><td>dr7</td><td>N/A</td><td>spec-1660-53230-0023.fits</td><td>604800</td><td>355050660</td><td>PUBLIC</td><td>3</td><td>None</td></tr>
+<tr><td>355053097</td><td>SDSS</td><td>measurements</td><td>sdss_spectro_spplate_1660-53230</td><td>SDSS Legacy Spectra summary catalog, for each plate-MJD, containing the combined spectra and targeting information for all observations on a single plate.</td><td>D</td><td>mast:SDSS/sdss/spectro/1660/53230/spPlate-1660-53230.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Spectra</td><td>DR17</td><td>N/A</td><td>spPlate-1660-53230.fits</td><td>59708160</td><td>355050660</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>355053113</td><td>SDSS</td><td>measurements</td><td>sdss_spectro_spzall_1660-53230</td><td>SDSS Legacy Spectra summary catalog, for each plate-MJD, containing the best fits for spectral redshift and classification measurements, rank-ordered by chi-squared. If the best fit looks bad from the SpecObj file, check the second best fit here.</td><td>D</td><td>mast:SDSS/sdss/spectro/1660/53230/spZall-1660-53230.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Spectra</td><td>DR17</td><td>N/A</td><td>spZall-1660-53230.fits</td><td>31164480</td><td>355050660</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+<tr><td>355581403</td><td>SDSS</td><td>measurements</td><td>sdss_spectro_specobj</td><td>SDSS Legacy Spectra summary catalog. This provides collated summary tables on the observations and data processing from the SDSS Legacy Spectra survey, including targeting information, spectroscopic classifications, and redshifts for every observation.</td><td>D</td><td>mast:SDSS/sdss/spectro/specObj-dr17.fits</td><td>SCIENCE</td><td>--</td><td>SDSS Catalogs</td><td>https://archive.stsci.edu/missions-and-data/sdss</td><td>SDSS Legacy Spectra</td><td>DR17</td><td>N/A</td><td>specObj-dr17.fits</td><td>6741023040</td><td>355050660</td><td>PUBLIC</td><td>3</td><td>--</td></tr>
+</table></div></div></div>
+</div>
+<p>For this star, we can see quite a few files available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec-image-1660-53230-0023.png</span></code>: A png image with preview of each spectrum</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spec-1660-53230-0023.fits</span></code>: The “full” spectrum file, which contains the combined spectrum, associated metadata, and the individual exposures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spec-lite-1660-53230-0023.fits</span></code>: The “lite” version of the spectrum file, which contains the combined spectrum and associated metadata but not the individual exposures.</p></li>
+<li><p>Two catalog files, <code class="docutils literal notranslate"><span class="pre">spPlate-1660-53230.fits</span></code> and <code class="docutils literal notranslate"><span class="pre">spZall-1660-53230.fits</span></code>, which contain observing information, measurements, and metadata for all spectra observed on the same plate.</p></li>
+</ul>
+<p>More detail on the data products available for SEGUE can be found on the <a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/Legacy+Spectra+Data+Products">Legacy Spectra Data Products page of the Archive User Manual</a>.</p>
+<p>For this tutorial, we will only use the full spectrum file, which is the <em>Minimum Recommended Product</em> according to the <code class="docutils literal notranslate"><span class="pre">productGroupDescription</span></code>. Downloading this file is simple using <code class="docutils literal notranslate"><span class="pre">Observations.download_products()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Downloading spectrum files</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span>
+    <span class="n">products</span><span class="p">,</span>  <span class="c1"># Specify a product list to download</span>
+    <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Download with a &quot;flat&quot; structure in the current directory</span>
+    <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Limit to Minimum Recommended Products = the full spectrum file</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:SDSS/sdss/spectro/1660/53230/0023/spec-1660-53230-0023.fits to ./spec-1660-53230-0023.fits ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="plotting-a-spectrum">
+<h2>Plotting a Spectrum<a class="headerlink" href="#plotting-a-spectrum" title="Link to this heading">#</a></h2>
+<p>Now that we know how to download spectra from the SDSS Legacy Archive at MAST, let’s take a closer look at the data. We can print some basic information about the file we just downloaded by opening the data with <code class="docutils literal notranslate"><span class="pre">astropy.io.fits</span></code> and printing the file summary with <code class="docutils literal notranslate"><span class="pre">.info()</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Opening file</span>
+<span class="n">spectrum_file</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Display file info</span>
+<span class="n">spectrum_file</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: ./spec-1660-53230-0023.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU     128   ()      
+  1  COADD         1 BinTableHDU     26   3837R x 8C   [E, E, E, J, J, E, E, E]   
+  2  SPECOBJ       1 BinTableHDU    262   1R x 126C   [6A, 4A, 16A, 23A, 16A, 8A, E, E, E, J, E, E, J, B, B, B, B, B, B, J, 22A, 19A, 19A, 22A, 19A, I, 3A, 3A, 1A, J, D, D, D, E, E, 19A, 8A, J, J, J, J, K, K, J, J, J, J, J, J, K, K, K, K, I, J, J, J, J, 5J, D, D, 6A, 21A, E, E, E, J, E, 24A, 10J, J, 10E, E, E, E, E, E, E, J, E, E, E, J, E, 5E, E, 10E, 10E, 10E, 5E, 5E, 5E, 5E, 5E, J, J, E, E, E, E, E, E, 25A, 21A, 10A, E, E, E, E, E, E, E, E, J, E, E, J, 1A, 1A, E, E, J, J, 1A, 5E, 5E]   
+  3  SPZLINE       1 BinTableHDU     48   29R x 19C   [J, J, J, 13A, D, E, E, E, E, E, E, E, E, E, E, J, J, E, E]   
+  4  B1-00027775-00027772-00027774    1 BinTableHDU    146   2044R x 7C   [E, E, E, J, E, E, E]   
+  5  B1-00027776-00027772-00027774    1 BinTableHDU    146   2044R x 7C   [E, E, E, J, E, E, E]   
+  6  B1-00027859-00027857-00027858    1 BinTableHDU    146   2044R x 7C   [E, E, E, J, E, E, E]   
+  7  R1-00027775-00027772-00027774    1 BinTableHDU    146   2046R x 7C   [E, E, E, J, E, E, E]   
+  8  R1-00027776-00027772-00027774    1 BinTableHDU    146   2047R x 7C   [E, E, E, J, E, E, E]   
+  9  R1-00027859-00027857-00027858    1 BinTableHDU    146   2047R x 7C   [E, E, E, J, E, E, E]   
+</pre></div>
+</div>
+</div>
+</div>
+<p>This file has various extensions, which are explained in the <a class="reference external" href="https://data.sdss.org/datamodel/files/BOSS_SPECTRO_REDUX/RUN2D/spectra/full/PLATE4/spec.html">SDSS Data Model</a>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HDU</span> <span class="pre">0:</span> <span class="pre">PRIMARY</span></code>: The primary header information.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HDU</span> <span class="pre">1:</span> <span class="pre">COADD</span></code>: The coadded observed spectrum.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HDU</span> <span class="pre">2:</span> <span class="pre">SPECOBJ</span></code>: Metadata from the SPECOBJ table, which includes targeting information and spectroscopic classifications from the <a class="reference external" href="https://www.sdss4.org/dr17/spectro/pipeline/">SDSS Spectra Data Reduction Pipeline</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HDU</span> <span class="pre">3:</span> <span class="pre">SPZLINE</span></code>: Measurements and line fitting outputs from the <a class="reference external" href="https://classic.sdss.org/segue/stellarpars.php">SDSS Spectra Data Analysis Pipeline</a>, which measures chemical abundances and equivalent widths for absorption lines in the spectrum.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HDU</span> <span class="pre">4+</span></code>: Individual visit spectra (on red <code class="docutils literal notranslate"><span class="pre">R1-</span></code> and blue <code class="docutils literal notranslate"><span class="pre">B1-</span></code> ccd chips) that were included in the coadded spectrum.</p></li>
+</ul>
+<p>Now, let’s plot the spectrum with <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code>. To do this, we’ll use the information in the first extension (<code class="docutils literal notranslate"><span class="pre">COADD</span></code>). This extension contains the wavelength and flux information we will need to make a plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initiate plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Load in wavelength and flux</span>
+<span class="n">wavelength</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;loglam&quot;</span><span class="p">]</span>
+<span class="n">observed_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;FLUX&quot;</span><span class="p">]</span>
+<span class="n">model_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;MODEL&quot;</span><span class="p">]</span>
+
+<span class="c1"># Plot Observed Spectrum</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">observed_flux</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed Spectrum&quot;</span><span class="p">)</span>
+<span class="c1"># Plot Best-fit Model Spectrum</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">model_flux</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Model Spectrum&quot;</span><span class="p">)</span>
+
+<span class="c1"># Label axes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Wavelength ($\AA$)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Flux&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spectrum_file</span><span class="o">.</span><span class="n">filename</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+
+<span class="c1"># Set axes limits</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">observed_flux</span><span class="p">))</span>
+
+<span class="c1"># Show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/c61d66101f131346f701cefcca3f0919af9d2c53bb5247ac9482e768e83bda58.png" src="../../../_images/c61d66101f131346f701cefcca3f0919af9d2c53bb5247ac9482e768e83bda58.png" />
+</div>
+</div>
+<section id="adding-labels-for-absorption-lines">
+<h3>Adding Labels for Absorption Lines<a class="headerlink" href="#adding-labels-for-absorption-lines" title="Link to this heading">#</a></h3>
+<p>That’s a good-looking spectrum! But as we saw earlier, the spectrum is not the only information in this file: The SDSS <a class="reference external" href="https://www.sdss4.org/dr17/spectro/pipeline/">Data Reduction Pipeline</a> and <a class="reference external" href="https://classic.sdss.org/segue/stellarpars.php">SEGUE Stellar Parameter Pipeline (SSPP)</a> have made various measurements of this star, which are availble in the “SPECOBJ” and “SPZLINE” extensions of this file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display table from the &quot;SPECOBJ&quot; extension</span>
+<span class="n">Table</span><span class="p">(</span><span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=1</i>
+<table id="table139710462015120" class="table-striped table-bordered table-condensed">
+<thead><tr><th>SURVEY</th><th>INSTRUMENT</th><th>CHUNK</th><th>PROGRAMNAME</th><th>PLATERUN</th><th>PLATEQUALITY</th><th>PLATESN2</th><th>DEREDSN2</th><th>LAMBDA_EFF</th><th>BLUEFIBER</th><th>ZOFFSET</th><th>SNTURNOFF</th><th>NTURNOFF</th><th>SPECPRIMARY</th><th>SPECLEGACY</th><th>SPECSEGUE</th><th>SPECSEGUE1</th><th>SPECSEGUE2</th><th>SPECBOSS</th><th>BOSS_SPECOBJ_ID</th><th>SPECOBJID</th><th>FLUXOBJID</th><th>BESTOBJID</th><th>TARGETOBJID</th><th>PLATEID</th><th>NSPECOBS</th><th>FIRSTRELEASE</th><th>RUN2D</th><th>RUN1D</th><th>DESIGNID</th><th>CX</th><th>CY</th><th>CZ</th><th>XFOCAL</th><th>YFOCAL</th><th>SOURCETYPE</th><th>TARGETTYPE</th><th>PRIMTARGET</th><th>SECTARGET</th><th>LEGACY_TARGET1</th><th>LEGACY_TARGET2</th><th>SPECIAL_TARGET1</th><th>SPECIAL_TARGET2</th><th>SEGUE1_TARGET1</th><th>SEGUE1_TARGET2</th><th>SEGUE2_TARGET1</th><th>SEGUE2_TARGET2</th><th>MARVELS_TARGET1</th><th>MARVELS_TARGET2</th><th>BOSS_TARGET1</th><th>BOSS_TARGET2</th><th>ANCILLARY_TARGET1</th><th>ANCILLARY_TARGET2</th><th>SPECTROGRAPHID</th><th>PLATE</th><th>TILE</th><th>MJD</th><th>FIBERID</th><th>OBJID</th><th>PLUG_RA</th><th>PLUG_DEC</th><th>CLASS</th><th>SUBCLASS</th><th>Z</th><th>Z_ERR</th><th>RCHI2</th><th>DOF</th><th>RCHI2DIFF</th><th>TFILE</th><th>TCOLUMN</th><th>NPOLY</th><th>THETA</th><th>VDISP</th><th>VDISP_ERR</th><th>VDISPZ</th><th>VDISPZ_ERR</th><th>VDISPCHI2</th><th>VDISPNPIX</th><th>VDISPDOF</th><th>WAVEMIN</th><th>WAVEMAX</th><th>WCOVERAGE</th><th>ZWARNING</th><th>SN_MEDIAN_ALL</th><th>SN_MEDIAN</th><th>CHI68P</th><th>FRACNSIGMA</th><th>FRACNSIGHI</th><th>FRACNSIGLO</th><th>SPECTROFLUX</th><th>SPECTROFLUX_IVAR</th><th>SPECTROSYNFLUX</th><th>SPECTROSYNFLUX_IVAR</th><th>SPECTROSKYFLUX</th><th>ANYANDMASK</th><th>ANYORMASK</th><th>SPEC1_G</th><th>SPEC1_R</th><th>SPEC1_I</th><th>SPEC2_G</th><th>SPEC2_R</th><th>SPEC2_I</th><th>ELODIE_FILENAME</th><th>ELODIE_OBJECT</th><th>ELODIE_SPTYPE</th><th>ELODIE_BV</th><th>ELODIE_TEFF</th><th>ELODIE_LOGG</th><th>ELODIE_FEH</th><th>ELODIE_Z</th><th>ELODIE_Z_ERR</th><th>ELODIE_Z_MODELERR</th><th>ELODIE_RCHI2</th><th>ELODIE_DOF</th><th>Z_NOQSO</th><th>Z_ERR_NOQSO</th><th>ZWARNING_NOQSO</th><th>CLASS_NOQSO</th><th>SUBCLASS_NOQSO</th><th>RCHI2DIFF_NOQSO</th><th>Z_PERSON</th><th>CLASS_PERSON</th><th>Z_CONF_PERSON</th><th>COMMENTS_PERSON</th><th>CALIBFLUX</th><th>CALIBFLUX_IVAR</th></tr></thead>
+<thead><tr><th>str6</th><th>str4</th><th>str16</th><th>str23</th><th>str16</th><th>str8</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>float32</th><th>int32</th><th>uint8</th><th>uint8</th><th>uint8</th><th>uint8</th><th>uint8</th><th>uint8</th><th>int32</th><th>str22</th><th>str19</th><th>str19</th><th>str22</th><th>str19</th><th>int16</th><th>str3</th><th>str3</th><th>str1</th><th>int32</th><th>float64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>str19</th><th>str8</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>int64</th><th>int64</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>int64</th><th>int64</th><th>int64</th><th>int64</th><th>int16</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>int32[5]</th><th>float64</th><th>float64</th><th>str6</th><th>str21</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>str24</th><th>int32[10]</th><th>int32</th><th>float32[10]</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>float32[5]</th><th>float32</th><th>float32[10]</th><th>float32[10]</th><th>float32[10]</th><th>float32[5]</th><th>float32[5]</th><th>float32[5]</th><th>float32[5]</th><th>float32[5]</th><th>int32</th><th>int32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>str25</th><th>str21</th><th>str10</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>float32</th><th>int32</th><th>str1</th><th>str1</th><th>float32</th><th>float32</th><th>int32</th><th>int32</th><th>str1</th><th>float32[5]</th><th>float32[5]</th></tr></thead>
+<tr><td>segue1</td><td>SDSS</td><td>chunk83</td><td>segtest</td><td>dr2003.11.4</td><td>good</td><td>11.8604</td><td>0.0</td><td>5000.0</td><td>-1</td><td>0.0</td><td>-9999.0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1869000221741049856</td><td>1237663268800036929</td><td>1237663268800036929</td><td>11276799565103250</td><td>1868993899549190144</td><td>2</td><td>dr7</td><td>26</td><td></td><td>-1</td><td>0.14583121053457282</td><td>-0.18126929225275132</td><td>0.972560898720593</td><td>263.0591</td><td>-125.98856</td><td>NONLEGACY</td><td>STANDARD</td><td>0</td><td>32</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>32</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1660</td><td>9491</td><td>53230</td><td>23</td><td>4144 .. 146</td><td>308.81669</td><td>76.546953</td><td>STAR</td><td>G2</td><td>-0.0004023878</td><td>1.0467806e-05</td><td>1.2282627</td><td>3751</td><td>1.3327496</td><td>spEigenStar-54474.fits</td><td>11 .. -1</td><td>4</td><td>34.26533 .. 0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0</td><td>3808.9038</td><td>9212.978</td><td>0.3761</td><td>0</td><td>29.035696</td><td>5.2309275 .. 22.178715</td><td>1.0413648</td><td>0.33741027 .. 0.0013294336</td><td>0.18372773 .. 0.0013294336</td><td>0.15368253 .. 0.0</td><td>59.69679 .. 300.38974</td><td>0.575326 .. 0.26740238</td><td>43.598114 .. 292.43835</td><td>1.7917618 .. 0.29302025</td><td>17.428034 .. 67.41946</td><td>159383552</td><td>262078464</td><td>14.425</td><td>14.2167</td><td>11.8604</td><td>14.4769</td><td>19.5395</td><td>16.9398</td><td>RAC/L/00661.fits</td><td>HD176303</td><td>F8V</td><td>0.491</td><td>6107.0</td><td>4.22</td><td>-0.09</td><td>-0.00038621097</td><td>8.263349e-06</td><td>2.3138857e-06</td><td>0.86781526</td><td>2127</td><td>0.0</td><td>0.0</td><td>0</td><td></td><td></td><td>0.0</td><td>0.0</td><td>0</td><td>0</td><td></td><td>39.980957 .. 318.95468</td><td>1.192785 .. 0.028415708</td></tr>
+</table></div></div></div>
+</div>
+<p>This table contains a lot of useful information, including the coordinates (<code class="docutils literal notranslate"><span class="pre">PLUG_RA</span></code> and <code class="docutils literal notranslate"><span class="pre">PLUG_DEC</span></code>), the date of observation (<code class="docutils literal notranslate"><span class="pre">MJD</span></code>), the data release number (<code class="docutils literal notranslate"><span class="pre">FIRSTRELEASE</span></code>), and the signal-to-noise ratio (<code class="docutils literal notranslate"><span class="pre">SN_MEDIAN_ALL</span></code>) for this spectrum.</p>
+<p>It also includes the spectrum’s classification (<code class="docutils literal notranslate"><span class="pre">CLASS</span></code>), which is typically either <code class="docutils literal notranslate"><span class="pre">STAR</span></code>, <code class="docutils literal notranslate"><span class="pre">GALAXY</span></code>, or <code class="docutils literal notranslate"><span class="pre">QSO</span></code>, and the <code class="docutils literal notranslate"><span class="pre">SUBCLASS</span></code>, which in this case, is the spectral OBAFGKM classification for this spectrum. The subclass tells us that this star is a “G2”-type star, the same stellar type as our Sun:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SUBCLASS&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;G2&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">SPZLINE</span></code> table in the file contains measurements of absorption lines in the spectrum:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display table from the &quot;SPZLINE&quot; extension</span>
+<span class="n">Table</span><span class="p">(</span><span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPZLINE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=29</i>
+<table id="table139710462451088" class="table-striped table-bordered table-condensed">
+<thead><tr><th>PLATE</th><th>MJD</th><th>FIBERID</th><th>LINENAME</th><th>LINEWAVE</th><th>LINEZ</th><th>LINEZ_ERR</th><th>LINESIGMA</th><th>LINESIGMA_ERR</th><th>LINEAREA</th><th>LINEAREA_ERR</th><th>LINEEW</th><th>LINEEW_ERR</th><th>LINECONTLEVEL</th><th>LINECONTLEVEL_ERR</th><th>LINENPIXLEFT</th><th>LINENPIXRIGHT</th><th>LINEDOF</th><th>LINECHI2</th></tr></thead>
+<thead><tr><th>int32</th><th>int32</th><th>int32</th><th>str13</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>int32</th><th>float32</th><th>float32</th></tr></thead>
+<tr><td>1660</td><td>53230</td><td>23</td><td>Ly_alpha</td><td>1215.67</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0</td><td>0</td><td>0.0</td><td>-1.0</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>N_V 1240</td><td>1240.81</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0</td><td>0</td><td>0.0</td><td>-1.0</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>C_IV 1549</td><td>1549.48</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0</td><td>0</td><td>0.0</td><td>-1.0</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>He_II 1640</td><td>1640.42</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0</td><td>0</td><td>0.0</td><td>-1.0</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>C_III] 1908</td><td>1908.734</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0</td><td>0</td><td>0.0</td><td>-1.0</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>Mg_II 2799</td><td>2800.3151836549728</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0.0</td><td>-1.0</td><td>0</td><td>0</td><td>0.0</td><td>-1.0</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[O_II] 3725</td><td>3727.091726797987</td><td>-0.0003131109</td><td>0.00014917232</td><td>11562.1045</td><td>629.5375</td><td>9906.212</td><td>488720.4</td><td>0.0</td><td>-1.0</td><td>-8.457133</td><td>-1.0</td><td>0</td><td>407</td><td>405.9039</td><td>444.59473</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[O_II] 3727</td><td>3729.875447997208</td><td>-0.00031311187</td><td>0.00014917232</td><td>11562.1045</td><td>629.5375</td><td>-6021.164</td><td>491477.6</td><td>0.0</td><td>-1.0</td><td>-8.457133</td><td>-1.0</td><td>0</td><td>411</td><td>409.9039</td><td>448.50122</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[Ne_III] 3868</td><td>3869.8567972272717</td><td>-0.00031314234</td><td>0.00014917231</td><td>11562.1045</td><td>629.5375</td><td>-520.9457</td><td>9767.851</td><td>-12.171348</td><td>228.23471</td><td>42.800987</td><td>0.067313716</td><td>68</td><td>503</td><td>569.9039</td><td>703.04047</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[O_I] 5577</td><td>5578.887703795193</td><td>-0.000312034</td><td>0.00014917248</td><td>11562.1045</td><td>629.5375</td><td>-125.52498</td><td>353.6101</td><td>-1.8646504</td><td>5.2557454</td><td>67.31824</td><td>0.10587233</td><td>500</td><td>488</td><td>986.9039</td><td>717.64374</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[O_I] 6300</td><td>6302.046376726897</td><td>-0.0003119976</td><td>0.0001491725</td><td>11562.1045</td><td>629.5375</td><td>3.9276272e+06</td><td>1.6237242e+06</td><td>61251.375</td><td>25225.66</td><td>64.123085</td><td>0.100847274</td><td>490</td><td>483</td><td>971.9039</td><td>737.93195</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[S_III] 6312</td><td>6313.805532906624</td><td>-0.00031339622</td><td>0.00014917228</td><td>11562.1045</td><td>629.5375</td><td>-5.492436e+06</td><td>2.2777632e+06</td><td>-86145.33</td><td>35860.74</td><td>63.757793</td><td>0.100272775</td><td>484</td><td>489</td><td>971.9039</td><td>736.82104</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[O_I] 6363</td><td>6365.535419574267</td><td>-0.00031278597</td><td>0.00014917237</td><td>11562.1045</td><td>629.5375</td><td>1.9971171e+06</td><td>837929.9</td><td>31516.08</td><td>13173.627</td><td>63.368195</td><td>0.09966005</td><td>483</td><td>490</td><td>971.9039</td><td>737.34424</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[N_II] 6548</td><td>6549.858929253789</td><td>-0.00031278847</td><td>0.00014917237</td><td>11562.1045</td><td>629.5375</td><td>-3.185954e+06</td><td>1.3547132e+06</td><td>-52687.32</td><td>22486.266</td><td>60.46908</td><td>0.095100574</td><td>477</td><td>496</td><td>971.9039</td><td>818.87115</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>H_alpha</td><td>6564.613894333284</td><td>-0.0003133564</td><td>0.0001491723</td><td>399.4776</td><td>45.88162</td><td>-89.05221</td><td>13.111426</td><td>-2.001029</td><td>0.2977646</td><td>44.503204</td><td>0.069990814</td><td>17</td><td>18</td><td>33.70652</td><td>37.49552</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[N_II] 6583</td><td>6585.2684452471885</td><td>-0.0003140199</td><td>0.00014917219</td><td>11562.1045</td><td>629.5375</td><td>3.4032402e+06</td><td>1.444533e+06</td><td>55640.85</td><td>23529.705</td><td>61.164417</td><td>0.09619414</td><td>478</td><td>495</td><td>971.9039</td><td>813.1483</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[S_II] 6716</td><td>6718.29420811581</td><td>-0.00031297017</td><td>0.00014917234</td><td>11562.1045</td><td>629.5375</td><td>-3.0535405e+06</td><td>1.272537e+06</td><td>-50682.652</td><td>21201.273</td><td>60.248238</td><td>0.09475325</td><td>489</td><td>495</td><td>982.9039</td><td>807.5272</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[S_II] 6730</td><td>6732.678076327587</td><td>-0.0003125847</td><td>0.00014917241</td><td>11562.1045</td><td>629.5375</td><td>2.4067928e+06</td><td>999924.3</td><td>39819.66</td><td>16480.82</td><td>60.44232</td><td>0.09505849</td><td>483</td><td>501</td><td>982.9039</td><td>802.90234</td></tr>
+<tr><td>1660</td><td>53230</td><td>23</td><td>[Ar_III] 7135</td><td>7137.757103334721</td><td>-0.00031240165</td><td>0.00014917243</td><td>11562.1045</td><td>629.5375</td><td>-3345.5737</td><td>1089.6934</td><td>-58.72338</td><td>19.219263</td><td>56.97175</td><td>0.08960027</td><td>489</td><td>490</td><td>977.9039</td><td>917.1964</td></tr>
+</table></div></div></div>
+</div>
+<p>Let’s recreate the plot we just made, but add annotations for all of the Hydrogen lines from this table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initiate plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">wavelength</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;loglam&quot;</span><span class="p">]</span>
+<span class="n">observed_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;FLUX&quot;</span><span class="p">]</span>
+<span class="n">model_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;MODEL&quot;</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">observed_flux</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed Spectrum&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">model_flux</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Model Spectrum&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># Define a custom rainbow colormap to use for the spectrum</span>
+<span class="n">rainbow_colormap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;blueviolet&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">turbo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+<span class="p">)</span>
+
+<span class="c1"># Loop through absorption lines and choose a few to label</span>
+<span class="k">for</span> <span class="n">absorption_line</span> <span class="ow">in</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPZLINE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+    <span class="n">line_wl</span> <span class="o">=</span> <span class="n">absorption_line</span><span class="p">[</span><span class="s2">&quot;LINEWAVE&quot;</span><span class="p">]</span>  <span class="c1"># wavelength of absorption line</span>
+    <span class="n">line_name</span> <span class="o">=</span> <span class="n">absorption_line</span><span class="p">[</span><span class="s2">&quot;LINENAME&quot;</span><span class="p">]</span>  <span class="c1"># name of absorption line</span>
+    <span class="k">if</span> <span class="s2">&quot;H_&quot;</span> <span class="ow">in</span> <span class="n">line_name</span><span class="p">:</span>  <span class="c1"># Only plot Hydrogen lines</span>
+        <span class="n">line_color</span> <span class="o">=</span> <span class="n">rainbow_colormap</span><span class="p">((</span><span class="n">line_wl</span> <span class="o">-</span> <span class="mi">3800</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">6700</span> <span class="o">-</span> <span class="mi">3800</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+            <span class="n">line_wl</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+            <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">line_wl</span> <span class="o">+</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="mi">20</span><span class="p">,</span>
+            <span class="n">line_name</span><span class="p">,</span>
+            <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="c1"># Add label for the classification</span>
+<span class="n">classification</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">subclass</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SUBCLASS&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.99</span><span class="p">,</span>
+    <span class="mf">0.1</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Classification: </span><span class="si">{</span><span class="n">subclass</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">classification</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Label axes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Wavelength ($\AA$)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Flux&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spectrum_file</span><span class="o">.</span><span class="n">filename</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set axes limits</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">observed_flux</span><span class="p">))</span>
+
+<span class="c1"># Show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/9e3b74041c57ff30d66fffaa33c8897d51f2be7f37f9ee4bfe5fe1a8551b4fad.png" src="../../../_images/9e3b74041c57ff30d66fffaa33c8897d51f2be7f37f9ee4bfe5fe1a8551b4fad.png" />
+</div>
+</div>
+</section>
+<section id="enhancing-the-plot">
+<h3>Enhancing the Plot<a class="headerlink" href="#enhancing-the-plot" title="Link to this heading">#</a></h3>
+<p>A spectrum is a rainbow, so let’s enhance this plot by adding color. Here, we define a function that adds a background to this plot to approximate what this would look like if you could see this spectrum with your eyes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_rainbow_background</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">flux</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a rainbow background on the plot to show the spectrum&quot;&quot;&quot;</span>
+    <span class="c1"># Define a custom rainbow colormap to use for the spectrum</span>
+    <span class="n">rainbow_colormap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;blueviolet&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="p">[</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">turbo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Normalize flux from 0 to 1 so all spectra are on uniform scale</span>
+    <span class="n">flux</span> <span class="o">=</span> <span class="n">flux</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">flux</span><span class="p">)</span>
+    <span class="c1"># Define min and max values of the flux to normalize the color scale</span>
+    <span class="n">max_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">flux</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+    <span class="n">min_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">flux</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="c1"># Set the scaling limits of the color map</span>
+    <span class="c1"># the wavelength of the furthest red and furthest purple</span>
+    <span class="n">min_wl</span> <span class="o">=</span> <span class="mi">3800</span>
+    <span class="n">max_wl</span> <span class="o">=</span> <span class="mi">6700</span>
+
+    <span class="c1"># Define window size (in pixels) to smooth spectrum over</span>
+    <span class="c1"># (makes absorption lines stand out more)</span>
+    <span class="n">window_size</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="c1"># Loop through each wavelength</span>
+    <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">wavelength</span><span class="p">[</span><span class="n">window_size</span><span class="p">::]:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">wavelength</span> <span class="o">==</span> <span class="n">wl</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">wl_scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">wl</span> <span class="o">-</span> <span class="n">min_wl</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_wl</span> <span class="o">-</span> <span class="n">min_wl</span><span class="p">)</span>
+        <span class="n">flux_at_wl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">flux</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">window_size</span><span class="p">:</span>
+            <span class="n">flux_at_wl</span> <span class="o">=</span> <span class="n">flux</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i1</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">window_size</span>
+            <span class="n">i2</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">window_size</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">flux_at_wl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">flux</span><span class="p">[</span><span class="n">i1</span><span class="p">:</span><span class="n">i2</span><span class="p">])</span>
+        <span class="n">flux_scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">flux_at_wl</span> <span class="o">-</span> <span class="n">min_flux</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_flux</span> <span class="o">-</span> <span class="n">min_flux</span><span class="p">)</span>
+
+        <span class="c1"># Check if flux scale is outside limits</span>
+        <span class="k">if</span> <span class="n">flux_scale</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">flux_scale</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">flux_scale</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">flux_scale</span> <span class="o">=</span> <span class="mf">0.999</span>
+        <span class="c1"># Turn to log scale for more contrast</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">flux_scale</span><span class="p">):</span>
+            <span class="n">flux_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">flux_scale</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Plot as vertical lines</span>
+        <span class="c1"># Plot in black first for a solid background so lines do not overlap</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Plot in color</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+            <span class="n">wl</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">rainbow_colormap</span><span class="p">(</span><span class="n">wl_scale</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="n">flux_scale</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s use this background-adding function to create a plot:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initiate plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">wavelength</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;loglam&quot;</span><span class="p">]</span>
+<span class="n">observed_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;FLUX&quot;</span><span class="p">]</span>
+<span class="n">model_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;MODEL&quot;</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">observed_flux</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed Spectrum&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># Add classification label</span>
+<span class="n">classification</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">subclass</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SUBCLASS&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.99</span><span class="p">,</span>
+    <span class="mf">0.1</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Classification: </span><span class="si">{</span><span class="n">subclass</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">classification</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plot_rainbow_background</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">model_flux</span><span class="p">)</span>
+
+<span class="c1"># Label axes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Wavelength ($\AA$)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Flux&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spectrum_file</span><span class="o">.</span><span class="n">filename</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set axes limits</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">observed_flux</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+
+<span class="c1"># Show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/28fd7444c1742ed926b31b0c917dc989012da06bab02052180c398f71a2e00f2.png" src="../../../_images/28fd7444c1742ed926b31b0c917dc989012da06bab02052180c398f71a2e00f2.png" />
+</div>
+</div>
+<p>It looks pretty! We can see how the background corresponds to the flux values, and the absorption features in the spectrum stick out as vertical black lines in the background. The shortest wavelengths (purple) tend to be brighter than the longest wavelengths (red), but this particular star peaks in green wavelengths, just like our Sun!</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exploring-different-spectral-classifications">
+<h2>Exploring Different Spectral Classifications<a class="headerlink" href="#exploring-different-spectral-classifications" title="Link to this heading">#</a></h2>
+<p>Now that we know what the spectrum of a G-type star like the Sun looks like, let’s explore the other types of stars! In 1912, astronomer Annie Jump Cannon developed a method to classify stars based on the appearance of their spectrum, which is still used today. Stars are classified as O, B, A, F, G, K, or M based on the strength and location of absorption lines in their spectrum. <a class="reference external" href="https://articles.adsabs.harvard.edu/pdf/1912AnHar..56..115C">[1]</a></p>
+<p>In this section, we have made a list of stars with different spectral types to plot and explore:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">star_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>  <span class="c1"># O-Star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_2929-54616-0363&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-2929-54616-0363.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># B-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_2871-54536-0542&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-2871-54536-0542.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># White Dwarf-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_2630-54327-0551&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-2630-54327-0551.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;White Dwarf Star. &quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># A-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_2682-54401-0449&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-2682-54401-0449.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># F-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_3298-54924-0214&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-3298-54924-0214.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># G-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_1660-53230-0023&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-1660-53230-0023.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Sun-like Star. &quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># K-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_3234-54885-0271&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-3234-54885-0271.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>  <span class="c1"># M-star example</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sdss_spectro_3298-54924-0159&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec_file&quot;</span><span class="p">:</span> <span class="s2">&quot;spec-3298-54924-0159.fits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is a function to download the spectrum for each star using astroquery.MAST, just like we did earlier:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_spec</span><span class="p">(</span><span class="n">star</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function for downloading SDSS Legacy Spectra Data from MAST&quot;&quot;&quot;</span>
+    <span class="c1"># Search for spectrum in astroquery</span>
+    <span class="n">obs_table</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">obs_id</span><span class="o">=</span><span class="n">star</span><span class="p">[</span><span class="s2">&quot;obs_id&quot;</span><span class="p">])</span>
+    <span class="c1"># Retrieve product list</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs_table</span><span class="p">)</span>
+    <span class="c1"># Download spectrum</span>
+    <span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span>
+        <span class="n">products</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Local Path&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’re ready to plot all of our stars:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># Define a custom rainbow colormap to use for the spectrum</span>
+<span class="n">rainbow_colormap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;blueviolet&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">turbo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">star_i</span><span class="p">,</span> <span class="n">star</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">star_list</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plotting star </span><span class="si">{</span><span class="n">star_i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">star_list</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="c1"># Download Spectrum File</span>
+    <span class="n">spectrum_file</span> <span class="o">=</span> <span class="n">download_spec</span><span class="p">(</span><span class="n">star</span><span class="p">)</span>
+    <span class="c1"># Open spectrum file</span>
+    <span class="n">spectrum_file</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">spectrum_file</span><span class="p">)</span>
+    <span class="n">classification</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;SPECOBJ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SUBCLASS&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Initiate plot</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">star_list</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">star_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">wavelength</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;loglam&quot;</span><span class="p">]</span>
+    <span class="n">observed_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;FLUX&quot;</span><span class="p">]</span>
+    <span class="n">model_flux</span> <span class="o">=</span> <span class="n">spectrum_file</span><span class="p">[</span><span class="s2">&quot;COADD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;MODEL&quot;</span><span class="p">]</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">wavelength</span><span class="p">,</span> <span class="n">observed_flux</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed Spectrum&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Start with a black background</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">plot_rainbow_background</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">observed_flux</span><span class="p">)</span>
+
+    <span class="c1"># Label axes</span>
+    <span class="k">if</span> <span class="n">star_i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">0.90</span>
+        <span class="n">va</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">0.05</span>
+        <span class="n">va</span> <span class="o">=</span> <span class="s2">&quot;bottom&quot;</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mf">0.99</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">star</span><span class="p">[</span><span class="s1">&#39;spec_file&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">star</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">Classification: </span><span class="si">{</span><span class="n">classification</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="n">va</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Add plot title</span>
+    <span class="k">if</span> <span class="n">star_i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;SEGUE Stellar Classification&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Set axes limits</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">observed_flux</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Hide y-axis labels</span>
+
+    <span class="k">if</span> <span class="n">star_i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">star_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Wavelength ($\AA$)&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Hide x axis labels</span>
+
+<span class="c1"># Adjust subplots so there is no white space between the spectra</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Display plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;segue_spectra.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 1/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 2/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 3/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 4/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 5/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 6/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./spec-1660-53230-0023.fits with expected size 604800. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 7/8...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plotting star 8/8...
+</pre></div>
+</div>
+<img alt="../../../_images/17cf8eb21df0325eef3a4af3f0842cf708a72b2c5018eff6a76fb2b585943a3d.png" src="../../../_images/17cf8eb21df0325eef3a4af3f0842cf708a72b2c5018eff6a76fb2b585943a3d.png" />
+</div>
+</div>
+<p>This shows what the spectra look like for different types of stars! We can see how the color varies from the hottest stars (top), which have the strongest purple, and the cooler stars (bottom), which have the strongest reds. A-type stars have the strongest Hydrogen lines, while M-type stars have giant absorption bands made by molecules. Now you know how to classify stars based on these example spectra!</p>
+</section>
+<hr class="docutils" />
+<section id="exercise-classifying-a-random-spectrum">
+<h2>Exercise: Classifying a Random Spectrum<a class="headerlink" href="#exercise-classifying-a-random-spectrum" title="Link to this heading">#</a></h2>
+<p>Now that you know what different spectra of different types of stars look like, let’s try classifying one by ourselves. To start, we will select a random star from SEGUE using the code in this cell:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Querying SDSS SEGUE data</span>
+<span class="n">spectro_data</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;SEGUE&quot;</span><span class="p">,</span>
+    <span class="n">target_classification</span><span class="o">=</span><span class="s2">&quot;STAR&quot;</span><span class="p">,</span>
+    <span class="n">pagesize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Choose a random entry from the results:</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectro_data</span><span class="p">)))</span>
+<span class="n">my_random_star</span> <span class="o">=</span> <span class="n">spectro_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<span class="c1"># Display result</span>
+<span class="n">my_random_star</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><i>Row index=39 masked=True</i>
+<table id="table139709683356624">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str5</th><th>str17</th><th>str4</th><th>str4</th><th>str7</th><th>str19</th><th>str4</th><th>str28</th><th>float64</th><th>float64</th><th>str8</th><th>str18</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str51</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str48</th><th>str69</th><th>str64</th><th>str6</th><th>bool</th><th>float64</th><th>str9</th><th>str10</th></tr></thead>
+<tr><td>science</td><td>SDSS</td><td>SEGUE</td><td>SDSS Spectrograph</td><td>SDSS</td><td>None</td><td>OPTICAL</td><td>SDSS 3262-54884-85</td><td>STAR</td><td>sdss_spectro_3262-54884-0085</td><td>156.17831</td><td>37.200455</td><td>spectrum</td><td>SDSS Collaboration</td><td>3</td><td>54884.170856481476</td><td>54884.26603009259</td><td>7203.0</td><td>380.0</td><td>920.0</td><td>Sloan Digital Sky Survey (SDSS) Legacy Spectra Data</td><td>55572.0</td><td>N/A</td><td>--</td><td>--</td><td>CIRCLE 156.17831 37.200455 0.0004166666666666667</td><td>mast:SDSS/sdss/spectro/3262/54884/0085/spec-image-3262-54884-0085.png</td><td>mast:SDSS/sdss/spectro/3262/54884/0085/spec-3262-54884-0085.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>353872032</td><td>1013303848</td></tr>
+</table></div></div>
+</div>
+<p>Now, it’s time to practice what you’ve learned. In the following cell, write a bit of code that will download the spectrum for this star:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use astroquery.mast to download the spectrum for this star</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And use it to make a plot:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the spectrum</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare this spectrum to the examples in the plot we made earlier in this notebook. What kind of star do you think this is? How can you check your answer?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># After making a guess, see what type of star this is:</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="exercise-solutions">
+<h3>Exercise Solutions<a class="headerlink" href="#exercise-solutions" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Use astroquery.mast to download the spectrum for this star</span>
+<span class="c1"># products = Observations.get_product_list(my_random_star)</span>
+<span class="c1"># manifest = Observations.download_products(</span>
+<span class="c1">#     products, flat=True, verbose=False, mrp_only=True</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Plot the spectrum</span>
+<span class="c1"># spectrum_file = fits.open(manifest[&quot;Local Path&quot;][0])</span>
+
+<span class="c1"># fig, ax = plt.subplots(figsize=(10, 3))</span>
+
+<span class="c1"># wavelength = 10 ** spectrum_file[&quot;COADD&quot;].data[&quot;loglam&quot;]</span>
+<span class="c1"># observed_flux = spectrum_file[&quot;COADD&quot;].data[&quot;FLUX&quot;]</span>
+<span class="c1"># model_flux = spectrum_file[&quot;COADD&quot;].data[&quot;MODEL&quot;]</span>
+
+<span class="c1"># # Plot spectra</span>
+<span class="c1"># plt.plot(wavelength, observed_flux, c=&quot;gray&quot;, label=&quot;Observed Spectrum&quot;)</span>
+<span class="c1"># plt.plot(wavelength, model_flux, c=&quot;k&quot;, label=&quot;Model Spectrum&quot;)</span>
+
+<span class="c1"># # Label axes</span>
+<span class="c1"># ax.set_xlabel(r&quot;Wavelength ($\AA$)&quot;)</span>
+<span class="c1"># ax.set_ylabel(&quot;Flux&quot;)</span>
+<span class="c1"># ax.set_title(f&quot;{spectrum_file.filename().strip(&#39;./&#39;)}&quot;)</span>
+<span class="c1"># ax.grid()</span>
+<span class="c1"># plt.legend()</span>
+
+<span class="c1"># # Set axes limits</span>
+<span class="c1"># ax.set_xlim(np.min(wavelength), np.max(wavelength))</span>
+<span class="c1"># ax.set_ylim(0, 1.1 * np.max(model_flux))</span>
+
+<span class="c1"># # Show plot</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # After making a guess, see what type of star this is:</span>
+<span class="c1"># classification = spectrum_file[&quot;SPECOBJ&quot;].data[&quot;SUBCLASS&quot;][0]</span>
+<span class="c1"># print(f&quot;Classification: {classification}&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">#</a></h2>
+<p>Additional resources are linked below:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive.stsci.edu/missions-and-data/sdss">SDSS Legacy Archive at MAST</a></p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/display/SDSS/The+SDSS+Legacy+Archive+at+MAST">SDSS Legacy Archive at MAST User Manual</a></p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/spaces/SDSS/pages/352354561/Legacy+Spectra+and+SEGUE">SDSS Legacy Spectra User Manual</a></p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.mast User Manual</a></p></li>
+<li><p><a class="reference external" href="https://mast.stsci.edu/api/v0/index.html">MAST API</a></p></li>
+</ul>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use SDSS Legacy Spectra or SEGUE data from MAST for published research, please see the following links for information on which citations to include in your paper:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://sdss.org/collaboration/citing-sdss/">Citing SDSS</a></p></li>
+<li><p><a class="reference external" href="https://archive.stsci.edu/publishing/mission-acknowledgements">Citing MAST</a></p></li>
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing astropy</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author:</strong> Julie Imig (jimig&#64;stsci.edu)<br>
+<strong>Keywords:</strong> Tutorial, SDSS, SEGUE, stars, spectra <br>
+<strong>First published:</strong> October 2025 <br>
+<strong>Last updated:</strong> October 2025 <br></p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/SDSS/SDSS_SEGUE_spectra"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Galaxy Morphology with SDSS and Astrocut</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../multi_mission/astroquery.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Astroquery</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-sdss-legacy-spectra-data-from-mast">Accessing SDSS Legacy Spectra Data from MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-the-sdss-legacy-spectra-survey">Querying the SDSS Legacy Spectra Survey</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-data-products">Downloading Data Products</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-spectrum">Plotting a Spectrum</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-labels-for-absorption-lines">Adding Labels for Absorption Lines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-the-plot">Enhancing the Plot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-different-spectral-classifications">Exploring Different Spectral Classifications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-classifying-a-random-spectrum">Exercise: Classifying a Random Spectrum</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solutions">Exercise Solutions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
