@@ -1,9 +1,0 @@
-# Periodograms & Asteroseismology
-
-These tutorials are focused on [periodograms](https://en.wikipedia.org/wiki/Periodogram) and the science that can be done with them.
-
-| Notebook                                                 | Description                                                                                                                                                                                                                                                                             |
-|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Creating Periodograms                                    | A periodogram is a tool for finding the "strongest" frequencies in a signal. This might be useful when trying to find the orbital period of an exoplanet in noisy data. In this notebook, you'll learn about the mathematics behind periodograms and how to identify significant peaks. |
-| Periodograms of Oscillating Stars                        | This notebooks focuses on the signals that come from instrinsic variable stars; namely, $\delta$ Scuti stars and solar-like oscillators.                                                                                                                                                |
-| Estimating a Star's Mass & Radius Using Asteroseismology | Buidling on work in the above notebook, this exercise teaches you how to estimate the mass and radius of a solar-like oscillator.                                                                                                                                                       |
