@@ -1,0 +1,1356 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Combining Multiple Quarters of Kepler Data with Lightkurve &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Interactively Inspecting Target Pixel Files and Light Curves" href="../lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html" />
+    <link rel="prev" title="Creating Your Own Light Curves using Custom Aperture Photometry" href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../lightkurve.html">Lightkurve</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Combining Multiple Quarters of Kepler Data with Lightkurve</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-kepler-quarter">What is a <em>Kepler</em> Quarter?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-multiple-keplerlightcurve-objects-at-once">Downloading Multiple <code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code> Objects at Once</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#investigating-the-data">Investigating the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalizing-a-light-curve">Normalizing a Light Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-multiple-observations-into-a-single-light-curve">Combining Multiple Observations into a Single Light Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">Citing Lightkurve and Astropy</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="combining-multiple-quarters-of-kepler-data-with-lightkurve">
+<h1>Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve<a class="headerlink" href="#combining-multiple-quarters-of-kepler-data-with-lightkurve" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand a <em>Kepler</em> Quarter.</p></li>
+<li><p>Understand how to download multiple quarters of data at once.</p></li>
+<li><p>Learn how to normalize <em>Kepler</em> data.</p></li>
+<li><p>Understand how to combine multiple quarters of data.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://archive.stsci.edu/kepler"><em>Kepler</em></a>, <a class="reference external" href="https://archive.stsci.edu/k2"><em>K2</em></a>, and <a class="reference external" href="https://archive.stsci.edu/tess"><em>TESS</em></a> telescopes observe stars for long periods of time. These long, time series observations are broken up into separate chunks, called quarters for the <em>Kepler</em> mission, campaigns for <em>K2</em>, and sectors for <em>TESS</em>.</p>
+<p>Building light curves with as much data as is available is useful when searching for small signals, such as planetary transits or stellar pulsations. In this tutorial, we will learn how to use Lightkurve’s tools to download and stitch together multiple quarters of <em>Kepler</em> observations.</p>
+<p>It is recommended to first read the tutorial discussing how to use <em>Kepler</em> light curve products with Lightkurve. That tutorial will introduce you to some specifics of how <em>Kepler</em>, <em>K2</em>, and <em>TESS</em> make observations, and how these are displayed as light curves. It also introduces some important terms and concepts that are referred to in this tutorial.</p>
+<p>This tutorial demonstrates how to access and combine multiple quarters of data from the <em>Kepler</em> space telescope, using the Lightkurve package.</p>
+<p>When accessing <em>Kepler</em> data through MAST, it will be stored in three-month chunks, corresponding to a quarter of observations. By combining and normalizing these separate observations, you can form a single light curve that spans all observed quarters. Utilizing all of the data available is especially important when looking at repeating signals, such as planet transits and stellar oscillations.</p>
+<p>We will use the <em>Kepler</em> mission as an example, but these tools are extensible to <em>TESS</em> and <em>K2</em> as well.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>This tutorial requires the <a class="reference external" href="http://docs.lightkurve.org/"><strong>Lightkurve</strong></a> package, which in turn uses <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> for plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">lightkurve</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lk</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-a-kepler-quarter">
+<h2>What is a <em>Kepler</em> Quarter?<a class="headerlink" href="#what-is-a-kepler-quarter" title="Link to this heading">#</a></h2>
+<p>In order to search for planets around other stars, the <em>Kepler</em> space telescope performed near-continuous monitoring of a single field of view, from an Earth-trailing orbit. However, this posed a challenge. If the space telescope is trailing Earth and maintaining steady pointing, its solar panels would slowly receive less and less sunlight.</p>
+<p>In order to make sure the solar panels remained oriented towards the Sun, <em>Kepler</em> performed quarterly rolls, one every 93 days. The infographic below helps visualize this, and shows the points in the orbit where the rolls took place.</p>
+<p>After each roll, <em>Kepler</em> retained its fine-pointing at the same field of view. Because the camera rotated by 90 degrees, all of the target stars fell on different parts of the charge-coupled device (CCD) camera. This had an effect on the amount of flux recorded for the same star, because different CCD pixels have different sensitivities. The way in which the flux from the same stars was distributed on the CCD (called the point spread function or PSF) also changed after each roll, due to focus changes and other instrumental effects. As a result, the aperture mask set for a star had to be recomputed after each roll, and may capture slightly different amounts of flux.</p>
+<p>The data obtained between rolls is referred to as a quarter. While there are changes to the flux <em>systematics</em>, not much else changes quarter to quarter, and the majority of the target list remains identical. This means that, after removing systematic trends (such as was done for the presearch data conditioning simple aperture photometry (PDCSAP) flux), multiple quarters together can form one continuous observation.</p>
+<!-- ![](https://keplergo.arc.nasa.gov/images/program/Orbit_Mar5_09L.gif) -->
+<a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Kepler_space_telescope_orbit.png/800px-Kepler_space_telescope_orbit.png"><img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Kepler_space_telescope_orbit.png/800px-Kepler_space_telescope_orbit.png" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Kepler_space_telescope_orbit.png/800px-Kepler_space_telescope_orbit.png" style="width: 800px;" />
+</a>
+<p><em>Figure</em>: Infographic showcasing the necessity of <em>Kepler</em>’s quarterly rolls and its Earth-trailing orbit. Source: <a class="reference external" href="https://keplergo.arc.nasa.gov/ExtendedMissionOverview.shtml">Kepler Science Center</a>.</p>
+<p><strong>Note</strong>:
+Observations by <em>K2</em> and <em>TESS</em> are also broken down into chunks of a month or more, called campaigns (for <em>K2</em>) and sectors (for <em>TESS</em>). While not discussed in this tutorial, the tools below work for these data products as well.</p>
+</section>
+<section id="downloading-multiple-keplerlightcurve-objects-at-once">
+<h2>Downloading Multiple <code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code> Objects at Once<a class="headerlink" href="#downloading-multiple-keplerlightcurve-objects-at-once" title="Link to this heading">#</a></h2>
+<p>To start, we can use Lightkurve’s <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.search.search_lightcurve.html"><code class="docutils literal notranslate"><span class="pre">search_lightcurve()</span></code></a> function to see what data are available for our target star on the <a class="reference external" href="https://archive.stsci.edu/kepler/">Mikulski Archive for Space Telescopes</a> (MAST) archive. We will use the star <a class="reference external" href="http://www.openexoplanetcatalogue.com/planet/Kepler-8%20b/">Kepler-8</a>, a star somewhat larger than the Sun, and the host of a <a class="reference external" href="https://en.wikipedia.org/wiki/Hot_Jupiter">hot Jupiter planet</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Temporarily using KOI-10 to get around a software bug. KOI-10 is the same object as Kepler-8</span>
+<span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s2">&quot;KOI-10&quot;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s2">&quot;Kepler&quot;</span><span class="p">)</span>
+<span class="n">search_result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">SearchResult containing 50 data products.
+
+<table id="table140048204213520">
+<thead><tr><th>#</th><th>mission</th><th>year</th><th>author</th><th>exptime</th><th>target_name</th><th>distance</th></tr></thead>
+<thead><tr><th></th><th></th><th></th><th></th><th>s</th><th></th><th>arcsec</th></tr></thead>
+<tr><td>0</td><td>Kepler Quarter 03</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>1</td><td>Kepler Quarter 02</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>2</td><td>Kepler Quarter 02</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>3</td><td>Kepler Quarter 02</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>4</td><td>Kepler Quarter 03</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>5</td><td>Kepler Quarter 03</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>6</td><td>Kepler Quarter 00</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>7</td><td>Kepler Quarter 01</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>8</td><td>Kepler Quarter 02</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>9</td><td>Kepler Quarter 03</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>10</td><td>Kepler Quarter 05</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>11</td><td>Kepler Quarter 05</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>12</td><td>Kepler Quarter 05</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>13</td><td>Kepler Quarter 04</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>14</td><td>Kepler Quarter 07</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>15</td><td>Kepler Quarter 04</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>16</td><td>Kepler Quarter 04</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>17</td><td>Kepler Quarter 06</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>18</td><td>Kepler Quarter 06</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>19</td><td>Kepler Quarter 06</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>20</td><td>Kepler Quarter 06</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>21</td><td>Kepler Quarter 07</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>22</td><td>Kepler Quarter 04</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>23</td><td>Kepler Quarter 05</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>24</td><td>Kepler Quarter 11</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>25</td><td>Kepler Quarter 10</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>26</td><td>Kepler Quarter 10</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>27</td><td>Kepler Quarter 10</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>28</td><td>Kepler Quarter 09</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>29</td><td>Kepler Quarter 11</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>30</td><td>Kepler Quarter 09</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>31</td><td>Kepler Quarter 09</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>32</td><td>Kepler Quarter 10</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>33</td><td>Kepler Quarter 08</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>34</td><td>Kepler Quarter 09</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>35</td><td>Kepler Quarter 13</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>36</td><td>Kepler Quarter 13</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>37</td><td>Kepler Quarter 12</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>38</td><td>Kepler Quarter 12</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>39</td><td>Kepler Quarter 12</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>40</td><td>Kepler Quarter 13</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>41</td><td>Kepler Quarter 11</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>60</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>42</td><td>Kepler Quarter 12</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>43</td><td>Kepler Quarter 11</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>44</td><td>Kepler Quarter 13</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>45</td><td>Kepler Quarter 14</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>46</td><td>Kepler Quarter 15</td><td>2013</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>47</td><td>Kepler Quarter 17</td><td>2013</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>48</td><td>Kepler Quarter 16</td><td>2013</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr006922244</td><td>0.0</td></tr>
+<tr><td>49</td><td>Kepler Quarter</td><td>2009</td><td><a href='https://archive.stsci.edu/hlsp/kbonus-bkg'>KBONUS-BKG</a></td><td>1765</td><td>Gaia DR3 2116730994965905280</td><td>0.0</td></tr>
+</table></div></div>
+</div>
+<p>In this list, each row represents a different observing quarter, for a total of 18 quarters across four years. The <strong>observation</strong> column lists the <em>Kepler</em> Quarter. The <strong>target_name</strong> represents the <em>Kepler</em> Input Catalogue (KIC) ID of the target, and the <strong>productFilename</strong> column is the name of the FITS files downloaded from MAST. The <strong>distance</strong> column shows the separation on the sky between the searched coordinates and the downloaded objects — this is only relevant when searching for specific coordinates in the sky, and not when looking for individual objects.</p>
+<p>Instead of downloading a single quarter using the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.search.SearchResult.html#lightkurve.search.SearchResult.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a> function, we can use the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.search.SearchResult.html#lightkurve.search.SearchResult.download_all"><code class="docutils literal notranslate"><span class="pre">download_all()</span></code></a> function to access all 18 quarters at once (this might take a while).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_collection</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
+<span class="n">lc_collection</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LightCurveCollection of 50 objects:
+    0: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=3 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    1: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=2 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    2: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=2 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    3: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=2 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    4: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=3 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    5: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=3 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    6: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=0 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    7: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=1 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    8: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=2 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    9: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=3 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    10: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=5 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    11: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=5 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    12: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=5 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    13: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=4 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    14: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=7 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    15: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=4 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    16: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=4 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    17: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=6 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    18: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=6 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    19: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=6 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    20: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=6 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    21: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=7 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    22: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=4 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    23: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=5 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    24: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=11 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    25: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=10 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    26: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=10 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    27: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=10 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    28: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=9 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    29: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=11 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    30: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=9 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    31: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=9 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    32: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=10 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    33: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=8 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    34: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=9 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    35: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=13 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    36: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=13 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    37: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=12 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    38: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=12 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    39: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=12 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    40: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=13 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    41: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=11 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    42: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=12 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    43: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=11 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    44: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=13 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    45: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=14 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    46: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=15 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    47: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=17 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    48: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; QUARTER=16 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+    49: &lt;KeplerLightCurve LABEL=&quot;KIC 6922244&quot; AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>All of the downloaded data are stored in a <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html#lightkurve.collections.LightCurveCollection"><code class="docutils literal notranslate"><span class="pre">LightCurveCollection</span></code></a>. This object acts as a wrapper for 18 separate <a class="reference external" href="http://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html"><code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code></a> objects, listed above.</p>
+<p>We can access the <a class="reference external" href="http://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html"><code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code></a> objects and interact with them as usual through the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html#lightkurve.collections.LightCurveCollection"><code class="docutils literal notranslate"><span class="pre">LightCurveCollection</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_Q4</span> <span class="o">=</span> <span class="n">lc_collection</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> 
+<span class="n">lc_Q4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>KeplerLightCurve length=43097 LABEL=&quot;KIC 6922244&quot; QUARTER=3 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux</i>
+<table id="table140048203968976" class="table-striped table-bordered table-condensed">
+<thead><tr><th>time</th><th>flux</th><th>flux_err</th><th>quality</th><th>timecorr</th><th>centroid_col</th><th>centroid_row</th><th>cadenceno</th><th>sap_flux</th><th>sap_flux_err</th><th>sap_bkg</th><th>sap_bkg_err</th><th>pdcsap_flux</th><th>pdcsap_flux_err</th><th>sap_quality</th><th>psf_centr1</th><th>psf_centr1_err</th><th>psf_centr2</th><th>psf_centr2_err</th><th>mom_centr1</th><th>mom_centr1_err</th><th>mom_centr2</th><th>mom_centr2_err</th><th>pos_corr1</th><th>pos_corr2</th></tr></thead>
+<thead><tr><th></th><th>electron / s</th><th>electron / s</th><th></th><th>d</th><th>pix</th><th>pix</th><th></th><th>electron / s</th><th>electron / s</th><th>electron / s</th><th>electron / s</th><th>electron / s</th><th>electron / s</th><th></th><th>pix</th><th>pix</th><th>pix</th><th>pix</th><th>pix</th><th>pix</th><th>pix</th><th>pix</th><th>pix</th><th>pix</th></tr></thead>
+<thead><tr><th>Time</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>float64</th><th>float64</th><th>int32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>int32</th><th>float64</th><th>float32</th><th>float64</th><th>float32</th><th>float64</th><th>float32</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
+<tr><td>260.2143210568829</td><td>———</td><td>———</td><td>0</td><td>1.987517e-03</td><td>682.16836</td><td>196.67978</td><td>210580</td><td>4.3587668e+04</td><td>3.8921989e+01</td><td>8.9399231e+02</td><td>5.1594305e-01</td><td>———</td><td>———</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.16836</td><td>1.2054562e-03</td><td>196.67978</td><td>1.2812527e-03</td><td>-8.4362505e-03</td><td>1.5843662e-02</td></tr>
+<tr><td>260.2150021317357</td><td>5.2495184e+04</td><td>4.7668571e+01</td><td>0</td><td>1.987492e-03</td><td>682.15101</td><td>196.66538</td><td>210581</td><td>4.3527820e+04</td><td>3.8907539e+01</td><td>8.9389331e+02</td><td>5.1598632e-01</td><td>5.2495184e+04</td><td>4.7668571e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15101</td><td>1.2134294e-03</td><td>196.66538</td><td>1.2945539e-03</td><td>-8.4477188e-03</td><td>1.5839601e-02</td></tr>
+<tr><td>260.2156833065892</td><td>5.2559660e+04</td><td>4.7679863e+01</td><td>0</td><td>1.987467e-03</td><td>682.15004</td><td>196.66783</td><td>210582</td><td>4.3581277e+04</td><td>3.8918823e+01</td><td>8.9379425e+02</td><td>5.1602966e-01</td><td>5.2559660e+04</td><td>4.7679863e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15004</td><td>1.2113123e-03</td><td>196.66783</td><td>1.2924013e-03</td><td>-8.4591899e-03</td><td>1.5835539e-02</td></tr>
+<tr><td>260.21636438144196</td><td>5.2671750e+04</td><td>4.7703503e+01</td><td>0</td><td>1.987441e-03</td><td>682.15180</td><td>196.66575</td><td>210583</td><td>4.3674371e+04</td><td>3.8939987e+01</td><td>8.9369525e+02</td><td>5.1607299e-01</td><td>5.2671750e+04</td><td>4.7703503e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15180</td><td>1.2104654e-03</td><td>196.66575</td><td>1.2913347e-03</td><td>-8.4706582e-03</td><td>1.5831478e-02</td></tr>
+<tr><td>260.2170454562947</td><td>5.2561789e+04</td><td>4.7697510e+01</td><td>10000000</td><td>1.987416e-03</td><td>682.15086</td><td>196.66659</td><td>210584</td><td>4.3582648e+04</td><td>3.8935253e+01</td><td>8.9359625e+02</td><td>5.1611626e-01</td><td>5.2561789e+04</td><td>4.7697510e+01</td><td>10000000</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15086</td><td>1.2097340e-03</td><td>196.66659</td><td>1.2909683e-03</td><td>-8.4821275e-03</td><td>1.5827416e-02</td></tr>
+<tr><td>260.2177264309212</td><td>5.2589480e+04</td><td>4.7680447e+01</td><td>0</td><td>1.987391e-03</td><td>682.14946</td><td>196.66482</td><td>210585</td><td>4.3605512e+04</td><td>3.8920563e+01</td><td>8.9349725e+02</td><td>5.1615953e-01</td><td>5.2589480e+04</td><td>4.7680447e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.14946</td><td>1.2114982e-03</td><td>196.66482</td><td>1.2925542e-03</td><td>-8.4935939e-03</td><td>1.5823355e-02</td></tr>
+<tr><td>260.2184076057747</td><td>5.2487945e+04</td><td>4.7663097e+01</td><td>0</td><td>1.987366e-03</td><td>682.15102</td><td>196.66527</td><td>210586</td><td>4.3520812e+04</td><td>3.8905224e+01</td><td>8.9339832e+02</td><td>5.1620287e-01</td><td>5.2487945e+04</td><td>4.7663097e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15102</td><td>1.2124446e-03</td><td>196.66527</td><td>1.2930199e-03</td><td>-8.5050650e-03</td><td>1.5819294e-02</td></tr>
+<tr><td>260.21908868062746</td><td>5.2550023e+04</td><td>4.7679539e+01</td><td>0</td><td>1.987341e-03</td><td>682.15235</td><td>196.66555</td><td>210587</td><td>4.3572320e+04</td><td>3.8918407e+01</td><td>8.9329932e+02</td><td>5.1624614e-01</td><td>5.2550023e+04</td><td>4.7679539e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15235</td><td>1.2131265e-03</td><td>196.66555</td><td>1.2935847e-03</td><td>-8.5165333e-03</td><td>1.5815234e-02</td></tr>
+<tr><td>260.21976975548023</td><td>5.2570027e+04</td><td>4.7683289e+01</td><td>10000000000000</td><td>1.987315e-03</td><td>682.15118</td><td>196.66717</td><td>210588</td><td>4.3588812e+04</td><td>3.8920471e+01</td><td>8.9320032e+02</td><td>5.1628941e-01</td><td>5.2570027e+04</td><td>4.7683289e+01</td><td>10000000000000</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15118</td><td>1.2116940e-03</td><td>196.66717</td><td>1.2925321e-03</td><td>-8.5280025e-03</td><td>1.5811171e-02</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>290.55084583978896</td><td>5.2546117e+04</td><td>4.7851994e+01</td><td>0</td><td>7.517998e-04</td><td>682.15338</td><td>196.65293</td><td>255121</td><td>4.3919590e+04</td><td>3.9030067e+01</td><td>9.6427539e+02</td><td>5.1776206e-01</td><td>5.2546117e+04</td><td>4.7851994e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15338</td><td>1.2116003e-03</td><td>196.65293</td><td>1.2890502e-03</td><td>-1.3724205e-03</td><td>3.7641455e-03</td></tr>
+<tr><td>290.5515270107426</td><td>5.2575066e+04</td><td>4.7882950e+01</td><td>0</td><td>7.517707e-04</td><td>682.15214</td><td>196.65048</td><td>255122</td><td>4.3943750e+04</td><td>3.9034000e+01</td><td>9.6430493e+02</td><td>5.1770419e-01</td><td>5.2575066e+04</td><td>4.7882950e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15214</td><td>1.2100190e-03</td><td>196.65048</td><td>1.2879083e-03</td><td>-1.3769064e-03</td><td>3.7664026e-03</td></tr>
+<tr><td>290.55220798163646</td><td>5.2606797e+04</td><td>4.7919701e+01</td><td>0</td><td>7.517416e-04</td><td>682.14585</td><td>196.65285</td><td>255123</td><td>4.3970234e+04</td><td>3.9042503e+01</td><td>9.6433453e+02</td><td>5.1764625e-01</td><td>5.2606797e+04</td><td>4.7919701e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.14585</td><td>1.2117918e-03</td><td>196.65285</td><td>1.2878241e-03</td><td>-1.3813910e-03</td><td>3.7686590e-03</td></tr>
+<tr><td>290.5528890525311</td><td>5.2560762e+04</td><td>4.7936836e+01</td><td>0</td><td>7.517125e-04</td><td>682.15246</td><td>196.65063</td><td>255124</td><td>4.3931977e+04</td><td>3.9033802e+01</td><td>9.6436407e+02</td><td>5.1758838e-01</td><td>5.2560762e+04</td><td>4.7936836e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15246</td><td>1.2100219e-03</td><td>196.65063</td><td>1.2881348e-03</td><td>-1.3858761e-03</td><td>3.7709156e-03</td></tr>
+<tr><td>290.5535702234338</td><td>5.2557785e+04</td><td>4.7962467e+01</td><td>0</td><td>7.516834e-04</td><td>682.14762</td><td>196.64942</td><td>255125</td><td>4.3929566e+04</td><td>3.9031979e+01</td><td>9.6439362e+02</td><td>5.1753038e-01</td><td>5.2557785e+04</td><td>4.7962467e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.14762</td><td>1.2100174e-03</td><td>196.64942</td><td>1.2884859e-03</td><td>-1.3903620e-03</td><td>3.7731724e-03</td></tr>
+<tr><td>290.5542512943284</td><td>5.2567332e+04</td><td>4.7991310e+01</td><td>0</td><td>7.516543e-04</td><td>682.15169</td><td>196.65056</td><td>255126</td><td>4.3937578e+04</td><td>3.9032516e+01</td><td>9.6442322e+02</td><td>5.1747245e-01</td><td>5.2567332e+04</td><td>4.7991310e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15169</td><td>1.2109885e-03</td><td>196.65056</td><td>1.2888695e-03</td><td>-1.3948473e-03</td><td>3.7754292e-03</td></tr>
+<tr><td>290.55493236522307</td><td>5.2621078e+04</td><td>4.8039234e+01</td><td>0</td><td>7.516252e-04</td><td>682.15130</td><td>196.65295</td><td>255127</td><td>4.3982383e+04</td><td>3.9049072e+01</td><td>9.6445270e+02</td><td>5.1741451e-01</td><td>5.2621078e+04</td><td>4.8039234e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15130</td><td>1.2094381e-03</td><td>196.65295</td><td>1.2877872e-03</td><td>-1.3993324e-03</td><td>3.7776858e-03</td></tr>
+<tr><td>290.55561353611847</td><td>5.2529473e+04</td><td>4.8044136e+01</td><td>0</td><td>7.515961e-04</td><td>682.15264</td><td>196.65070</td><td>255128</td><td>4.3906195e+04</td><td>3.9028255e+01</td><td>9.6448224e+02</td><td>5.1735651e-01</td><td>5.2529473e+04</td><td>4.8044136e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.15264</td><td>1.2116528e-03</td><td>196.65070</td><td>1.2898610e-03</td><td>-1.4038184e-03</td><td>3.7799426e-03</td></tr>
+<tr><td>290.5562946070131</td><td>5.2552406e+04</td><td>4.8076981e+01</td><td>0</td><td>7.515670e-04</td><td>682.14950</td><td>196.65157</td><td>255129</td><td>4.3925348e+04</td><td>3.9031090e+01</td><td>9.6451184e+02</td><td>5.1729858e-01</td><td>5.2552406e+04</td><td>4.8076981e+01</td><td>0</td><td>———</td><td>———</td><td>———</td><td>———</td><td>682.14950</td><td>1.2102434e-03</td><td>196.65157</td><td>1.2884049e-03</td><td>-1.4083036e-03</td><td>3.7821995e-03</td></tr>
+</table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_Q4</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/3ab2d5511145688ba5ebd026e714d3f744211b250ad92b3859b360cfdf166bac.png" src="../../../_images/3ab2d5511145688ba5ebd026e714d3f744211b250ad92b3859b360cfdf166bac.png" />
+</div>
+</div>
+<p><strong>Note:</strong> The example given above also works for downloading target pixel files (TPFs). This will produce a <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.TargetPixelFileCollection.html#lightkurve.collections.TargetPixelFileCollection"><code class="docutils literal notranslate"><span class="pre">TargetPixelFileCollection</span></code></a> object instead.</p>
+</section>
+<section id="investigating-the-data">
+<h2>Investigating the Data<a class="headerlink" href="#investigating-the-data" title="Link to this heading">#</a></h2>
+<p>Let’s first have a look at how these observations differ from one another. We can plot the simple aperture photometry (SAP) flux of all of the observations in the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html#lightkurve.collections.LightCurveCollection"><code class="docutils literal notranslate"><span class="pre">LightCurveCollection</span></code></a> to see how they compare.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc_collection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s1">&#39;sap_flux&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="n">lc_collection</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+    <span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="s1">&#39;sap_flux&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/2f6bdc42a4c3a83653eea2a4121a6d9209500978bd9df09297da3dac2fc8480d.png" src="../../../_images/2f6bdc42a4c3a83653eea2a4121a6d9209500978bd9df09297da3dac2fc8480d.png" />
+</div>
+</div>
+<p>In the figure above, each quarter of data looks strikingly different, with global patterns repeating every four quarters as <em>Kepler</em> has made a full rotation.</p>
+<p>The change in flux within each quarter is in part driven by changes in the telescope focus, which are caused by changes in the temperature of <em>Kepler</em>’s components as the spacecraft orbits the Sun. The changes are also caused by an effect called <em>differential velocity aberration</em> (DVA), which causes stars to drift over the course of a quarter, depending on their distance from the center of <em>Kepler</em>’s field of view.</p>
+<p>While the figure above looks messy, all the systematic effects mentioned above are well understood, and have been detrended in the PDCSAP flux. For a more detailed overview, see the <a class="reference external" href="https://archive.stsci.edu/files/live/sites/mast/files/home/missions-and-data/kepler/_documents/Data_Characteristics.pdf"><em>Kepler</em> Data Characteristics Handbook</a>, specifically: <em>Section 5. Ongoing Phenomena</em>.</p>
+</section>
+<section id="normalizing-a-light-curve">
+<h2>Normalizing a Light Curve<a class="headerlink" href="#normalizing-a-light-curve" title="Link to this heading">#</a></h2>
+<p>If we want to see the actual variation of the targeted object over the course of these observations, the plot above isn’t very useful to us. It is also not useful to have flux expressed in physical units, because it is affected by the observing conditions such as telescope focus and pointing (see above).</p>
+<p>Instead, it is a common practice to normalize light curves by dividing by their median value. This means that the median of the newly normalized light curve will be equal to 1, and that the relative size of signals in the observation (such as transits) will be maintained.</p>
+<p>A normalization can be performed using the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html#lightkurve.lightcurve.KeplerLightCurve.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a> method of a <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html"><code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code></a>, for example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_collection</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/4626aace30c6933ddcbcc88d07a140853dd8219cb8e13b1118ce25f90b3f92ba.png" src="../../../_images/4626aace30c6933ddcbcc88d07a140853dd8219cb8e13b1118ce25f90b3f92ba.png" />
+</div>
+</div>
+<p>In the figure above, we have plotted the normalized PDCSAP flux for Quarter 4. The median normalized flux is at 1, and the transit depths lie around 0.991, indicating a 0.9% dip in brightness due to the planet transiting the star.</p>
+<p>The <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html"><code class="docutils literal notranslate"><span class="pre">LightCurveCollection</span></code></a> also has a <code class="docutils literal notranslate"><span class="pre">plot()</span></code> method. We can use it to plot the PDCSAP flux. The method automatically normalizes the flux in same way we did for a single quarter above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_collection</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/6fb079da960721d053750d130064d19892e0bbace6c9381a14fbce8bf8568abb.png" src="../../../_images/6fb079da960721d053750d130064d19892e0bbace6c9381a14fbce8bf8568abb.png" />
+</div>
+</div>
+<p>As the above figure shows, this method only normalizes the flux on a “per quarter” basis. It is convenient, but <em>it does not normalize all quarters to the same value.</em> We’ll explore how to create a uniform light curve in the section below.</p>
+</section>
+<section id="combining-multiple-observations-into-a-single-light-curve">
+<h2>Combining Multiple Observations into a Single Light Curve<a class="headerlink" href="#combining-multiple-observations-into-a-single-light-curve" title="Link to this heading">#</a></h2>
+<p>Finally, we can combine these different light curves into a single <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html"><code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code></a> object. This is done using the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html#lightkurve.collections.LightCurveCollection.stitch"><code class="docutils literal notranslate"><span class="pre">stitch()</span></code></a> method. This method concatenates all quarters in our <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.collections.LightCurveCollection.html#lightkurve.collections.LightCurveCollection"><code class="docutils literal notranslate"><span class="pre">LightCurveCollection</span></code></a> together, and normalizes them at the same time, in the manner we saw above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_stitched</span> <span class="o">=</span> <span class="n">lc_collection</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
+<span class="n">lc_stitched</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>KeplerLightCurve length=1456531 LABEL=&quot;KIC 6922244&quot; QUARTER=16 AUTHOR=Kepler FLUX_ORIGIN=pdcsap_flux</i>
+<table id="table140048191727184" class="table-striped table-bordered table-condensed">
+<thead><tr><th>time</th><th>flux</th><th>flux_err</th><th>quality</th><th>cadenceno</th><th>sap_flux</th><th>sap_flux_err</th><th>sap_quality</th></tr></thead>
+<thead><tr><th></th><th></th><th></th><th></th><th></th><th>electron / s</th><th>electron / s</th><th></th></tr></thead>
+<thead><tr><th>Time</th><th>float64</th><th>float64</th><th>int32</th><th>int32</th><th>float64</th><th>float64</th><th>int32</th></tr></thead>
+<tr><td>323.535469887247</td><td>9.9982172e-01</td><td>9.0666197e-04</td><td>0</td><td>303550</td><td>4.4123199e+04</td><td>3.9178436e+01</td><td>0</td></tr>
+<tr><td>323.5361509627983</td><td>1.0015014e+00</td><td>9.0694579e-04</td><td>0</td><td>303551</td><td>4.4196961e+04</td><td>3.9191528e+01</td><td>0</td></tr>
+<tr><td>323.53683203834953</td><td>9.9916983e-01</td><td>9.0646150e-04</td><td>0</td><td>303552</td><td>4.4094609e+04</td><td>3.9169014e+01</td><td>0</td></tr>
+<tr><td>323.53751321390155</td><td>1.0004932e+00</td><td>9.0684980e-04</td><td>0</td><td>303553</td><td>4.4152727e+04</td><td>3.9185482e+01</td><td>0</td></tr>
+<tr><td>323.5381942894601</td><td>1.0016636e+00</td><td>9.0715149e-04</td><td>0</td><td>303554</td><td>4.4204141e+04</td><td>3.9197262e+01</td><td>0</td></tr>
+<tr><td>323.53887536501134</td><td>1.0004702e+00</td><td>9.0694142e-04</td><td>0</td><td>303555</td><td>4.4151770e+04</td><td>3.9184967e+01</td><td>0</td></tr>
+<tr><td>323.53955654056335</td><td>1.0002652e+00</td><td>9.0699492e-04</td><td>0</td><td>303556</td><td>4.4142805e+04</td><td>3.9183792e+01</td><td>0</td></tr>
+<tr><td>323.54023751611385</td><td>1.0009918e+00</td><td>9.0719474e-04</td><td>0</td><td>303557</td><td>4.4174742e+04</td><td>3.9188377e+01</td><td>0</td></tr>
+<tr><td>323.5409185916724</td><td>1.0010544e+00</td><td>9.0732594e-04</td><td>0</td><td>303558</td><td>4.4177527e+04</td><td>3.9188877e+01</td><td>0</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>1590.8386504729278</td><td>1.0013921e+00</td><td>1.5821219e-04</td><td>0</td><td>72523</td><td>4.4960405e+04</td><td>8.3422705e+00</td><td>0</td></tr>
+<tr><td>1590.8590848185122</td><td>1.0014743e+00</td><td>1.5822535e-04</td><td>0</td><td>72524</td><td>4.4955587e+04</td><td>8.3435369e+00</td><td>0</td></tr>
+<tr><td>1590.8795192642137</td><td>1.0015966e+00</td><td>1.5824659e-04</td><td>10000010000000</td><td>72525</td><td>4.4972721e+04</td><td>8.3468628e+00</td><td>10000010000000</td></tr>
+<tr><td>1590.8999538100325</td><td>1.0013949e+00</td><td>1.5824737e-04</td><td>0</td><td>72526</td><td>4.4957718e+04</td><td>8.3462369e+00</td><td>0</td></tr>
+<tr><td>1590.9203881556168</td><td>1.0018461e+00</td><td>1.5826061e-04</td><td>0</td><td>72527</td><td>4.4968369e+04</td><td>8.3480504e+00</td><td>0</td></tr>
+<tr><td>1590.9408227014355</td><td>1.0015758e+00</td><td>1.5827502e-04</td><td>0</td><td>72528</td><td>4.4952959e+04</td><td>8.3489480e+00</td><td>0</td></tr>
+<tr><td>1590.961257147137</td><td>1.0023616e+00</td><td>1.5829698e-04</td><td>0</td><td>72529</td><td>4.4968049e+04</td><td>8.3509350e+00</td><td>0</td></tr>
+<tr><td>1590.9816914927214</td><td>1.0018577e+00</td><td>1.5831348e-04</td><td>0</td><td>72530</td><td>4.4957296e+04</td><td>8.3522815e+00</td><td>0</td></tr>
+<tr><td>1591.0021260380745</td><td>1.0025455e+00</td><td>1.5843290e-04</td><td>0</td><td>72531</td><td>4.4942709e+04</td><td>8.3533206e+00</td><td>0</td></tr>
+</table></div></div></div>
+</div>
+<p>This returns a single <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html"><code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code></a>! It is in all ways identical to <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.lightcurve.KeplerLightCurve.html"><code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code></a> of a single quarter, just longer. We can plot it the usual way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_stitched</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/f284dba3015e0007a35429b95de7333cc1208dc542689b3b0f2d345a88480a45.png" src="../../../_images/f284dba3015e0007a35429b95de7333cc1208dc542689b3b0f2d345a88480a45.png" />
+</div>
+</div>
+<p>In this final normalized light curve, the interesting observational features of the star are more clear. Specifically: repeating transits that can be used to <a class="reference external" href="https://docs.lightkurve.org/tutorials/02-recover-a-planet.html">characterize planets</a> and a noisy stellar flux that can be used to study brightness variability through <a class="reference external" href="http://docs.lightkurve.org/tutorials/02-asteroseismology.html">asteroseismology</a>.</p>
+<p>Normalizing individual <em>Kepler</em> Quarters before combining them to form a single light curve isn’t the only way to make sure different quarters are consistent with one another. For a breakdown of other available methods and their benefits, see <em>Section 6. Stitching Kepler Quarters Together</em> in <a class="reference external" href="https://arxiv.org/pdf/1207.3093.pdf">Kinemuchi et al. 2012</a>.</p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Authors:</strong> Oliver Hall (oliver.hall&#64;esa.int), Geert Barentsen</p>
+<p><strong>Updated On</strong>: 2020-09-15</p>
+</section>
+<section id="citing-lightkurve-and-astropy">
+<h2>Citing Lightkurve and Astropy<a class="headerlink" href="#citing-lightkurve-and-astropy" title="Link to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<style>
+    button {
+        border: 1px solid;
+        padding: 0.2em;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.8em;
+        margin: 0.2em;
+        cursor: pointer;
+    }
+
+    .citation-button-1 {background-color: #4CAF50;} /* Green */
+    .citation-button-2 {background-color: #008CBA;} /* Blue */
+</style>
+
+<script type="text/javascript">
+    function copyBibtex(package) {
+        var copyText = document.getElementById(package + "Text");
+        copyText.select();
+        document.execCommand("copy");
+        alert("BibTex has been copied to your clipboard")
+    }
+</script>
+</head>
+
+<body>
+    <textarea id="lightkurveText" style="position: absolute; left: -9999px; z-index: -9999;">
+@MISC{2018ascl.soft12013L,
+    author = {{Lightkurve Collaboration} and {Cardoso}, J.~V.~d.~M. and
+                {Hedges}, C. and {Gully-Santiago}, M. and {Saunders}, N. and
+                {Cody}, A.~M. and {Barclay}, T. and {Hall}, O. and
+                {Sagear}, S. and {Turtelboom}, E. and {Zhang}, J. and
+                {Tzanidakis}, A. and {Mighell}, K. and {Coughlin}, J. and
+                {Bell}, K. and {Berta-Thompson}, Z. and {Williams}, P. and
+                {Dotson}, J. and {Barentsen}, G.},
+    title = "{Lightkurve: Kepler and TESS time series analysis in Python}",
+    keywords = {Software, NASA},
+howpublished = {Astrophysics Source Code Library},
+        year = 2018,
+    month = dec,
+archivePrefix = "ascl",
+    eprint = {1812.013},
+    adsurl = {http://adsabs.harvard.edu/abs/2018ascl.soft12013L},
+}
+    </textarea>
+    <textarea id="astropyText" style="position: absolute; left: -9999px; z-index: -9999;">
+@ARTICLE{astropy:2022,
+       author = {{Astropy Collaboration} and {Price-Whelan}, Adrian M. and {Lim}, Pey
+       Lian and {Earl}, Nicholas and {Starkman}, Nathaniel and {Bradley}, Larry and
+       {Shupe}, David L. and {Patil}, Aarya A. and {Corrales}, Lia and {Brasseur}, C.~E.
+       and {N{\"o}the}, Maximilian and {Donath}, Axel and {Tollerud}, Erik and {Morris},
+       Brett M. and {Ginsburg}, Adam and {Vaher}, Eero and {Weaver}, Benjamin A. and
+       {Tocknell}, James and {Jamieson}, William and {van Kerkwijk}, Marten H. and
+       {Robitaille}, Thomas P. and {Merry}, Bruce and {Bachetti}, Matteo and
+       {G{\"u}nther}, H. Moritz and {Aldcroft}, Thomas L. and {Alvarado-Montes}, Jaime
+       A. and {Archibald}, Anne M. and {B{\'o}di}, Attila and {Bapat}, Shreyas and
+       {Barentsen}, Geert and {Baz{\'a}n}, Juanjo and {Biswas}, Manish and {Boquien},
+       M{\'e}d{\'e}ric and {Burke}, D.~J. and {Cara}, Daria and {Cara}, Mihai and
+       {Conroy}, Kyle E. and {Conseil}, Simon and {Craig}, Matthew W. and {Cross},
+       Robert M. and {Cruz}, Kelle L. and {D'Eugenio}, Francesco and {Dencheva}, Nadia
+       and {Devillepoix}, Hadrien A.~R. and {Dietrich}, J{\"o}rg P. and {Eigenbrot},
+       Arthur Davis and {Erben}, Thomas and {Ferreira}, Leonardo and {Foreman-Mackey},
+       Daniel and {Fox}, Ryan and {Freij}, Nabil and {Garg}, Suyog and {Geda}, Robel and
+       {Glattly}, Lauren and {Gondhalekar}, Yash and {Gordon}, Karl D. and {Grant},
+       David and {Greenfield}, Perry and {Groener}, Austen M. and {Guest}, Steve and
+       {Gurovich}, Sebastian and {Handberg}, Rasmus and {Hart}, Akeem and
+       {Hatfield-Dodds}, Zac and {Homeier}, Derek and {Hosseinzadeh}, Griffin and
+       {Jenness}, Tim and {Jones}, Craig K. and {Joseph}, Prajwel and {Kalmbach}, J.
+       Bryce and {Karamehmetoglu}, Emir and {Ka{\l}uszy{\'n}ski}, Miko{\l}aj and
+       {Kelley}, Michael S.~P. and {Kern}, Nicholas and {Kerzendorf}, Wolfgang E. and
+       {Koch}, Eric W. and {Kulumani}, Shankar and {Lee}, Antony and {Ly}, Chun and
+       {Ma}, Zhiyuan and {MacBride}, Conor and {Maljaars}, Jakob M. and {Muna}, Demitri
+       and {Murphy}, N.~A. and {Norman}, Henrik and {O'Steen}, Richard and {Oman}, Kyle
+       A. and {Pacifici}, Camilla and {Pascual}, Sergio and {Pascual-Granado}, J. and
+       {Patil}, Rohit R. and {Perren}, Gabriel I. and {Pickering}, Timothy E. and
+       {Rastogi}, Tanuj and {Roulston}, Benjamin R. and {Ryan}, Daniel F. and {Rykoff},
+       Eli S. and {Sabater}, Jose and {Sakurikar}, Parikshit and {Salgado}, Jes{\'u}s
+       and {Sanghi}, Aniket and {Saunders}, Nicholas and {Savchenko}, Volodymyr and
+       {Schwardt}, Ludwig and {Seifert-Eckert}, Michael and {Shih}, Albert Y. and
+       {Jain}, Anany Shrey and {Shukla}, Gyanendra and {Sick}, Jonathan and {Simpson},
+       Chris and {Singanamalla}, Sudheesh and {Singer}, Leo P. and {Singhal}, Jaladh and
+       {Sinha}, Manodeep and {Sip{\H{o}}cz}, Brigitta M. and {Spitler}, Lee R. and
+       {Stansby}, David and {Streicher}, Ole and {{\v{S}}umak}, Jani and {Swinbank},
+       John D. and {Taranu}, Dan S. and {Tewary}, Nikita and {Tremblay}, Grant R. and
+       {Val-Borro}, Miguel de and {Van Kooten}, Samuel J. and {Vasovi{\'c}}, Zlatan and
+       {Verma}, Shresth and {de Miranda Cardoso}, Jos{\'e} Vin{\'\i}cius and {Williams},
+       Peter K.~G. and {Wilson}, Tom J. and {Winkel}, Benjamin and {Wood-Vasey}, W.~M.
+       and {Xue}, Rui and {Yoachim}, Peter and {Zhang}, Chen and {Zonca}, Andrea and
+       {Astropy Project Contributors}}, title = "{The Astropy Project: Sustaining and
+       Growing a Community-oriented Open-source Project and the Latest Major Release
+       (v5.0) of the Core Package}",
+      journal = {\apj},
+     keywords = {Astronomy software, Open source software, Astronomy data analysis, 1855, 1866, 1858, Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = 2022,
+        month = aug,
+       volume = {935},
+       number = {2},
+          eid = {167},
+        pages = {167},
+          doi = {10.3847/1538-4357/ac7c74},
+archivePrefix = {arXiv},
+       eprint = {2206.14220},
+ primaryClass = {astro-ph.IM},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022ApJ...935..167A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+    </textarea>
+    <textarea id="astroqueryText" style="position: absolute; left: -9999px; z-index: -9999;">
+@ARTICLE{2019AJ....157...98G,
+   author = {{Ginsburg}, A. and {Sip{\H o}cz}, B.~M. and {Brasseur}, C.~E. and
+	{Cowperthwaite}, P.~S. and {Craig}, M.~W. and {Deil}, C. and
+	{Guillochon}, J. and {Guzman}, G. and {Liedtke}, S. and {Lian Lim}, P. and
+	{Lockhart}, K.~E. and {Mommert}, M. and {Morris}, B.~M. and
+	{Norman}, H. and {Parikh}, M. and {Persson}, M.~V. and {Robitaille}, T.~P. and
+	{Segovia}, J.-C. and {Singer}, L.~P. and {Tollerud}, E.~J. and
+	{de Val-Borro}, M. and {Valtchanov}, I. and {Woillez}, J. and
+	{The Astroquery collaboration} and {a subset of the astropy collaboration}
+	},
+    title = "{astroquery: An Astronomical Web-querying Package in Python}",
+  journal = {\aj},
+archivePrefix = "arXiv",
+   eprint = {1901.04520},
+ primaryClass = "astro-ph.IM",
+ keywords = {astronomical databases: miscellaneous, virtual observatory tools},
+     year = 2019,
+    month = mar,
+   volume = 157,
+      eid = {98},
+    pages = {98},
+      doi = {10.3847/1538-3881/aafc33},
+   adsurl = {https://adsabs.harvard.edu/abs/2019AJ....157...98G},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+    </textarea>
+    <textarea id="tesscutText" style="position: absolute; left: -9999px; z-index: -9999;">
+@MISC{2019ascl.soft05007B,
+        author = {{Brasseur}, C.~E. and {Phillip}, Carlita and {Fleming}, Scott W. and
+          {Mullally}, S.~E. and {White}, Richard L.},
+         title = "{Astrocut: Tools for creating cutouts of TESS images}",
+      keywords = {Software},
+          year = 2019,
+         month = may,
+           eid = {ascl:1905.007},
+         pages = {ascl:1905.007},
+ archivePrefix = {ascl},
+        eprint = {1905.007},
+        adsurl = {https://ui.adsabs.harvard.edu/abs/2019ascl.soft05007B},
+       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+ }
+    </textarea>
+
+    <p>
+        When using Lightkurve, we kindly request that you cite the following packages:
+        <ul>
+            <li>
+                <a href="https://docs.lightkurve.org">lightkurve</a>
+                <button onclick="copyBibtex('lightkurve')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+            </li>
+            <li>
+                <a href="https://astropy.org">astropy</a>
+                <button onclick="copyBibtex('astropy')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+            </li>
+            <li>
+                <a href="https://astroquery.readthedocs.io">astroquery</a>
+                <button onclick="copyBibtex('astroquery')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+                —  if you are using <i>search_lightcurve()</i> or <i>search_targetpixelfile()</i>.
+            </li>
+            <li>
+                <a href="https://mast.stsci.edu/tesscut/">tesscut</a>
+                <button onclick="copyBibtex('tesscut')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+                — if you are using <i>search_tesscut()</i>.
+            </li>
+        </ul>
+    </p>
+</body>
+</div></div>
+</div>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" />
+</a>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/Kepler/lightkurve_combining_multiple_quarters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Creating Your Own Light Curves using Custom Aperture Photometry</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Interactively Inspecting Target Pixel Files and Light Curves</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-kepler-quarter">What is a <em>Kepler</em> Quarter?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-multiple-keplerlightcurve-objects-at-once">Downloading Multiple <code class="docutils literal notranslate"><span class="pre">KeplerLightCurve</span></code> Objects at Once</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#investigating-the-data">Investigating the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalizing-a-light-curve">Normalizing a Light Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-multiple-observations-into-a-single-light-curve">Combining Multiple Observations into a Single Light Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">Citing Lightkurve and Astropy</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

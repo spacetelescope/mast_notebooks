@@ -1,0 +1,1448 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exploring UV Extinction Curves &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Accessing JWST Proposal Data in astroquery.mast" href="../../JWST/download_by_program_id/download_by_program_id.html" />
+    <link rel="prev" title="Hubble Catalog of Variables Notebook (CasJobs version)" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Exploring UV Extinction Curves</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-and-targets">Background and Targets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-and-downloading-in-astroquery-mast">Searching and Downloading in astroquery.mast</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rinse-and-repeat-for-target-two">Rinse and Repeat for Target Two</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-the-downloaded-data-files">Exploring the Downloaded Data Files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-access-and-validation">Data Access and Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-plotting">Data Plotting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extinction-curve">Extinction Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="exploring-uv-extinction-curves">
+<h1>Exploring UV Extinction Curves<a class="headerlink" href="#exploring-uv-extinction-curves" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will be able to:</p>
+<ul class="simple">
+<li><p>Perform data queries on the MAST archives using astroquery</p></li>
+<li><p>Narrow down query results to the desired spectrum</p></li>
+<li><p>Clean, analyze, and plot spectral data</p></li>
+<li><p>Fit extinction curves to a parameterized model</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In this tutorial, you will learn how to download IUE data using the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">MAST Archive API, astroquery</a>. We’ll obtain the spectra of two stars, one reddened and one not. We will use these spectra to construct and plot UV extinction curves. An extinction curve demonstrates the wavelength dependence of dust extinction. It compares the dust-free Spectral Energy Distribution (SED) of a star to the observed SED. Normally these curves are created by plotting <span class="math notranslate nohighlight">\(k(\lambda-V)\)</span> versus <span class="math notranslate nohighlight">\(1/\lambda\)</span>, with <span class="math notranslate nohighlight">\(\lambda\)</span> being the wavelength (see ‘Useful Equations’ below).</p>
+<p>Extinction is relevant in a diverse range of scenarios. Sometimes, dust is found very near the observed object, like in stars with disks or proto-stellar clouds. However, the target does not need to be intrinsically “dusty”; dust in a galaxy that is light-years from a target star might still block the line-of-sight view and impact the observation.</p>
+<p>In this lesson, our data comes from the <a class="reference external" href="https://archive.stsci.edu/iue/">International Ultraviolet Explorer</a> (IUE). IUE performed spectrophotometry in the wavelength range from 1150 Å to 3200 Å. MAST hosts these observations, which include more than 100,000 spectra.</p>
+<p><strong>Defining some terms</strong>:</p>
+<ul class="simple">
+<li><p><strong>Color index</strong>: difference between magnitude of a star in two different passbands, typically B and V. Symbol: <span class="math notranslate nohighlight">\((B-V)\)</span>.</p></li>
+<li><p><strong>Extinction</strong>: absoption and scattering of light by dust and gas between an object and the observer. It is a measure of the interstellar reddening quantified by the difference between the magnitude of the band when observed through dust versus a dust-free environment. Symbol: <span class="math notranslate nohighlight">\(A(\lambda)\)</span>.</p></li>
+<li><p><strong>Magellanic Clouds</strong>: Irregular dwarf galaxies that orbit the Milky Way galaxy and are located in the southern celestial hemisphere. Two distinct groups can be differentiated: the Large Magellanic Cloud (LMC) and the Small Magellanic Cloud (SMC).</p></li>
+<li><p><strong>Spectral type</strong>: stellar classification from hotter (O stars) to cooler (M stars). Temperature defines a star’s “color” and surface brightness.</p></li>
+</ul>
+<p><strong>The “extinction equation” we’ll use to create our plots:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k(\lambda-V) = \frac{m(\lambda-V)-m(\lambda-V)_o}{(B-V)-(B-V)_o} = \frac{A(\lambda)-A(V)}{A(B)-A(V)}\)</span></p></li>
+</ul>
+<p><em><strong>Note</strong>: the <span class="math notranslate nohighlight">\(x_o\)</span> terms refer to the star that is nearly unaffected by dust, i.e. <span class="math notranslate nohighlight">\((B-V)\)</span> corresponds to the observed color index and <span class="math notranslate nohighlight">\((B-V)_o\)</span> to the color index if there were no extinction due to dust. The stars should have the same spectral type in order to perform this comparison.</em></p>
+<!-- - The [Fitzpatrick and Massa (1990) parametrization](https://ui.adsabs.harvard.edu/abs/1990ApJS...72..163F/abstract): this will be the parametrization that will be followed in this tutorial for extinction curves. This parametrization is a combination of three elements; a linear "background term"; a Lorentsian-like "Drude" profile for the 2175 Å bump, $D(x; \gamma, x_o)$; finally, a far-UV curvature term, $F(x)$. The $x$ in the equation corresponds to $x = \lambda^{-1}$. 
+
+$$\begin{equation}
+ k(x-V) = c_1 + c_2x + c_3D(x; \gamma, x_o)+c_4F(x)
+\end{equation}$$
+
+$$\begin{equation}
+ D(x; \gamma, x_o) = \frac{x^2}{(x^2-x_o^2)^2+x^2\gamma^2}
+\end{equation}$$
+
+$$\begin{equation}
+ F(x) = \begin{cases}
+    0.5392(x-5.9)^2+0.05644(x-5.9)^3, & \text{for $x \geq 5.9 \mu m^{-1}$}.\\
+    0, & \text{otherwise}.
+  \end{cases}
+\end{equation}$$ -->
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#Searching-the-MAST-archive-by-target-name-and-downloading-spectra"><span class="xref myst">Searching by Target Name and Downloading Spectra</span></a></p></li>
+<li><p><a class="reference internal" href="#Exploring-the-downloaded-data-files"><span class="xref myst">Exploring the downloaded data files</span></a></p></li>
+<li><p><a class="reference internal" href="#Data-access-and-manipulation"><span class="xref myst">Data access and manipulation</span></a></p></li>
+<li><p><a class="reference internal" href="#Saving-values-into-your-local-computer"><span class="xref myst">Saving values into your local computer</span></a></p></li>
+<li><p><a class="reference internal" href="#Exercises"><span class="xref myst">Exercises</span></a></p></li>
+<li><p><a class="reference internal" href="#Additional-Resources"><span class="xref myst">Additional Resources</span></a></p></li>
+</ul>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>The first step will be to import the libraries we will be using throughout this tutorial:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Observations</span></code> from <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.mast</a> to query the MAST Archive.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fits</span></code> from <em>astropy.io</em> for accessing FITS files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Simbad</span></code> from <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/simbad/simbad.html">astroquery.simbad</a> to query the SIMBAD database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> for array manipulations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> for plotting</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.simbad</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simbad</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong>Warning</strong>: If you have not installed the astroquery package on your computer, you will need to. Information about astroquery can be found <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/">on the readthedocs</a>.</em></p>
+</section>
+<section id="background-and-targets">
+<h2>Background and Targets<a class="headerlink" href="#background-and-targets" title="Link to this heading">#</a></h2>
+<p>The first step is to find the data files we want to use. We will using the <code class="docutils literal notranslate"><span class="pre">Observations</span></code> Class from <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> both to search for and download UV data from the IUE.</p>
+<p>We’ll be targeting two stars: AzV 456 and AzV 70. This former is reddened by dust, while the latter is not. This particular example is from <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2003ApJ...594..279G/abstract">Gordon et al. (2003)</a>, but you can use any pair of reddened and unreddened stars with the same spectral type and luminosity class.</p>
+</section>
+<section id="searching-and-downloading-in-astroquery-mast">
+<h2>Searching and Downloading in astroquery.mast<a class="headerlink" href="#searching-and-downloading-in-astroquery-mast" title="Link to this heading">#</a></h2>
+<p>We’ll make our targets flexible here by creating a “dusty” and “no dust” option. If you want to explore other stars, change the targets below!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_dusty</span> <span class="o">=</span> <span class="s2">&quot;Azv456&quot;</span>
+<span class="n">target_nodust</span> <span class="o">=</span> <span class="s2">&quot;Azv70&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">query_criteria</span></code> function allows you to filter by mission, as well as object name. For a full list of fields you can query, as well as their associated metadata names, see the <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">CAOM fields description</a> page. For this search, we’ll filter for IUE data taken on the “no dust” target.</p>
+<p><strong>Note: We’ll use a radius of zero to exactly match our target; depending on your particular query, this may result in some missing observations. Use with caution!</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We use a radius of zero to find exact matches</span>
+<span class="n">obs_table_nodust</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">obs_collection</span><span class="o">=</span><span class="s2">&quot;IUE&quot;</span><span class="p">,</span>
+                                               <span class="n">objectname</span><span class="o">=</span><span class="n">target_nodust</span><span class="p">,</span>
+                                               <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;0m&quot;</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">obs_table_nodust</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the matching observations, if you want</span>
+<span class="n">obs_table_nodust</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=2</i>
+<table id="table140670292813264" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th><th>objID1</th><th>distance</th></tr></thead>
+<thead><tr><th>str7</th><th>str3</th><th>str1</th><th>str3</th><th>str1</th><th>str8</th><th>str2</th><th>str5</th><th>str1</th><th>str8</th><th>float64</th><th>float64</th><th>str8</th><th>str11</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str67</th><th>float64</th><th>str5</th><th>str1</th><th>int64</th><th>str57</th><th>str74</th><th>str64</th><th>str6</th><th>bool</th><th>float64</th><th>str6</th><th>str6</th><th>str6</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>IUE</td><td>--</td><td>SWP</td><td>--</td><td>LOW DISP</td><td>UV</td><td>SK 35</td><td>--</td><td>swp18830</td><td>12.577660313500019</td><td>-72.6341409203</td><td>spectrum</td><td>Walborn</td><td>2</td><td>45323.68226</td><td>45323.70308</td><td>1798.573</td><td>115.059</td><td>197.87</td><td>SNC OB Supergiants</td><td>nan</td><td>OD90B</td><td>--</td><td>--</td><td>CIRCLE ICRS 12.5776603135 -72.6341409203 0.00300694444444</td><td>http://archive.stsci.edu/browse/previews/iue/mx/swp/18000/gif/swp18830.gif</td><td>http://archive.stsci.edu/pub/vospectra/iue2/swp18830mxlo_vo.fits</td><td>PUBLIC</td><td>--</td><td>5885.0</td><td>315988</td><td>542866</td><td>542866</td><td>0.0</td></tr>
+<tr><td>science</td><td>IUE</td><td>--</td><td>LWP</td><td>--</td><td>LOW DISP</td><td>UV</td><td>SK 35</td><td>--</td><td>lwp12387</td><td>12.577660313500019</td><td>-72.6341409203</td><td>spectrum</td><td>Fitzpatrick</td><td>2</td><td>47157.58737</td><td>47157.60403</td><td>1438.556</td><td>185.118</td><td>334.76</td><td>Energy Distributions of B Supergiants in the Small Magellanic Cloud</td><td>nan</td><td>OBJEF</td><td>--</td><td>--</td><td>CIRCLE ICRS 12.5776603135 -72.6341409203 0.00300694444444</td><td>http://archive.stsci.edu/browse/previews/iue/mx/lwp/12000/gif/lwp12387.gif</td><td>http://archive.stsci.edu/pub/vospectra/iue2/lwp12387mxlo_vo.fits</td><td>PUBLIC</td><td>--</td><td>5885.0</td><td>282218</td><td>509096</td><td>509096</td><td>0.0</td></tr>
+</table></div></div></div>
+</div>
+<p>There are two matching observations. One covers a short wavelength domain and the other covers the long domain (short and long are relative: both are UV observations). Let’s use both so that we’ll have a more complete picture of the extinction behavior over different wavelengths.</p>
+<p>Let’s find the data products associated with these observations. We’ll use the <code class="docutils literal notranslate"><span class="pre">get_products</span></code> function to do that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_products_nodust</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs_table_nodust</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the products, if you want</span>
+<span class="n">data_products_nodust</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=18</i>
+<table id="table140670292916496" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str6</th><th>str3</th><th>str8</th><th>str8</th><th>str56</th><th>str1</th><th>str62</th><th>str9</th><th>str28</th><th>str56</th><th>str1</th><th>str1</th><th>str1</th><th>str5</th><th>str20</th><th>int64</th><th>str6</th><th>str6</th><th>int64</th><th>str8</th></tr></thead>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>ELBLL</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.elbll.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.elbll.gz</td><td>189118</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>LILO</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.lilo.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.lilo.gz</td><td>515822</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>MELOL</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.melol.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.melol.gz</td><td>12259</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>RAW</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.raw.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.raw.gz</td><td>346749</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>RILO</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.rilo.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.rilo.gz</td><td>352139</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>SILO</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.silo.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.silo.gz</td><td>88560</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>Preview-Full</td><td>S</td><td>mast:IUE/url/browse/previews/iue/mx/lwp/12000/gif/lwp12387.gif</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.gif</td><td>6407</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>MXLO</td><td>S</td><td>mast:IUE/url/pub/iue/data/lwp/12000/lwp12387.mxlo.gz</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387.mxlo.gz</td><td>18343</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>S</td><td>mast:IUE/url/pub/vospectra/iue2/lwp12387mxlo_vo.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387mxlo_vo.fits</td><td>51840</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>ELBLL</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.elbll.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.elbll.gz</td><td>87201</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>LILO</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.lilo.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.lilo.gz</td><td>476570</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>MELOL</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.melol.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.melol.gz</td><td>11191</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>RAW</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.raw.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.raw.gz</td><td>314489</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>RILO</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.rilo.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.rilo.gz</td><td>320252</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>SILO</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.silo.gz</td><td>AUXILIARY</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.silo.gz</td><td>80777</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>Preview-Full</td><td>S</td><td>mast:IUE/url/browse/previews/iue/mx/swp/18000/gif/swp18830.gif</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.gif</td><td>6157</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>MXLO</td><td>S</td><td>mast:IUE/url/pub/iue/data/swp/18000/swp18830.mxlo.gz</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>--</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830.mxlo.gz</td><td>15975</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>S</td><td>mast:IUE/url/pub/vospectra/iue2/swp18830mxlo_vo.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830mxlo_vo.fits</td><td>51840</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+</table></div></div></div>
+</div>
+<p>This looks good, but a fair number of these results have the <code class="docutils literal notranslate"><span class="pre">productType</span></code> ‘AUXILIARY’; they were orginially intended for calibration or engineering purposes. We want only the the products marked ‘SCIENCE’; more specifically, we’re looking for extracted spectra in <code class="docutils literal notranslate"><span class="pre">.fits</span></code> files. Let’s add some filters to match those results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filtered_products_nodust</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">data_products_nodust</span><span class="p">,</span>
+                                                        <span class="n">productType</span><span class="o">=</span><span class="s1">&#39;SCIENCE&#39;</span><span class="p">,</span>
+                                                        <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.fits&#39;</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">filtered_products_nodust</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the results, if you want</span>
+<span class="n">filtered_products_nodust</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=2</i>
+<table id="table140670292804112" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str6</th><th>str3</th><th>str8</th><th>str8</th><th>str56</th><th>str1</th><th>str62</th><th>str9</th><th>str28</th><th>str56</th><th>str1</th><th>str1</th><th>str1</th><th>str5</th><th>str20</th><th>int64</th><th>str6</th><th>str6</th><th>int64</th><th>str8</th></tr></thead>
+<tr><td>282218</td><td>IUE</td><td>spectrum</td><td>lwp12387</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>S</td><td>mast:IUE/url/pub/vospectra/iue2/lwp12387mxlo_vo.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>--</td><td>--</td><td>--</td><td>OBJEF</td><td>lwp12387mxlo_vo.fits</td><td>51840</td><td>282218</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+<tr><td>315988</td><td>IUE</td><td>spectrum</td><td>swp18830</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>S</td><td>mast:IUE/url/pub/vospectra/iue2/swp18830mxlo_vo.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>(extracted spectra/vo spectral container/SSAP) fits file</td><td>--</td><td>--</td><td>--</td><td>OD90B</td><td>swp18830mxlo_vo.fits</td><td>51840</td><td>315988</td><td>PUBLIC</td><td>2</td><td>LOW DISP</td></tr>
+</table></div></div></div>
+</div>
+<p>Great! All that remains is to download the files. You can do this by passing the entire product table to the <code class="docutils literal notranslate"><span class="pre">download_products</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">manifest_nodust</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">filtered_products_nodust</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/IUE/lwp12387/lwp12387mxlo_vo.fits with expected size 51840. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/IUE/swp18830/swp18830mxlo_vo.fits with expected size 51840. [astroquery.query]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="rinse-and-repeat-for-target-two">
+<h3>Rinse and Repeat for Target Two<a class="headerlink" href="#rinse-and-repeat-for-target-two" title="Link to this heading">#</a></h3>
+<p>Now, let’s repeat this process for our second, dusty target. We’ll condense the code into one cell for convenience.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs_table_dusty</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">obs_collection</span><span class="o">=</span><span class="s2">&quot;IUE&quot;</span><span class="p">,</span>
+                                              <span class="n">objectname</span><span class="o">=</span><span class="n">target_dusty</span><span class="p">,</span>
+                                              <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;0m&quot;</span><span class="p">,</span>
+                                              <span class="n">proposal_pi</span><span class="o">=</span><span class="s2">&quot;Prevot&quot;</span><span class="p">)</span> <span class="c1"># We specify the PI since this search returns more results</span>
+
+
+<span class="n">data_products_dusty</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs_table_dusty</span><span class="p">)</span>
+
+<span class="c1"># Note that you can skip the &#39;filter products&#39; step</span>
+<span class="c1"># Instead, you can pass the filters directly to &#39;download_products&#39;</span>
+<span class="n">manifest_dusty</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">data_products_dusty</span><span class="p">,</span>
+                                                <span class="n">productType</span><span class="o">=</span><span class="s1">&#39;SCIENCE&#39;</span><span class="p">,</span>
+                                                <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.fits&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/IUE/lwr12347/lwr12347mxlo_vo.fits with expected size 48960. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/IUE/swp16051/swp16051mxlo_vo.fits with expected size 48960. [astroquery.query]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exploring-the-downloaded-data-files">
+<h2>Exploring the Downloaded Data Files<a class="headerlink" href="#exploring-the-downloaded-data-files" title="Link to this heading">#</a></h2>
+<p>Now, let’s explore the FITS files we just downloaded. The filepaths were saved in our <code class="docutils literal notranslate"><span class="pre">manifest</span></code> variable when we used <code class="docutils literal notranslate"><span class="pre">download_products</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull the filepaths from the manifests</span>
+<span class="n">filenames_dusty</span> <span class="o">=</span> <span class="n">manifest_dusty</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">]</span>
+<span class="n">filenames_nodust</span> <span class="o">=</span> <span class="n">manifest_nodust</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">]</span>
+
+<span class="c1"># The first path in the list is for the &#39;long wavelength&#39; data</span>
+<span class="n">lw_dusty</span> <span class="o">=</span> <span class="n">filenames_dusty</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># We&#39;ll create the other files now, for convenience</span>
+<span class="n">sw_dusty</span> <span class="o">=</span> <span class="n">filenames_dusty</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">lw_nodust</span> <span class="o">=</span> <span class="n">filenames_nodust</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sw_nodust</span> <span class="o">=</span> <span class="n">filenames_nodust</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Print the information from the first file only</span>
+<span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">lw_dusty</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: ./mastDownload/IUE/lwr12347/lwr12347mxlo_vo.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU     359   ()      
+  1  Spectral Container    1 BinTableHDU    141   1R x 4C   [562E, 562E, 562E, 562I]   
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><strong>No. 0 (PRIMARY)</strong>: This HDU contains metadata related to the entire file.</p></li>
+<li><p><strong>No. 1 (Spectral Container)</strong>: This HDU contains the spectral profile of the target as a function of wavelength.</p></li>
+</ul>
+<p>The header of the file contains additional information about the data.</p>
+<p>Let’s take a look at some of the columns that are more relevant to us:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">lw_dusty</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span> 
+    <span class="n">header_lw_dusty</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+
+<span class="c1"># Remove to the [9:15] index to see the entire header</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">header_lw_dusty</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>COMMENT  *** Column names ***                                                   
+COMMENT                                                                         
+TTYPE1  = &#39;WAVE    &#39;           /                                                
+TTYPE2  = &#39;FLUX    &#39;           /                                                
+TTYPE3  = &#39;SIGMA   &#39;           /                                                
+TTYPE4  = &#39;QUALITY &#39;           /                                                
+</pre></div>
+</div>
+</div>
+</div>
+<p>This tell us that first column corresponds to the wavelengths, and the second column to the fluxes. We can also see the units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">header_lw_dusty</span><span class="p">[</span><span class="mi">23</span><span class="p">:</span><span class="mi">28</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>COMMENT   *** Column units ***                                                  
+COMMENT                                                                         
+TUNIT1  = &#39;angstrom&#39;           / wavelength unit is Angstrom                    
+TUNIT2  = &#39;erg/cm**2/s/angstrom&#39; / flux unit is ergs/cm2/sec/A                  
+TUNIT3  = &#39;erg/cm**2/s/angstrom&#39; / sigma unit is ergs/cm2/sec/A                 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-access-and-validation">
+<h2>Data Access and Validation<a class="headerlink" href="#data-access-and-validation" title="Link to this heading">#</a></h2>
+<p>The data contained in this fits file can be accessed using <code class="docutils literal notranslate"><span class="pre">io.fits</span></code> and the <code class="docutils literal notranslate"><span class="pre">.data</span></code> attribute. This can be tedious to do more than once, so let’s create a helper function to do it for us.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This helper function will take a filename and return the wavelength/flux data</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extractData</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="c1"># Open the file and read the data</span>
+    <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+        
+    <span class="c1"># Extract our desired data from the corresponding columns</span>
+    <span class="n">wav</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># wavelength, angstrom, A</span>
+    <span class="n">flux</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># flux, ergs/cm2/sec/A</span>
+
+    <span class="k">return</span> <span class="n">wav</span><span class="p">,</span> <span class="n">flux</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s make sure we get a sensible result when we extract the data. We can make a quick plot to see if anything is wrong with the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s run our helper function on our data</span>
+<span class="n">wav_lw_dusty</span><span class="p">,</span> <span class="n">flux_lw_dusty</span> <span class="o">=</span> <span class="n">extractData</span><span class="p">(</span><span class="n">lw_dusty</span><span class="p">)</span>
+<span class="n">wav_sw_dusty</span><span class="p">,</span> <span class="n">flux_sw_dusty</span> <span class="o">=</span> <span class="n">extractData</span><span class="p">(</span><span class="n">sw_dusty</span><span class="p">)</span>
+<span class="n">wav_lw_nodust</span><span class="p">,</span> <span class="n">flux_lw_nodust</span> <span class="o">=</span> <span class="n">extractData</span><span class="p">(</span><span class="n">lw_nodust</span><span class="p">)</span>
+<span class="n">wav_sw_nodust</span><span class="p">,</span> <span class="n">flux_sw_nodust</span> <span class="o">=</span> <span class="n">extractData</span><span class="p">(</span><span class="n">sw_nodust</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s also make a rough plot of our data, just so we can see what we&#39;re working with</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wav_lw_nodust</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">flux_lw_nodust</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">flux_lw_dusty</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff05ad0b050&gt;]
+</pre></div>
+</div>
+<img alt="../../../_images/6487f8326cf498bfc169b6ba1a7137165b4511855f4d0a5dfc5216b00f06ac88.png" src="../../../_images/6487f8326cf498bfc169b6ba1a7137165b4511855f4d0a5dfc5216b00f06ac88.png" />
+</div>
+</div>
+<p>This looks good on inspection, but we should check that both targets have consistent data. We’d like to compare one star to another and our later analysis requires that corresponding datasets have the same number of points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inspect the lengths by eye</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wav_lw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_lw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_lw_dusty</span><span class="p">))</span> <span class="c1"># check long wavelength data</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wav_sw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_sw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wav_sw_dusty</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_sw_dusty</span><span class="p">))</span> <span class="c1"># check short</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>563 563 562 562
+495 495 495 495
+</pre></div>
+</div>
+</div>
+</div>
+<p>Whoops! Looks like the the long wavelength data is not consistent. Let’s adjust and check again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Shorten the lw_nodust data so it matches the dusty data</span>
+<span class="c1"># This may not work for your targets! Always check your data</span>
+<span class="n">wav_lw_nodust</span> <span class="o">=</span> <span class="n">wav_lw_nodust</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">)]</span>
+<span class="n">flux_lw_nodust</span> <span class="o">=</span> <span class="n">flux_lw_nodust</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">flux_lw_dusty</span><span class="p">)]</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wav_lw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_lw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_lw_dusty</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wav_sw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_sw_nodust</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wav_sw_dusty</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flux_sw_dusty</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>562 562 562 562
+495 495 495 495
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-plotting">
+<h2>Data Plotting<a class="headerlink" href="#data-plotting" title="Link to this heading">#</a></h2>
+<p>After searching for, downloading, and cleaning our data, we’re finally ready to display the plot. We’ll plot the flux against the inverse wavelength; this is customary for this type of study and follows the example in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2003ApJ...594..279G/abstract">Gordon et al. (2003)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a helper function to plot the data. We want to plot inverse wavelength against log of flux</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Plot</span><span class="p">(</span><span class="n">wav</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">lbl</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="o">/</span><span class="n">wav</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">flux</span><span class="p">),</span> <span class="n">style</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">lbl</span><span class="p">)</span>
+
+
+<span class="c1"># Set up the plot size, labels, units</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;1/$\lambda$ ($\mu m^{-1}$)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;log(Flux (ergs $cm^{-2}$ $s^{-1}$ $\AA^{-1}$))&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">13.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.5</span><span class="p">])</span>
+
+<span class="c1"># Call the helper function four times: for long/short wavelengths of both targets</span>
+<span class="n">Plot</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">,</span> <span class="n">flux_lw_dusty</span><span class="p">,</span> <span class="s1">&#39;r:&#39;</span><span class="p">,</span> <span class="s1">&#39;lw_dusty&#39;</span><span class="p">)</span>
+<span class="n">Plot</span><span class="p">(</span><span class="n">wav_sw_dusty</span><span class="p">,</span> <span class="n">flux_sw_dusty</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;sw_dusty&#39;</span><span class="p">)</span>
+<span class="n">Plot</span><span class="p">(</span><span class="n">wav_lw_nodust</span><span class="p">,</span> <span class="n">flux_lw_nodust</span><span class="p">,</span> <span class="s1">&#39;b:&#39;</span><span class="p">,</span> <span class="s1">&#39;lw_nodust&#39;</span><span class="p">)</span>
+<span class="n">Plot</span><span class="p">(</span><span class="n">wav_sw_nodust</span><span class="p">,</span> <span class="n">flux_sw_nodust</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;sw_nodust&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add some labels to our plot to clarify which spectrum is which</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">6.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.4</span><span class="p">,</span> <span class="n">target_dusty</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">6.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.6</span><span class="p">,</span> <span class="n">target_nodust</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create the legend and show our plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/01f865ab8f2a12764b32f08989a0737c3be42fe48326604e3d4ac415a9522e8f.png" src="../../../_images/01f865ab8f2a12764b32f08989a0737c3be42fe48326604e3d4ac415a9522e8f.png" />
+</div>
+</div>
+<p>What a wonderful example of extinction! Both stars have the same spectral features, but we can see a significant dimming of AzV456, especially in the shorter, bluer wavelengths; it is safe to say this star is reddened.</p>
+</section>
+<section id="extinction-curve">
+<h2>Extinction Curve<a class="headerlink" href="#extinction-curve" title="Link to this heading">#</a></h2>
+<p>Let’s now use the <a href="http://simbad.cds.unistra.fr/simbad/">SIMBAD</a> database to look for the fluxes in the B and V bands for both stars. We can do a simple query using the identifier of both stars. The magnitudes can be found under the 8th subgroup presented below the name of the stars, called ‘Fluxes’, since SIMBAD can provide you with either the flux or the magnitude of the star in those bands.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Request the B and V magnitudes</span>
+<span class="n">Simbad</span><span class="o">.</span><span class="n">add_votable_fields</span><span class="p">(</span><span class="s1">&#39;flux(B)&#39;</span><span class="p">,</span> <span class="s1">&#39;flux(V)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Query for dusty star, in our case AvZ 456</span>
+<span class="n">table_dusty</span> <span class="o">=</span> <span class="n">Simbad</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">target_dusty</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2810/617565110.py:2: DeprecationWarning: The notation &#39;flux(V)&#39; is deprecated since 0.4.8 in favor of &#39;V&#39;. You will see the column appearing with its new name in the output. See section on filters in https://astroquery.readthedocs.io/en/latest/simbad/simbad_evolution.html to see the new ways to interact with SIMBAD&#39;s fluxes.
+  Simbad.add_votable_fields(&#39;flux(B)&#39;, &#39;flux(V)&#39;)
+/tmp/ipykernel_2810/617565110.py:2: DeprecationWarning: The notation &#39;flux(B)&#39; is deprecated since 0.4.8 in favor of &#39;B&#39;. You will see the column appearing with its new name in the output. See section on filters in https://astroquery.readthedocs.io/en/latest/simbad/simbad_evolution.html to see the new ways to interact with SIMBAD&#39;s fluxes.
+  Simbad.add_votable_fields(&#39;flux(B)&#39;, &#39;flux(V)&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Examine the data, if you want</span>
+<span class="n">table_dusty</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=1</i>
+<table id="table140670289602064" class="table-striped table-bordered table-condensed">
+<thead><tr><th>main_id</th><th>ra</th><th>dec</th><th>coo_err_maj</th><th>coo_err_min</th><th>coo_err_angle</th><th>coo_wavelength</th><th>coo_bibcode</th><th>V</th><th>B</th><th>matched_id</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas</th><th>mas</th><th>deg</th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>object</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>int16</th><th>str1</th><th>object</th><th>float64</th><th>float64</th><th>object</th></tr></thead>
+<tr><td>SK  143</td><td>17.732319696199998</td><td>-72.71561752612</td><td>0.4389</td><td>0.4246</td><td>90</td><td>O</td><td>2020yCat.1350....0G</td><td>12.890000343322754</td><td>12.979999542236328</td><td>AzV 456</td></tr>
+</table></div></div></div>
+</div>
+<p>Great. Let’s get the data for AzV70 as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_nodust</span> <span class="o">=</span> <span class="n">Simbad</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">target_nodust</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From these values we can directly calculate <span class="math notranslate nohighlight">\(E(B-V) = (B-V)-(B-V)_o\)</span>. We can do this since AvZ 70 is essentially an unreddened version of AvZ 456.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract these values from the table</span>
+<span class="n">V_dusty</span> <span class="o">=</span> <span class="n">table_dusty</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">B_dusty</span> <span class="o">=</span> <span class="n">table_dusty</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">V_nodust</span> <span class="o">=</span> <span class="n">table_nodust</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">B_nodust</span> <span class="o">=</span> <span class="n">table_nodust</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Plug into the formula</span>
+<span class="n">EBV</span> <span class="o">=</span> <span class="p">(</span><span class="n">B_dusty</span><span class="o">-</span><span class="n">V_dusty</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">B_nodust</span><span class="o">-</span><span class="n">V_nodust</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The value of E(B-V) is equal to </span><span class="si">{</span><span class="n">EBV</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The value of E(B-V) is equal to 1.530
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can fully plot the extinction curve! Recall the equation from the start of this Notebook.</p>
+<div class="math notranslate nohighlight">
+\[k(\lambda-V) = \frac{m(\lambda-V)-m(\lambda-V)_o}{(B-V)-(B-V)_o} = \frac{A(\lambda)-A(V)}{E(B-V)} \]</div>
+<p>Let’s expand this out and be explicit: which values do we need to use to calculate extinction?</p>
+<div class="math notranslate nohighlight">
+\[\frac{A(\lambda)-A(V)}{E(B-V)}=\frac{log(V\_ratio)-log(flux\_ratio)}{E(B-V)} = \frac{log (V\_ratio \div flux\_ratio)}{E(B-V)}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Another helper function to create our plots, and save the output data for further analysis</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Extinction</span><span class="p">(</span><span class="n">wav</span><span class="p">,</span> <span class="n">flux1</span><span class="p">,</span> <span class="n">flux2</span><span class="p">):</span>
+    <span class="n">V_rat</span> <span class="o">=</span> <span class="n">V_dusty</span><span class="o">/</span><span class="n">V_nodust</span>
+    <span class="n">flux_rat</span> <span class="o">=</span> <span class="n">flux1</span><span class="o">/</span><span class="n">flux2</span>
+    <span class="c1"># Calcuating extinction from the formula </span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">V_rat</span><span class="o">/</span><span class="n">flux_rat</span><span class="p">)</span><span class="o">/</span><span class="n">EBV</span>
+    <span class="n">inv_wav</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="o">/</span><span class="n">wav</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">inv_wav</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inv_wav</span><span class="p">,</span> <span class="n">ext</span> 
+
+
+<span class="c1"># Create the figure, then use the helper function to create the plots and save the data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">s_inv_wav</span><span class="p">,</span> <span class="n">s_ext</span> <span class="o">=</span> <span class="n">Extinction</span><span class="p">(</span><span class="n">wav_sw_dusty</span><span class="p">,</span> <span class="n">flux_sw_dusty</span><span class="p">,</span> <span class="n">flux_sw_nodust</span><span class="p">)</span>
+<span class="n">l_inv_wav</span><span class="p">,</span> <span class="n">l_ext</span> <span class="o">=</span> <span class="n">Extinction</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">,</span> <span class="n">flux_lw_dusty</span><span class="p">,</span> <span class="n">flux_lw_nodust</span><span class="p">)</span>
+
+<span class="c1"># Add a title, axes labels, and a legend</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;short wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;long wavelength&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$1/\lambda$ $[\mu m^{-1}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$E(\lambda-V)/E(B-V)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">target_dusty</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/def3df80caf083cf0bc984fd7e77e89f8bbe7fe3ac9d61ab791959bbd42f56b0.png" src="../../../_images/def3df80caf083cf0bc984fd7e77e89f8bbe7fe3ac9d61ab791959bbd42f56b0.png" />
+</div>
+</div>
+<p>The values at the edge of the detectors don’t look quite right. Particularly the right edge of the short wavelength; would we really expect the reddened star to be brighter in the short wavelengths region Let’s excise the data from the edges and try again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># How many points do we want to remove from either end of the data?</span>
+<span class="n">s_crop</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">l_crop</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span>
+
+<span class="c1"># Use helper function with cropped data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">s_inv_wav</span><span class="p">,</span> <span class="n">s_ext</span> <span class="o">=</span> <span class="n">Extinction</span><span class="p">(</span><span class="n">wav_sw_dusty</span><span class="p">[</span><span class="n">s_crop</span><span class="p">:],</span> <span class="n">flux_sw_dusty</span><span class="p">[</span><span class="n">s_crop</span><span class="p">:],</span> <span class="n">flux_sw_nodust</span><span class="p">[</span><span class="n">s_crop</span><span class="p">:])</span>
+<span class="n">l_inv_wav</span><span class="p">,</span> <span class="n">l_ext</span> <span class="o">=</span> <span class="n">Extinction</span><span class="p">(</span><span class="n">wav_lw_dusty</span><span class="p">[:</span><span class="n">l_crop</span><span class="p">],</span> <span class="n">flux_lw_dusty</span><span class="p">[:</span><span class="n">l_crop</span><span class="p">],</span> <span class="n">flux_lw_nodust</span><span class="p">[:</span><span class="n">l_crop</span><span class="p">])</span>
+
+<span class="c1"># Add a title, axes labels, and a legend</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;short wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;long wavelength&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$1/\lambda$ $[\mu m^{-1}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$E(\lambda-V)/E(B-V)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">target_dusty</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/11165f0425da665358d8661a15b7adcbcaf1251e6cab0941d61ff58696f1514d.png" src="../../../_images/11165f0425da665358d8661a15b7adcbcaf1251e6cab0941d61ff58696f1514d.png" />
+</div>
+</div>
+<p>Much better.</p>
+<p>This is the typical shape encountered for extinction curves corresponding to the Small Magellanic Cloud (SMC), as can be seen in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2003ApJ...594..279G/abstract">Gordon et al. (2003)</a>. Note in particular the “bump” at the transition between long and short wavelengths. This is the mysterious 2175 <span class="math notranslate nohighlight">\(\mathring A\)</span> bump; we don’t fully understand its physical origin!</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>If you’re interested in exploring further, go back to the beginning of this Notebook and select a new pair of stars (Gordon et al. have some examples!). Can you find a star that doesn’t have the 2175 <span class="math notranslate nohighlight">\(\mathring A\)</span> bump?</p>
+<p>For convenience, you might want to add a more sophisticated method of error checking. Recall that above, we printed out the lengths of the data to ensure they matched. Can you think of a way to check for this automatically and adjust as needed?</p>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">#</a></h2>
+<p>For more information about the MAST archive and details about mission data:</p>
+<ul class="simple">
+<li><p><a href="https://mast.stsci.edu/api/v0/index.html">MAST API</a> <br></p></li>
+<li><p><a href="https://archive.stsci.edu/iue/">International Ultraviolet Explorer Page (MAST)</a> <br></p></li>
+<li><p><a href="https://archive.stsci.edu/iue/mdr_help.html">IUE Data Retrieval Help Page</a></p></li>
+</ul>
+<p>For more information about extinction curves and their parametrization:</p>
+<ul class="simple">
+<li><p><a href="https://ui.adsabs.harvard.edu/abs/2003ApJ...594..279G/abstract">A quantitative comparison of SMC, LMC and Milky Way UV to NIR extinction curves</a> <br></p></li>
+<li><p><a href="https://adsabs.harvard.edu/pdf/1990ApJS...72..163F">An analysis of the shapes of the ultraviolet extinction curves. III. An atlas of ultraviolet extinction curves</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Authors</strong>: Clara Puerto Sánchez, Claire Murray, Thomas Dutkiewicz <br>
+<strong>Keyword(s)</strong>: UV, reddening, extinction-curve <br>
+<strong>Last Updated</strong>: Apr 2023 <br></p>
+<p>For support, please contact the Archive HelpDesk at archive&#64;stsci.edu.</p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/IUE/exploring_UV_extinction_curves"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hubble Catalog of Variables Notebook (CasJobs version)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../JWST/download_by_program_id/download_by_program_id.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Accessing JWST Proposal Data in astroquery.mast</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-and-targets">Background and Targets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-and-downloading-in-astroquery-mast">Searching and Downloading in astroquery.mast</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rinse-and-repeat-for-target-two">Rinse and Repeat for Target Two</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-the-downloaded-data-files">Exploring the Downloaded Data Files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-access-and-validation">Data Access and Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-plotting">Data Plotting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extinction-curve">Extinction Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

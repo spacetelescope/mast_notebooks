@@ -1,0 +1,1882 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Searching for Mission-Specific Data with Astroquery &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/multi_mission/missions_mast_search/missions_mast_search';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Large downloads in astroquery.mast from AWS to local storage" href="../galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html" />
+    <link rel="prev" title="Wildcard Handling with Astroquery.mast" href="../wildcard_searches/wildcard_searches.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../astroquery.html">Astroquery</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/multi_mission/missions_mast_search/missions_mast_search.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/multi_mission/missions_mast_search/missions_mast_search.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/multi_mission/missions_mast_search/missions_mast_search.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Searching for Mission-Specific Data with Astroquery</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-for-datasets-from-missions-mast">Querying for Datasets from Missions-MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#search-parameters">Search Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-object-name">Query by Object Name</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-region">Query by Region</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-criteria">Query by Criteria</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-data-products">Getting Data Products</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-a-product-query">Performing a Product Query</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-data-products">Filtering Data Products</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-products">Downloading Products</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exclusive-data-access">Exclusive Data Access</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-missions">Switching Missions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solutions">Exercise Solutions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="searching-for-mission-specific-data-with-astroquery">
+<h1>Searching for Mission-Specific Data with Astroquery<a class="headerlink" href="#searching-for-mission-specific-data-with-astroquery" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to use the <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> module to access mission dataset metadata from MAST.</p></li>
+<li><p>Run metadata queries based on coordinates, an object name, or non-positional criteria.</p></li>
+<li><p>Filter and download data products associated with datasets of interest.</p></li>
+<li><p>Search for datasets from multiple missions and among <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/About+HLSPs">High Level Science Products (HLSPs)</a>.</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction"><span class="xref myst">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#querying-for-datasets-from-missions-mast"><span class="xref myst">Querying for Datasets from Missions-MAST</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#search-parameters"><span class="xref myst">Search Parameters</span></a></p></li>
+<li><p><a class="reference internal" href="#query-by-object-name"><span class="xref myst">Query by Object Name</span></a></p></li>
+<li><p><a class="reference internal" href="#query-by-Region"><span class="xref myst">Query by Region</span></a></p></li>
+<li><p><a class="reference internal" href="#query-by-criteria"><span class="xref myst">Query by Criteria</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#getting-data-products"><span class="xref myst">Getting Data Products</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#performing-a-product-query"><span class="xref myst">Performing a Product Query</span></a></p></li>
+<li><p><a class="reference internal" href="#filtering-data-products"><span class="xref myst">Filtering Data Products</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#downloading-products"><span class="xref myst">Downloading Products</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#exclusive-data-access"><span class="xref myst">Exclusive Data Access</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#switching-missions"><span class="xref myst">Switching Missions</span></a></p></li>
+<li><p><a class="reference internal" href="#exercises"><span class="xref myst">Exercises</span></a></p></li>
+<li><p><a class="reference internal" href="#exercise-solutions"><span class="xref myst">Exercise Solutions</span></a></p></li>
+<li><p><a class="reference internal" href="#additional-resources"><span class="xref myst">Additional Resources</span></a></p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Welcome! This tutorial explores the capabilities of the <code class="docutils literal notranslate"><span class="pre">astroquery.mast.MastMissions</span></code> class, a versatile tool for accessing and working with datasets hosted by the <a class="reference external" href="https://archive.stsci.edu/">Mikulski Archive for Space Telescopes (MAST)</a>. <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> is a Python wrapper for the <a class="reference external" href="https://mast.stsci.edu/search/docs/">MAST Search API</a>, which allows you to search for mission-specific dataset metadata and data products. This data is also findable through the <a class="reference external" href="https://mast.stsci.edu/search/ui/#/">MAST Search UI</a>.</p>
+<p>The following missions/products are available for search as of January 2025:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.stsci.edu/hst">Hubble Space Telescope</a> (<code class="docutils literal notranslate"><span class="pre">hst</span></code>)</p></li>
+<li><p><a class="reference external" href="https://www.stsci.edu/jwst">James Webb Space Telescope</a> (<code class="docutils literal notranslate"><span class="pre">jwst</span></code>)</p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/About+HLSPs">High Level Science Products</a></p>
+<ul>
+<li><p><a class="reference external" href="https://archive.stsci.edu/hlsp/classy">COS Legacy Archive Spectroscopic SurveY</a> (<code class="docutils literal notranslate"><span class="pre">classy</span></code>)</p></li>
+<li><p><a class="reference external" href="https://archive.stsci.edu/hlsp/ullyses">Hubble UV Legacy Library of Young Stars as Essential Standards</a> (<code class="docutils literal notranslate"><span class="pre">ullyses</span></code>)</p></li>
+</ul>
+</li>
+</ul>
+<p>In this notebook, we will walk through the basic workflow for searching datasets, retrieving data products, and downloading data products. This workflow will look very similar to the one used with the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast_obsquery.html"><code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code></a> class, detailed in our <a class="reference external" href="https://spacetelescope.github.io/mast_notebooks/notebooks/multi_mission/beginner_search/beginner_search.html">“Searching MAST using astroquery.mast” notebook</a>. There are a few key differences to note, and you should use the class that is best suited for your unique goals:</p>
+<ul class="simple">
+<li><p><em>API</em>: <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> uses the <a class="reference external" href="https://mast.stsci.edu/search/docs/">Mast Search API</a> while <code class="docutils literal notranslate"><span class="pre">Observations</span></code> uses the <a class="reference external" href="https://mast.stsci.edu/api/v0/">MAST Portal API</a>.</p></li>
+<li><p><em>Collection</em>: <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> can only perform queries on a single collection, or “mission”, at a time. <code class="docutils literal notranslate"><span class="pre">Observations</span></code> uses the <a class="reference external" href="https://mast.stsci.edu/vo-tap/api/v0.1/caom/">Common Archive Observation Model (CAOM)</a> and can run queries across every available observational collection at the same time.</p></li>
+<li><p><em>Filter Keywords</em>: <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> has an extensive selection of mission-specific keywords to use while writing queries. <code class="docutils literal notranslate"><span class="pre">Observations</span></code> is limited to the <a class="reference external" href="https://mast.stsci.edu/api/v0/_c_a_o_mfields.html">fields described by the CAOM</a> and has no criteria with mission-specific meaning.</p></li>
+</ul>
+<p>In summary, <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> is well-suited for fast, mission-specific queries that might require a more extensive selection of filter keywords. <code class="docutils literal notranslate"><span class="pre">Observations</span></code> is better for more broad, multi-mission searches.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>This notebook uses the following packages:</p>
+<ul class="simple">
+<li><p><em>astropy</em> to handle astronomical units and coordinate systems</p></li>
+<li><p><em>astroquery.mast</em> to query the MAST Archive</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">MastMissions</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="querying-for-datasets-from-missions-mast">
+<h2>Querying for Datasets from Missions-MAST<a class="headerlink" href="#querying-for-datasets-from-missions-mast" title="Link to this heading">#</a></h2>
+<p>In order to make queries on Missions-MAST metadata, we will have to perform some setup. We will initialize an object of the <code class="docutils literal notranslate"><span class="pre">astroquery.mast.MastMissions</span></code> class and assign its <code class="docutils literal notranslate"><span class="pre">mission</span></code> attribute. The object can be used to search mission dataset metadata by object name, sky position, or other criteria.</p>
+<p>The default value for <code class="docutils literal notranslate"><span class="pre">mission</span></code> is <code class="docutils literal notranslate"><span class="pre">hst</span></code>, meaning that queries will be run on Hubble dataset metadata. The searchable metadata for Hubble encompasses all information that was previously accessible through the original HST web search form. The metadata for Hubble and all other available missions is also available through the <a class="reference external" href="https://mast.stsci.edu/search/ui/#/">MAST Search UI</a>.</p>
+<p>Later in the tutorial, we will learn how to change the <code class="docutils literal notranslate"><span class="pre">mission</span></code> attribute to make queries on other missions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create MastMissions object to search for Hubble datasets</span>
+<span class="n">missions</span> <span class="o">=</span> <span class="n">MastMissions</span><span class="p">(</span><span class="n">mission</span><span class="o">=</span><span class="s1">&#39;hst&#39;</span><span class="p">)</span>
+<span class="n">missions</span><span class="o">.</span><span class="n">mission</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;hst&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="search-parameters">
+<h3>Search Parameters<a class="headerlink" href="#search-parameters" title="Link to this heading">#</a></h3>
+<p>When writing queries, keyword arguments can be used to specify output characteristics and filter on fields like instrument, exposure type, and proposal ID. The available column names for a mission are returned by the <code class="docutils literal notranslate"><span class="pre">get_column_list</span></code> function. Below, we will print out the name, data type, and description for the first 10 columns in HST metadata.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get available columns for HST mission</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">get_column_list</span><span class="p">()</span>
+<span class="n">columns</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=10</i>
+<table id="table139682471361360" class="table-striped table-bordered table-condensed">
+<thead><tr><th>name</th><th>data_type</th><th>description</th></tr></thead>
+<thead><tr><th>str22</th><th>str9</th><th>str226</th></tr></thead>
+<tr><td>search_pos</td><td>string</td><td>Search Position (RA and Dec)</td></tr>
+<tr><td>sci_data_set_name</td><td>string</td><td>Data set name, the first character indicates instrument; L=COS; I=WFC3; J=ACS; N=NICMOS; O=STIS; U=WFPC2; W=WFPC; X=FOC; Y=FOS; Z=GHRS; F=FGS; V=HSP; nine-character name    (e.g. J8BA7JCAQ, O4140Q020)</td></tr>
+<tr><td>sci_targname</td><td>string</td><td>Target name designated by the observer for the HST proposal; Uppercase; No blank characters; Spaces sometimes filled with - ;    (e.g. A901-FIELD-25, NGC4486-POS1, 0537-441INCA221-36, ALPHA-CEN)</td></tr>
+<tr><td>sci_hapnum</td><td>boolean</td><td>Reports if there are any Hubble Advanced Products (HAP), enter 0 for no, 1 for yes</td></tr>
+<tr><td>sci_haspnum</td><td>boolean</td><td>Reports if there are any Hubble Advanced Spectral Products (HASP), enter 0 for no, 1 for yes</td></tr>
+<tr><td>sci_hslanum</td><td>boolean</td><td>Reports if there are any Hubble Spectroscopic Legacy Archive. (HSLA), enter 0 for no, 1 for yes</td></tr>
+<tr><td>sci_hsla_tier1</td><td>string</td><td>HSLA astronomical object type: broad top-level type in the classification hierarchy. Derived from SIMBAD crossmatch, NED crossmatch, or HST Phase II proposal keywords.</td></tr>
+<tr><td>sci_hsla_tier2</td><td>string</td><td>HSLA astronomical object type: mid-level type in the classification hierarchy. Derived from SIMBAD crossmatch, NED crossmatch, or HST Phase II proposal keywords.</td></tr>
+<tr><td>sci_hsla_tier3</td><td>string</td><td>HSLA astronomical object type: specific lowest-level type in the classification hierarchy. Derived from SIMBAD crossmatch, NED crossmatch, or HST Phase II proposal keywords.</td></tr>
+<tr><td>sci_hsla_uatmatch</td><td>string</td><td>HSLA astronomical object type: closest Unified Astronomy Thesaurus match to the most specific (tier 3) HSLA object type. Derived from SIMBAD crossmatch, NED crossmatch, or HST Phase II proposal keywords.</td></tr>
+</table></div></div></div>
+</div>
+<p>We can refine our results even further with optional keyword arguments. The following parameters are available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">radius</span></code>: For positional searches only. Only return results within a certain distance from an object or set of coordinates. Default is 3 arcminutes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: The maximum number of results to return. Default is 5000.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset</span></code>: Skip the first <em><strong>n</strong></em> results. Useful for paging through results.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sort_by</span></code>: A list of field names to sort by.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sort_desc</span></code>: A list of booleans (one for each field specified in <code class="docutils literal notranslate"><span class="pre">sort_by</span></code>), describing if each field should be sorted in descending order (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or ascending order (<code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select_cols</span></code>: A list of columns to be returned in the response.</p></li>
+</ul>
+<p>As we walk through different types of queries, we will see these parameters in action!</p>
+</section>
+<section id="query-by-object-name">
+<h3>Query by Object Name<a class="headerlink" href="#query-by-object-name" title="Link to this heading">#</a></h3>
+<p>We’ve reached our first query! We can use object names to perform metadata queries using the <code class="docutils literal notranslate"><span class="pre">query_object</span></code> function.</p>
+<p>To start, let’s query for the <a class="reference external" href="https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-1/">Messier 1</a> object, a supernova remnant in the Taurus constellation. You may know it better as the Crab Nebula!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query for Messier 1 (&#39;M1&#39;)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s1">&#39;M1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 741
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139683147486224" class="table-striped table-bordered table-condensed">
+<thead><tr><th>search_pos</th><th>sci_data_set_name</th><th>sci_targname</th><th>sci_hapnum</th><th>sci_haspnum</th><th>sci_hslanum</th><th>sci_instrume</th><th>sci_aper_1234</th><th>sci_spec_1234</th><th>sci_actual_duration</th><th>sci_start_time</th><th>sci_pep_id</th><th>sci_pi_last_name</th><th>sci_ra</th><th>sci_dec</th><th>sci_refnum</th><th>sci_central_wavelength</th><th>sci_release_date</th><th>sci_stop_time</th><th>sci_preview_name</th><th>scp_scan_type</th><th>sci_hlsp</th><th>ang_sep</th></tr></thead>
+<thead><tr><th>str15</th><th>str9</th><th>str30</th><th>int64</th><th>int64</th><th>int64</th><th>str6</th><th>str17</th><th>str26</th><th>float64</th><th>str26</th><th>int64</th><th>str12</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>str26</th><th>str26</th><th>str9</th><th>str18</th><th>int64</th><th>str19</th></tr></thead>
+<tr><td>83.6324 22.0174</td><td>J9FX01041</td><td>CRAB</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC1-POL120V</td><td>F606W;POL120V</td><td>2300.0</td><td>2005-09-06T21:26:46.433000</td><td>10526</td><td>HESTER</td><td>83.63375381768</td><td>22.01859141895</td><td>5</td><td>5934.7896</td><td>2006-09-07T05:15:19.803000</td><td>2005-09-06T22:08:13.497000</td><td>J9FX01041</td><td>--</td><td>--</td><td>0.10383123118898147</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX02041</td><td>CRAB</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC1-POL120V</td><td>F606W;POL120V</td><td>2300.0</td><td>2005-09-15T22:52:34.470000</td><td>10526</td><td>HESTER</td><td>83.63375394433</td><td>22.01859153345</td><td>5</td><td>5934.7886</td><td>2006-09-16T09:52:13.417000</td><td>2005-09-15T23:34:01.537000</td><td>J9FX02041</td><td>--</td><td>--</td><td>0.1038410702845166</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX03041</td><td>CRAB</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC1-POL120V</td><td>F606W;POL120V</td><td>2300.0</td><td>2005-09-25T21:05:47.463000</td><td>10526</td><td>HESTER</td><td>83.63375408315</td><td>22.0185916581</td><td>5</td><td>5934.7871</td><td>2006-09-26T06:08:15.500000</td><td>2005-09-25T21:47:14.527000</td><td>J9FX03041</td><td>--</td><td>--</td><td>0.10385181961996841</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX04041</td><td>CRAB</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC1-POL120V</td><td>F606W;POL120V</td><td>2300.0</td><td>2005-10-02T22:33:28.457000</td><td>10526</td><td>HESTER</td><td>83.63375418702</td><td>22.01859175078</td><td>5</td><td>5934.7866</td><td>2006-10-03T07:13:23.787000</td><td>2005-10-02T23:14:55.550000</td><td>J9FX04041</td><td>--</td><td>--</td><td>0.10385983838178592</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX05041</td><td>CRAB</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC1-POL120V</td><td>F606W;POL120V</td><td>2000.0</td><td>2005-10-12T20:52:39.503000</td><td>10526</td><td>HESTER</td><td>83.63375434754</td><td>22.01859189305</td><td>5</td><td>5934.7852</td><td>2006-10-13T02:32:04.710000</td><td>2005-10-12T21:29:06.567000</td><td>J9FX05041</td><td>--</td><td>--</td><td>0.10387219098736124</td></tr>
+</table></div></div></div>
+</div>
+<p>There were over 600 total results, meaning that hundreds of HST datasets were targeting the Crab Nebula. Now, let’s try refining our search a bit more.</p>
+<ul class="simple">
+<li><p>Each dataset is associated with a celestial coordinate, given by <code class="docutils literal notranslate"><span class="pre">sci_ra</span></code> (right ascension) and <code class="docutils literal notranslate"><span class="pre">sci_dec</span></code> (declination). By default, the query returns all datasets that fall within 3 arcminutes from the object’s coordinates. Let’s set the <code class="docutils literal notranslate"><span class="pre">radius</span></code> parameter to be 1 arcminute instead.</p></li>
+<li><p>Say that we’re not interested in the first 4 results. We can assign <code class="docutils literal notranslate"><span class="pre">offset</span></code> to skip a certain number of rows.</p></li>
+<li><p>By default, a subset of recommended columns are returned for each query. However, we can specify exactly which columns to return using the <code class="docutils literal notranslate"><span class="pre">select_cols</span></code> keyword argument. Certain columns are included automatically, depending on the mission.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Refined query for Messier 1 (&#39;M1&#39;)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s1">&#39;M1&#39;</span><span class="p">,</span>
+                                <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Search within a 1 arcminute radius</span>
+                                <span class="n">offset</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># Skip the first 4 results</span>
+                                <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_start_time&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pi_last_name&#39;</span><span class="p">])</span>  <span class="c1"># Select certain columns</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 453
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139683204519696" class="table-striped table-bordered table-condensed">
+<thead><tr><th>search_pos</th><th>sci_data_set_name</th><th>sci_targname</th><th>sci_start_time</th><th>sci_pi_last_name</th><th>ang_sep</th></tr></thead>
+<thead><tr><th>str15</th><th>str9</th><th>str22</th><th>str26</th><th>str12</th><th>str19</th></tr></thead>
+<tr><td>83.6324 22.0174</td><td>J9FX05041</td><td>CRAB</td><td>2005-10-12T20:52:39.503000</td><td>HESTER</td><td>0.10387219098736124</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX06041</td><td>CRAB</td><td>2005-10-22T20:40:28.510000</td><td>HESTER</td><td>0.10388689143244417</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX07041</td><td>CRAB</td><td>2005-10-30T20:36:14.527000</td><td>HESTER</td><td>0.10390159755961832</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX01011</td><td>CRAB</td><td>2005-09-06T16:41:38.433000</td><td>HESTER</td><td>0.10392027927762577</td></tr>
+<tr><td>83.6324 22.0174</td><td>J9FX01021</td><td>CRAB</td><td>2005-09-06T18:16:07.427000</td><td>HESTER</td><td>0.10392027927762577</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="query-by-region">
+<h3>Query by Region<a class="headerlink" href="#query-by-region" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">missions</span></code> object also allows us to query by a region in the sky. By passing in a set of coordinates to the <code class="docutils literal notranslate"><span class="pre">query_region</span></code> function, we can return datasets that fall within a certain <code class="docutils literal notranslate"><span class="pre">radius</span></code> value of that point. This type of search is also known as a cone search.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create coordinate object</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">210.80227</span><span class="p">,</span> <span class="mf">54.34895</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;deg&#39;</span><span class="p">))</span>
+
+<span class="c1"># Query for results within 10 arcseconds of coordinates</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> 
+                                <span class="n">radius</span><span class="o">=</span><span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 19
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682351851792" class="table-striped table-bordered table-condensed">
+<thead><tr><th>search_pos</th><th>sci_data_set_name</th><th>sci_targname</th><th>sci_hapnum</th><th>sci_haspnum</th><th>sci_hslanum</th><th>sci_instrume</th><th>sci_aper_1234</th><th>sci_spec_1234</th><th>sci_actual_duration</th><th>sci_start_time</th><th>sci_pep_id</th><th>sci_pi_last_name</th><th>sci_ra</th><th>sci_dec</th><th>sci_refnum</th><th>sci_central_wavelength</th><th>sci_release_date</th><th>sci_stop_time</th><th>sci_preview_name</th><th>scp_scan_type</th><th>sci_hlsp</th><th>ang_sep</th></tr></thead>
+<thead><tr><th>str18</th><th>str9</th><th>str16</th><th>int64</th><th>int64</th><th>int64</th><th>str6</th><th>str4</th><th>str5</th><th>float64</th><th>str26</th><th>int64</th><th>str8</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>str19</th><th>str26</th><th>str9</th><th>str1</th><th>int64</th><th>str20</th></tr></thead>
+<tr><td>210.80227 54.34895</td><td>OBQU01050</td><td>NUCLEUS+HODGE602</td><td>0</td><td>0</td><td>0</td><td>STIS</td><td>52X2</td><td>G140L</td><td>186.0</td><td>2012-05-24T07:51:40.553000</td><td>12556</td><td>GORDON</td><td>210.8018512676</td><td>54.34879151526</td><td>1</td><td>1425.0</td><td>2013-05-24T10:09:14</td><td>2012-05-24T07:54:46.553000</td><td>OBQU01050</td><td>--</td><td>--</td><td>0.017460048037303017</td></tr>
+<tr><td>210.80227 54.34895</td><td>OBQU010H0</td><td>NUCLEUS+HODGE602</td><td>0</td><td>0</td><td>0</td><td>STIS</td><td>52X2</td><td>G230L</td><td>186.0</td><td>2012-05-24T09:17:38.570000</td><td>12556</td><td>GORDON</td><td>210.8018512676</td><td>54.34879151526</td><td>1</td><td>2376.0</td><td>2013-05-24T13:15:15</td><td>2012-05-24T09:20:44.570000</td><td>OBQU010H0</td><td>--</td><td>--</td><td>0.017460048037303017</td></tr>
+<tr><td>210.80227 54.34895</td><td>OBQU01030</td><td>NUCLEUS+HODGE602</td><td>0</td><td>0</td><td>0</td><td>STIS</td><td>52X2</td><td>G140L</td><td>186.0</td><td>2012-05-24T07:43:20.553000</td><td>12556</td><td>GORDON</td><td>210.8020002958</td><td>54.34928391272</td><td>1</td><td>1425.0</td><td>2013-05-24T10:08:32</td><td>2012-05-24T07:46:26.553000</td><td>OBQU01030</td><td>--</td><td>--</td><td>0.022143836477276503</td></tr>
+<tr><td>210.80227 54.34895</td><td>OBQU010F0</td><td>NUCLEUS+HODGE602</td><td>0</td><td>0</td><td>0</td><td>STIS</td><td>52X2</td><td>G230L</td><td>186.0</td><td>2012-05-24T09:09:18.570000</td><td>12556</td><td>GORDON</td><td>210.8020002958</td><td>54.34928391272</td><td>1</td><td>2376.0</td><td>2013-05-24T13:15:05</td><td>2012-05-24T09:12:24.570000</td><td>OBQU010F0</td><td>--</td><td>--</td><td>0.022143836477276503</td></tr>
+<tr><td>210.80227 54.34895</td><td>W1000501T</td><td>NGC5457-NUC</td><td>0</td><td>0</td><td>0</td><td>WFPC</td><td>P6</td><td>F555W</td><td>100.0</td><td>1992-07-16T06:31:16.517000</td><td>3639</td><td>WESTPHAL</td><td>210.802865</td><td>54.34933666666667</td><td>14</td><td>5479.0</td><td>1993-07-16T13:33:26</td><td>1992-07-16T06:32:56.517000</td><td>W1000501T</td><td>--</td><td>--</td><td>0.031163986021028572</td></tr>
+</table></div></div></div>
+</div>
+<p>The above datasets fall within our cone search. In other words, their target coordinates are within 10 arcseconds of the coordinates that we defined.</p>
+</section>
+<section id="query-by-criteria">
+<h3>Query by Criteria<a class="headerlink" href="#query-by-criteria" title="Link to this heading">#</a></h3>
+<p>In some cases, we may want to run queries with non-positional parameters. To accomplish this, we use the <code class="docutils literal notranslate"><span class="pre">query_criteria</span></code> function.</p>
+<p>For any of our query functions, we can filter our results by the value of columns in the dataset.</p>
+<p>Let’s say that we want observations from <a class="reference external" href="https://www.stsci.edu/hst/instrumentation/wfc3">HST’s Wide Field Camera 3 (WFC3)</a> instument that use the F555W filter. We are only interested in datasets connected to <a class="reference external" href="https://www.stsci.edu/hst-program-info/program/?program=15879">proposal number 15879</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query with column criteria</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_instrume</span><span class="o">=</span><span class="s1">&#39;WFC3&#39;</span><span class="p">,</span>  <span class="c1"># From Wide Field Camera 3</span>
+                                  <span class="n">sci_spec_1234</span><span class="o">=</span><span class="s1">&#39;F555W&#39;</span><span class="p">,</span>  <span class="c1"># Uses F555W filter</span>
+                                  <span class="n">sci_pep_id</span><span class="o">=</span><span class="mi">15879</span><span class="p">,</span>  <span class="c1"># Proposal number 15879</span>
+                                  <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_instrume&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_spec_1234&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pep_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pi_last_name&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 98
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682471414480" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_instrume</th><th>sci_spec_1234</th><th>sci_pep_id</th><th>sci_pi_last_name</th></tr></thead>
+<thead><tr><th>str9</th><th>str6</th><th>str5</th><th>int64</th><th>str5</th></tr></thead>
+<tr><td>IE37NAHHQ</td><td>WFC3</td><td>F555W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHIQ</td><td>WFC3</td><td>F555W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NBARQ</td><td>WFC3</td><td>F555W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NBASQ</td><td>WFC3</td><td>F555W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NBATQ</td><td>WFC3</td><td>F555W</td><td>15879</td><td>RIESS</td></tr>
+</table></div></div></div>
+</div>
+<p>To exclude and filter out a certain value from the results, we can prepend the value with <code class="docutils literal notranslate"><span class="pre">!</span></code>.</p>
+<p>Let’s run the same query as above, but this time, we will filter out datasets that use the F555W filter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtered query, excluding datasets using F555W filter</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_instrume</span><span class="o">=</span><span class="s1">&#39;WFC3&#39;</span><span class="p">,</span> 
+                                  <span class="n">sci_spec_1234</span><span class="o">=</span><span class="s1">&#39;!F555W&#39;</span><span class="p">,</span>  <span class="c1"># Excludes datasets that use F555W filter</span>
+                                  <span class="n">sci_pep_id</span><span class="o">=</span><span class="mi">15879</span><span class="p">,</span>
+                                  <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_instrume&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_spec_1234&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pep_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pi_last_name&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 236
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682471565264" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_instrume</th><th>sci_spec_1234</th><th>sci_pep_id</th><th>sci_pi_last_name</th></tr></thead>
+<thead><tr><th>str9</th><th>str6</th><th>str5</th><th>int64</th><th>str5</th></tr></thead>
+<tr><td>IE37NAHAQ</td><td>WFC3</td><td>F153M</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHEQ</td><td>WFC3</td><td>F153M</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHFQ</td><td>WFC3</td><td>F160W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHGQ</td><td>WFC3</td><td>F814W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHJQ</td><td>WFC3</td><td>F814W</td><td>15879</td><td>RIESS</td></tr>
+</table></div></div></div>
+</div>
+<p>We can also use wildcards on string criteria for more advanced filtering. Wildcards are special characters used in search patterns to represent one or more unknown characters, allowing for flexible matching of strings. The wildcard character is <code class="docutils literal notranslate"><span class="pre">*</span></code>: it replaces any number of characters preceding, following, or in between the existing characters, depending on its placement.</p>
+<p>Let’s use the same query from above, but we will add the condition that the target name must contain the string “GEM”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtered query with wildcard</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_instrume</span><span class="o">=</span><span class="s1">&#39;WFC3&#39;</span><span class="p">,</span> 
+                                  <span class="n">sci_spec_1234</span><span class="o">=</span><span class="s1">&#39;!F555W&#39;</span><span class="p">,</span>
+                                  <span class="n">sci_pep_id</span><span class="o">=</span><span class="mi">15879</span><span class="p">,</span>
+                                  <span class="n">sci_targname</span><span class="o">=</span><span class="s1">&#39;*GEM*&#39;</span><span class="p">,</span>  <span class="c1"># Must contain the string &#39;GEM&#39;</span>
+                                  <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_instrume&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_spec_1234&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pep_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pi_last_name&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 5
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682808213456" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_targname</th><th>sci_instrume</th><th>sci_spec_1234</th><th>sci_pep_id</th><th>sci_pi_last_name</th></tr></thead>
+<thead><tr><th>str9</th><th>str7</th><th>str6</th><th>str5</th><th>int64</th><th>str5</th></tr></thead>
+<tr><td>IE37OBBWQ</td><td>V-W-GEM</td><td>WFC3</td><td>F153M</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37OBCGQ</td><td>V-W-GEM</td><td>WFC3</td><td>F153M</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37OBCHQ</td><td>V-W-GEM</td><td>WFC3</td><td>F160W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37OBCIQ</td><td>V-W-GEM</td><td>WFC3</td><td>F814W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37OBCLQ</td><td>V-W-GEM</td><td>WFC3</td><td>F814W</td><td>15879</td><td>RIESS</td></tr>
+</table></div></div></div>
+</div>
+<p>To filter by multiple values for a single column, we use a string of the values delimited by commas.</p>
+<p>To illustrate this, we will use a slightly different query. We query for WFC3 datasets from proposal 15879 that use either the F153M filter or the F160W filter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtered query with multiple values</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_instrume</span><span class="o">=</span><span class="s1">&#39;WFC3&#39;</span><span class="p">,</span> 
+                                  <span class="n">sci_spec_1234</span><span class="o">=</span><span class="s1">&#39;F153M, F160W&#39;</span><span class="p">,</span>  <span class="c1"># Uses either F153M filter OR F160W filter</span>
+                                  <span class="n">sci_pep_id</span><span class="o">=</span><span class="mi">15879</span><span class="p">,</span>
+                                  <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_instrume&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_spec_1234&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pep_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pi_last_name&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 138
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682351848592" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_instrume</th><th>sci_spec_1234</th><th>sci_pep_id</th><th>sci_pi_last_name</th></tr></thead>
+<thead><tr><th>str9</th><th>str6</th><th>str5</th><th>int64</th><th>str5</th></tr></thead>
+<tr><td>IE37NAHAQ</td><td>WFC3</td><td>F153M</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHEQ</td><td>WFC3</td><td>F153M</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NAHFQ</td><td>WFC3</td><td>F160W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NBAMQ</td><td>WFC3</td><td>F160W</td><td>15879</td><td>RIESS</td></tr>
+<tr><td>IE37NBANQ</td><td>WFC3</td><td>F160W</td><td>15879</td><td>RIESS</td></tr>
+</table></div></div></div>
+</div>
+<p>For columns with numeric or date values, we can filter using comparison values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code>: Return values less than or before the given number/date</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code>: Return values greater than or after the given number/date</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>: Return values less than or equal to the given number/date</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>: Return values greater than or equal to the given number/date</p></li>
+</ul>
+<p>As an example, let’s write a query to return all datasets with an observation date before May 1, 1990. These were some of Hubble’s first observations! We’ll use the optional <code class="docutils literal notranslate"><span class="pre">sort_by</span></code> and <code class="docutils literal notranslate"><span class="pre">sort_desc</span></code> keywords to sort our results in reverse chronological order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query using comparison operator</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_start_time</span><span class="o">=</span><span class="s1">&#39;&lt;1990-05-01&#39;</span><span class="p">,</span>  <span class="c1"># Must be observed before May 1, 1990</span>
+                                  <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_start_time&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_pep_id&#39;</span><span class="p">],</span>
+                                  <span class="n">sort_by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_start_time&#39;</span><span class="p">],</span>  <span class="c1"># Sort by observation start time</span>
+                                  <span class="n">sort_desc</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">])</span>  <span class="c1"># Sort in descending order</span>
+
+<span class="c1"># Display the first 10 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 196
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=10</i>
+<table id="table139683153030480" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_start_time</th><th>sci_pep_id</th></tr></thead>
+<thead><tr><th>str9</th><th>str26</th><th>int64</th></tr></thead>
+<tr><td>W0340Y01R</td><td>1990-04-24T23:18:15.253000</td><td>1476</td></tr>
+<tr><td>X1680B01T</td><td>1990-04-24T23:17:59.053000</td><td>4107</td></tr>
+<tr><td>X1681201T</td><td>1990-04-24T23:17:59.053000</td><td>4107</td></tr>
+<tr><td>X16I1N01T</td><td>1990-04-24T23:17:59.053000</td><td>3801</td></tr>
+<tr><td>X14W0401T</td><td>1990-04-24T23:17:59.053000</td><td>3504</td></tr>
+<tr><td>X14W0402T</td><td>1990-04-24T23:17:59.053000</td><td>3504</td></tr>
+<tr><td>X14W0403T</td><td>1990-04-24T23:17:59.053000</td><td>3504</td></tr>
+<tr><td>X14W0404T</td><td>1990-04-24T23:17:59.053000</td><td>3504</td></tr>
+<tr><td>X14W0405T</td><td>1990-04-24T23:17:59.053000</td><td>3504</td></tr>
+<tr><td>X14W0406T</td><td>1990-04-24T23:17:59.053000</td><td>3504</td></tr>
+</table></div></div></div>
+</div>
+<p>For numeric or date data types, we can also filter with ranges. This requires the following syntax: <code class="docutils literal notranslate"><span class="pre">'#..#'</span></code>.</p>
+<p>Let’s write a query that uses range syntax to return datasets that have an exposure time between 5000 and 5005 seconds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query using range operator</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_actual_duration</span><span class="o">=</span><span class="s1">&#39;5000..5005&#39;</span><span class="p">,</span>  <span class="c1"># Exposure duration is between 5000 and 5005 seconds</span>
+                                  <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_pep_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sci_actual_duration&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 133
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=10</i>
+<table id="table139683204376464" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_actual_duration</th><th>sci_pep_id</th></tr></thead>
+<thead><tr><th>str9</th><th>float64</th><th>int64</th></tr></thead>
+<tr><td>LC1203020</td><td>5000.768</td><td>12936</td></tr>
+<tr><td>J95S15010</td><td>5000.0</td><td>10418</td></tr>
+<tr><td>IC2B02090</td><td>5005.0</td><td>12875</td></tr>
+<tr><td>IC3A05040</td><td>5000.0</td><td>13018</td></tr>
+<tr><td>IC3A06040</td><td>5000.0</td><td>13018</td></tr>
+<tr><td>IC3A07040</td><td>5000.0</td><td>13018</td></tr>
+<tr><td>IE9T01020</td><td>5000.0</td><td>16274</td></tr>
+<tr><td>IE9T02020</td><td>5000.0</td><td>16274</td></tr>
+<tr><td>IE9T03020</td><td>5000.0</td><td>16274</td></tr>
+<tr><td>IE9T04020</td><td>5000.0</td><td>16274</td></tr>
+</table></div></div></div>
+</div>
+<p>Wow, there’s a lot of tips and tricks for writing queries! Here’s a quick summary:</p>
+<ul class="simple">
+<li><p>To exclude and filter out a certain value from the results, prepend the value with <code class="docutils literal notranslate"><span class="pre">!</span></code>.</p></li>
+<li><p>Wildcards are special characters used in search patterns to represent one or more unknown characters,
+allowing for flexible matching of strings. The wildcard character is <code class="docutils literal notranslate"><span class="pre">*</span></code> and it replaces any number
+of characters preceding, following, or in between existing characters, depending on its placement.</p></li>
+<li><p>To filter by multiple values for a single column, use a string of values delimited by commas.</p></li>
+<li><p>For columns with numeric or date data types, filter using comparison values (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>).</p></li>
+<li><p>For columns with numeric or date data types, select a range with the syntax <code class="docutils literal notranslate"><span class="pre">'#..#'</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="getting-data-products">
+<h2>Getting Data Products<a class="headerlink" href="#getting-data-products" title="Link to this heading">#</a></h2>
+<section id="performing-a-product-query">
+<h3>Performing a Product Query<a class="headerlink" href="#performing-a-product-query" title="Link to this heading">#</a></h3>
+<p>Each observation returned from a MAST query can have one or more associated data products. For example, a JWST observation might return an <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Supplemental+Products">uncalibrated file</a>, <a class="reference external" href="https://jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-guide-stars">a guide-star file</a>, and the actual science data.</p>
+<p>For reproducibility, we’ll run another criteria query for datasets that use Hubble’s <a class="reference external" href="https://www.stsci.edu/hst/instrumentation/acs">Advanced Camera for Surveys (ACS)</a> instrument. We are interested in datasets connected to <a class="reference external" href="https://www.stsci.edu/hst-program-info/program/?program=12451">proposal number 12451</a> that are associated with at least one High Level Science Product.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query using range operator</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_pep_id</span><span class="o">=</span><span class="mi">12451</span><span class="p">,</span>  <span class="c1"># Proposal number 12451</span>
+                                   <span class="n">sci_instrume</span><span class="o">=</span><span class="s1">&#39;ACS&#39;</span><span class="p">,</span>  <span class="c1"># Use ACS instrument</span>
+                                   <span class="n">sci_hlsp</span><span class="o">=</span><span class="s1">&#39;&gt;1&#39;</span><span class="p">)</span>  <span class="c1"># Associated with at least one HLSP</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of results: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">datasets</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of results: 29
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682351504144" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_targname</th><th>sci_hapnum</th><th>sci_haspnum</th><th>sci_hslanum</th><th>sci_instrume</th><th>sci_aper_1234</th><th>sci_spec_1234</th><th>sci_actual_duration</th><th>sci_start_time</th><th>sci_pep_id</th><th>sci_pi_last_name</th><th>sci_ra</th><th>sci_dec</th><th>sci_refnum</th><th>sci_central_wavelength</th><th>sci_release_date</th><th>sci_stop_time</th><th>sci_preview_name</th><th>scp_scan_type</th><th>sci_hlsp</th></tr></thead>
+<thead><tr><th>str9</th><th>str18</th><th>int64</th><th>int64</th><th>int64</th><th>str6</th><th>str7</th><th>str14</th><th>float64</th><th>str26</th><th>int64</th><th>str7</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>str19</th><th>str26</th><th>str9</th><th>str1</th><th>int64</th></tr></thead>
+<tr><td>JBTAA0010</td><td>ABELL209</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC-FIX</td><td>F625W;CLEAR2L</td><td>1032.0</td><td>2012-06-28T14:11:54.653000</td><td>12451</td><td>POSTMAN</td><td>22.96891666667</td><td>-13.61122222222</td><td>37</td><td>6311.8481</td><td>2012-06-28T17:17:47</td><td>2012-06-28T14:31:45.717000</td><td>JBTAA0010</td><td>--</td><td>12</td></tr>
+<tr><td>JBTAA0020</td><td>ABELL209</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC-FIX</td><td>F850LP;CLEAR2L</td><td>1035.0</td><td>2012-06-28T14:34:44.670000</td><td>12451</td><td>POSTMAN</td><td>22.96887414019</td><td>-13.61118826361</td><td>37</td><td>9031.459</td><td>2012-06-28T17:47:50</td><td>2012-06-28T14:55:15.703000</td><td>JBTAA0020</td><td>--</td><td>12</td></tr>
+<tr><td>JBTAA1010</td><td>ABELL209</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC-FIX</td><td>F475W;CLEAR2L</td><td>1032.0</td><td>2012-06-28T15:47:39.677000</td><td>12451</td><td>POSTMAN</td><td>22.96891666667</td><td>-13.61122222222</td><td>37</td><td>4746.9565</td><td>2012-06-28T19:30:26</td><td>2012-06-28T16:07:30.710000</td><td>JBTAA1010</td><td>--</td><td>12</td></tr>
+<tr><td>JBTAA1020</td><td>ABELL209</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC-FIX</td><td>F775W;CLEAR2L</td><td>1031.0</td><td>2012-06-28T16:10:33.660000</td><td>12451</td><td>POSTMAN</td><td>22.96887414019</td><td>-13.61118826361</td><td>37</td><td>7693.4688</td><td>2012-06-28T19:10:46</td><td>2012-06-28T16:31:00.693000</td><td>JBTAA1020</td><td>--</td><td>12</td></tr>
+<tr><td>JBTAA3010</td><td>ABELL209</td><td>1</td><td>0</td><td>0</td><td>ACS</td><td>WFC-FIX</td><td>F606W;CLEAR2L</td><td>1032.0</td><td>2012-07-15T16:19:51.680000</td><td>12451</td><td>POSTMAN</td><td>22.96891666667</td><td>-13.61122222222</td><td>37</td><td>5921.8911</td><td>2012-07-15T19:08:21</td><td>2012-07-15T16:39:42.713000</td><td>JBTAA3010</td><td>--</td><td>12</td></tr>
+</table></div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_product_list</span></code> function accepts a table of datasets or a list of dataset IDs and returns a table containing the associated data products. Let’s fetch the data products for the first three datasets in the table above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a list of data products</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">datasets</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of products: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">products</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">products</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of products: 171
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=5</i>
+<table id="table139682809876304" class="table-striped table-bordered table-condensed">
+<thead><tr><th>product_key</th><th>access</th><th>dataset</th><th>instrument_name</th><th>filters</th><th>filename</th><th>uri</th><th>authz_primary_identifier</th><th>authz_secondary_identifier</th><th>file_suffix</th><th>category</th><th>size</th><th>type</th></tr></thead>
+<thead><tr><th>str40</th><th>str6</th><th>str9</th><th>str6</th><th>str14</th><th>str30</th><th>str40</th><th>str9</th><th>str3</th><th>str15</th><th>str14</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>JBTAA0010_jbtaa0010_asn.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_asn.fits</td><td>JBTAA0010/jbtaa0010_asn.fits</td><td>JBTAA0010</td><td>ASN</td><td>ASN</td><td>AUX</td><td>11520</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_drz.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_drz.fits</td><td>JBTAA0010/jbtaa0010_drz.fits</td><td>JBTAA0010</td><td>CAL</td><td>DRZ</td><td>CALIBRATED</td><td>214657920</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_drc.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_drc.fits</td><td>JBTAA0010/jbtaa0010_drc.fits</td><td>JBTAA0010</td><td>CAL</td><td>DRC</td><td>CALIBRATED</td><td>214660800</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_trl.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_trl.fits</td><td>JBTAA0010/jbtaa0010_trl.fits</td><td>JBTAA0010</td><td>CAL</td><td>TRL</td><td>AUX</td><td>682560</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_spt.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_spt.fits</td><td>JBTAA0010/jbtaa0010_spt.fits</td><td>JBTAA0010</td><td>CAL</td><td>SPT</td><td>UNCALIBRATED</td><td>86400</td><td>science</td></tr>
+</table></div></div></div>
+</div>
+<p>Some products can be associated with multiple datasets, and this table may contain duplicates. To return a list of products with only unique filenames, use the <code class="docutils literal notranslate"><span class="pre">get_unique_product_list</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get products with unique filenames</span>
+<span class="n">unique_products</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">get_unique_product_list</span><span class="p">(</span><span class="n">datasets</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># Display results</span>
+<span class="n">unique_products</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: 20 of 171 products were duplicates. Only returning 151 unique product(s). [astroquery.mast.utils]
+INFO: To return all products, use `MastMissions.get_product_list` [astroquery.mast.missions]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=5</i>
+<table id="table139682471886416" class="table-striped table-bordered table-condensed">
+<thead><tr><th>product_key</th><th>access</th><th>dataset</th><th>instrument_name</th><th>filters</th><th>filename</th><th>uri</th><th>authz_primary_identifier</th><th>authz_secondary_identifier</th><th>file_suffix</th><th>category</th><th>size</th><th>type</th></tr></thead>
+<thead><tr><th>str40</th><th>str6</th><th>str9</th><th>str6</th><th>str14</th><th>str30</th><th>str40</th><th>str9</th><th>str3</th><th>str15</th><th>str14</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>JBTAA0010_jbtaa0010_asn.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_asn.fits</td><td>JBTAA0010/jbtaa0010_asn.fits</td><td>JBTAA0010</td><td>ASN</td><td>ASN</td><td>AUX</td><td>11520</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_trl.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_trl.fits</td><td>JBTAA0010/jbtaa0010_trl.fits</td><td>JBTAA0010</td><td>CAL</td><td>TRL</td><td>AUX</td><td>682560</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_spt.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_spt.fits</td><td>JBTAA0010/jbtaa0010_spt.fits</td><td>JBTAA0010</td><td>CAL</td><td>SPT</td><td>UNCALIBRATED</td><td>86400</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_drz.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_drz.fits</td><td>JBTAA0010/jbtaa0010_drz.fits</td><td>JBTAA0010</td><td>CAL</td><td>DRZ</td><td>CALIBRATED</td><td>214657920</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_log.txt</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_log.txt</td><td>JBTAA0010/jbtaa0010_log.txt</td><td>JBTAA0010</td><td>CAL</td><td>LOG</td><td>AUX</td><td>222217</td><td>science</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="filtering-data-products">
+<h3>Filtering Data Products<a class="headerlink" href="#filtering-data-products" title="Link to this heading">#</a></h3>
+<p>These datasets returned quite a few products! We are not interested in all of them, and luckily, we have a handy function to filter them for us. <code class="docutils literal notranslate"><span class="pre">filter_products</span></code> allows you to filter based on file extension (<code class="docutils literal notranslate"><span class="pre">extension</span></code>) and any other of the product fields.</p>
+<p>A quick note on filtering: the <strong>AND</strong> operation is performed for a list of filters, and the <strong>OR</strong> operation is performed within a filter set. For example, the filter below will return FITS products that are “science” type <strong>and</strong> have a <code class="docutils literal notranslate"><span class="pre">file_suffix</span></code> of <a class="reference external" href="https://hst-docs.stsci.edu/acsdhb/chapter-2-acs-data-structure/2-1-types-of-acs-files#id-2.1TypesofACSFiles-2.1.22.1.2AssociationTables">“ASN” (association files)</a> <strong>or</strong> <a class="reference external" href="https://www.stsci.edu/hst/instrumentation/focus-and-pointing/pointing/jitter-file-format-definition">“JIF” (jitter information files)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter products </span>
+<span class="n">filtered</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">products</span><span class="p">,</span>
+                                    <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span>  <span class="c1"># FITS file extension</span>
+                                    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;science&#39;</span><span class="p">,</span>  <span class="c1"># Science data</span>
+                                    <span class="n">file_suffix</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ASN&#39;</span><span class="p">,</span> <span class="s1">&#39;JIF&#39;</span><span class="p">])</span>  <span class="c1"># Association files OR jitter information files</span>
+
+<span class="c1"># Display results</span>
+<span class="n">filtered</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=6</i>
+<table id="table139682351781904" class="table-striped table-bordered table-condensed">
+<thead><tr><th>product_key</th><th>access</th><th>dataset</th><th>instrument_name</th><th>filters</th><th>filename</th><th>uri</th><th>authz_primary_identifier</th><th>authz_secondary_identifier</th><th>file_suffix</th><th>category</th><th>size</th><th>type</th></tr></thead>
+<thead><tr><th>str40</th><th>str6</th><th>str9</th><th>str6</th><th>str14</th><th>str30</th><th>str40</th><th>str9</th><th>str3</th><th>str15</th><th>str14</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>JBTAA0010_jbtaa0010_asn.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_asn.fits</td><td>JBTAA0010/jbtaa0010_asn.fits</td><td>JBTAA0010</td><td>ASN</td><td>ASN</td><td>AUX</td><td>11520</td><td>science</td></tr>
+<tr><td>JBTAA0010_jbtaa0010_jif.fits</td><td>PUBLIC</td><td>JBTAA0010</td><td>ACS</td><td>F625W;CLEAR2L</td><td>jbtaa0010_jif.fits</td><td>JBTAA0010/jbtaa0010_jif.fits</td><td>JBTAA0010</td><td>OMS</td><td>JIF</td><td>JITTER/SUPPORT</td><td>60480</td><td>science</td></tr>
+<tr><td>JBTAA0020_jbtaa0020_asn.fits</td><td>PUBLIC</td><td>JBTAA0020</td><td>ACS</td><td>F850LP;CLEAR2L</td><td>jbtaa0020_asn.fits</td><td>JBTAA0020/jbtaa0020_asn.fits</td><td>JBTAA0020</td><td>ASN</td><td>ASN</td><td>AUX</td><td>11520</td><td>science</td></tr>
+<tr><td>JBTAA0020_jbtaa0020_jif.fits</td><td>PUBLIC</td><td>JBTAA0020</td><td>ACS</td><td>F850LP;CLEAR2L</td><td>jbtaa0020_jif.fits</td><td>JBTAA0020/jbtaa0020_jif.fits</td><td>JBTAA0020</td><td>OMS</td><td>JIF</td><td>JITTER/SUPPORT</td><td>60480</td><td>science</td></tr>
+<tr><td>JBTAA1010_jbtaa1010_asn.fits</td><td>PUBLIC</td><td>JBTAA1010</td><td>ACS</td><td>F475W;CLEAR2L</td><td>jbtaa1010_asn.fits</td><td>JBTAA1010/jbtaa1010_asn.fits</td><td>JBTAA1010</td><td>ASN</td><td>ASN</td><td>AUX</td><td>11520</td><td>science</td></tr>
+<tr><td>JBTAA1010_jbtaa1010_jif.fits</td><td>PUBLIC</td><td>JBTAA1010</td><td>ACS</td><td>F475W;CLEAR2L</td><td>jbtaa1010_jif.fits</td><td>JBTAA1010/jbtaa1010_jif.fits</td><td>JBTAA1010</td><td>OMS</td><td>JIF</td><td>JITTER/SUPPORT</td><td>60480</td><td>science</td></tr>
+</table></div></div></div>
+</div>
+</section>
+</section>
+<section id="downloading-products">
+<h2>Downloading Products<a class="headerlink" href="#downloading-products" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">download_products</span></code> function accepts a table of products like the one above and will download the products to your local machine. By default, products will be downloaded into the current working directory, in a subdirectory called <code class="docutils literal notranslate"><span class="pre">mastDownload</span></code>. The full local filepaths will have the form <code class="docutils literal notranslate"><span class="pre">mastDownload/&lt;mission&gt;/&lt;Dataset</span> <span class="pre">ID&gt;/file.</span></code> You can change the download directory using the <code class="docutils literal notranslate"><span class="pre">download_dir</span></code> parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download products using filtered product Table</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">filtered</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Display results</span>
+<span class="n">manifest</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/JBTAA0010/jbtaa0010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/JBTAA0010/jbtaa0010_jif.fits with expected size 60480. [astroquery.query]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=2</i>
+<table id="table139683147514960" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>object</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>mastDownload/hst/JBTAA0010/jbtaa0010_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/JBTAA0010/jbtaa0010_jif.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+<p>For a more streamlined workflow, the function also accepts dataset IDs and product filters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download products using dataset IDs and product filters</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">download_products</span><span class="p">([</span><span class="s1">&#39;JBTAA0010&#39;</span><span class="p">,</span> <span class="s1">&#39;JBTAA0020&#39;</span><span class="p">],</span>
+                                      <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span>
+                                      <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;science&#39;</span><span class="p">,</span>
+                                      <span class="n">file_suffix</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ASN&#39;</span><span class="p">,</span> <span class="s1">&#39;JIF&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display results</span>
+<span class="n">manifest</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/JBTAA0010/jbtaa0010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/JBTAA0010/jbtaa0010_jif.fits with expected size 60480. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/JBTAA0020/jbtaa0020_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/JBTAA0020/jbtaa0020_jif.fits with expected size 60480. [astroquery.query]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=4</i>
+<table id="table139682351815824" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>object</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>mastDownload/hst/JBTAA0010/jbtaa0010_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/JBTAA0010/jbtaa0010_jif.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/JBTAA0020/jbtaa0020_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/JBTAA0020/jbtaa0020_jif.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+<p>To download a single data product file, use the <code class="docutils literal notranslate"><span class="pre">download_file</span></code> function with a MAST URI as input.
+The default is to download the file to the current working directory, but you can specify the download
+directory or filepath with the <code class="docutils literal notranslate"><span class="pre">local_path</span></code> keyword argument.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download a single data product</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">&#39;JBTAA0010/jbtaa0010_asn.fits&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display result</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file jbtaa0010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;COMPLETE&#39;, None, None)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="exclusive-data-access">
+<h3>Exclusive Data Access<a class="headerlink" href="#exclusive-data-access" title="Link to this heading">#</a></h3>
+<p>Some data may not be publicly available and will require <a class="reference external" href="https://outerspace.stsci.edu/display/MASTDOCS/Using+MAST+APIs#UsingMASTAPIs-authAuth.MAST">authentication and authorization</a>. To <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html#accessing-proprietary-data">download proprietary data with Astroquery</a>, you will need a <a class="reference external" href="https://proper.stsci.edu/proper/authentication/auth">MyST Account</a> with proper permissions. You will also need to provide an <a class="reference external" href="https://auth.mast.stsci.edu/info">API token</a>.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">login</span></code> function to authenticate yourself. After uncommenting and executing the following cell, you should be prompted to enter your token.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># missions.login()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also provide a token to a <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> object upon initialization using the <code class="docutils literal notranslate"><span class="pre">mast_token</span></code> parameter. However, remember to be cautious with your API token. You should not share the token or check it into source control. For the best security, we recommend using the <code class="docutils literal notranslate"><span class="pre">login</span></code> method to authenticate yourself.</p>
+</section>
+</section>
+<section id="switching-missions">
+<h2>Switching Missions<a class="headerlink" href="#switching-missions" title="Link to this heading">#</a></h2>
+<p>As mentioned previously, each <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> object can only make queries and download products from a single collection at a time. This collection can be modified with the <code class="docutils literal notranslate"><span class="pre">mission</span></code> class attribute, which is case-insensitive. This allows users to query multiple collections with the same object.</p>
+<p>To demonstrate, we’ll create a new <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> object and initialize the <code class="docutils literal notranslate"><span class="pre">mission</span></code> to be <code class="docutils literal notranslate"><span class="pre">'JWST'</span></code>. This will perform queries on dataset metadata from the James Webb Space Telescope.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_mission</span> <span class="o">=</span> <span class="n">MastMissions</span><span class="p">(</span><span class="n">mission</span><span class="o">=</span><span class="s1">&#39;JWST&#39;</span><span class="p">)</span>
+<span class="n">multi_mission</span><span class="o">.</span><span class="n">mission</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;jwst&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we’ll query for JWST datasets around <a class="reference external" href="https://science.nasa.gov/image-detail/young-stars-sculpt-gas-with-powerful-outflows/">NGC 346</a>, a young star cluster in the <a class="reference external" href="https://www.nasa.gov/image-article/taken-under-wing-of-small-magellanic-cloud/">Small Magellanic Cloud</a>. We’ll use a radius of 0.2 arcminutes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query JWST for NGC 346</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">multi_mission</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s1">&#39;NGC 346&#39;</span><span class="p">,</span>
+                                     <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>  <span class="c1"># Search within a 0.2 arcminute radius</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of datasets: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of datasets: 484
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682471585232" class="table-striped table-bordered table-condensed">
+<thead><tr><th>ArchiveFileID</th><th>fileSetName</th><th>productLevel</th><th>targprop</th><th>targ_ra</th><th>targ_dec</th><th>instrume</th><th>exp_type</th><th>opticalElements</th><th>date_obs</th><th>duration</th><th>program</th><th>observtn</th><th>visit</th><th>publicReleaseDate</th><th>pi_name</th><th>proposal_type</th><th>proposal_cycle</th><th>targtype</th><th>access</th><th>cal_ver</th><th>ang_sep</th><th>s_region</th></tr></thead>
+<thead><tr><th>int64</th><th>str36</th><th>str14</th><th>str22</th><th>float64</th><th>float64</th><th>str7</th><th>str13</th><th>str152</th><th>str27</th><th>float64</th><th>int64</th><th>int64</th><th>int64</th><th>str19</th><th>str17</th><th>str3</th><th>int64</th><th>str5</th><th>str6</th><th>str6</th><th>float64</th><th>str121</th></tr></thead>
+<tr><td>216921428</td><td>jw01227001003_02101_00001</td><td>1b, 2a, 2b, 2c</td><td>NGC-346</td><td>14.77060458333333</td><td>-72.16920833333336</td><td>MIRI</td><td>MIR_IMAGE</td><td>F770W</td><td>2022-10-10T07:43:23.1330000</td><td>77.701</td><td>1227</td><td>1</td><td>3</td><td>2023-10-11T03:40:56</td><td>Meixner, Margaret</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.20.2</td><td>0.0</td><td>POLYGON ICRS  14.830859207 -72.200751250 14.839291876 -72.169579016 14.737071975 -72.166921158 14.727508682 -72.198115395</td></tr>
+<tr><td>216921440</td><td>jw01227001003_02101_00002</td><td>1b, 2a, 2b, 2c</td><td>NGC-346</td><td>14.77060458333333</td><td>-72.16920833333336</td><td>MIRI</td><td>MIR_IMAGE</td><td>F770W</td><td>2022-10-10T07:46:04.0930000</td><td>77.701</td><td>1227</td><td>1</td><td>3</td><td>2023-10-11T03:39:18</td><td>Meixner, Margaret</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.20.2</td><td>0.0</td><td>POLYGON ICRS  14.832116259 -72.200765663 14.840547875 -72.169593402 14.738327803 -72.166935869 14.728765561 -72.198130137</td></tr>
+<tr><td>216921422</td><td>jw01227001003_02101_00003</td><td>1b, 2a, 2b, 2c</td><td>NGC-346</td><td>14.77060458333333</td><td>-72.16920833333336</td><td>MIRI</td><td>MIR_IMAGE</td><td>F770W</td><td>2022-10-10T07:48:42.3010000</td><td>77.701</td><td>1227</td><td>1</td><td>3</td><td>2023-10-11T03:39:23</td><td>Meixner, Margaret</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.20.2</td><td>0.0</td><td>POLYGON ICRS  14.831911135 -72.200605611 14.840343018 -72.169433358 14.738123863 -72.166775721 14.728561366 -72.197969979</td></tr>
+<tr><td>216921728</td><td>jw01227001003_02101_00004</td><td>1b, 2a, 2b, 2c</td><td>NGC-346</td><td>14.77060458333333</td><td>-72.16920833333336</td><td>MIRI</td><td>MIR_IMAGE</td><td>F770W</td><td>2022-10-10T07:51:20.4450000</td><td>77.701</td><td>1227</td><td>1</td><td>3</td><td>2023-10-11T03:40:28</td><td>Meixner, Margaret</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.20.2</td><td>0.0</td><td>POLYGON ICRS  14.831300539 -72.200451070 14.839733151 -72.169278838 14.737514922 -72.166620955 14.727951706 -72.197815190</td></tr>
+<tr><td>216921389</td><td>jw01227001003_02103_00001</td><td>1b, 2a, 2b, 2c</td><td>NGC-346</td><td>14.77060458333333</td><td>-72.16920833333336</td><td>MIRI</td><td>MIR_IMAGE</td><td>F1000W</td><td>2022-10-10T07:56:20.1650000</td><td>99.901</td><td>1227</td><td>1</td><td>3</td><td>2023-10-11T03:43:08</td><td>Meixner, Margaret</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.20.2</td><td>0.0</td><td>POLYGON ICRS  14.830869594 -72.200768514 14.839303934 -72.169596894 14.737083310 -72.166938603 14.727519671 -72.198132399</td></tr>
+</table></div></div></div>
+</div>
+<p>This query returned over 160 JWST datasets. Now, let’s try it with a different data collection. We’ll reassign the <code class="docutils literal notranslate"><span class="pre">mission</span></code> attribute on the <code class="docutils literal notranslate"><span class="pre">multi_mission</span></code> object to be <code class="docutils literal notranslate"><span class="pre">'ullyses'</span></code> and run the same query.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_mission</span><span class="o">.</span><span class="n">mission</span> <span class="o">=</span> <span class="s1">&#39;ullyses&#39;</span>
+<span class="n">multi_mission</span><span class="o">.</span><span class="n">mission</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ullyses&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query ULLYSES for NGC 346</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">multi_mission</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s1">&#39;NGC 346&#39;</span><span class="p">,</span>
+                                     <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>  <span class="c1"># Search within a 0.2 arcminute radius</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of datasets: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of datasets: 2
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=2</i>
+<table id="table139682352080016" class="table-striped table-bordered table-condensed">
+<thead><tr><th>search_pos</th><th>target_id</th><th>names_search</th><th>target_name_hlsp</th><th>simbad_link</th><th>target_classification</th><th>targ_ra</th><th>targ_dec</th><th>host_galaxy_name</th><th>spectral_type</th><th>bmv0_mag</th><th>u_mag</th><th>b_mag</th><th>v_mag</th><th>gaia_g_mean_mag</th><th>star_mass</th><th>instrument</th><th>grating</th><th>filter</th><th>observation_id</th><th>ang_sep</th></tr></thead>
+<thead><tr><th>str17</th><th>int64</th><th>str48</th><th>str14</th><th>str66</th><th>str12</th><th>float64</th><th>float64</th><th>str3</th><th>str4</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str4</th><th>str5</th><th>str1</th><th>str39</th><th>str19</th></tr></thead>
+<tr><td>14.76833 -72.1775</td><td>55</td><td>NGC346 MPG 396,Cl* NGC346 MPG 396,NGC346-MPG-396</td><td>NGC346-MPG-396</td><td>https://simbad.u-strasbg.fr/simbad/sim-id?Ident=Cl*+NGC346+MPG+396</td><td>Mid O Dwarf</td><td>14.762184457428036</td><td>-72.17637442586573</td><td>SMC</td><td>O7 V</td><td>-0.27</td><td>13.09</td><td>14.17</td><td>14.39</td><td>14.382007</td><td>--</td><td>COS</td><td>G160M</td><td>--</td><td>hlsp_ullyses_hst_cos_ngc346-mpg-396_uv</td><td>0.13152388757468492</td></tr>
+<tr><td>14.76833 -72.1775</td><td>57</td><td>NGC346 MPG 487,Cl* NGC346 MPG 487,NGC346-MPG-487</td><td>NGC346-MPG-487</td><td>https://simbad.u-strasbg.fr/simbad/sim-id?Ident=Cl*+NGC346+MPG+487</td><td>Late O Dwarf</td><td>14.778136436564196</td><td>-72.17813531865009</td><td>SMC</td><td>O8 V</td><td>-0.27</td><td>13.3</td><td>14.31</td><td>14.53</td><td>14.499837</td><td>25.7</td><td>STIS</td><td>E140M</td><td>--</td><td>hlsp_ullyses_hst_stis_ngc346-mpg-487_uv</td><td>0.18407398702435046</td></tr>
+</table></div></div></div>
+</div>
+<p>Notice that this query returned only a few datasets. The result tables also look very different in terms of data and column keywords. This is because each query is being performed on a different data collection!</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>Exercise 1</strong>: It’s time to apply all that you’ve learned and try your hand at writing a <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> query! Write a non-positional query based on the following:</p>
+<ul class="simple">
+<li><p>Image observations</p></li>
+<li><p>Instrument should NOT include the <a class="reference external" href="https://www.stsci.edu/hst/instrumentation/cos">Cosmic Origins Spectrograph (COS)</a></p></li>
+<li><p>Filter used is F150W, F105W, or F110W</p></li>
+<li><p>Declination is greater than 0 degrees</p></li>
+<li><p>Exposure time is between 1000 and 2000 seconds</p></li>
+<li><p>Target name contains the string “GAL”</p></li>
+<li><p>Skip the first 5 entries</p></li>
+<li><p>Sort by exposure time in descending order</p></li>
+<li><p>Limit the results to 3 datasets</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A non-positional query with column criteria</span>
+<span class="c1"># results = missions.query_criteria(...)  # Write your query here!</span>
+
+<span class="c1"># Display results</span>
+<span class="c1"># results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Exercise 2</strong>: Using your results from Exercise 1, download the association table data products for the 3 datasets (HINT: <code class="docutils literal notranslate"><span class="pre">file_suffix</span> <span class="pre">=</span> <span class="pre">'ASN'</span></code>). You can fetch, filter, and download the products as three separate steps, or use the streamlined workflow built in to <code class="docutils literal notranslate"><span class="pre">download_products</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fetch products from 3 datasets</span>
+<span class="c1"># products = missions.get_product_list(...)</span>
+
+<span class="c1"># Filter products</span>
+<span class="c1"># filtered = missions.filter_products(...)</span>
+
+<span class="c1"># Download products</span>
+<span class="c1"># missions.download_products(...)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Exercise 3</strong>: Use a new <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code> object and the <code class="docutils literal notranslate"><span class="pre">mission</span></code> attribute to search for datasets around the coordinate “22h57m39s -29d37m20s” from both HST and JWST. Use a radius of 0.1 arcminutes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create new MastMissions object</span>
+<span class="c1">#m = MastMissions()</span>
+
+<span class="c1"># Create sky coordinate object</span>
+<span class="c1">#coord = SkyCoord(...)</span>
+
+<span class="c1"># Query HST metadata for region</span>
+<span class="c1">#results = m.query_region(...)</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="c1">#print(f&#39;Total number of datasets: {len(results)}&#39;)</span>
+<span class="c1">#results[:5]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch mission to JWST</span>
+<span class="c1"># ...</span>
+
+<span class="c1"># Query JWST metadata for region</span>
+<span class="c1">#results = m.query_region(...)</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="c1">#print(f&#39;Total number of datasets: {len(results)}&#39;)</span>
+<span class="c1">#results[:5]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-solutions">
+<h2>Exercise Solutions<a class="headerlink" href="#exercise-solutions" title="Link to this heading">#</a></h2>
+<p><strong>Exercise 1:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A non-positional query with column criteria</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">sci_obs_type</span><span class="o">=</span><span class="s1">&#39;IMAGE&#39;</span><span class="p">,</span>
+                                  <span class="n">sci_instrume</span><span class="o">=</span><span class="s1">&#39;!COS&#39;</span><span class="p">,</span>
+                                  <span class="n">sci_spec_1234</span><span class="o">=</span><span class="s1">&#39;F150W, F105W, F110W&#39;</span><span class="p">,</span>
+                                  <span class="n">sci_dec</span><span class="o">=</span><span class="s1">&#39;&gt;0&#39;</span><span class="p">,</span>
+                                  <span class="n">sci_actual_duration</span><span class="o">=</span><span class="s1">&#39;1000..2000&#39;</span><span class="p">,</span>
+                                  <span class="n">sci_targname</span><span class="o">=</span><span class="s1">&#39;*GAL*&#39;</span><span class="p">,</span>
+                                  <span class="n">offset</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                  <span class="n">sort_by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sci_actual_duration&#39;</span><span class="p">],</span>
+                                  <span class="n">sort_desc</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+                                  <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Display results</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: MaxResultsWarning: Maximum results returned, may not include all sources within radius. [astroquery.mast.missions]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=3</i>
+<table id="table139682352271312" class="table-striped table-bordered table-condensed">
+<thead><tr><th>sci_data_set_name</th><th>sci_targname</th><th>sci_hapnum</th><th>sci_haspnum</th><th>sci_hslanum</th><th>sci_instrume</th><th>sci_aper_1234</th><th>sci_spec_1234</th><th>sci_actual_duration</th><th>sci_start_time</th><th>sci_pep_id</th><th>sci_pi_last_name</th><th>sci_ra</th><th>sci_dec</th><th>sci_refnum</th><th>sci_central_wavelength</th><th>sci_release_date</th><th>sci_stop_time</th><th>sci_preview_name</th><th>scp_scan_type</th><th>sci_hlsp</th></tr></thead>
+<thead><tr><th>str9</th><th>str27</th><th>int64</th><th>int64</th><th>int64</th><th>str6</th><th>str6</th><th>str5</th><th>float64</th><th>str26</th><th>int64</th><th>str6</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>str19</th><th>str26</th><th>str9</th><th>str1</th><th>int64</th></tr></thead>
+<tr><td>N4A705010</td><td>GAL-CLUS-0026+1653-ARCC</td><td>0</td><td>0</td><td>0</td><td>NICMOS</td><td>NIC1</td><td>F110W</td><td>1151.9038</td><td>1998-01-08T03:44:07.490000</td><td>7425</td><td>TURNER</td><td>6.657118050129</td><td>17.16004527511</td><td>0</td><td>11292.4</td><td>1999-01-08T19:47:33</td><td>1998-01-08T04:04:06.490000</td><td>N4A705010</td><td>--</td><td>--</td></tr>
+<tr><td>N4A703010</td><td>GAL-CLUS-0026+1653-ARCD</td><td>0</td><td>0</td><td>0</td><td>NICMOS</td><td>NIC1</td><td>F110W</td><td>1151.9038</td><td>1997-10-31T14:20:31.493000</td><td>7425</td><td>TURNER</td><td>6.64289440364</td><td>17.16556874169</td><td>0</td><td>11292.4</td><td>1998-10-31T21:30:52</td><td>1997-10-31T14:40:30.493000</td><td>N4A703010</td><td>--</td><td>--</td></tr>
+<tr><td>IF9V31030</td><td>VIRGO-INTERGALACTIC-FIELD-E</td><td>1</td><td>0</td><td>0</td><td>WFC3</td><td>IR-FIX</td><td>F110W</td><td>1058.805543</td><td>2023-12-14T15:40:25.307000</td><td>17510</td><td>GREGG</td><td>187.6896916667</td><td>12.99041111111</td><td>0</td><td>11534.459</td><td>2023-12-14T21:58:47</td><td>2023-12-14T16:08:42.237000</td><td>IF9V31030</td><td>--</td><td>--</td></tr>
+</table></div></div></div>
+</div>
+<p><strong>Exercise 2:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># As 3 separate steps</span>
+<span class="c1"># Fetch products from first 3 datasets</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+<span class="c1"># Filter products</span>
+<span class="n">filtered</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">products</span><span class="p">,</span>
+                                    <span class="n">file_suffix</span><span class="o">=</span><span class="s1">&#39;ASN&#39;</span><span class="p">)</span>
+
+<span class="c1"># Download products</span>
+<span class="n">missions</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/IF9V31030/if9v31030_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/N4A703010/n4a703010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/N4A705010/n4a705010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=3</i>
+<table id="table139682471422544" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>object</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>mastDownload/hst/IF9V31030/if9v31030_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/N4A703010/n4a703010_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/N4A705010/n4a705010_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Streamlined</span>
+<span class="n">missions</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;sci_data_set_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                           <span class="n">file_suffix</span><span class="o">=</span><span class="s1">&#39;ASN&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/N4A705010/n4a705010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/N4A703010/n4a703010_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file mastDownload/hst/IF9V31030/if9v31030_asn.fits with expected size 11520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=3</i>
+<table id="table139682471569104" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>object</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>mastDownload/hst/N4A705010/n4a705010_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/N4A703010/n4a703010_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>mastDownload/hst/IF9V31030/if9v31030_asn.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+<p><strong>Exercise 3:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create new MastMissions object</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">MastMissions</span><span class="p">()</span>
+
+<span class="c1"># Create sky coordinate object</span>
+<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="s1">&#39;22h57m39s -29d37m20s&#39;</span><span class="p">)</span>
+
+<span class="c1"># Query HST metadata for region</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span>
+                         <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of datasets: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of datasets: 476
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682352080336" class="table-striped table-bordered table-condensed">
+<thead><tr><th>search_pos</th><th>sci_data_set_name</th><th>sci_targname</th><th>sci_hapnum</th><th>sci_haspnum</th><th>sci_hslanum</th><th>sci_instrume</th><th>sci_aper_1234</th><th>sci_spec_1234</th><th>sci_actual_duration</th><th>sci_start_time</th><th>sci_pep_id</th><th>sci_pi_last_name</th><th>sci_ra</th><th>sci_dec</th><th>sci_refnum</th><th>sci_central_wavelength</th><th>sci_release_date</th><th>sci_stop_time</th><th>sci_preview_name</th><th>scp_scan_type</th><th>sci_hlsp</th><th>ang_sep</th></tr></thead>
+<thead><tr><th>str18</th><th>str9</th><th>str19</th><th>int64</th><th>int64</th><th>int64</th><th>str6</th><th>str12</th><th>str13</th><th>float64</th><th>str26</th><th>int64</th><th>str9</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>str26</th><th>str26</th><th>str9</th><th>str1</th><th>int64</th><th>str20</th></tr></thead>
+<tr><td>344.4125 -29.62222</td><td>N4N92Q040</td><td>HD216956</td><td>0</td><td>0</td><td>0</td><td>NICMOS</td><td>NIC2-FIX</td><td>F222M</td><td>255.923</td><td>1998-08-06T01:24:53.733000</td><td>7894</td><td>HENRY</td><td>344.4125879875</td><td>-29.62214772201</td><td>8</td><td>22181.699</td><td>2000-07-04T20:12:32</td><td>1998-08-06T01:29:20.733000</td><td>N4N92Q040</td><td>--</td><td>--</td><td>0.006314126839181508</td></tr>
+<tr><td>344.4125 -29.62222</td><td>N4N92Q030</td><td>HD216956</td><td>0</td><td>0</td><td>0</td><td>NICMOS</td><td>NIC2-FIX</td><td>F207M</td><td>255.923</td><td>1998-08-06T01:19:59.733000</td><td>7894</td><td>HENRY</td><td>344.4125879884</td><td>-29.62214772055</td><td>8</td><td>20824.1</td><td>2000-07-04T20:12:32</td><td>1998-08-06T01:24:26.733000</td><td>N4N92Q030</td><td>--</td><td>--</td><td>0.00631422112268177</td></tr>
+<tr><td>344.4125 -29.62222</td><td>N4N92Q020</td><td>HD216956</td><td>0</td><td>0</td><td>0</td><td>NICMOS</td><td>NIC2-FIX</td><td>F180M</td><td>127.92868</td><td>1998-08-06T01:17:16.733000</td><td>7894</td><td>HENRY</td><td>344.412587989</td><td>-29.62214771973</td><td>8</td><td>17971.1</td><td>2000-07-04T20:12:32</td><td>1998-08-06T01:19:35.733000</td><td>N4N92Q020</td><td>--</td><td>--</td><td>0.006314277659432727</td></tr>
+<tr><td>344.4125 -29.62222</td><td>N4N92Q010</td><td>HD216956</td><td>0</td><td>0</td><td>0</td><td>NICMOS</td><td>NIC2-FIX</td><td>F110W</td><td>127.92868</td><td>1998-08-06T01:14:30.733000</td><td>7894</td><td>HENRY</td><td>344.4125879895</td><td>-29.62214771891</td><td>8</td><td>11284.7</td><td>2000-07-04T20:12:32</td><td>1998-08-06T01:16:49.733000</td><td>N4N92Q010</td><td>--</td><td>--</td><td>0.006314330409832213</td></tr>
+<tr><td>344.4125 -29.62222</td><td>Z3EJ0102T</td><td>HD216956</td><td>0</td><td>0</td><td>0</td><td>HRS</td><td>2.0</td><td>MIRROR-A1</td><td>0.0</td><td>1996-09-30T08:18:34.937000</td><td>6627</td><td>LALLEMENT</td><td>344.4123659004</td><td>-29.6221209983</td><td>0</td><td>--</td><td>1997-09-30T22:45:42</td><td>1996-09-30T08:22:46.937000</td><td>--</td><td>--</td><td>--</td><td>0.00917640457522127</td></tr>
+</table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch mission to JWST</span>
+<span class="n">m</span><span class="o">.</span><span class="n">mission</span> <span class="o">=</span> <span class="s1">&#39;JWST&#39;</span>
+
+<span class="c1"># Query JWST metadata for region</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span>
+                         <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Display the first 5 results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of datasets: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of datasets: 122
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139682349470608" class="table-striped table-bordered table-condensed">
+<thead><tr><th>ArchiveFileID</th><th>fileSetName</th><th>productLevel</th><th>targprop</th><th>targ_ra</th><th>targ_dec</th><th>instrume</th><th>exp_type</th><th>opticalElements</th><th>date_obs</th><th>duration</th><th>program</th><th>observtn</th><th>visit</th><th>publicReleaseDate</th><th>pi_name</th><th>proposal_type</th><th>proposal_cycle</th><th>targtype</th><th>access</th><th>cal_ver</th><th>ang_sep</th><th>s_region</th></tr></thead>
+<thead><tr><th>int64</th><th>str25</th><th>str14</th><th>str25</th><th>float64</th><th>float64</th><th>str6</th><th>str13</th><th>str48</th><th>str27</th><th>float64</th><th>int64</th><th>int64</th><th>int64</th><th>str19</th><th>str20</th><th>str3</th><th>int64</th><th>str5</th><th>str16</th><th>str6</th><th>float64</th><th>str125</th></tr></thead>
+<tr><td>205519894</td><td>jw01193006001_02101_00001</td><td>1b, 2a, 2b, 2c</td><td>FOMALHAUT</td><td>344.4150901092018</td><td>-29.62327928996265</td><td>MIRI</td><td>MIR_IMAGE</td><td>F2550W</td><td>2022-10-21T20:17:08.6000000</td><td>269.102</td><td>1193</td><td>6</td><td>1</td><td>2023-10-21T22:14:59</td><td>Beichman, Charles A.</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.19.1</td><td>0.0</td><td>POLYGON ICRS  344.416974201 -29.634847806 344.430957392 -29.624869178 344.419422899 -29.612788296 344.405441398 -29.622676906</td></tr>
+<tr><td>205519970</td><td>jw01193006001_02101_00002</td><td>1b, 2a, 2b, 2c</td><td>FOMALHAUT</td><td>344.4150901103719</td><td>-29.62327929047184</td><td>MIRI</td><td>MIR_IMAGE</td><td>F2550W</td><td>2022-10-21T20:22:59.8950000</td><td>269.102</td><td>1193</td><td>6</td><td>1</td><td>2023-10-21T22:12:51</td><td>Beichman, Charles A.</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.19.1</td><td>0.0</td><td>POLYGON ICRS  344.412684883 -29.637684536 344.426668764 -29.627706221 344.415134304 -29.615625081 344.401152116 -29.625513377</td></tr>
+<tr><td>205519900</td><td>jw01193006001_02101_00003</td><td>1b, 2a, 2b, 2c</td><td>FOMALHAUT</td><td>344.415090111542</td><td>-29.62327929098103</td><td>MIRI</td><td>MIR_IMAGE</td><td>F2550W</td><td>2022-10-21T20:28:51.1910000</td><td>269.102</td><td>1193</td><td>6</td><td>1</td><td>2023-10-21T22:12:48</td><td>Beichman, Charles A.</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.19.1</td><td>0.0</td><td>POLYGON ICRS  344.409985421 -29.633886695 344.423969019 -29.623908639 344.412435291 -29.611827285 344.398453388 -29.621715322</td></tr>
+<tr><td>205519888</td><td>jw01193006001_02101_00004</td><td>1b, 2a, 2b, 2c</td><td>FOMALHAUT</td><td>344.4150901127151</td><td>-29.62327929149152</td><td>MIRI</td><td>MIR_IMAGE</td><td>F2550W</td><td>2022-10-21T20:34:43.3830000</td><td>269.102</td><td>1193</td><td>6</td><td>1</td><td>2023-10-21T22:13:16</td><td>Beichman, Charles A.</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.19.1</td><td>0.0</td><td>POLYGON ICRS  344.413686232 -29.632127979 344.427669191 -29.622149505 344.416135185 -29.610068496 344.402153918 -29.619956952</td></tr>
+<tr><td>205518913</td><td>jw01193007001_02101_00001</td><td>1b, 2a, 2b</td><td>FOMALHAUT-COPY-MIRI-CORON</td><td>344.4150901161078</td><td>-29.62327929296791</td><td>MIRI</td><td>MIR_TACQ</td><td>FND</td><td>2022-10-21T20:53:55.8600000</td><td>1.296</td><td>1193</td><td>7</td><td>1</td><td>2023-10-22T07:32:01</td><td>Beichman, Charles A.</td><td>GTO</td><td>1</td><td>FIXED</td><td>PUBLIC</td><td>1.19.1</td><td>0.0</td><td>POLYGON ICRS  344.413406295 -29.632887986 344.421639232 -29.626936920 344.414571405 -29.619377913 344.406304949 -29.625310980</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://mast.stsci.edu/search/ui/#/">MAST Search Form UI</a></p></li>
+<li><p><a class="reference external" href="https://mast.stsci.edu/search/docs/">MAST Search API</a></p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast_missions.html#mission-specific-search-queries"><code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> Documentation for Mission Searches</a></p></li>
+</ul>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> for published research, please cite the
+authors. Follow these links for more information about citing <code class="docutils literal notranslate"><span class="pre">astroquery</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/astropy/astroquery/blob/main/astroquery/CITATION">Citing Astroquery</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author(s):</strong> Sam Bianco <br>
+<strong>Keyword(s):</strong> Tutorial, Astroquery, MastMissions <br>
+<strong>First published:</strong> January 2025 <br>
+<strong>Last updated:</strong> January 2025 <br></p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/multi_mission/missions_mast_search"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../wildcard_searches/wildcard_searches.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Wildcard Handling with Astroquery.mast</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-for-datasets-from-missions-mast">Querying for Datasets from Missions-MAST</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#search-parameters">Search Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-object-name">Query by Object Name</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-region">Query by Region</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-by-criteria">Query by Criteria</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-data-products">Getting Data Products</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-a-product-query">Performing a Product Query</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-data-products">Filtering Data Products</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-products">Downloading Products</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exclusive-data-access">Exclusive Data Access</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-missions">Switching Missions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solutions">Exercise Solutions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

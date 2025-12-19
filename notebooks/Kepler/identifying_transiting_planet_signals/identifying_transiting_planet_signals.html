@@ -1,0 +1,1332 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Identifying Transiting Planet Signals in a Kepler Light Curve &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Measuring and Removing a Rotation Period Signal from a Kepler Light Curve" href="../measuring_a_rotation_period/measuring_a_rotation_period.html" />
+    <link rel="prev" title="Identifying Periodic Signals" href="../signals.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../signals.html">Identifying Periodic Signals</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Identifying Transiting Planet Signals in a Kepler Light Curve</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-a-light-curve-and-removing-long-term-trends">1. Downloading a Light Curve and Removing Long-Term Trends</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-box-least-squares-method-for-finding-transiting-planets">2. The Box Least Squares Method for Finding Transiting Planets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-transiting-planets-in-a-kepler-light-curve-using-bls">3. Searching for Transiting Planets in a <em>Kepler</em> Light Curve Using BLS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-a-transit-model-and-cadence-mask">4. Retrieving a Transit Model and Cadence Mask</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-additional-transiting-planet-signals-in-the-same-light-curve">5. Identifying Additional Transiting Planet Signals in the Same Light Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-interactive-bls-periodogram-in-lightkurve">6. Using the Interactive BLS Periodogram in Lightkurve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">Citing Lightkurve and Astropy</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="identifying-transiting-planet-signals-in-a-kepler-light-curve">
+<h1>Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve<a class="headerlink" href="#identifying-transiting-planet-signals-in-a-kepler-light-curve" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand the “Box Least Squares” (BLS) method for identifying transit signals.</p></li>
+<li><p>Know how to use the Lightkurve <code class="docutils literal notranslate"><span class="pre">BoxLeastSquaresPeriodogram</span></code> to identify a transiting planet.</p></li>
+<li><p>Be able to estimate the period, epoch, and duration of the transit.</p></li>
+<li><p>Be able to plot the phase-folded transit light curve.</p></li>
+<li><p>Be familiar with the interactive Box Least Squares periodogram in Lightkurve.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The <em>Kepler</em> and <em>TESS</em> missions are optimized for finding new transiting exoplanets. <a class="reference external" href="http://docs.lightkurve.org/">Lightkurve</a> provides a suite of tools that help make the process of identifying and characterizing planets convenient and accessible.</p>
+<p>In this tutorial, we will show you how to conduct your own search for transiting exoplanets in <em>Kepler</em> and <em>TESS</em> light curves. <a class="reference external" href="http://docs.lightkurve.org/">Lightkurve</a> uses the <a class="reference external" href="https://www.astropy.org/">Astropy</a> implementation of the Box Least Squares (BLS) method to identify transit signals. This tutorial demonstrates the basics of how to optimally use Lightkurve’s BLS tools.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>This tutorial requires the <a class="reference external" href="http://docs.lightkurve.org/"><strong>Lightkurve</strong></a> package, which uses <a class="reference external" href="https://matplotlib.org/"><strong>Matplotlib</strong></a> for plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">lightkurve</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lk</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="downloading-a-light-curve-and-removing-long-term-trends">
+<h2>1. Downloading a Light Curve and Removing Long-Term Trends<a class="headerlink" href="#downloading-a-light-curve-and-removing-long-term-trends" title="Link to this heading">#</a></h2>
+<p>As an example, we will download all available <a class="reference external" href="https://archive.stsci.edu/kepler"><em>Kepler</em></a> observations for a known multi-planet system, <a class="reference external" href="https://iopscience.iop.org/article/10.1088/0004-637X/768/2/101">Kepler-69</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search for Kepler observations of Kepler-69</span>
+<span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;Kepler-69&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span> <span class="n">cadence</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
+<span class="c1"># Download all available Kepler light curves</span>
+<span class="n">lc_collection</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
+<span class="n">lc_collection</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/319178a268bafa1c38065661640a63e0459c3aba61258a7c374c4e2451e45fc4.png" src="../../../_images/319178a268bafa1c38065661640a63e0459c3aba61258a7c374c4e2451e45fc4.png" />
+</div>
+</div>
+<p>Each observation has a different offset, so in order to successfully search this light curve for transits, we first need to normalize and flatten the full observation. This can be performed on a stitched light curve. For more information about combining multiple observations of the same target, please see the companion tutorial on combining multiple quarters of <em>Kepler</em> data with Lightkurve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">SearchResult containing 17 data products.
+
+<table id="table139644948484624">
+<thead><tr><th>#</th><th>mission</th><th>year</th><th>author</th><th>exptime</th><th>target_name</th><th>distance</th></tr></thead>
+<thead><tr><th></th><th></th><th></th><th></th><th>s</th><th></th><th>arcsec</th></tr></thead>
+<tr><td>0</td><td>Kepler Quarter 01</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>1</td><td>Kepler Quarter 02</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>2</td><td>Kepler Quarter 03</td><td>2009</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>3</td><td>Kepler Quarter 04</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>4</td><td>Kepler Quarter 05</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>5</td><td>Kepler Quarter 06</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>6</td><td>Kepler Quarter 07</td><td>2010</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>7</td><td>Kepler Quarter 10</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>8</td><td>Kepler Quarter 09</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>9</td><td>Kepler Quarter 08</td><td>2011</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>10</td><td>Kepler Quarter 11</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>11</td><td>Kepler Quarter 12</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>12</td><td>Kepler Quarter 13</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>13</td><td>Kepler Quarter 14</td><td>2012</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>14</td><td>Kepler Quarter 15</td><td>2013</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>15</td><td>Kepler Quarter 16</td><td>2013</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+<tr><td>16</td><td>Kepler Quarter 17</td><td>2013</td><td><a href='https://archive.stsci.edu/kepler/data_products.html'>Kepler</a></td><td>1800</td><td>kplr008692861</td><td>0.0</td></tr>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flatten the light curve </span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">lc_collection</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">window_length</span><span class="o">=</span><span class="mi">901</span><span class="p">)</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
+<span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/4aa48b7c1a5a26e4fd1ae6e00771ac4e98ff6f54fa047e5281ede165eea9b3f7.png" src="../../../_images/4aa48b7c1a5a26e4fd1ae6e00771ac4e98ff6f54fa047e5281ede165eea9b3f7.png" />
+</div>
+</div>
+</section>
+<section id="the-box-least-squares-method-for-finding-transiting-planets">
+<h2>2. The Box Least Squares Method for Finding Transiting Planets<a class="headerlink" href="#the-box-least-squares-method-for-finding-transiting-planets" title="Link to this heading">#</a></h2>
+<p>The most common method used to identify transiting exoplanets is the Box Least Squares (BLS) periodogram analysis. BLS works by modeling a transit using an upside-down top hat with four parameters: period, duration, depth, and reference time. These can be seen in the figure below, from the <code class="docutils literal notranslate"><span class="pre">astropy.timeseries</span></code> implementation of BLS.</p>
+<a class="reference internal image-reference" href="https://docs.astropy.org/en/stable/timeseries/bls-1.png"><img alt="Box Least Squares" src="https://docs.astropy.org/en/stable/timeseries/bls-1.png" style="width: 600px;" />
+</a>
+<p>These parameters are then optimized by minimizing the square difference between the BLS transit model and the observation. For more information about BLS, please see the <a class="reference external" href="https://docs.astropy.org/en/stable/timeseries/bls.html">Astropy documentation</a>.</p>
+<p><a class="reference internal" href="#"><span class="xref myst">Lightkurve</span></a> has two types of periodogram available to anaylze periodic trends in light curves:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LombScarglePeriodogram</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BoxLeastSquaresPeriodogram</span></code></p></li>
+</ul>
+<p>Please see the companion tutorial on how to create periodograms and identify significant peaks for an example of the <code class="docutils literal notranslate"><span class="pre">LombScarglePeriodogram</span></code>.</p>
+</section>
+<section id="searching-for-transiting-planets-in-a-kepler-light-curve-using-bls">
+<h2>3. Searching for Transiting Planets in a <em>Kepler</em> Light Curve Using BLS<a class="headerlink" href="#searching-for-transiting-planets-in-a-kepler-light-curve-using-bls" title="Link to this heading">#</a></h2>
+<p>To create a <code class="docutils literal notranslate"><span class="pre">BoxLeastSquaresPeriodogram</span></code>, use the <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> method <code class="docutils literal notranslate"><span class="pre">to_periodogram</span></code>, and pass in the string <code class="docutils literal notranslate"><span class="pre">'bls'</span></code> to specify the type of periodogram object you want to create. This method also optionally takes an array of periods (in days) to search, which we will set from 1–20 days to limit our search to short-period planets. We do so using the <code class="docutils literal notranslate"><span class="pre">numpy.linspace</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="c1"># Create array of periods to search</span>
+<span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="c1"># Create a BLSPeriodogram</span>
+<span class="n">bls</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;bls&#39;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span> <span class="n">frequency_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">);</span>
+<span class="n">bls</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`period` contains 404720 points.Periodogram is likely to be large, and slow to evaluate. Consider setting `frequency_factor` to a higher value.
+</pre></div>
+</div>
+<img alt="../../../_images/809ab2ad68322c7903a2e773431ce7ec99ceea59dd3cf8d123e1977ec1abd1ab.png" src="../../../_images/809ab2ad68322c7903a2e773431ce7ec99ceea59dd3cf8d123e1977ec1abd1ab.png" />
+</div>
+</div>
+<p>The plot above shows the power, or the likelihood of the BLS fit, for each of the periods in the array we passed in. This plot shows a handful of high-power peaks at discrete periods, which is a good sign that a transit has been identified. The highest power spike shows the most likely period, while the lower power spikes are fractional harmonics of the period, for example, 1/2, 1/3, 1/4, etc.</p>
+<p>We can pull out the most likely BLS parameters by taking their values at maximum power — we will refer to this transiting object as “planet b.”</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planet_b_period</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">period_at_max_power</span>
+<span class="n">planet_b_t0</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">transit_time_at_max_power</span>
+<span class="n">planet_b_dur</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">duration_at_max_power</span>
+
+<span class="c1"># Check the value for period</span>
+<span class="n">planet_b_period</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[13.721772 \; \mathrm{d}\]</div>
+</div>
+</div>
+<p>To confirm that this period and transit time (epoch) correspond to a transit signal, we can phase-fold the light curve using these values and plot it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/fa1384a59c049ca138dd1601c0a4ed814e928ffcf96dacf27b2622d64e88c847.png" src="../../../_images/fa1384a59c049ca138dd1601c0a4ed814e928ffcf96dacf27b2622d64e88c847.png" />
+</div>
+</div>
+<p>The phase-folded light curve shows a strong transit signal with the identified period and transit time of maximum BLS power.</p>
+</section>
+<section id="retrieving-a-transit-model-and-cadence-mask">
+<h2>4. Retrieving a Transit Model and Cadence Mask<a class="headerlink" href="#retrieving-a-transit-model-and-cadence-mask" title="Link to this heading">#</a></h2>
+<p>The BLS periodogram has features that make it possible to search for multiple planets in the same system. If we want to identify additional transit signals, it will be much more convenient if we first remove the previously identified signal. This will prevent the high-power periodicity of the first planet, planet b, from dominating the BLS periodogram, and will allow us to find lower signal-to-noise ratio (SNR) transits.</p>
+<p>We can create a cadence mask for the light curve using the transit parameters from the <code class="docutils literal notranslate"><span class="pre">BoxLeastSquaresPeriodogram</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a cadence mask using the BLS parameters</span>
+<span class="n">planet_b_mask</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_mask</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> 
+                                     <span class="n">transit_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">,</span> 
+                                     <span class="n">duration</span><span class="o">=</span><span class="n">planet_b_dur</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we can create a masked version of the light curve to search for additional transit signals. The light curve is shown below, with masked cadences marked in red.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">masked_lc</span> <span class="o">=</span> <span class="n">lc</span><span class="p">[</span><span class="o">~</span><span class="n">planet_b_mask</span><span class="p">]</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
+<span class="n">lc</span><span class="p">[</span><span class="n">planet_b_mask</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Masked&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ffcd2a1a12dd90b256c46f2f798917acec378d2ae3e4975e896a39766913a84d.png" src="../../../_images/ffcd2a1a12dd90b256c46f2f798917acec378d2ae3e4975e896a39766913a84d.png" />
+</div>
+</div>
+<p>We can also create a BLS model to visualize the transit fit. This returns a <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> object with the BLS model in the flux column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a BLS model using the BLS parameters</span>
+<span class="n">planet_b_model</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_model</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_b_period</span><span class="p">,</span> 
+                                       <span class="n">transit_time</span><span class="o">=</span><span class="n">planet_b_t0</span><span class="p">,</span> 
+                                       <span class="n">duration</span><span class="o">=</span><span class="n">planet_b_dur</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can plot this over the folded light curve to confirm that it accurately represents the transit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<span class="n">planet_b_model</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_b_period</span><span class="p">,</span> <span class="n">planet_b_t0</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/1c3235b085be54d0a24a842c55d3d511c0398dce47ac1108b26e7745992ff8d0.png" src="../../../_images/1c3235b085be54d0a24a842c55d3d511c0398dce47ac1108b26e7745992ff8d0.png" />
+</div>
+</div>
+</section>
+<section id="identifying-additional-transiting-planet-signals-in-the-same-light-curve">
+<h2>5. Identifying Additional Transiting Planet Signals in the Same Light Curve<a class="headerlink" href="#identifying-additional-transiting-planet-signals-in-the-same-light-curve" title="Link to this heading">#</a></h2>
+<p>Now that we have created a light curve with the first identified planet masked out, we can search the remaining light curve for additional transit signals. Here, we search for long-period planets by increasing our range of periods to 1–300 days.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">bls</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="s1">&#39;bls&#39;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+<span class="n">bls</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`period` contains 4246016 points.Periodogram is likely to be large, and slow to evaluate. Consider setting `frequency_factor` to a higher value.
+</pre></div>
+</div>
+<img alt="../../../_images/6c480d6711d0011455f484d9e8fcc7b3ebe738e1710c3af70b229c1afe0fe666.png" src="../../../_images/6c480d6711d0011455f484d9e8fcc7b3ebe738e1710c3af70b229c1afe0fe666.png" />
+</div>
+</div>
+<p>While no peaks in this BLS periodogram display a power as high as the previous transit signal, there is a definite peak near ~240 days. We can pull out the corresponding period and transit time to check the signal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planet_c_period</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">period_at_max_power</span>
+<span class="n">planet_c_t0</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">transit_time_at_max_power</span>
+<span class="n">planet_c_dur</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">duration_at_max_power</span>
+
+<span class="c1"># Check the value for period</span>
+<span class="n">planet_c_period</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[242.46665 \; \mathrm{d}\]</div>
+</div>
+</div>
+<p>We can again plot the phase-folded light curve to examine the transit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_c_period</span><span class="p">,</span> <span class="n">planet_c_t0</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<span class="n">masked_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">planet_c_period</span><span class="p">,</span> <span class="n">planet_c_t0</span><span class="p">)</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                                                          <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Binned Flux&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/6dc124f4a06c34d8d78bd650313d9c4318a8eb34d5bcbf804a493ea868da8798.png" src="../../../_images/6dc124f4a06c34d8d78bd650313d9c4318a8eb34d5bcbf804a493ea868da8798.png" />
+</div>
+</div>
+<p>This signal is lower SNR because there are fewer transits due to the longer period, and the shallower depth implies that the planet is smaller. To help see the transit more clearly, we have overplotted the binned flux, combining consecutive points taken over a span of 0.1 days.</p>
+<p>We have now successfully identified two planets in the same system! We can use the BLS models to visualize the transit timing in the light curve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planet_c_model</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">get_transit_model</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">planet_c_period</span><span class="p">,</span> 
+                                       <span class="n">transit_time</span><span class="o">=</span><span class="n">planet_c_t0</span><span class="p">,</span> 
+                                       <span class="n">duration</span><span class="o">=</span><span class="n">planet_c_dur</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
+<span class="n">planet_b_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;dodgerblue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Planet b Transit Model&#39;</span><span class="p">);</span>
+<span class="n">planet_c_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Planet c Transit Model&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/748b364115e5626f2834bd498ade594ab72e1878f16b9e12f190d05132034e4c.png" src="../../../_images/748b364115e5626f2834bd498ade594ab72e1878f16b9e12f190d05132034e4c.png" />
+</div>
+</div>
+</section>
+<section id="using-the-interactive-bls-periodogram-in-lightkurve">
+<h2>6. Using the Interactive BLS Periodogram in Lightkurve<a class="headerlink" href="#using-the-interactive-bls-periodogram-in-lightkurve" title="Link to this heading">#</a></h2>
+<p>Lightkurve also has a tool that enables you to interactively perform a BLS search. A quick demo of this feature is shown below. For more information about the interactive BLS periodogram, please see the <a class="reference external" href="http://docs.lightkurve.org/api/lightkurve.lightcurve.FoldedLightCurve.html#lightkurve.lightcurve.FoldedLightCurve.interact_bls">Lightkurve documentation</a>.</p>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">LightCurve.interact_bls()</span></code> method, zoom in on peaks in the BLS periodogram using the interactive plotting tools. To improve the fit, you can change the transit duration. The phase-folded light curve panel in the top right and the full light curve below it will automatically update to plot the highest power BLS model. The BLS parameters with highest power are noted in the bottom right of the figure.</p>
+<p><img alt="interact_bls() demo animation" src="../../../_images/interact_bls.gif" /></p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Authors:</strong> Nicholas Saunders (nksaun&#64;hawaii.edu)</p>
+<p><strong>Updated On:</strong> 2020-09-28</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="citing-lightkurve-and-astropy">
+<h1>Citing Lightkurve and Astropy<a class="headerlink" href="#citing-lightkurve-and-astropy" title="Link to this heading">#</a></h1>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> or its dependencies in your published research, please cite the authors. Click the buttons below to copy BibTeX entries to your clipboard.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lk</span><span class="o">.</span><span class="n">show_citation_instructions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<style>
+    button {
+        border: 1px solid;
+        padding: 0.2em;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.8em;
+        margin: 0.2em;
+        cursor: pointer;
+    }
+
+    .citation-button-1 {background-color: #4CAF50;} /* Green */
+    .citation-button-2 {background-color: #008CBA;} /* Blue */
+</style>
+
+<script type="text/javascript">
+    function copyBibtex(package) {
+        var copyText = document.getElementById(package + "Text");
+        copyText.select();
+        document.execCommand("copy");
+        alert("BibTex has been copied to your clipboard")
+    }
+</script>
+</head>
+
+<body>
+    <textarea id="lightkurveText" style="position: absolute; left: -9999px; z-index: -9999;">
+@MISC{2018ascl.soft12013L,
+    author = {{Lightkurve Collaboration} and {Cardoso}, J.~V.~d.~M. and
+                {Hedges}, C. and {Gully-Santiago}, M. and {Saunders}, N. and
+                {Cody}, A.~M. and {Barclay}, T. and {Hall}, O. and
+                {Sagear}, S. and {Turtelboom}, E. and {Zhang}, J. and
+                {Tzanidakis}, A. and {Mighell}, K. and {Coughlin}, J. and
+                {Bell}, K. and {Berta-Thompson}, Z. and {Williams}, P. and
+                {Dotson}, J. and {Barentsen}, G.},
+    title = "{Lightkurve: Kepler and TESS time series analysis in Python}",
+    keywords = {Software, NASA},
+howpublished = {Astrophysics Source Code Library},
+        year = 2018,
+    month = dec,
+archivePrefix = "ascl",
+    eprint = {1812.013},
+    adsurl = {http://adsabs.harvard.edu/abs/2018ascl.soft12013L},
+}
+    </textarea>
+    <textarea id="astropyText" style="position: absolute; left: -9999px; z-index: -9999;">
+@ARTICLE{astropy:2022,
+       author = {{Astropy Collaboration} and {Price-Whelan}, Adrian M. and {Lim}, Pey
+       Lian and {Earl}, Nicholas and {Starkman}, Nathaniel and {Bradley}, Larry and
+       {Shupe}, David L. and {Patil}, Aarya A. and {Corrales}, Lia and {Brasseur}, C.~E.
+       and {N{\"o}the}, Maximilian and {Donath}, Axel and {Tollerud}, Erik and {Morris},
+       Brett M. and {Ginsburg}, Adam and {Vaher}, Eero and {Weaver}, Benjamin A. and
+       {Tocknell}, James and {Jamieson}, William and {van Kerkwijk}, Marten H. and
+       {Robitaille}, Thomas P. and {Merry}, Bruce and {Bachetti}, Matteo and
+       {G{\"u}nther}, H. Moritz and {Aldcroft}, Thomas L. and {Alvarado-Montes}, Jaime
+       A. and {Archibald}, Anne M. and {B{\'o}di}, Attila and {Bapat}, Shreyas and
+       {Barentsen}, Geert and {Baz{\'a}n}, Juanjo and {Biswas}, Manish and {Boquien},
+       M{\'e}d{\'e}ric and {Burke}, D.~J. and {Cara}, Daria and {Cara}, Mihai and
+       {Conroy}, Kyle E. and {Conseil}, Simon and {Craig}, Matthew W. and {Cross},
+       Robert M. and {Cruz}, Kelle L. and {D'Eugenio}, Francesco and {Dencheva}, Nadia
+       and {Devillepoix}, Hadrien A.~R. and {Dietrich}, J{\"o}rg P. and {Eigenbrot},
+       Arthur Davis and {Erben}, Thomas and {Ferreira}, Leonardo and {Foreman-Mackey},
+       Daniel and {Fox}, Ryan and {Freij}, Nabil and {Garg}, Suyog and {Geda}, Robel and
+       {Glattly}, Lauren and {Gondhalekar}, Yash and {Gordon}, Karl D. and {Grant},
+       David and {Greenfield}, Perry and {Groener}, Austen M. and {Guest}, Steve and
+       {Gurovich}, Sebastian and {Handberg}, Rasmus and {Hart}, Akeem and
+       {Hatfield-Dodds}, Zac and {Homeier}, Derek and {Hosseinzadeh}, Griffin and
+       {Jenness}, Tim and {Jones}, Craig K. and {Joseph}, Prajwel and {Kalmbach}, J.
+       Bryce and {Karamehmetoglu}, Emir and {Ka{\l}uszy{\'n}ski}, Miko{\l}aj and
+       {Kelley}, Michael S.~P. and {Kern}, Nicholas and {Kerzendorf}, Wolfgang E. and
+       {Koch}, Eric W. and {Kulumani}, Shankar and {Lee}, Antony and {Ly}, Chun and
+       {Ma}, Zhiyuan and {MacBride}, Conor and {Maljaars}, Jakob M. and {Muna}, Demitri
+       and {Murphy}, N.~A. and {Norman}, Henrik and {O'Steen}, Richard and {Oman}, Kyle
+       A. and {Pacifici}, Camilla and {Pascual}, Sergio and {Pascual-Granado}, J. and
+       {Patil}, Rohit R. and {Perren}, Gabriel I. and {Pickering}, Timothy E. and
+       {Rastogi}, Tanuj and {Roulston}, Benjamin R. and {Ryan}, Daniel F. and {Rykoff},
+       Eli S. and {Sabater}, Jose and {Sakurikar}, Parikshit and {Salgado}, Jes{\'u}s
+       and {Sanghi}, Aniket and {Saunders}, Nicholas and {Savchenko}, Volodymyr and
+       {Schwardt}, Ludwig and {Seifert-Eckert}, Michael and {Shih}, Albert Y. and
+       {Jain}, Anany Shrey and {Shukla}, Gyanendra and {Sick}, Jonathan and {Simpson},
+       Chris and {Singanamalla}, Sudheesh and {Singer}, Leo P. and {Singhal}, Jaladh and
+       {Sinha}, Manodeep and {Sip{\H{o}}cz}, Brigitta M. and {Spitler}, Lee R. and
+       {Stansby}, David and {Streicher}, Ole and {{\v{S}}umak}, Jani and {Swinbank},
+       John D. and {Taranu}, Dan S. and {Tewary}, Nikita and {Tremblay}, Grant R. and
+       {Val-Borro}, Miguel de and {Van Kooten}, Samuel J. and {Vasovi{\'c}}, Zlatan and
+       {Verma}, Shresth and {de Miranda Cardoso}, Jos{\'e} Vin{\'\i}cius and {Williams},
+       Peter K.~G. and {Wilson}, Tom J. and {Winkel}, Benjamin and {Wood-Vasey}, W.~M.
+       and {Xue}, Rui and {Yoachim}, Peter and {Zhang}, Chen and {Zonca}, Andrea and
+       {Astropy Project Contributors}}, title = "{The Astropy Project: Sustaining and
+       Growing a Community-oriented Open-source Project and the Latest Major Release
+       (v5.0) of the Core Package}",
+      journal = {\apj},
+     keywords = {Astronomy software, Open source software, Astronomy data analysis, 1855, 1866, 1858, Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = 2022,
+        month = aug,
+       volume = {935},
+       number = {2},
+          eid = {167},
+        pages = {167},
+          doi = {10.3847/1538-4357/ac7c74},
+archivePrefix = {arXiv},
+       eprint = {2206.14220},
+ primaryClass = {astro-ph.IM},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022ApJ...935..167A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+    </textarea>
+    <textarea id="astroqueryText" style="position: absolute; left: -9999px; z-index: -9999;">
+@ARTICLE{2019AJ....157...98G,
+   author = {{Ginsburg}, A. and {Sip{\H o}cz}, B.~M. and {Brasseur}, C.~E. and
+	{Cowperthwaite}, P.~S. and {Craig}, M.~W. and {Deil}, C. and
+	{Guillochon}, J. and {Guzman}, G. and {Liedtke}, S. and {Lian Lim}, P. and
+	{Lockhart}, K.~E. and {Mommert}, M. and {Morris}, B.~M. and
+	{Norman}, H. and {Parikh}, M. and {Persson}, M.~V. and {Robitaille}, T.~P. and
+	{Segovia}, J.-C. and {Singer}, L.~P. and {Tollerud}, E.~J. and
+	{de Val-Borro}, M. and {Valtchanov}, I. and {Woillez}, J. and
+	{The Astroquery collaboration} and {a subset of the astropy collaboration}
+	},
+    title = "{astroquery: An Astronomical Web-querying Package in Python}",
+  journal = {\aj},
+archivePrefix = "arXiv",
+   eprint = {1901.04520},
+ primaryClass = "astro-ph.IM",
+ keywords = {astronomical databases: miscellaneous, virtual observatory tools},
+     year = 2019,
+    month = mar,
+   volume = 157,
+      eid = {98},
+    pages = {98},
+      doi = {10.3847/1538-3881/aafc33},
+   adsurl = {https://adsabs.harvard.edu/abs/2019AJ....157...98G},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+    </textarea>
+    <textarea id="tesscutText" style="position: absolute; left: -9999px; z-index: -9999;">
+@MISC{2019ascl.soft05007B,
+        author = {{Brasseur}, C.~E. and {Phillip}, Carlita and {Fleming}, Scott W. and
+          {Mullally}, S.~E. and {White}, Richard L.},
+         title = "{Astrocut: Tools for creating cutouts of TESS images}",
+      keywords = {Software},
+          year = 2019,
+         month = may,
+           eid = {ascl:1905.007},
+         pages = {ascl:1905.007},
+ archivePrefix = {ascl},
+        eprint = {1905.007},
+        adsurl = {https://ui.adsabs.harvard.edu/abs/2019ascl.soft05007B},
+       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+ }
+    </textarea>
+
+    <p>
+        When using Lightkurve, we kindly request that you cite the following packages:
+        <ul>
+            <li>
+                <a href="https://docs.lightkurve.org">lightkurve</a>
+                <button onclick="copyBibtex('lightkurve')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+            </li>
+            <li>
+                <a href="https://astropy.org">astropy</a>
+                <button onclick="copyBibtex('astropy')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+            </li>
+            <li>
+                <a href="https://astroquery.readthedocs.io">astroquery</a>
+                <button onclick="copyBibtex('astroquery')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+                —  if you are using <i>search_lightcurve()</i> or <i>search_targetpixelfile()</i>.
+            </li>
+            <li>
+                <a href="https://mast.stsci.edu/tesscut/">tesscut</a>
+                <button onclick="copyBibtex('tesscut')"><i class="fas fa-clipboard"></i> Copy BibTeX</button>
+                — if you are using <i>search_tesscut()</i>.
+            </li>
+        </ul>
+    </p>
+</body>
+</div></div>
+</div>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" />
+</a>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/Kepler/identifying_transiting_planet_signals"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../signals.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Identifying Periodic Signals</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../measuring_a_rotation_period/measuring_a_rotation_period.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-a-light-curve-and-removing-long-term-trends">1. Downloading a Light Curve and Removing Long-Term Trends</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-box-least-squares-method-for-finding-transiting-planets">2. The Box Least Squares Method for Finding Transiting Planets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-transiting-planets-in-a-kepler-light-curve-using-bls">3. Searching for Transiting Planets in a <em>Kepler</em> Light Curve Using BLS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-a-transit-model-and-cadence-mask">4. Retrieving a Transit Model and Cadence Mask</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-additional-transiting-planet-signals-in-the-same-light-curve">5. Identifying Additional Transiting Planet Signals in the Same Light Curve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-interactive-bls-periodogram-in-lightkurve">6. Using the Interactive BLS Periodogram in Lightkurve</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-lightkurve-and-astropy">Citing Lightkurve and Astropy</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

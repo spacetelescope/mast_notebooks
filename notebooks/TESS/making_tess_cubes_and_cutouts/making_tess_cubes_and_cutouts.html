@@ -1,0 +1,1715 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generating Cubes and Cutouts from TESS FFIs &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Instrumental Noise" href="../noise.html" />
+    <link rel="prev" title="Intermediate: Create TESS FFI Cutout using Python Requests" href="../interm_tesscut_requests/interm_tesscut_requests.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <script>document.write(`<img src="../../../_static/mastlogo.svg" class="logo__image only-dark" alt="MAST Notebook Repository - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../FFIs.html">TESS FFIs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Generating Cubes and Cutouts from TESS FFIs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-and-downloading-the-ffis">Retrieving and Downloading the FFIs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-the-ffis">Retrieving the FFIs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-the-ffis">Downloading the FFIs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-ffis">Inspecting the FFIs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-cube">Creating a Cube</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-cutouts">Creating the Cutouts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-generate-cutouts-for-tic-2527981-sector-27-spoc-products">Exercise: Generate Cutouts for TIC 2527981 Sector 27 SPOC Products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="generating-cubes-and-cutouts-from-tess-ffis">
+<h1>Generating Cubes and Cutouts from TESS FFIs<a class="headerlink" href="#generating-cubes-and-cutouts-from-tess-ffis" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Learn about the two TESS full frame image (FFI) types: SPOC and TICA.</p></li>
+<li><p>Learn the structure of a TICA FFI.</p></li>
+<li><p>Learn how to retrieve and download TESS FFIs using <code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code>.</p></li>
+<li><p>Learn how to generate cubes from TESS FFIs with astrocut’s <code class="docutils literal notranslate"><span class="pre">CubeFactory</span></code> and <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory</span></code>.</p></li>
+<li><p>Learn how to generate cutouts from TESS cubes with astrocut’s <code class="docutils literal notranslate"><span class="pre">CutoutFactory</span></code>.</p></li>
+<li><p>Learn the structure of a TESS target pixel file (TPF), and therefore an astrocut cutouts file, and how to retrieve and plot the data stored within.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In this tutorial, you will learn the basic functionality of <a class="reference external" href="https://github.com/spacetelescope/astrocut">astrocut</a>’s <code class="docutils literal notranslate"><span class="pre">CubeFactory</span></code>, <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory</span></code>, and <code class="docutils literal notranslate"><span class="pre">CutoutFactory</span></code>. These 3 tools allow users to generate cubes and cutouts of TESS images. TESS image cubes are stacks of TESS full frame images (TESS FFIs) which are formatted to allow users to make cutouts with <code class="docutils literal notranslate"><span class="pre">CutoutFactory</span></code>. These cutouts are sub-images that will only contain your region of interest, to make analysis easier.</p>
+<p>The process of generating cubes, and making cutouts from them, mimicks the web-based <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESSCut</a> service. This tutorial will teach you to make cubes and cutouts that are customized for your specific use-cases, while also giving insight to how TESSCut calls upon astrocut to create cutouts.</p>
+<p>As in the TESSCut service, there are <em>two</em> different TESS FFI product types you can work with in this notebook. These two product types are the TESS mission-provided, <a class="reference external" href="https://archive.stsci.edu/missions-and-data/tess">Science Processing Operations Center (SPOC) FFIs</a>, and the <a class="reference external" href="https://archive.stsci.edu/hlsp/tica">TESS Image CAlibrator (TICA) FFIs</a>. Both are available via <code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code>, and both have different use-cases. The TICA products offer the latest sector observations due to their faster delivery cadence, and can be available up to 3 times sooner than their SPOC counterparts. As such, for those who are working with time-sensitive observations, TICA may be the best option for generating your cutouts. Note that the SPOC and TICA products are processed through different pipelines and thus have different pixel values and WCS solutions. Please refer to the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2016SPIE.9913E..3EJ/abstract">SPOC pipeline paper</a> and the <a class="reference external" href="https://iopscience.iop.org/article/10.3847/2515-5172/abd63a">TICA pipeline paper</a> for more information on the differences and similarities between the SPOC and TICA products.</p>
+<p><img alt="TICA and SPOC ingest" src="../../../_images/tica-spoc-ingest.png" /></p>
+<p>The workflow for this notebook consists of:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Retrieving-and-Downloading-the-FFIs"><span class="xref myst">Retrieving and Downloading the FFIs</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Retrieving-the-FFIs"><span class="xref myst">Retrieving the FFIs</span></a></p></li>
+<li><p><a class="reference internal" href="#Downloading-the-FFIs"><span class="xref myst">Downloading the FFIs</span></a></p></li>
+<li><p><a class="reference internal" href="#Inspecting-the-FFIs"><span class="xref myst">Inspecting the FFIs</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Creating-a-Cube"><span class="xref myst">Creating a Cube</span></a></p></li>
+<li><p><a class="reference internal" href="#Creating-the-Cutouts"><span class="xref myst">Creating the Cutouts</span></a></p></li>
+<li><p><a class="reference internal" href="#Exercise:-Generate-Cutouts-for-TIC-2527981-Sector-27-SPOC-Products"><span class="xref myst">Exercise: Generate Cutouts for TIC 2527981 Sector 27 SPOC Products</span></a></p></li>
+<li><p><a class="reference internal" href="#Resources"><span class="xref myst">Resources</span></a></p></li>
+</ul>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>Below is a list of the packages used throughout this notebook, and their use-cases. Please ensure you have the recommended version of these packages installed on the environment this notebook has been launched in. See the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file for recommended package versions.</p>
+<ul class="simple">
+<li><p><em>astropy.units</em> for unit conversion</p></li>
+<li><p><em>matplotlib.pyplot</em> for plotting data</p></li>
+<li><p><em>numpy</em> to handle array functions</p></li>
+<li><p><em>astrocut CubeFactory</em> for generating cubes out of TESS-SPOC FFIs</p></li>
+<li><p><em>astrocut TicaCubeFactory</em> for generating cubes out of TICA FFIs</p></li>
+<li><p><em>astrocut CutoutFactory</em> for generating cutouts out of astrocut cubes</p></li>
+<li><p><em>astropy.coordinates SkyCoord</em> for creating sky coordinate objects</p></li>
+<li><p><em>astropy.io fits</em> for accessing FITS files</p></li>
+<li><p><em>astroquery.mast Observations</em> for retrieving and downloading the TESS FFIs</p></li>
+<li><p><em>matplotlib.path Path</em> to generate a drawing path for plotting purposes</p></li>
+<li><p><em>matplotlib.patches PathPatch</em> to generate a patch that represents the CCD footprint for plotting purposes</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astrocut</span><span class="w"> </span><span class="kn">import</span> <span class="n">TicaCubeFactory</span><span class="p">,</span> <span class="n">CutoutFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathPatch</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below are the helper functions we will call for plotting purposes later in the notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">convert_coords</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Wrap the input coordinates `ra` and `dec` around the upper limit of 180</span>
+<span class="sd">    degrees and convert to radians so that they may be plotted on the Aitoff canvas.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameter(s)</span>
+<span class="sd">    -----------</span>
+<span class="sd">    ra : str, int, or float</span>
+<span class="sd">        The Right Ascension your target lands on, in degrees. May be any object type that </span>
+<span class="sd">        can be converted to a float, such as a string, or integer.</span>
+<span class="sd">    dec : str, int, or float</span>
+<span class="sd">        The Declination your target lands on, in degrees. May be any object type that </span>
+<span class="sd">        can be converted to a float, such as a string, or integer.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ra_rad : float</span>
+<span class="sd">        The Right Ascension of your target in radians.</span>
+<span class="sd">    dec_rad : float</span>
+<span class="sd">        The Declination of your target in radians.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Make a SkyCoord object out of the RA, Dec</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+
+    <span class="c1"># The plotting only works when the coordinates are in radians.</span>
+    <span class="c1"># And because it&#39;s an aitoff projection, we can&#39;t </span>
+    <span class="c1"># go beyond 180 degrees, so let&#39;s wrap the RA vals around that upper limit.</span>
+    <span class="n">ra_rad</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span>
+    <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">radian</span>
+
+    <span class="k">return</span> <span class="n">ra_rad</span><span class="p">,</span> <span class="n">dec_rad</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_footprint</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plots a polygon of 4 vertices onto an aitoff projection on a matplotlib canvas.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameter(s)</span>
+<span class="sd">    -----------</span>
+<span class="sd">    coords : list or array of tuples</span>
+<span class="sd">        An iterable object (can be a list or array) of 5 tuples, each tuple containing the </span>
+<span class="sd">        RA and Dec (float objects) of a vertice of your footprint. There MUST be 5: 1 for each</span>
+<span class="sd">        vertice, and 1 to return to the starting point, as PathPatch works with a set of drawing </span>
+<span class="sd">        instructions, rather than a predetermined shape.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : Matplotlib.pyplot figure object subplot</span>
+<span class="sd">        The subplot that contains the aitoff projection and footprint drawing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;We need 5 sets of coordinates. 1 for each vertice + 1 to return to the starting point.&#39;</span>
+    <span class="n">instructions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">]</span>
+    
+    <span class="c1"># Create the path patch using the `coords` list of tuples and the</span>
+    <span class="c1"># instructions from above</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">instructions</span><span class="p">)</span>
+    <span class="n">ppatch</span> <span class="o">=</span> <span class="n">PathPatch</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;salmon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Create a matplotlib canvas</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    
+    <span class="c1"># We will be using the `aitoff` projection for a globe canvas</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;aitoff&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Need grids!</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    
+    <span class="c1"># Add the patch to your canvas</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">ppatch</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">ax</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="retrieving-and-downloading-the-ffis">
+<h2>Retrieving and Downloading the FFIs<a class="headerlink" href="#retrieving-and-downloading-the-ffis" title="Link to this heading">#</a></h2>
+<p>Before we begin generating cubes and cutouts from TESS FFIs, we must first acquire these FFIs. To do this, we will request and download the FFIs locally using <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.mast</a>, or more specifically, the <code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code> tool, which will grant us access to the database that houses the TESS products. This is also how the TESSCut API generates its cutouts.</p>
+<section id="retrieving-the-ffis">
+<h3>Retrieving the FFIs<a class="headerlink" href="#retrieving-the-ffis" title="Link to this heading">#</a></h3>
+<p>You can download FFIs for any sector, camera, and CCD type. This notebook will generate cutouts for target TIC 2527981 using TICA FFIs in sector 27, but feel free to substitute a favorite target of your own. To find our target, we will filter with the database criteria: <code class="docutils literal notranslate"><span class="pre">coordinates</span></code>, <code class="docutils literal notranslate"><span class="pre">target_name</span></code>, <code class="docutils literal notranslate"><span class="pre">dataproduct_type</span></code>, and <code class="docutils literal notranslate"><span class="pre">sequence_number</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> criteria will filter for the coordinates of our target, while the <code class="docutils literal notranslate"><span class="pre">target_name</span></code> will filter for TICA FFIs and exclude all SPOC FFIs. <code class="docutils literal notranslate"><span class="pre">dataproduct_type</span></code> ensures we get image observations, and the <code class="docutils literal notranslate"><span class="pre">sequence_number</span></code> will be used to filter for only sector 27 observations. With this information, let’s compile our query…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will pass in the coordinates as a Sky Coord object</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">289.0979</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.3370</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+                                  <span class="n">target_name</span><span class="o">=</span><span class="s1">&#39;TICA FFI&#39;</span><span class="p">,</span>
+                                  <span class="n">dataproduct_type</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">,</span>
+                                  <span class="n">sequence_number</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+
+<span class="n">obs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=1</i>
+<table id="table140382289779024" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wavelength_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th><th>objID1</th><th>distance</th></tr></thead>
+<thead><tr><th>str7</th><th>str4</th><th>str4</th><th>str10</th><th>str4</th><th>str4</th><th>str7</th><th>str8</th><th>str1</th><th>str25</th><th>float64</th><th>float64</th><th>str5</th><th>str17</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>str1</th><th>float64</th><th>str3</th><th>str1</th><th>int64</th><th>str117</th><th>str1</th><th>str1</th><th>str6</th><th>bool</th><th>float64</th><th>str8</th><th>str9</th><th>str9</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>HLSP</td><td>TICA</td><td>Photometer</td><td>TESS</td><td>TESS</td><td>Optical</td><td>TICA FFI</td><td>--</td><td>hlsp_tica_s0027-cam1-ccd4</td><td>292.5180823224232</td><td>-33.62274382166828</td><td>image</td><td>Michael Fausnaugh</td><td>3</td><td>59035.77807636512</td><td>59060.13917620387</td><td>475.2</td><td>600.0</td><td>1000.0</td><td>--</td><td>59246.0</td><td>N/A</td><td>--</td><td>27</td><td>POLYGON 298.489297 -26.919235 301.396094 -38.579035 285.694884 -40.219585 285.275975 -28.732615 298.489297 -26.919235</td><td>--</td><td>--</td><td>PUBLIC</td><td>False</td><td>nan</td><td>96814766</td><td>185636258</td><td>185636258</td><td>0.0</td></tr>
+</table></div></div></div>
+</div>
+<p>This is the sector 27 FFI that contains TIC2527981. Note that the <code class="docutils literal notranslate"><span class="pre">s_ra</span></code> and <code class="docutils literal notranslate"><span class="pre">s_dec</span></code> listed above are the center of the CCD that contains the target, not the coordinates of the target itself.</p>
+<p>To demonstrate this, let’s plot the <code class="docutils literal notranslate"><span class="pre">s_region</span></code> metadata, the <code class="docutils literal notranslate"><span class="pre">s_ra</span></code> and <code class="docutils literal notranslate"><span class="pre">s_dec</span></code> coordinates, and the input coordinates of our target to see where it lands relative to sector 27, camera 1, CCD 4.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the polygon vertices, then store them in separate lists</span>
+<span class="n">polygon</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;s_region&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">split</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="c1"># Removing the &quot;POLYGON&quot; string</span>
+<span class="n">split</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Storing the RAs and Decs separately</span>
+<span class="n">ras</span><span class="p">,</span> <span class="n">decs</span> <span class="o">=</span> <span class="n">split</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Now we convert our RAs/Decs into radians and wrap them around 180 degrees</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ras</span><span class="p">,</span> <span class="n">decs</span><span class="p">):</span>
+    <span class="n">ra_rad</span><span class="p">,</span> <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+    <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ra_rad</span><span class="p">,</span> <span class="n">dec_rad</span><span class="p">))</span>
+
+<span class="c1"># We use Matplotlib&#39;s Path and PathPatch to plot the footprint of sector 27, camera 1, CCD 4</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plot_footprint</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+<span class="c1"># Now let&#39;s plot our input target&#39;s RA, Dec on top of the footprint to see its relative position</span>
+<span class="n">target_ra</span><span class="p">,</span> <span class="n">target_dec</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">degree</span>
+<span class="n">target_coords</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">target_ra</span><span class="p">,</span> <span class="n">target_dec</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">target_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;target coords&#39;</span><span class="p">)</span>
+
+<span class="c1"># And lastly, let&#39;s plot the s_ra and s_dec coordinates to see what they represent</span>
+<span class="n">s_coords</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;s_ra&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;s_dec&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">s_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;s_ra, s_dec&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sector 27, Camera 1, CCD 4 Footprint&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/477aec6d80d47a8a9b4397c14ea674c4d6164ef093b9296cb745d95f05405799.png" src="../../../_images/477aec6d80d47a8a9b4397c14ea674c4d6164ef093b9296cb745d95f05405799.png" />
+</div>
+</div>
+<p>The plot above shows the positioning of TIC 2527981 relative to sector 27, camera 1, CCD 4. You can see that it is more or less on the edge of this CCD, and not the center. Note also that the <code class="docutils literal notranslate"><span class="pre">s_ra</span></code> and <code class="docutils literal notranslate"><span class="pre">s_dec</span></code> fall exactly in the center of the CCD.</p>
+<p>From this observation we can now retrieve the corresponding TICA products (FFIs). Let’s use the <code class="docutils literal notranslate"><span class="pre">get_product_list</span></code> method to retrieve these FFIs.</p>
+<div class="alert alert-block alert-info"><b>Note:</b> If you do not know which sectors contain your target, you should query for your target without the `sequence_number` filter to see what is available. However, the cutout functionality does not currently support making cross-sector cutouts, so FFI products from different sectors cannot be stacked into the same cube. Keep this in mind when retrieving the FFI products intended for your cube.</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;obsid&#39;</span><span class="p">])</span>
+<span class="n">products</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=3360</i>
+<table id="table140382288579984" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str8</th><th>str4</th><th>str5</th><th>str59</th><th>str4</th><th>str1</th><th>str95</th><th>str7</th><th>str1</th><th>str1</th><th>str1</th><th>str4</th><th>str1</th><th>str3</th><th>str64</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str4</th></tr></thead>
+<tr><td>96582243</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582244</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582245</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582255</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582257</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582258</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00118089-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00118089-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00118089-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582259</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00117485-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00117485-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00117485-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582260</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00116470-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00116470-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00116470-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>96582282</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o1-00117827-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o1-00117827-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o1-00117827-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>97165398</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00119553-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00119553-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00119553-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165407</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00118500-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00118500-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00118500-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165415</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00119580-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00119580-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00119580-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165421</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00119396-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00119396-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00119396-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165422</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00118602-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00118602-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00118602-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165427</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00119921-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00119921-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00119921-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165429</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00119798-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00119798-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00119798-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165445</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00118883-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00118883-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00118883-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165454</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00118954-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00118954-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00118954-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+<tr><td>97165460</td><td>HLSP</td><td>image</td><td>hlsp_tica_tess_ffi_s0027-o2-00118646-cam1-ccd4_tess_v01_img</td><td>FITS</td><td>D</td><td>mast:HLSP/tica/s0027/cam1-ccd4/hlsp_tica_tess_ffi_s0027-o2-00118646-cam1-ccd4_tess_v01_img.fits</td><td>SCIENCE</td><td>--</td><td>--</td><td>--</td><td>TICA</td><td>1</td><td>N/A</td><td>hlsp_tica_tess_ffi_s0027-o2-00118646-cam1-ccd4_tess_v01_img.fits</td><td>17795520</td><td>96814766</td><td>PUBLIC</td><td>4</td><td>TESS</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="downloading-the-ffis">
+<h3>Downloading the FFIs<a class="headerlink" href="#downloading-the-ffis" title="Link to this heading">#</a></h3>
+<p>Now we are ready to download the products. Use the <code class="docutils literal notranslate"><span class="pre">download_products</span></code> call to download these locally to your machine.</p>
+<div class="alert alert-block alert-info"><b>Note:</b> If you have many files, or a large download size, you should set the `curl_flag` option to `True`. This will generate a bash script that will download the products (via cURL) when executed. </div>
+<p>To save space in this example, we will only download the first 5 TICA FFIs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">products</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">curl_flag</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">manifest</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits with expected size 17795520. [astroquery.query]
+INFO: Found cached file ./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img.fits with expected size 17795520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img.fits with expected size 17795520. [astroquery.query]
+INFO: Found cached file ./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img.fits with expected size 17795520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img.fits with expected size 17795520. [astroquery.query]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=5</i>
+<table id="table140382351394384" class="table-striped table-bordered table-condensed">
+<thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
+<thead><tr><th>str144</th><th>str8</th><th>object</th><th>object</th></tr></thead>
+<tr><td>./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00118095-cam1-ccd4_tess_v01_img.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117909-cam1-ccd4_tess_v01_img.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117591-cam1-ccd4_tess_v01_img.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+<tr><td>./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117836-cam1-ccd4_tess_v01_img.fits</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="inspecting-the-ffis">
+<h3>Inspecting the FFIs<a class="headerlink" href="#inspecting-the-ffis" title="Link to this heading">#</a></h3>
+<p>Now that we have the TICA FFIs stored locally, let’s do some quick plotting and inspection. We can use the <code class="docutils literal notranslate"><span class="pre">manifest</span></code> output from our download call above to get the list of our downloaded FFIs in their respective locations. Let’s open up one of them and do some plotting and header inspection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ffi</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FFI&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ffi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HDU List&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">ffi</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FFI
+./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits
+ 
+HDU List
+Filename: ./mastDownload/HLSP/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img/hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU     181   (2136, 2078)   float32   
+  1                1 BinTableHDU     20   989R x 4C   [K, E, E, I]   
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
+</pre></div>
+</div>
+</div>
+</div>
+<p>Unlike the SPOC FFIs, the TICA FFIs have the science data stored in the Primary HDU of the FITS file. The BinTable HDU contains the list of all the reference sources used to derive the WCS solutions for the data. More information on this is available in the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020RNAAS...4..251F/abstract">TICA pipeline paper</a>, but let’s move forward and retrieve the header information from the Primary HDU.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="n">ffi</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SIMPLE  =                    T / conforms to FITS standard                      
+BITPIX  =                  -32 / array data type                                
+NAXIS   =                    2 / number of array dimensions                     
+NAXIS1  =                 2136                                                  
+NAXIS2  =                 2078                                                  
+EXTEND  =                    T                                                  
+CRM_N   =                   10 / Window for CRM min/max rejection               
+ORBIT_ID=                   61 / Orbit ID, not a physical orbit                 
+ACS_MODE= &#39;FP      &#39;           / Attitude Control System mode                   
+SC_RA   =    326.8525352094406 / Predicted RA                                   
+SC_DEC  =   -72.42645616046441 / Predicted Dec                                  
+SC_ROLL =   -145.4939246174957 / Predicted roll                                 
+SC_QUATX=           0.55015039 / Predicted S/C quaternion x                     
+SC_QUATY=   0.8209748100000001 / Predicted S/C quaternion y                     
+SC_QUATZ=           0.00181107 / Predicted S/C quaternion z                     
+SC_QUATQ=           0.15274694 / Predicted S/C quaternion q                     
+TJD_ZERO=            2457000.0 / JD-TDB epoch for which TJD = 0                 
+STARTTJD=    2044.673905850631 / Beginning of integration in TJD (days)         
+MIDTJD  =    2044.677378072853 / Mid TJD of exposures                           
+ENDTJD  =    2044.680850295075 / End of integration in TJD                      
+EXPTIME =                475.2 / Effective exposures corrected for CRM          
+INT_TIME=                  600 / Seconds of integration                         
+PIX_CAT =                    0 / ADHU target pixel bitmask ID                   
+REQUANT =                  406 / Requant table id                               
+DIFF_HUF=                  402 / Huffman table for differenced data             
+PRIM_HUF=                   17 / Huffman table for undifferenced data           
+QUAL_BIT=                    0 / Quality flags                                  
+SPM     =                    2 / SPM number (0, 1, 2, 3)                        
+TIME    =        1278735000.25 / Beginning of integration in SCT (seconds)      
+CADENCE =               117679 / Cadence number since start of data collection  
+CRM     =                    T / Whether or not cosmic ray were mitigated       
+CAMNUM  =                    1 / Camera Number                                  
+CCDNUM  =                    4 / CCD number                                     
+SCIPIXS = &#39;[45:2092,1:2048]&#39;                                                    
+GAIN_A  =                 5.35 / e/ADU for CCD Sector A                         
+GAIN_B  =                 5.22 / e/ADU for CCD Sector B                         
+GAIN_C  =                 5.22 / e/ADU for CCD Sector C                         
+GAIN_D  =                 5.18 / e/ADU for CCD Sector D                         
+UNITS   = &#39;electrons&#39;          / Units (ADU or electrons)                       
+TICAVER = &#39;0.2.1   &#39;           / tica software version                          
+EQUINOX =               2000.0                                                  
+INSTRUME= &#39;TESS Photometer&#39;                                                     
+TELESCOP= &#39;TESS    &#39;                                                            
+FILTER  = &#39;TESS    &#39;                                                            
+MJD-BEG =    59044.17390585085                                                  
+MJD-END =    59044.18085029488                                                  
+TESS_X  =          55775678.76 / Spacecraft X coord, J2000 (km from barycenter) 
+TESS_Y  =        -128204174.58 / Spacecraft Y coord, J2000 (km from barycenter) 
+TESS_Z  =         -55695333.42 / Spacecraft Z coord, J2000 (km from barycenter) 
+TESS_VX =                26.83 / Spacecraft X velocity (km/s)                   
+TESS_VY =    9.380000000000001 / Spacecraft Y velocity (km/s)                   
+TESS_VZ =                 4.37 / Spacecraft Z velocity (km/s)                   
+CTYPE1  = &#39;RA---TAN-SIP&#39;                                                        
+CTYPE2  = &#39;DEC--TAN-SIP&#39;                                                        
+CRPIX1  =               1069.0                                                  
+CRPIX2  =               1024.0                                                  
+CRVAL1  =    292.5177419248363                                                  
+CRVAL2  =   -33.62146243694027                                                  
+A_ORDER =                    6                                                  
+B_ORDER =                    6                                                  
+CD1_1   = -0.00565802924160227                                                  
+CD1_2   = 0.000669360868155683                                                  
+CD2_1   = -0.00080547788090405                                                  
+CD2_2   = -0.00567665948398345                                                  
+A_2_0   = -1.9621133062688E-05                                                  
+B_2_0   = 3.09258980566497E-06                                                  
+A_2_1   = 2.11391238131566E-12                                                  
+B_2_1   = -2.7542845857622E-09                                                  
+A_2_2   = -2.2262309422004E-13                                                  
+B_2_2   = 3.95400509800872E-13                                                  
+A_2_3   = 8.06582897605064E-17                                                  
+B_2_3   = -2.3969396577249E-16                                                  
+A_2_4   = 2.20516777427770E-19                                                  
+B_2_4   = 9.19943597526199E-20                                                  
+A_3_0   = -2.7251557194995E-09                                                  
+B_3_0   = 2.24959121970669E-10                                                  
+A_3_1   = 4.98682963805149E-15                                                  
+B_3_1   = 9.43486369524458E-14                                                  
+A_3_2   = -6.0650551563612E-17                                                  
+B_3_2   = 5.42193565133823E-17                                                  
+A_3_3   = 8.42958578952181E-20                                                  
+B_3_3   = -9.3471414881989E-20                                                  
+A_4_0   = -3.3011421108257E-13                                                  
+B_4_0   = 2.28207867160032E-15                                                  
+A_4_1   = 2.25590503484768E-16                                                  
+B_4_1   = -4.5846688009368E-17                                                  
+A_4_2   = -2.4421856849476E-19                                                  
+B_4_2   = -1.9284935824386E-19                                                  
+A_5_0   = -7.7016521830778E-17                                                  
+B_5_0   = 3.45289672676701E-17                                                  
+A_5_1   = 2.36818663332805E-19                                                  
+B_5_1   = -1.7894610009159E-19                                                  
+A_6_0   = 1.37485818741955E-19                                                  
+B_6_0   = 8.20993625220460E-20                                                  
+A_0_2   = -2.7653797223783E-06                                                  
+B_0_2   = 1.94497415401628E-05                                                  
+A_1_2   = -2.8937901248432E-09                                                  
+B_1_2   = 2.17015229457061E-10                                                  
+A_0_3   = 9.81292640534144E-11                                                  
+B_0_3   = -2.6611646517316E-09                                                  
+A_1_3   = -1.1272899446500E-13                                                  
+B_1_3   = 4.80088143842736E-14                                                  
+A_0_4   = -8.8422886324016E-13                                                  
+B_0_4   = 6.93987995645640E-15                                                  
+A_1_4   = 1.00262348425690E-17                                                  
+B_1_4   = 2.79287030123118E-17                                                  
+A_0_5   = 1.39713369614837E-16                                                  
+B_0_5   = -7.9784388955399E-17                                                  
+A_1_5   = 2.14357643456055E-19                                                  
+B_1_5   = -1.7892611054837E-19                                                  
+A_0_6   = 4.67070303499977E-19                                                  
+B_0_6   = 1.63951616118115E-19                                                  
+A_1_1   = 1.69727839569224E-05                                                  
+B_1_1   = -1.7166881842925E-05                                                  
+AP_2_0  = -2.2734432672150E-05                                                  
+BP_2_0  = 2.78270081576635E-06                                                  
+AP_2_1  = -1.4925758910560E-09                                                  
+BP_2_1  = 3.84307849834191E-09                                                  
+AP_2_2  = -8.4082377354615E-13                                                  
+BP_2_2  = 7.45468662423327E-13                                                  
+AP_2_3  = -2.7952366835992E-16                                                  
+BP_2_3  = 4.90031706882985E-16                                                  
+AP_2_4  = 1.16948634961738E-19                                                  
+BP_2_4  = 3.58587450584411E-19                                                  
+AP_3_0  = 3.94647561961301E-09                                                  
+BP_3_0  = -4.1439523699330E-10                                                  
+AP_3_1  = 2.98076134195401E-13                                                  
+BP_3_1  = -4.1175522104737E-13                                                  
+AP_3_2  = 2.56232369745437E-16                                                  
+BP_3_2  = -3.1781445381542E-16                                                  
+AP_3_3  = 6.85954729279073E-21                                                  
+BP_3_3  = -4.4048617085390E-19                                                  
+AP_4_0  = -6.9858500310505E-13                                                  
+BP_4_0  = 1.88759600239123E-14                                                  
+AP_4_1  = -4.1815283295253E-16                                                  
+BP_4_1  = 1.46243609282426E-16                                                  
+AP_4_2  = -1.2292589803601E-19                                                  
+BP_4_2  = -1.5381746813806E-19                                                  
+AP_5_0  = 2.46366186611600E-16                                                  
+BP_5_0  = -5.4840815350595E-17                                                  
+AP_5_1  = 4.85227998367451E-19                                                  
+BP_5_1  = -3.4256381398962E-20                                                  
+AP_6_0  = 1.88213719884775E-20                                                  
+BP_6_0  = 1.26202343643815E-19                                                  
+AP_0_2  = -3.0627416734443E-06                                                  
+BP_0_2  = 1.72176954731742E-05                                                  
+AP_1_2  = 3.83328577111067E-09                                                  
+BP_1_2  = -1.5717116554351E-09                                                  
+AP_0_3  = -2.5496239685094E-10                                                  
+BP_0_3  = 3.35520053238147E-09                                                  
+AP_1_3  = 6.11460111557990E-13                                                  
+BP_1_3  = -1.8613066258283E-13                                                  
+AP_0_4  = -9.7299203571436E-13                                                  
+BP_0_4  = 1.39060200231212E-13                                                  
+AP_1_4  = 1.60598004968244E-16                                                  
+BP_1_4  = -2.0186053529039E-16                                                  
+AP_0_5  = -1.5142275790571E-16                                                  
+BP_0_5  = 1.55422758928609E-16                                                  
+AP_1_5  = -5.6521218217644E-20                                                  
+BP_1_5  = -3.8943971364339E-19                                                  
+AP_0_6  = 4.86970536196175E-19                                                  
+BP_0_6  = 2.55224343641482E-19                                                  
+AP_1_1  = 1.53011578477230E-05                                                  
+BP_1_1  = -1.9797699321557E-05                                                  
+RA_TARG =    292.5177419248363                                                  
+DEC_TARG=   -33.62146243694027                                                  
+RMSA    =    3.067447624159384 / WCS fit resid all targs [arcsec]               
+RMSB    =    2.965046774546032 / WCS fit resid bright (Tmag&lt;10) targs [arcsec]  
+RMSAP   =   0.1518827715695517 / WCS fit resid all targs [pixel]                
+RMSBP   =   0.1469611554109355 / WCS fit resid bright (Tmag&lt;10) targs [pixel]   
+RMSX0   =    2.652140912046144 / WCS fit resid extra 0 [arcsec]                 
+RMSX1   =    3.149034290532523 / WCS fit resid extra 1 [arcsec]                 
+RMSX2   =    2.302663219879379 / WCS fit resid extra 2 [arcsec]                 
+RMSX3   =    2.877622243826178 / WCS fit resid extra 3 [arcsec]                 
+WCSGDF  =   0.9858442871587462 / Fraction of control point targs valid          
+CTRPCOL =                    5 / Subregion analysis blocks over columns         
+CTRPROW =                    5 / Subregion analysis blocks over rows            
+FLXWIN  =                   11 / Width in pixels of Flux-weight centroid region 
+CHECKSUM= &#39;EaAnHa3kEaAkEa3k&#39;   / HDU checksum updated 2020-12-30T18:31:30       
+DATASUM = &#39;28350624&#39;           / data unit checksum updated 2020-12-30T18:31:30 
+COMMENT calibration applied at 2020-12-30T19:26:06.560458                       
+</pre></div>
+</div>
+</div>
+</div>
+<p>The header information above contains important metadata like the CD matrix elements used for the WCS transformations, exposure time of the observation, size of the image, and so on. Now let’s retrieve the science data from this Primary HDU and plot the sector 27 camera 1 CCD 4 field.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve the data and some header metadata for labeling</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">ffi</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">cam</span><span class="p">,</span> <span class="n">ccd</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;CAMNUM&#39;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;CCDNUM&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+
+<span class="c1"># Labeling</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sector 27, Cam </span><span class="si">{</span><span class="n">cam</span><span class="si">}</span><span class="s1">, CCD </span><span class="si">{</span><span class="n">ccd</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;COLUMNS (X)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;ROWS (Y)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/3c61d28ad20e5b6fa4fc9a392d60b52ae5aea3fa71570a11d73336131e480a86.png" src="../../../_images/3c61d28ad20e5b6fa4fc9a392d60b52ae5aea3fa71570a11d73336131e480a86.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="creating-a-cube">
+<h2>Creating a Cube<a class="headerlink" href="#creating-a-cube" title="Link to this heading">#</a></h2>
+<p>Now that we have retrieved, downloaded, and inspected our TICA FFIs, it’s time to make a cube out of them. To do this, we will call on astrocut’s <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory</span></code> class which contains all the functionality to stack the TICA FFIs into a cube as efficiently as possible and store all the FFIs’ metadata in a binary table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tica_cube_maker</span> <span class="o">=</span> <span class="n">TicaCubeFactory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: AstropyDeprecationWarning: The `TicaCubeFactory` class is deprecated and will be removed in a future version. Use the `CubeFactory` class for creating image cubes from SPOC product files. [warnings]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will utilize the <code class="docutils literal notranslate"><span class="pre">manifest</span></code> output from our <code class="docutils literal notranslate"><span class="pre">download_products</span></code> call in the previous section to feed <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory.make_cube</span></code> the batch of 5 TICA FFIs for the cube-making process. The <code class="docutils literal notranslate"><span class="pre">verbose</span></code> argument is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by default, which will print updates about the call, but you may change <code class="docutils literal notranslate"><span class="pre">verbose</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> if you so choose.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span> <span class="o">=</span> <span class="n">tica_cube_maker</span><span class="o">.</span><span class="n">make_cube</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DEBUG: Using hlsp_tica_tess_ffi_s0027-o1-00117679-cam1-ccd4_tess_v01_img.fits to initialize the image header table. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DEBUG: Cube will be made in 1 blocks of 2079 rows each. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/astrocut/cube_factory.py:371: StringTruncateWarning: truncated right side string(s) longer than 8 character(s) during assignment
+  self._info_table[kwd][i] = self._get_header_keyword(kwd, img_data, nulval)
+DEBUG: Completed file 0 in 0.020 sec. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DEBUG: Completed file 1 in 0.014 sec. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/astrocut/cube_factory.py:371: StringTruncateWarning: truncated right side string(s) longer than 8 character(s) during assignment
+  self._info_table[kwd][i] = self._get_header_keyword(kwd, img_data, nulval)
+DEBUG: Completed file 2 in 0.013 sec. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/astrocut/cube_factory.py:371: StringTruncateWarning: truncated right side string(s) longer than 8 character(s) during assignment
+  self._info_table[kwd][i] = self._get_header_keyword(kwd, img_data, nulval)
+DEBUG: Completed file 3 in 0.013 sec. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/astrocut/cube_factory.py:371: StringTruncateWarning: truncated right side string(s) longer than 8 character(s) during assignment
+  self._info_table[kwd][i] = self._get_header_keyword(kwd, img_data, nulval)
+DEBUG: Completed file 4 in 0.013 sec. [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DEBUG: Completed block 1 of 1 [cube_factory]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DEBUG: Total time elapsed: 0.01 min [cube_factory]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The cube file is stored in your current working directory with the default name <code class="docutils literal notranslate"><span class="pre">img-cube.fits</span></code> if none is specified. Let’s inspect the contents of the cube file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: img-cube.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU     182   ()      
+  1                1 ImageHDU         9   (1, 5, 2136, 2078)   float32   
+  2                1 BinTableHDU    550   5R x 182C   [J, J, J, J, J, J, J, J, 2A, D, D, D, D, D, D, D, D, D, D, D, D, J, J, J, J, J, J, J, D, J, J, J, J, 16A, D, D, D, D, 9A, 5A, D, 15A, 4A, 4A, D, D, D, D, D, D, D, D, 12A, 12A, D, D, D, D, J, J, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, J, J, J, 16A, 8A, 49A, 64A]   
+</pre></div>
+</div>
+</div>
+</div>
+<p>The structure for each cube file is the same for both TICA and SPOC. It consists of:</p>
+<ul class="simple">
+<li><p><strong>The Primary HDU</strong>, which contains header information derived from the first FFI in the cube stack, as well as WCS information derived from the FFI in the middle of the cube stack.</p></li>
+<li><p><strong>The Image HDU</strong>, which is the cube itself. The dimensions of the cube for this example is <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">5,</span> <span class="pre">2136,</span> <span class="pre">2078)</span></code> and can be explained as follows:</p>
+<ul>
+<li><p>The 0th axis represents the science and error “layers”, with the science arrays in index=0 and the error arrays in index=1. Because the TICA pipeline does not propagate errors, the error layer is empty for all the FFIs and should be ignored.</p></li>
+<li><p>The 1st axis represents the number of FFIs that went into the cube. For this example it is 5. Indexing this will pull out the 2D array of science data for a given FFI.</p></li>
+<li><p>The 2nd axis represents the number of rows each FFI consists of.</p></li>
+<li><p>The 3rd axis represents the number of columns each FFI consists of.</p></li>
+</ul>
+</li>
+<li><p><strong>The BinTable HDU</strong>, which contains the image header information for every FFI that went into the stack in the form of a table. Each column in the table is an image header keyword (for TICA it’s the primary header keyword, since the TICA image lives in the primary HDU), and each row in the column is the corresponding value for that keyword for an FFI.</p></li>
+</ul>
+<p>For more information on the cube file structure, see the <a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/file_formats.html#cube-files">cube file format section</a> of the Astrocut documentation.</p>
+<p>Before we move onto generating the cutouts, it’s important to note that <code class="docutils literal notranslate"><span class="pre">CubeFactory</span></code> is distinct from <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory</span></code>. Both classes are used to generate cubes, but <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory</span></code> is specifically designed to generate TICA cubes, and <code class="docutils literal notranslate"><span class="pre">CubeFactory</span></code> is specifically designed to generate SPOC cubes. Any attempt at generating TICA cubes with <code class="docutils literal notranslate"><span class="pre">CubeFactory</span></code> or vice versa will be unsuccessful. See below for an example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell will give an error if you uncomment the lines below!</span>
+
+<span class="c1"># from astrocut import CubeFactory</span>
+<span class="c1">#spoc_cube_maker = CubeFactory()</span>
+<span class="c1">#spoc_cube_maker.make_cube(manifest[&#39;Local Path&#39;])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-the-cutouts">
+<h2>Creating the Cutouts<a class="headerlink" href="#creating-the-cutouts" title="Link to this heading">#</a></h2>
+<p>Now that we have our cube we are able to generate cutouts of our region of interest. Unlike in the cube-making process, we have a single class for generating the cutouts from both SPOC or TICA cubes, <code class="docutils literal notranslate"><span class="pre">CutoutFactory</span></code>. To make the cutouts, we will call upon <code class="docutils literal notranslate"><span class="pre">CutoutFactory</span></code>’s  <code class="docutils literal notranslate"><span class="pre">cube_cut</span></code> and feed it the cube we just made, the coordinates for the center of our region of interest, which in this case is our object TIC 2527981, the cutout size for our region (in pixels), and lastly, the product type that was used for making our cube.</p>
+<div class="alert alert-block alert-info"><b>Note:</b> The call below may generate a "VerifyWarning: Card is too long, comment will be truncated." warning message, which can safely be ignored. </div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_maker</span> <span class="o">=</span> <span class="n">CutoutFactory</span><span class="p">()</span>
+
+<span class="n">cutout_file</span> <span class="o">=</span> <span class="n">cutout_maker</span><span class="o">.</span><span class="n">cube_cut</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">cutout_size</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">&#39;TICA&#39;</span><span class="p">)</span>
+<span class="n">cutout_file</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: AstropyDeprecationWarning: The `product` argument is deprecated and will be removed in a future version. Astrocut will only support cutouts from SPOC products. [warnings]
+WARNING: AstropyDeprecationWarning: The `product` argument is deprecated and will be removed in a future version. Astrocut will only support cutouts from SPOC products. [astrocut.cutout_factory]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;img_289.097900_-29.337000_25x25_astrocut.fits&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our cutout file is saved to our current working directory with the default name structured as follows:
+<code class="docutils literal notranslate"><span class="pre">img_[RA]_[Dec]_[rows]x[cols]_astrocut.fits</span></code></p>
+<p>Let’s inspect the HDU list of this file…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">cutout_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: img_289.097900_-29.337000_25x25_astrocut.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY     1   PrimaryHDU      57   ()      
+  1  PIXELS      1   BinTableHDU    142   5R x 11C   [D, J, 625J, 625E, 625E, 625E, 625E, J, E, E, 38A]   
+  2  APERTURE    1   ImageHDU        82   (25, 25)   int32   
+</pre></div>
+</div>
+</div>
+</div>
+<p>The structure for each cutout file is the same for both TICA and SPOC. It consists of:</p>
+<ul class="simple">
+<li><p><strong>The Primary HDU</strong>, which contains header information derived from the first FFI in the cube stack, as well as WCS information derived from the FFI in the middle of the cube stack.</p></li>
+<li><p><strong>The BinTable HDU</strong>, which is a FITS table that stores the actual cutouts under the <code class="docutils literal notranslate"><span class="pre">FLUX</span></code> column, with each row being occupied by a single FFI cutout of the requested size.</p></li>
+<li><p><strong>The Image HDU</strong>, which contains the aperture, or field of view, of the cutouts. This image is only useful for the moving targets feature on TESSCut, and should be blank if your target has a set of coordinates assigned to it.</p></li>
+</ul>
+<p>For more information on the cutout file structure, see the <a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/file_formats.html#target-pixel-files">target pixel file format section</a> of the Astrocut documentation. For now let’s take a closer look at the Primary HDU header:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_header</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="n">cutout_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">cutout_header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SIMPLE  =                    T / conforms to FITS standard                      
+BITPIX  =                    8 / array data type                                
+NAXIS   =                    0 / number of array dimensions                     
+EXTEND  =                    T                                                  
+TICAVER = &#39;0.2.1   &#39;           / tica software version                          
+EQUINOX =               2000.0                                                  
+INSTRUME= &#39;TESS Photometer&#39;                                                     
+TELESCOP= &#39;TESS    &#39;                                                            
+CHECKSUM= &#39;1gDG4ZAF1fAF1ZAF&#39;   / HDU checksum updated 2025-12-18T19:19:15       
+DATASUM = &#39;0       &#39;           / data unit checksum updated 2025-12-18T19:19:15 
+ORIGIN  = &#39;STScI/MAST&#39;                                                          
+DATE    = &#39;2025-12-18&#39;         / FFI cube creation date                         
+SECTOR  =  / Observing sector                                                   
+EXTNAME = &#39;PRIMARY &#39;                                                            
+CREATOR = &#39;astrocut&#39;           / software used to produce this file             
+PROCVER = &#39;1.1.0   &#39;           / software version                               
+FFI_TYPE= &#39;TICA    &#39;           / the FFI type used to make the cutouts          
+RA_OBJ  =             289.0979 / [deg] right ascension                          
+DEC_OBJ =              -29.337 / [deg] declination                              
+TIMEREF =  / barycentric correction applied to times                            
+TASSIGN =  / where time is assigned                                             
+TIMESYS = &#39;TDB     &#39;           / time system is Barycentric Dynamical Time (TDB)
+BJDREFI =              2457000 / integer part of BTJD reference date            
+BJDREFF =                  0.0 / fraction of the day in BTJD reference date     
+TIMEUNIT= &#39;d       &#39;           / time unit for TIME, TSTART, and TSTOP          
+EXTVER  = &#39;1       &#39;           / extension version number (not format version)  
+SIMDATA =                    F / file is based on simulated data                
+NEXTEND = &#39;2       &#39;           / number of standard extensions                  
+TSTART  =    2044.062795019605 / observation start time in TJD of first FFI     
+TSTOP   =    2047.569737859931 / observation stop time in TJD of last FFI       
+CAMERA  =                    1 / Camera number                                  
+CCD     =                    4 / CCD chip number                                
+ASTATE  =  / archive state F indicates single orbit processing                  
+CRMITEN =                    T / spacecraft cosmic ray mitigation enabled       
+CRBLKSZ =  / [exposures] s/c cosmic ray mitigation block siz                    
+FFIINDEX=               117591 / number of FFI cadence interval of first FFI    
+DATA_REL=  / data release version number                                        
+FILEVER =  / file format version                                                
+RADESYS =  / reference frame of celestial coordinates                           
+SCCONFIG=  / spacecraft configuration ID                                        
+TIMVERSN=  / OGIP memo number for file format                                   
+DATE-OBS= &#39;2020-07-13 13:30:25.490&#39; / TSTART as Julian Date of first FFI        
+DATE-END= &#39;2020-07-17 01:40:25.351&#39; / TSTOP as Julian Date of last FFI          
+TELAPSE =    3.506942840326019 / [d] TSTOP - TSTART                             
+OBJECT  = &#39;&#39; / string version of target ID                                      
+TCID    =                    0 / unique TESS target identifier                  
+PXTABLE =                    0 / pixel table ID                                 
+PMRA    =                  0.0 / [mas/yr] RA proper motion                      
+PMDEC   =                  0.0 / [mas/yr] Dec proper motion                     
+PMTOTAL =                  0.0 / [mas/yr] Total proper motion                   
+TESSMAG =                  0.0 / [mag] TESS magnitude                           
+TEFF    =                  0.0 / [K] Effective temperature                      
+LOGG    =                  0.0 / [cm/s2] log10 surface gravity                  
+MH      =                  0.0 / [log10([M/H])] Metallicity                     
+RADIUS  =                  0.0 / [solar radii] Stellar radius                   
+TICVER  =                    0 / TIC version                                    
+TICID   =  / unique TESS target identifier                                      
+</pre></div>
+</div>
+</div>
+</div>
+<p>As mentioned previously, the cutout files will have header information that is inherited from the first FFI and the middle FFI in the cube stack (just like the cube files), so most of these keywords should look familiar. However, there are some new header keywords in the cutout files that are added after processing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cutout_header</span><span class="o">.</span><span class="n">cards</span><span class="p">[</span><span class="s1">&#39;FFI_TYPE&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cutout_header</span><span class="o">.</span><span class="n">cards</span><span class="p">[</span><span class="s1">&#39;PROCVER&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FFI_TYPE= &#39;TICA    &#39;           / the FFI type used to make the cutouts          
+PROCVER = &#39;1.1.0   &#39;           / software version                               
+</pre></div>
+</div>
+</div>
+</div>
+<p>These keywords are intentionally added so that the cutout is formatted like a TESS target pixel file (TPF). Conveniently, this means you can use existing scripts on these cutout files without having to readapt them. Let’s go ahead and plot one of the cutouts in our file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting the cutouts science data from the BinTable HDU</span>
+<span class="n">cutouts</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">cutout_file</span><span class="p">)[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plotting an arbitrary cutout from the FLUX column</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutouts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># Labeling</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;COLUMNS (X)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;ROWS (Y)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/aab45ee17f10d8a5219ff09005eeaebb869984909902b7bdf9f55c1744a502b2.png" src="../../../_images/aab45ee17f10d8a5219ff09005eeaebb869984909902b7bdf9f55c1744a502b2.png" />
+</div>
+</div>
+</section>
+<section id="exercise-generate-cutouts-for-tic-2527981-sector-27-spoc-products">
+<h2>Exercise: Generate Cutouts for TIC 2527981 Sector 27 SPOC Products<a class="headerlink" href="#exercise-generate-cutouts-for-tic-2527981-sector-27-spoc-products" title="Link to this heading">#</a></h2>
+<p>Let’s now generate cutouts of our target from the SPOC products of the same observation, and use this as an opportunity to compare the FFI file structure differences between SPOC and TICA.</p>
+<p>Perform the same <code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code> query, inspect the FFIs, generate the cube (remember that there are two cube-generating classes, <code class="docutils literal notranslate"><span class="pre">CubeFactory</span></code> and <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory</span></code>), and generate the cutouts from the cube, in the cells below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a query for the correct observation using `astroquery.mast.Observations.query_criteria`</span>
+
+<span class="c1"># Retrieve the products corresponding to this observations using `astroquery.mast.Observations.download_products`</span>
+
+<span class="c1"># Inspect one of the FFIs with `matplotlib.pyplot`. Compare the HDU List between the SPOC FFI and one of the TICA FFIs</span>
+<span class="c1"># and note the structural differences.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a cube with the SPOC FFIs.</span>
+<span class="c1"># If you&#39;ve stored the output from the `astroquery.mast.Observations.download_products` call above, </span>
+<span class="c1"># it&#39;s helpful to use the Local Path column as the CubeFactory input.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inspect the cube as you wish. Make a note of the cube size and ensure that the dimensions are as you expect.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the cutouts with the SPOC cube from above.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inspect the cutouts as you wish.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Link to this heading">#</a></h2>
+<p>The following is a list of resources that were referenced throughout the tutorial, as well as some additional references that you may find useful:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://astrocut.readthedocs.io/en/latest/astrocut/index.html">astrocut</a> Documentation</p></li>
+<li><p><a class="reference external" href="https://github.com/spacetelescope/astrocut">astrocut</a> GitHub repository</p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">astroquery.mast</a> Documentation</p></li>
+<li><p>The <a class="reference external" href="https://mast.stsci.edu/tesscut/">TESSCut Service</a></p></li>
+<li><p>The <a class="reference external" href="https://mast.stsci.edu/tesscut/docs/index.html">TESSCut API Documentation</a></p></li>
+<li><p>More information on the <a class="reference external" href="https://archive.stsci.edu/missions-and-data/tess">TESS mission</a></p></li>
+<li><p>More information on the <a class="reference external" href="https://archive.stsci.edu/hlsp/tica">TICA HLSP</a></p></li>
+<li><p>Publication on the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2016SPIE.9913E..3EJ/abstract">SPOC Pipeline</a></p></li>
+<li><p>Publication on the <a class="reference external" href="https://iopscience.iop.org/article/10.3847/2515-5172/abd63a">TICA Quicklook Pipeline</a></p></li>
+</ul>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use any of astroquery’s tools or astrocut for published research, please cite the
+authors. Follow these links for more information about citing astroquery and astrocut:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/astropy/astroquery/blob/main/astroquery/CITATION">Citing <code class="docutils literal notranslate"><span class="pre">astroquery</span></code></a></p></li>
+<li><p><a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2019ascl.soft05007B/abstract">Citing <code class="docutils literal notranslate"><span class="pre">astrocut</span></code></a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p>If you have comments or questions on this notebook, please contact us through the Archive Help Desk e-mail at <code class="docutils literal notranslate"><span class="pre">archive&#64;stsci.edu</span></code>.</p>
+<p><strong>Author(s):</strong> Jenny V. Medina <br>
+<strong>Keyword(s):</strong> Tutorial, TESS, TICA, SPOC, astroquery, astrocut, cutouts, ffi, tpf, tesscut <br>
+<strong>Last Updated:</strong> Mar 2023 <br></p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/TESS/making_tess_cubes_and_cutouts"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../interm_tesscut_requests/interm_tesscut_requests.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Intermediate: Create TESS FFI Cutout using Python Requests</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../noise.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Instrumental Noise</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-and-downloading-the-ffis">Retrieving and Downloading the FFIs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-the-ffis">Retrieving the FFIs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-the-ffis">Downloading the FFIs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-ffis">Inspecting the FFIs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-cube">Creating a Cube</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-cutouts">Creating the Cutouts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-generate-cutouts-for-tic-2527981-sector-27-spoc-products">Exercise: Generate Cutouts for TIC 2527981 Sector 27 SPOC Products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
