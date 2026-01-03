@@ -1,7 +1,8 @@
-# How to contribute spacetelescope notebooks
+# How to contribute to mast_notebooks
 
-Contributions are welcome from both inside and outside the institute.
+Contributions are welcome from both inside and outside STScI. This page is for first-time contributors; more advanced instructions can be found 
 
+## Steps to Contribute 
 1. Read over the [code of conduct](https://github.com/spacetelescope/mast_notebooks/blob/main/contributing/CODE_OF_CONDUCT.md).
 2. Read over the [spacetelescope notebook style guide](https://github.com/spacetelescope/style-guides/blob/master/guides/jupyter-notebooks.md). The style parts are guidelines and it is not always necessary to follow them to the letter, but contributions are expected to generally follow this guide.  However the layout and data rules in general should be followed to ensure this repository stays consistent.
 3. Fork this repository. See the preferred method of doing this on the [workflow page](https://github.com/spacetelescope/style-guides/blob/master/guides/git-workflow.md).
@@ -18,11 +19,11 @@ Contributions are welcome from both inside and outside the institute.
 
 Once you've created a Pull Request, the CI tests will run on your changes.  These ensure that the notebook actually runs, and enforce some of the important elements of "notebook hygine" referenced in the style guide (e.g., not committing notebooks that have been executed).
 
-# Squashing (or: what to do if you accidentally committed data)
+## Whoops I committed data / a large file: Squashing 
 
-As the [style guide](https://github.com/spacetelescope/style-guides/blob/master/guides/jupyter-notebooks.md) outlines (and the tests check for), it is not desirable to include large data files or executed cells with the notebooks because it can sometimes cause the repository to grow quickly to an unmanagable size. However, because git tracks such changes, simply deleting them and making a commit is not sufficient - the data files are "hidden" and not deleted (they therefore continue to bloat the repository). To truly remove accidentally-committed data requires "rewriting history".  There are two ways to do this - an easy (but information-destroying) version, and a harder (but more "correct") version.
+As the [style guide](https://github.com/spacetelescope/style-guides/blob/master/guides/jupyter-notebooks.md) outlines, it is not desirable to include large data files or executed cells with the notebooks because it can sometimes cause the repository to grow quickly to an unmanagable size. However, because git tracks such changes, simply deleting them and making a commit is not sufficient - the data files are "hidden" and not deleted (they therefore continue to bloat the repository). To truly remove accidentally-committed data requires "rewriting history".  There are two ways to do this - an easy (but information-destroying) version, and a harder (but more "correct") version.
 
-## The Better Way
+### Squashing the Better Way
 
 Git allows re-writing history using the `git rebase` command, and this is generally the best way to address the above problem. In particular, it has the advantage that it maintains the development history of a notebook.  If your committed data is a file (as opposed to part of the notebook itself) this step is relatively easy:
 
@@ -44,7 +45,7 @@ If you have executed a *cell* in a notebook, the steps are related, but somewhat
 7. Once git says it has successfully completed the rebase, you can finish off with step 7 above.
 
 
-## The Easy Way
+### Squashing the Easy Way
 
 If you (the contributor) are not confident in your ability to execute the steps above (or cannot find someone to help guide you through them), there is a simpler approach available.  You will still need to include a commit that deletes the data, as described in the above. However, instead of needing to rewrite your own history, GitHub allows a merge to automatically "squash" all the commits of a branch (i.e., a Pull Request) into a single commit.  This has the disadvantage of erasing the development history completely (i.e., there is only one commit for the whole branch), but is easy to implement: when the Pull Request is ready, all the maintainer needs to do is click the downward-pointing arrow next to "Merge pull request", choose "Squash and merge", and then merge.
 
