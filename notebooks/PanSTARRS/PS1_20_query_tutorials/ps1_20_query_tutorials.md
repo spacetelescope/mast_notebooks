@@ -27,7 +27,7 @@ The notebooks in this chapter demonstrate how to execute example science queries
 
 | Notebook        | Description                                                                                                                                                  |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [PS1 "20 queries": Filtering](XXXXXX) | Tutorial for how to query PS1 DR2 catalogs using the Table Access Protocol (TAP) service at MAST. The example queries here demonstrate how to perform queries requiring only filtering (with joins). |
+| [PS1 "20 queries": Filtering](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_basic_filtering_tutorial.html) | Tutorial for how to query PS1 DR2 catalogs using the Table Access Protocol (TAP) service at MAST. The example queries here demonstrate how to perform queries requiring only filtering (with joins). |
 
 
 More Pan-STARRS example query notebooks will be coming soon!
