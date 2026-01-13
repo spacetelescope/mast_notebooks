@@ -22,12 +22,9 @@ For more general information regarding Pan-STARRS1, see the [MAST Pan-STARRS1 ho
 
 ## Notebooks in this Chapter
 
-The notebooks in this chapter demonstrate how to execute example science queries, grouped by technique & technical similarities. These queries are drawn from the 20 queries for SDSS as presented by [Gray, Szalay, et al. (2002)](https://arxiv.org/abs/cs/0202014), adapted for the Pan-STARRS PS1 database. In all, this series of notebooks will present the 11 queries which are applicable for PS1.
-
 
 | Notebook        | Description                                                                                                                                                  |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [PS1 "20 queries": Filtering](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_basic_filtering_tutorial.html) | Tutorial for how to query PS1 DR2 catalogs using the Table Access Protocol (TAP) service at MAST. The example queries here demonstrate how to perform queries requiring only filtering (with joins). |
-
-
-More Pan-STARRS example query notebooks will be coming soon!
+| [MAST Table Access Protocol Pan-STARRS1 DR2 Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html) | Tutorial demonstrating how to access Pan-STARRS 1 Data Release 2 catalogs via a Virtual Observatory standard Table Access Protocol (TAP) service at MAST. |
+| [Retreiving Pan-STARRS images Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_image/PS1_image.html) | Tutorial of how to programmatically retrieve Pan-STARRS1 image cutouts using the PS1 Image Server at MAST. |
+| [Pan-STARRS "20 queries" Tutorials](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_20_query_tutorials/panstarrs_20_query_tutorials.html) | Tutorials with examples of how to answer select scientify questions through queries to the PS1 DR2 catalogs using the Table Access Protocol (TAP) service at MAST. |
