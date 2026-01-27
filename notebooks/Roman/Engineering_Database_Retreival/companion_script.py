@@ -16,6 +16,7 @@ from pathlib import Path
 # default file to use if no file specified
 DEFAULT_FILE = "SCF_AC_SDR_QBJ_1_20270314T000000_20270316T235959.csv"
 
+
 def get_mnemonic_datetimes_from_filename(fname):
     splt = fname.split(".")[0].split('_')
     mnemonic = '_'.join(splt[:-2])
@@ -23,6 +24,7 @@ def get_mnemonic_datetimes_from_filename(fname):
     e_time = datetime.fromisoformat(splt[-1]).isoformat()
 
     return mnemonic, s_time, e_time
+
 
 def download_edb_datafiles(filenames, folder):
     '''
