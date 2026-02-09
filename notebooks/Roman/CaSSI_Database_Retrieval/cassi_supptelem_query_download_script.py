@@ -1,16 +1,21 @@
+"""
+CaSSI Supplementary & Telemetry programmatic 
+file access & download scripts
+"""
 import os
+from pathlib import Path
+from datetime import datetime
 import sys
 import argparse
 import requests
-from pathlib import Path
-from datetime import datetime
-from pandas import DataFrame
+
 import numpy as np
+from pandas import DataFrame
 
 
-cassi_url_search = "https://mast.stsci.edu/cassi/api/v0.1/roman/search/Eng"
-cassi_url_download = "https://mast.stsci.edu/cassi/api/v0.1/download/roman/eng"
-
+CASSI_URL_SEARCH = "https://mast.stsci.edu/cassi/api/v0.1/roman/search/Eng"
+CASSI_URL_DOWNLOAD = "https://mast.stsci.edu/cassi/api/v0.1/download/roman/eng"
+TIMEOUT = 30 # seconds
 
 def _ensure_datetime(date, hms_tuple=(0,0,0)):
     if date is None:
@@ -21,8 +26,8 @@ def _ensure_datetime(date, hms_tuple=(0,0,0)):
     dt = datetime.fromisoformat(date)
     dt2 = datetime(dt.year, dt.month, dt.day, *hms_tuple)
     return dt2.strftime("%Y-%m-%dT%H:%M:%S")
-    
-    
+
+
 def parse_token(token):
     """Parse API token.
 
@@ -34,7 +39,7 @@ def parse_token(token):
     return token
 
 
-def arg_parser():    
+def arg_parser():
     """
     Parser to handle command line arguments.
     """
@@ -45,14 +50,14 @@ def arg_parser():
             "with options to download or count files"
         )
     )
-    
+
     parser.add_argument(
         "-l", "--limit",
         type=int,
         default=50000,
         help="Limit for number of results (default: 50000)"
     )
-    
+
     parser.add_argument(
         "-t", "--token",
         type=str,
@@ -62,7 +67,7 @@ def arg_parser():
 
     # Filtering options
     filter_args = parser.add_argument_group('Filtering Options')
-    
+
     filter_args.add_argument(
         "-s", "--start-date",
         type=str,
@@ -75,7 +80,7 @@ def arg_parser():
         default=None,
         help="Optional ingestion end date in YYYY-MM-DD[THH:MM:SS] format (24hr)"
     )
-    
+
     filter_args.add_argument(
         "--filetype",
         type=str,
@@ -86,10 +91,13 @@ def arg_parser():
     filter_args.add_argument(
         "--filename",
         type=str,
-        help="Optional filename(s) to search/download (comma separated and the full list in quotes for more than one filename)",
+        help=(
+            "Optional filename(s) to search/download (comma separated and "
+            "the full list in quotes for more than one filename)"
+        ),
         default=None,
     )
-    
+
     # Query options
     query_args = parser.add_argument_group(
         'Query Options (default: lists file information)'
@@ -123,8 +131,8 @@ def arg_parser():
 
     return parser
 
-    
-def parse_args(parser):    
+
+def parse_args(parser):
     """
     Parse command line arguments.
 
@@ -132,11 +140,11 @@ def parse_args(parser):
     ----------
     parser : argparse.ArguementParser instance
     """
-    
+
     args = parser.parse_args()
 
     args_dict = {}
-    
+
     args_dict['start_date'] = _ensure_datetime(args.start_date, hms_tuple=(0,0,0))
     args_dict['end_date'] = _ensure_datetime(args.end_date, hms_tuple=(23,59,59))
 
@@ -145,11 +153,11 @@ def parse_args(parser):
 
     for name in ['download', 'count']:
         args_dict[f"do_{name}"] = getattr(args, name)
-        
+
     args_dict['list_filetypes'] = args.list_filetypes
 
     args_dict['token'] = parse_token(args.token)
-    
+
     return args_dict
 
 
@@ -209,11 +217,16 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
 
     if filetype is not None:
         payload["conditions"].append({"fileType": filetype})
-        
+
     if filename is not None:
         payload["conditions"].append({"archiveFileName": filename})
 
-    response = requests.post(cassi_url_search, headers=headers, json=payload)
+    response = requests.post(
+        CASSI_URL_SEARCH,
+        headers=headers,
+        json=payload,
+        timeout=TIMEOUT
+    )
     response.raise_for_status()
 
     # Get data results from the request response
@@ -232,7 +245,7 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
 
     return results
 
-    
+
 def download_cassi_files(results, folder, token):
     """
     Download files to directory
@@ -251,9 +264,9 @@ def download_cassi_files(results, folder, token):
     int
        Success status for each retrieval
     """
-    
+
     Path(folder).mkdir(exist_ok=True)
-    
+
     headers = {
         "Content-Type": "application/json",
         "Authorization": f'token {token}'
@@ -268,11 +281,16 @@ def download_cassi_files(results, folder, token):
             print("***Missing URL***")
             status = 1
         else:
-            
+
             payload = {"product_url": url}
 
             try:
-                response = requests.post(cassi_url_download, headers=headers, json=payload)
+                response = requests.post(
+                    CASSI_URL_DOWNLOAD,
+                    headers=headers,
+                    json=payload,
+                    timeout=TIMEOUT
+                )
                 response.raise_for_status()
 
                 with open(f"{folder}/{row['archiveFileName']}", "wb") as f:
@@ -281,9 +299,9 @@ def download_cassi_files(results, folder, token):
             except requests.exceptions.HTTPError:
                 print("  ***Error downloading file***")
                 status = 1
-         
-    return status  
-    
+
+    return status
+
 
 def count_results(results, n_rjust=8):
     """Count the files of different types returned by the CaSSI query.
@@ -297,10 +315,10 @@ def count_results(results, n_rjust=8):
 
     counts = results.value_counts("fileType")
     n_longest = max([len(c) for c in counts.keys()]) + 1
-    
+
     print("Total files:".ljust(n_longest), str(len(results)).rjust(n_rjust))
     for c in counts.keys():
-        print(f"{c}:".ljust(n_longest), str(counts[c]).rjust(n_rjust)) 
+        print(f"{c}:".ljust(n_longest), str(counts[c]).rjust(n_rjust))
 
 def list_results(results):
     """
@@ -312,13 +330,13 @@ def list_results(results):
 
     ## Preserved in the event wall time start/end search is supported in the future.
     # results_prettified.insert(
-    #     len(results_prettified.columns), 
-    #     'startTime', 
+    #     len(results_prettified.columns),
+    #     'startTime',
     #     np.empty_like(results['times'], dtype="object")
-    # )            
+    # )
     # results_prettified.insert(
-    #     len(results_prettified.columns), 
-    #     'endTime', 
+    #     len(results_prettified.columns),
+    #     'endTime',
     #     np.empty_like(results['times'], dtype="object")
     # )
     # for ind in range(len(results)):
@@ -329,16 +347,18 @@ def list_results(results):
     print(results_prettified)
 
 def main():
-    
+    """
+    Main function
+    """
+
     parser = arg_parser()
-        
+
     if len(sys.argv)==1:
         parser.print_help(sys.stderr)
         sys.exit(1)
-        
+
     args = parse_args(parser)
-        
-    
+
     results = query_cassi(
         args['start_date'],
         args['end_date'],
@@ -347,7 +367,7 @@ def main():
         args['filename'],
         args['token']
     )
-    
+
     if args['do_count']:
         count_results(results)
         return 0
