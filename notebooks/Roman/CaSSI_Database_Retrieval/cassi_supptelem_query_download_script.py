@@ -69,13 +69,13 @@ def arg_parser():
     filter_args = parser.add_argument_group('Filtering Options')
 
     filter_args.add_argument(
-        "-s", "--start-date",
+        "-s", "--ingestion-start-date",
         type=str,
         # default="2020-01-01",
         help="Ingestion start date in YYYY-MM-DD[THH:MM:SS] format (24 hr)"
     )
     filter_args.add_argument(
-        "-e", "--end-date",
+        "-e", "--ingestion-end-date",
         type=str,
         default=None,
         help="Optional ingestion end date in YYYY-MM-DD[THH:MM:SS] format (24hr)"
