@@ -16,6 +16,7 @@ from pandas import DataFrame
 CASSI_URL_SEARCH = "https://mast.stsci.edu/cassi/api/v0.1/roman/search/Eng"
 CASSI_URL_DOWNLOAD = "https://mast.stsci.edu/cassi/api/v0.1/download/roman/eng"
 TIMEOUT = 30 # seconds
+RESULT_LIMIT = 50000
 
 def _ensure_datetime(date, hms_tuple=(0,0,0)):
     if date is None:
@@ -54,8 +55,8 @@ def arg_parser():
     parser.add_argument(
         "-l", "--limit",
         type=int,
-        default=50000,
-        help="Limit for number of results (default: 50000)"
+        default=RESULT_LIMIT,
+        help=f"Limit for number of results (default: {RESULT_LIMIT})"
     )
 
     parser.add_argument(
@@ -65,20 +66,45 @@ def arg_parser():
         default=None,
     )
 
+    parser.add_argument(
+        "--show-exp-times",
+        action='store_true',
+        help="Show exposure times in report"
+    )
+
     # Filtering options
     filter_args = parser.add_argument_group('Filtering Options')
 
     filter_args.add_argument(
         "-s", "--ingestion-start-date",
         type=str,
-        # default="2020-01-01",
-        help="Ingestion start date in YYYY-MM-DD[THH:MM:SS] format (24 hr)"
+        default=None,
+        help="Optional ingestion start date in YYYY-MM-DD[THH:MM:SS] format (24 hr)"
     )
     filter_args.add_argument(
         "-e", "--ingestion-end-date",
         type=str,
         default=None,
         help="Optional ingestion end date in YYYY-MM-DD[THH:MM:SS] format (24hr)"
+    )
+
+    filter_args.add_argument(
+        "--exp-start-date",
+        type=str,
+        default=None,
+        help=(
+            "Optional exposure start date in YYYY-MM-DD[THH:MM:SS] format (24 hr). "
+            "Note: not all files have exposure times."
+        )
+    )
+    filter_args.add_argument(
+        "--exp-end-date",
+        type=str,
+        default=None,
+        help=(
+            "Optional exposure end date in YYYY-MM-DD[THH:MM:SS] format (24 hr). "
+            "Note: not all files have exposure times."
+        )
     )
 
     filter_args.add_argument(
@@ -145,8 +171,23 @@ def parse_args(parser):
 
     args_dict = {}
 
-    args_dict['start_date'] = _ensure_datetime(args.start_date, hms_tuple=(0,0,0))
-    args_dict['end_date'] = _ensure_datetime(args.end_date, hms_tuple=(23,59,59))
+    args_dict['ingestion_start_date'] = _ensure_datetime(
+        args.ingestion_start_date,
+        hms_tuple=(0,0,0)
+    )
+    args_dict['ingestion_end_date'] = _ensure_datetime(
+        args.ingestion_end_date,
+        hms_tuple=(23,59,59)
+    )
+
+    args_dict['exp_start_date'] = _ensure_datetime(
+        args.exp_start_date,
+        hms_tuple=(0,0,0)
+    )
+    args_dict['exp_end_date'] = _ensure_datetime(
+        args.exp_end_date,
+        hms_tuple=(23,59,59)
+    )
 
     for name in ['limit', 'filetype', 'folder', 'filename']:
         args_dict[name] = getattr(args, name)
@@ -158,24 +199,41 @@ def parse_args(parser):
 
     args_dict['token'] = parse_token(args.token)
 
+    args_dict['show_exp_times'] = getattr(args, 'show_exp_times')
+    if args.exp_start_date is not None:
+        args_dict['show_exp_times'] = True
+
     return args_dict
 
 
-def query_cassi(start_date, end_date, limit, filetype, filename, token):
+def query_cassi(
+    ingestion_start_date=None,
+    ingestion_end_date=None,
+    exp_start_date=None,
+    exp_end_date=None,
+    filetype=None,
+    filename=None,
+    limit=RESULT_LIMIT,
+    token=None
+):
     """
     Query Roman CaSSI API for supplemental and telemetry data and return the response.
     
     Parameters
     ----------
-    start_date : str
-        Ingestio start date in YYYY-MM-DD[THH:MM:SS] format (24hr)
+    ingestion_start_date : str or None
+        Optoinal ingestion start date in YYYY-MM-DD[THH:MM:SS] format (24hr)
         
-    end_date : str or None
+    ingestion_end_date : str or None
         Optional ingestion end date in YYYY-MM-DD[THH:MM:SS] format (24hr)
         Note that omitting a time will default to YYYY-MM-DDT00:00:00.
 
-    limit : int
-        Limit for number of results
+    exp_start_date : str or None
+        Optional exposure start date in YYYY-MM-DD[THH:MM:SS] format (24hr)
+        
+    exp_end_date : str or None
+        Optional exposure end date in YYYY-MM-DD[THH:MM:SS] format (24hr)
+        Note that omitting a time will default to YYYY-MM-DDT00:00:00.
 
     filetype : str or None
         Optional filetype filter constraints (quoted, with commas separating multiple values).
@@ -186,8 +244,11 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
         (multiple values can be included, but the list must be comma separated and quoted).
         Defaults to None (no filename filtering).
         
+    limit : int
+        Limit for number of results. Default: 50000.
+
     token: str
-        MAST API token
+        MAST API token.
         
     Returns
     -------
@@ -199,15 +260,11 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
         "Content-Type": "application/json",
         "Authorization": f"token {token}"
     }
-    if end_date:
-        date_range = f">={start_date},<={end_date}"
-    else:
-        date_range = f">={start_date}"
+
     payload = {
         "conditions": [
             {"source": "Eng"},
-            {"dataGroup": "Eng"},
-            {"ingestCompletionDate": date_range}
+            {"dataGroup": "Eng"}
         ],
         "limit": limit,
         "select_cols": [
@@ -215,11 +272,27 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
         ]
     }
 
+    if np.any([ingestion_start_date, ingestion_end_date]):
+        if np.all([ingestion_start_date, ingestion_end_date]):
+            ingestion_date_range = f">={ingestion_start_date},<={ingestion_end_date}"
+        elif ingestion_start_date:
+            ingestion_date_range = f">={ingestion_start_date}"
+        else:
+            ingestion_date_range = f"<={ingestion_end_date}"
+
+        payload["conditions"].append({"ingestCompletionDate": ingestion_date_range})
+
+
     if filetype is not None:
         payload["conditions"].append({"fileType": filetype})
 
     if filename is not None:
         payload["conditions"].append({"archiveFileName": filename})
+
+    if exp_start_date:
+        payload["conditions"].append({"startTime": f">={exp_start_date}"})
+    if exp_end_date:
+        payload["conditions"].append({"endTime": f"<={exp_end_date}"})
 
     response = requests.post(
         CASSI_URL_SEARCH,
@@ -236,7 +309,7 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
     # Presently there are duplicates in the responses; drop these:
     results.drop_duplicates(
         subset=[
-            'checksum', 'fileType', 
+            'checksum', 'fileType',
             'ingestCompletionDate', 'archiveFileName',
             'search_key'
         ],
@@ -246,7 +319,10 @@ def query_cassi(start_date, end_date, limit, filetype, filename, token):
     return results
 
 
-def download_cassi_files(results, folder, token):
+def download_cassi_files(
+    results=None,
+    folder="cassi-data",
+    token=None):
     """
     Download files to directory
     
@@ -320,7 +396,7 @@ def count_results(results, n_rjust=8):
     for c in counts.keys():
         print(f"{c}:".ljust(n_longest), str(counts[c]).rjust(n_rjust))
 
-def list_results(results):
+def list_results(results, show_exp_times=False):
     """
     List the results returned by the CaSSI query, showing only a subset of the 
     returned column information.
@@ -328,21 +404,22 @@ def list_results(results):
 
     results_prettified = results[['archiveFileName', 'fileType', 'ingestCompletionDate']]
 
-    ## Preserved in the event wall time start/end search is supported in the future.
-    # results_prettified.insert(
-    #     len(results_prettified.columns),
-    #     'startTime',
-    #     np.empty_like(results['times'], dtype="object")
-    # )
-    # results_prettified.insert(
-    #     len(results_prettified.columns),
-    #     'endTime',
-    #     np.empty_like(results['times'], dtype="object")
-    # )
-    # for ind in range(len(results)):
-    #     if results['times'][ind] is not None:
-    #         for key in ['startTime', 'endTime']:
-    #             results_prettified.loc[ind, key] = results['times'][ind].get(key, None)
+    if show_exp_times:
+        # Preserved in the event wall time start/end search is supported in the future.
+        results_prettified.insert(
+            len(results_prettified.columns),
+            'startTime',
+            np.empty_like(results['times'], dtype="object")
+        )
+        results_prettified.insert(
+            len(results_prettified.columns),
+            'endTime',
+            np.empty_like(results['times'], dtype="object")
+        )
+        for ind in range(len(results)):
+            if results['times'][ind] is not None:
+                for key in ['startTime', 'endTime']:
+                    results_prettified.loc[ind, key] = results['times'][ind].get(key, None)
 
     print(results_prettified)
 
@@ -360,11 +437,13 @@ def main():
     args = parse_args(parser)
 
     results = query_cassi(
-        args['start_date'],
-        args['end_date'],
-        args['limit'],
+        args['ingestion_start_date'],
+        args['ingestion_end_date'],
+        args['exp_start_date'],
+        args['exp_end_date'],
         args['filetype'],
         args['filename'],
+        args['limit'],
         args['token']
     )
 
@@ -380,7 +459,7 @@ def main():
     elif args['do_download']:
         return download_cassi_files(results, args['folder'], args['token'])
     else:
-        list_results(results)
+        list_results(results, show_exp_times=args['show_exp_times'])
         return 0
 
 if __name__ == "__main__":
