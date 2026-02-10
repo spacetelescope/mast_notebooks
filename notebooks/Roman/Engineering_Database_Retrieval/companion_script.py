@@ -5,6 +5,7 @@ includes an example file if no data is specified.
 """
 
 import os
+import io
 import argparse
 import csv
 import sys
@@ -12,18 +13,107 @@ import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
+import pandas as pd
 
 # default file to use if no file specified
 DEFAULT_FILE = "SCF_AC_SDR_QBJ_1_20270314T000000_20270316T235959.csv"
 
 
 def get_mnemonic_datetimes_from_filename(fname):
+    """Parse the mnemonic and datetimes from a filename"""
     splt = fname.split(".")[0].split('_')
     mnemonic = '_'.join(splt[:-2])
     s_time = datetime.fromisoformat(splt[-2]).isoformat()
     e_time = datetime.fromisoformat(splt[-1]).isoformat()
 
     return mnemonic, s_time, e_time
+
+
+def _query_stream_roman_edp_raw(fname):
+    # Convenience function to handle shared functionality between
+    # download_edb_datafiles() and query_stream_roman_edp()
+
+    mast_token = os.getenv("MAST_API_TOKEN")
+    headers = {
+        "Authorization": f'token {mast_token}'
+    }
+
+    urlstr = (
+        'https://mast.stsci.edu/edp/api/v0.1/mnemonics/spa/roman/'
+        'data?mnemonic={}&s_time={}&e_time={}&result_format=csv')
+    status = 0
+
+    mnemonic, s_time, e_time = get_mnemonic_datetimes_from_filename(fname)
+    url = urlstr.format(mnemonic, s_time, e_time)
+    req = urllib.request.Request(url, headers=headers)
+
+    try:
+        # Open the URL with the request object and save to file
+        with urllib.request.urlopen(req) as response:
+            data = response.read().decode('utf-8')
+    except urllib.error.URLError:
+        print("  ***Error downloading file***")
+        status = 1
+        data = None
+
+    return data, status
+
+
+
+def query_stream_roman_edp(mnemonics, start_time, end_time):
+    '''
+    Query Roman EDP and return mnemonics as DataFrame(s), 
+    without writing to disk ("streaming", versus "downloading")
+    
+    Parameters
+    ----------
+    mnemonics : str or list
+        String or list of strings containing the desired mnemonic names
+    start_time: str
+        Directory (relative to cwd) in which to write output files
+        
+    start_time : str
+        Timeseries start time in YYYYMMDDTHHMMSS format (24hr)
+        
+    end_time : str
+        Timeseries start time in YYYYMMDDTHHMMSS format (24hr)
+
+    Returns
+    -------
+    timeseries : DataFrame or dict
+        Mnemonic timeseries. If a single mnemonic passed, this returns a 
+        DataFrame. Otherwise, returns a dict, with the mnemonics as keys and 
+        each entry containing a DataFrame.
+       
+    '''
+
+    # Ensure mnemonics is a list:
+    return_dict = True
+    if isinstance(mnemonics, str):
+        mnemonics = [mnemonics]
+        return_dict = False
+
+    timeseries = {}
+    for m in mnemonics:
+        # Construct filename
+        fname = '_'.join([m, start_time, end_time]) + '.csv'
+
+        # Query + stream data
+        data, _ = _query_stream_roman_edp_raw(fname)
+        if data is not None:
+            df = pd.read_csv(io.StringIO(data))
+        else:
+            df = None
+
+        timeseries[m] = df
+
+    # Postprocess:
+    # Return dataframe if single mnemonic:
+    if not return_dict:
+        return timeseries[mnemonics[0]]
+
+    # Otherwise, return dict of dataframes:
+    return timeseries
 
 
 def download_edb_datafiles(filenames, folder):
@@ -42,15 +132,8 @@ def download_edb_datafiles(filenames, folder):
     int
        Success status for each mnemonic retrieval
     '''
-            
-    Path(folder).mkdir(exist_ok=True)
-    
-    mast_token = os.getenv("MAST_API_TOKEN")
-    headers = {
-        "Authorization": f'token {mast_token}'
-    }
 
-    urlStr = 'https://mast.stsci.edu/edp/api/v0.1/mnemonics/spa/roman/data?mnemonic={}&s_time={}&e_time={}&result_format=csv' 
+    Path(folder).mkdir(exist_ok=True)
     status = 0
 
     for fname in filenames:
@@ -58,23 +141,17 @@ def download_edb_datafiles(filenames, folder):
             f"Downloading File: mast:romanedb/{fname}\n",
             f" To: {folder}/{fname}",
         )
-        
-        mnemonic, s_time, e_time = get_mnemonic_datetimes_from_filename(fname)
-        url = urlStr.format(mnemonic, s_time, e_time)
-        # print(f"URL: {url}")
-        req = urllib.request.Request(url, headers=headers)
-        
-        try:
-            # Open the URL with the request object and save to file
-            with urllib.request.urlopen(req) as response:
-                data = response.read().decode('utf-8')
-                with open(f"{folder}/{fname}", "w", encoding='utf-8') as f:
-                    f.write(data)
-        except urllib.error.URLError:
-            print("  ***Error downloading file***")
-            status = 1
-    
-    return status  
+
+        data, status_f = _query_stream_roman_edp_raw(fname)
+
+        if data is not None:
+            with open(f"{folder}/{fname}", "w", encoding='utf-8') as f:
+                f.write(data)
+
+        # Update status
+        status = status_f if status_f > status else status
+
+    return status
 
 
 def _convert_datetime_to_compact_iso(dt):
@@ -124,7 +201,7 @@ def download_edb_datafiles_by_mnemonic_starttime_endtime(requests, folder):
     download_edb_datafiles_by_mnemonic_starttime_endtime(requests, "test")
     ```
     """
-    
+
     filenames = []
     for req in requests:
         filename = parse_mnemonic_starttime_endtime(req)
