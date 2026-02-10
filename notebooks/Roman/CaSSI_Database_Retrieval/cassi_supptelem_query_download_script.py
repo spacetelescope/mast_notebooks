@@ -272,8 +272,8 @@ def query_cassi(
         ]
     }
 
-    if np.any([ingestion_start_date, ingestion_end_date]):
-        if np.all([ingestion_start_date, ingestion_end_date]):
+    if ingestion_start_date or ingestion_end_date:
+        if ingestion_start_date and ingestion_end_date:
             ingestion_date_range = f">={ingestion_start_date},<={ingestion_end_date}"
         elif ingestion_start_date:
             ingestion_date_range = f">={ingestion_start_date}"
