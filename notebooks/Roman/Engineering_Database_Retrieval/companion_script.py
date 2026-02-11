@@ -69,8 +69,6 @@ def query_stream_roman_edp(mnemonics, start_time, end_time):
     ----------
     mnemonics : str or list
         String or list of strings containing the desired mnemonic names
-    start_time: str
-        Directory (relative to cwd) in which to write output files
         
     start_time : str
         Timeseries start time in YYYYMMDDTHHMMSS format (24hr)
