@@ -86,10 +86,8 @@ def query_stream_roman_edp(mnemonics, start_time, end_time):
     '''
 
     # Ensure mnemonics is a list:
-    return_dict = True
     if isinstance(mnemonics, str):
         mnemonics = [mnemonics]
-        return_dict = False
 
     timeseries = {}
     for m in mnemonics:
@@ -107,7 +105,7 @@ def query_stream_roman_edp(mnemonics, start_time, end_time):
 
     # Postprocess:
     # Return dataframe if single mnemonic:
-    if not return_dict:
+    if len(mnemonics) == 1:
         return timeseries[mnemonics[0]]
 
     # Otherwise, return dict of dataframes:
