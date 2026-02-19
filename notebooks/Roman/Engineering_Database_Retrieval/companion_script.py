@@ -29,13 +29,14 @@ def get_mnemonic_datetimes_from_filename(fname):
     return mnemonic, s_time, e_time
 
 
-def _query_stream_roman_edp_raw(fname):
+def _query_stream_roman_edp_raw(fname, token=None):
     # Convenience function to handle shared functionality between
     # download_edb_datafiles() and query_stream_roman_edp()
 
-    mast_token = os.getenv("MAST_API_TOKEN")
+    if token is None:
+        token = os.getenv("MAST_API_TOKEN")
     headers = {
-        "Authorization": f'token {mast_token}'
+        "Authorization": f'token {token}'
     }
 
     urlstr = (
@@ -60,7 +61,7 @@ def _query_stream_roman_edp_raw(fname):
 
 
 
-def query_stream_roman_edp(mnemonics, start_time, end_time):
+def query_stream_roman_edp(mnemonics, start_time, end_time, token=None):
     '''
     Query Roman EDP and return mnemonics as DataFrame(s), 
     without writing to disk ("streaming", versus "downloading")
@@ -75,6 +76,9 @@ def query_stream_roman_edp(mnemonics, start_time, end_time):
         
     end_time : str
         Timeseries start time in YYYYMMDDTHHMMSS format (24hr)
+
+    token : str or None
+        MAST API token. Default: None (determines from envvar `MAST_API_TOKEN`)
 
     Returns
     -------
@@ -95,7 +99,7 @@ def query_stream_roman_edp(mnemonics, start_time, end_time):
         fname = '_'.join([m, start_time, end_time]) + '.csv'
 
         # Query + stream data
-        data, _ = _query_stream_roman_edp_raw(fname)
+        data, _ = _query_stream_roman_edp_raw(fname, token=token)
         if data is not None:
             df = pd.read_csv(io.StringIO(data))
         else:
@@ -112,7 +116,7 @@ def query_stream_roman_edp(mnemonics, start_time, end_time):
     return timeseries
 
 
-def download_edb_datafiles(filenames, folder):
+def download_edb_datafiles(filenames, folder, token=None):
     '''
     Download filenames to directory
     
@@ -120,9 +124,13 @@ def download_edb_datafiles(filenames, folder):
     ----------
     filenames : iterable
         List of string-valued file names to contain the desired mnemonic timeseries
+
     folder: str
         Directory (relative to cwd) in which to write output files
-        
+
+    token : str or None
+        MAST API token. Default: None (determines from envvar `MAST_API_TOKEN`)
+
     Returns
     -------
     int
@@ -138,7 +146,7 @@ def download_edb_datafiles(filenames, folder):
             f" To: {folder}/{fname}",
         )
 
-        data, status_f = _query_stream_roman_edp_raw(fname)
+        data, status_f = _query_stream_roman_edp_raw(fname, token=token)
 
         if data is not None:
             with open(f"{folder}/{fname}", "w", encoding='utf-8') as f:
@@ -220,7 +228,17 @@ def parse_args(args):
         type=str,
         help="Query file (csv) containing a mnemonic, starttime, endtime per line",
     )
+
+    parser.add_argument(
+        "-t",
+        "--token",
+        type=str,
+        default=None,
+        help="MAST token. If not set, will use envvar `MAST_API_TOKEN`",
+    )
+
     parser.add_argument("file", nargs="*", type=str, help="File(s) to download")
+
     args = parser.parse_args(args)
 
     filenames = args.file
@@ -236,17 +254,19 @@ def parse_args(args):
 
     filenames = set(filenames)
 
+    token = args.token
+
     if not filenames:
         print(f"No files specified, using default file: {DEFAULT_FILE}")
         filenames = {DEFAULT_FILE}
 
-    return filenames, folder
+    return filenames, folder, token
 
 
 def main(args=None):
     """Collect args from user input, give them to the download function"""
-    filenames, folder = parse_args(args)
-    return download_edb_datafiles(filenames, folder)
+    filenames, folder, token = parse_args(args)
+    return download_edb_datafiles(filenames, folder, token=token)
 
 
 if __name__ == "__main__":
