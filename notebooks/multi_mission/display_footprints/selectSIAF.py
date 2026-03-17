@@ -77,8 +77,8 @@ def defineApertures(selectedTelescope, selectedInstrument, selectedAperture):
         elif selectedInstrument.lower() == 'nircam':
             telescopeSiaf = pysiaf.Siaf(selectedInstrument)
             if selectedAperture.lower() == 'all':
-                apertureNames = ['NRCA1_FULL', 'NRCA1_FULL', 'NRCA3_FULL', 'NRCA4_FULL', 'NRCA5_FULL',
-                                 'NRCB1_FULL', 'NRCB1_FULL', 'NRCB3_FULL', 'NRCB4_FULL', 'NRCB5_FULL']
+                apertureNames = ['NRCA1_FULL', 'NRCA2_FULL', 'NRCA3_FULL', 'NRCA4_FULL', 'NRCA5_FULL',
+                                 'NRCB1_FULL', 'NRCB2_FULL', 'NRCB3_FULL', 'NRCB4_FULL', 'NRCB5_FULL']
                 V2Ref = 0.0
                 V3Ref = -500.0
             else:
@@ -123,8 +123,8 @@ def defineApertures(selectedTelescope, selectedInstrument, selectedAperture):
             for name in apertureNames:
                 apertureList.append(telescopeSiaf[name])
             telescopeSiaf = pysiaf.Siaf('NIRCAM')
-            apertureNames = ['NRCA1_FULL', 'NRCA1_FULL', 'NRCA3_FULL', 'NRCA4_FULL', 'NRCA5_FULL',
-                             'NRCB1_FULL', 'NRCB1_FULL', 'NRCB3_FULL', 'NRCB4_FULL', 'NRCB5_FULL']
+            apertureNames = ['NRCA1_FULL', 'NRCA2_FULL', 'NRCA3_FULL', 'NRCA4_FULL', 'NRCA5_FULL',
+                             'NRCB1_FULL', 'NRCB2_FULL', 'NRCB3_FULL', 'NRCB4_FULL', 'NRCB5_FULL']
             for name in apertureNames:
                 apertureList.append(telescopeSiaf[name])
             telescopeSiaf = pysiaf.Siaf('NIRSPEC')
