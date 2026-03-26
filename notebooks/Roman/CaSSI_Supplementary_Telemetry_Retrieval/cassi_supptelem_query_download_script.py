@@ -222,7 +222,7 @@ def query_cassi(
     Parameters
     ----------
     ingestion_start_date : str or None
-        Optoinal ingestion start date in YYYY-MM-DD[THH:MM:SS] format (24hr)
+        Optional ingestion start date in YYYY-MM-DD[THH:MM:SS] format (24hr)
         
     ingestion_end_date : str or None
         Optional ingestion end date in YYYY-MM-DD[THH:MM:SS] format (24hr)
