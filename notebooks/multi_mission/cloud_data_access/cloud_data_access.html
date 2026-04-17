@@ -1,0 +1,1470 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Accessing Cloud-Hosted Data with Astroquery &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/multi_mission/cloud_data_access/cloud_data_access';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-dark pst-js-only" alt="MAST Notebook Repository - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/multi_mission/cloud_data_access/cloud_data_access.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/multi_mission/cloud_data_access/cloud_data_access.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/multi_mission/cloud_data_access/cloud_data_access.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Accessing Cloud-Hosted Data with Astroquery</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-cloud-hosted-datasets">Identifying Cloud-Hosted Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-mast-observations-and-data-products">Searching for MAST Observations and Data Products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-cloud-hosted-data">Accessing Cloud-Hosted Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-a-cloud-fits-file-with-astropy">Opening a Cloud FITS File with Astropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-a-cloud-file-with-s3fs">Opening a Cloud File with s3fs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example-accessing-time-series-data-from-tess">Another Example: Accessing Time-Series Data from TESS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-timeseries-files-with-lightkurve">Opening Timeseries Files with Lightkurve</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-accessing-jwst-spectroscopic-data">Exercise: Accessing JWST Spectroscopic Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solution">Exercise Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="accessing-cloud-hosted-data-with-astroquery">
+<h1>Accessing Cloud-Hosted Data with Astroquery<a class="headerlink" href="#accessing-cloud-hosted-data-with-astroquery" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Identify which MAST datasets are available in the cloud.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code> to search for observations and associated data products.</p></li>
+<li><p>Access and read data directly from the cloud without downloading files locally.</p></li>
+<li><p>Apply these techniques to multiple mission data products, including images, spectra, and time-series data.</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction"><span class="xref myst">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#identifying-cloud-hosted-datasets"><span class="xref myst">Identifying Cloud-Hosted Datasets</span></a></p></li>
+<li><p><a class="reference internal" href="#searching-for-mast-observations-and-data-products"><span class="xref myst">Searching for MAST Observations and Data Products</span></a></p></li>
+<li><p><a class="reference internal" href="#accessing-cloud-hosted-data"><span class="xref myst">Accessing Cloud-Hosted Data</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#opening-a-cloud-fits-file-with-astropy"><span class="xref myst">Opening a Cloud FITS File with Astropy</span></a></p></li>
+<li><p><a class="reference internal" href="#opening-a-cloud-file-with-s3fs"><span class="xref myst">Opening a Cloud File with s3fs</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#another-example-accessing-time-series-data-from-tess"><span class="xref myst">Another Example: Accessing Time-Series Data from TESS</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#opening-timeseries-files-with-lightkurve"><span class="xref myst">Opening Timeseries Files with Lightkurve</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#exercise-accessing-jwst-spectroscopic-data"><span class="xref myst">Exercise: Accessing JWST Spectroscopic Data</span></a></p></li>
+<li><p><a class="reference internal" href="#exercise-solution"><span class="xref myst">Exercise Solution</span></a></p></li>
+<li><p><a class="reference internal" href="#additional-resources"><span class="xref myst">Additional Resources</span></a></p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Astronomical datasets have grown dramatically in size and complexity over the past few decades. Many modern missions produce data volumes that are impractical to download and store locally. To support large-scale analysis workflows, the <a class="reference external" href="https://archive.stsci.edu/">Mikulski Archive for Space Telescopes (MAST)</a> hosts many public datasets in the cloud.</p>
+<p>In this context, <em>the cloud</em> refers to remote storage systems that make data available over the internet through object storage services. One widely used service is <a class="reference external" href="https://aws.amazon.com/">Amazon Web Services (AWS)</a> <a class="reference external" href="https://aws.amazon.com/s3/">Simple Storage Service (S3)</a>, where several public MAST datasets are stored in an <a class="reference external" href="https://registry.opendata.aws/collab/stsci/">Open Data Bucket</a>. Instead of retrieving files through traditional download methods, users can access data directly from cloud storage using specialized tools and libraries.</p>
+<p>Accessing datasets via cloud storage can provide significant advantages, allowing you to:</p>
+<ul class="simple">
+<li><p>Avoid transferring entire files when only a subset of the data is needed.</p></li>
+<li><p>Improve data access speed when working in environments with fast connections to cloud storage.</p></li>
+<li><p>Reduce local storage requirements by accessing files on demand.</p></li>
+<li><p>Simplify workflows that involve large datasets or require access to multiple files.</p></li>
+</ul>
+<p>The <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast_obsquery.html"><code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code></a> interface supports both traditional downloads and direct access to cloud-hosted data products. In addition to returning metadata about observations and data products, it provides S3 Uniform Resource Identifiers (URIs) that point to the location of cloud-hosted files.</p>
+<p>In this notebook, we demonstrate how to:</p>
+<ul class="simple">
+<li><p>Identify which MAST datasets are available in cloud storage.</p></li>
+<li><p>Retrieve S3 URIs for cloud-hosted data products.</p></li>
+<li><p>Access files directly from the cloud without downloading them locally.</p></li>
+<li><p>Read subsets of large files using cloud access methods.</p></li>
+</ul>
+<p>These tools allow users to incorporate cloud-hosted MAST data into their analysis workflows while minimizing data transfer and local storage requirements.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>This notebook uses the following packages:</p>
+<ul class="simple">
+<li><p><em>matplotlib</em> to visualize data</p></li>
+<li><p><em>s3fs</em> to access files stored in public cloud storage (e.g., AWS S3) without authentication</p></li>
+<li><p><em>astropy</em> to handle FITS files and perform normalization for visualization</p></li>
+<li><p><em>astroquery.mast</em> to query the MAST archive and locate data products</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">s3fs</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">lightkurve</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">simple_norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observations</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="identifying-cloud-hosted-datasets">
+<h2>Identifying Cloud-Hosted Datasets<a class="headerlink" href="#identifying-cloud-hosted-datasets" title="Link to this heading">#</a></h2>
+<p>Public datasets from several missions and collections are currently hosted in the cloud. To return a list of available datasets, we can use the <code class="docutils literal notranslate"><span class="pre">Observations.list_cloud_datasets()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List the available cloud datasets</span>
+<span class="n">Observations</span><span class="o">.</span><span class="n">list_cloud_datasets</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Using the S3 STScI public dataset [astroquery.mast.cloud]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;des&#39;,
+ &#39;desi&#39;,
+ &#39;gaia&#39;,
+ &#39;galex&#39;,
+ &#39;hst&#39;,
+ &#39;jwst&#39;,
+ &#39;k2&#39;,
+ &#39;kepler&#39;,
+ &#39;mast/hlsp/jades&#39;,
+ &#39;mast/hlsp/maestro&#39;,
+ &#39;mast/hlsp/qlp&#39;,
+ &#39;mast/hlsp/tess-spoc&#39;,
+ &#39;mast/hlsp/tglc&#39;,
+ &#39;panstarrs&#39;,
+ &#39;roman&#39;,
+ &#39;sdss&#39;,
+ &#39;tess&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Wow, there’s a good amount of data available in the cloud! Notice that these datasets include both mission names (e.g., “hst”, “kepler”) and <a class="reference external" href="https://mast.stsci.edu/hlsp/#/">High-Level Science Product (HLSP)</a> collections (e.g., “mast/hlsp/jades”).</p>
+<p>Now that we know what data is available, we can use the <code class="docutils literal notranslate"><span class="pre">Observations</span></code> interface to search for observations and data products from these datasets.</p>
+</section>
+<section id="searching-for-mast-observations-and-data-products">
+<h2>Searching for MAST Observations and Data Products<a class="headerlink" href="#searching-for-mast-observations-and-data-products" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Observations</span></code> interface provides several methods to search for observational metadata archived at MAST. Queries may be based on sky coordinates, an object name, or other metadata criteria. For the purposes of this tutorial, we won’t go into too much detail on how to write queries. Instead, we will focus more on how to access cloud data products once you have identified them. For a more detailed introduction to writing queries with <code class="docutils literal notranslate"><span class="pre">astroquery.mast.Observations</span></code>, please see our beginner notebook on <a class="reference external" href="https://spacetelescope.github.io/mast_notebooks/notebooks/multi_mission/beginner_search/beginner_search.html">Searching MAST using astroquery.mast</a>.</p>
+<p>For our first example, let’s search for image observations of NGC 6543 taken by the <a class="reference external" href="https://www.stsci.edu/hst">Hubble Space Telescope (HST)</a>. NGC 6543, also known as the <a class="reference external" href="https://science.nasa.gov/asset/hubble/cats-eye-nebula/">Cat’s Eye Nebula</a>, is a well-known planetary nebula in the northern constellation of Draco. We’ll use the <code class="docutils literal notranslate"><span class="pre">Observations.query_criteria()</span></code> method with the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">target_name=&quot;NGC6543&quot;</span></code> to search for observations of the Cat’s Eye Nebula.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obs_collection=&quot;HST&quot;</span></code> to restrict our search to the Hubble Space Telescope.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataproduct_type=&quot;image&quot;</span></code> to look for image data products.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calib_level=3</span></code> to focus on fully calibrated data products that are ready for scientific analysis.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">provenance_name='CALACS'</span></code> to select data products that were processed by the <a class="reference external" href="https://www.stsci.edu/hst/instrumentation/acs/software-tools/calibration-tools#section-7d70c566-954d-4d4c-a5cd-fd3855057b0e">Advanced Camera for Surveys (ACS) calibration pipeline</a>.</p></li>
+</ul>
+<p>The method will return an <code class="docutils literal notranslate"><span class="pre">astropy.table.Table</span></code> containing metadata for all observations that match our criteria. We can check how many observations were returned and take a look at the first few rows of the table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query for HST image observations of NGC6543</span>
+<span class="n">hst_obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">target_name</span><span class="o">=</span><span class="s2">&quot;NGC6543&quot;</span><span class="p">,</span>
+                                      <span class="n">obs_collection</span><span class="o">=</span><span class="s2">&quot;HST&quot;</span><span class="p">,</span>
+                                      <span class="n">dataproduct_type</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
+                                      <span class="n">calib_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                      <span class="n">provenance_name</span><span class="o">=</span><span class="s2">&quot;CALACS&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of observations: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">hst_obs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">hst_obs</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of observations: 12
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139699512927760" class="table-striped table-bordered table-condensed">
+<thead><tr><th>intentType</th><th>obs_collection</th><th>provenance_name</th><th>instrument_name</th><th>project</th><th>filters</th><th>wave_region</th><th>target_name</th><th>target_classification</th><th>obs_id</th><th>s_ra</th><th>s_dec</th><th>dataproduct_type</th><th>proposal_pi</th><th>calib_level</th><th>t_min</th><th>t_max</th><th>t_exptime</th><th>wavelength_region</th><th>em_min</th><th>em_max</th><th>obs_title</th><th>t_obs_release</th><th>proposal_id</th><th>proposal_type</th><th>sequence_number</th><th>s_region</th><th>jpegURL</th><th>dataURL</th><th>dataRights</th><th>mtFlag</th><th>srcDen</th><th>obsid</th><th>objID</th><th>wave_min</th><th>wave_max</th></tr></thead>
+<thead><tr><th>str7</th><th>str3</th><th>str6</th><th>str7</th><th>str3</th><th>str6</th><th>str7</th><th>str7</th><th>str46</th><th>str9</th><th>float64</th><th>float64</th><th>str5</th><th>str20</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>str7</th><th>float64</th><th>float64</th><th>str20</th><th>float64</th><th>str4</th><th>str7</th><th>int64</th><th>str479</th><th>str34</th><th>str35</th><th>str6</th><th>bool</th><th>float64</th><th>str8</th><th>str9</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>science</td><td>HST</td><td>CALACS</td><td>ACS/HRC</td><td>HST</td><td>F502N</td><td>OPTICAL</td><td>NGC6543</td><td>ISM;PLANETARY NEBULA;;ISM;EMISSION LINE NEBULA</td><td>j8cka1030</td><td>269.6387083333</td><td>66.63302777778</td><td>image</td><td>Tsvetanov, Zlatan I.</td><td>3</td><td>52398.86037696759</td><td>52398.869024155094</td><td>700.0</td><td>OPTICAL</td><td>499.40000000000003</td><td>505.00000000000006</td><td>ACS Ramp Filter Test</td><td>52394.7083333</td><td>9026</td><td>SM3/ACS</td><td>--</td><td>POLYGON -90.35868499999998 66.62750253 -90.34847491 66.63328485 -90.36390461000002 66.6385638 -90.37411326 66.63278047 -90.35868499999998 66.62750253 -90.35868499999998 66.62750253</td><td>mast:HST/product/j8cka1031_drz.jpg</td><td>mast:HST/product/j8cka1031_drz.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>26095326</td><td>902297968</td><td>499.40000000000003</td><td>505.00000000000006</td></tr>
+<tr><td>science</td><td>HST</td><td>CALACS</td><td>ACS/HRC</td><td>HST</td><td>FR656N</td><td>OPTICAL</td><td>NGC6543</td><td>ISM;PLANETARY NEBULA;;ISM;EMISSION LINE NEBULA</td><td>j8cka1040</td><td>269.6387083333</td><td>66.63302777778</td><td>image</td><td>Tsvetanov, Zlatan I.</td><td>3</td><td>52398.87011211806</td><td>52398.87875787037</td><td>700.0</td><td>OPTICAL</td><td>627.4</td><td>684.8</td><td>ACS Ramp Filter Test</td><td>52394.7083333</td><td>9026</td><td>SM3/ACS</td><td>--</td><td>POLYGON -90.35868499999998 66.62750253 -90.34847491 66.63328485 -90.36390461000002 66.6385638 -90.37411326 66.63278047 -90.35868499999998 66.62750253 -90.35868499999998 66.62750253</td><td>mast:HST/product/j8cka1041_drz.jpg</td><td>mast:HST/product/j8cka1041_drz.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>26095321</td><td>902297969</td><td>627.4</td><td>684.8</td></tr>
+<tr><td>science</td><td>HST</td><td>CALACS</td><td>ACS/HRC</td><td>HST</td><td>FR505N</td><td>OPTICAL</td><td>NGC6543</td><td>ISM;PLANETARY NEBULA;;ISM;EMISSION LINE NEBULA</td><td>j8cka1020</td><td>269.6387083333</td><td>66.63302777778</td><td>image</td><td>Tsvetanov, Zlatan I.</td><td>3</td><td>52398.85036655093</td><td>52398.859011342596</td><td>700.0</td><td>OPTICAL</td><td>482.40000000000003</td><td>526.5999999999999</td><td>ACS Ramp Filter Test</td><td>52394.7083333</td><td>9026</td><td>SM3/ACS</td><td>--</td><td>POLYGON -90.35868499999998 66.62750253 -90.34847491 66.63328485 -90.36390461000002 66.6385638 -90.37411326 66.63278047 -90.35868499999998 66.62750253 -90.35868499999998 66.62750253</td><td>mast:HST/product/j8cka1021_drz.jpg</td><td>mast:HST/product/j8cka1021_drz.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>26098616</td><td>902298461</td><td>482.40000000000003</td><td>526.5999999999999</td></tr>
+<tr><td>science</td><td>HST</td><td>CALACS</td><td>ACS/HRC</td><td>HST</td><td>F658N</td><td>OPTICAL</td><td>NGC6543</td><td>ISM;PLANETARY NEBULA;;ISM;EMISSION LINE NEBULA</td><td>j8cka1050</td><td>269.6387083333</td><td>66.63302777778</td><td>image</td><td>Tsvetanov, Zlatan I.</td><td>3</td><td>52398.91740358796</td><td>52398.926049340276</td><td>700.0</td><td>OPTICAL</td><td>654.2</td><td>662.0</td><td>ACS Ramp Filter Test</td><td>52394.7083333</td><td>9026</td><td>SM3/ACS</td><td>--</td><td>POLYGON -90.35868499999998 66.62750253 -90.34847491 66.63328485 -90.36390461000002 66.6385638 -90.37411326 66.63278047 -90.35868499999998 66.62750253 -90.35868499999998 66.62750253</td><td>mast:HST/product/j8cka1051_drz.jpg</td><td>mast:HST/product/j8cka1051_drz.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>26098620</td><td>902298510</td><td>654.2</td><td>662.0</td></tr>
+<tr><td>science</td><td>HST</td><td>CALACS</td><td>ACS/HRC</td><td>HST</td><td>FR388N</td><td>OPTICAL</td><td>NGC6543</td><td>ISM;PLANETARY NEBULA;;ISM;EMISSION LINE NEBULA</td><td>j8cka1010</td><td>269.6387083333</td><td>66.63302777778</td><td>image</td><td>Tsvetanov, Zlatan I.</td><td>3</td><td>52398.8062346875</td><td>52398.814880439815</td><td>700.0</td><td>OPTICAL</td><td>371.0</td><td>404.9</td><td>ACS Ramp Filter Test</td><td>52394.7083333</td><td>9026</td><td>SM3/ACS</td><td>--</td><td>POLYGON -90.35868499999998 66.62750253 -90.34847491 66.63328485 -90.36390461000002 66.6385638 -90.37411326 66.63278047 -90.35868499999998 66.62750253 -90.35868499999998 66.62750253</td><td>mast:HST/product/j8cka1011_drz.jpg</td><td>mast:HST/product/j8cka1011_drz.fits</td><td>PUBLIC</td><td>False</td><td>nan</td><td>26098612</td><td>902298579</td><td>371.0</td><td>404.9</td></tr>
+</table></div></div></div>
+</div>
+<p>Great, we found some observations! Each observation archived at MAST may be associated with one or more data products, including images, spectra, time-series files, previews, or ancillary metadata.</p>
+<p>Next, we can use the <code class="docutils literal notranslate"><span class="pre">Observations.get_unique_product_list()</span></code> method to retrieve a list of de-duplicated data products associated with these observations. This method will return another <code class="docutils literal notranslate"><span class="pre">astropy.table.Table</span></code> that includes metadata for each data product.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get unique products for these observations</span>
+<span class="n">hst_prods</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_unique_product_list</span><span class="p">(</span><span class="n">hst_obs</span><span class="p">)</span>
+<span class="n">hst_prods</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: 55 of 566 products were duplicates. Only returning 511 unique product(s). [astroquery.mast.utils]
+INFO: To return all products, use `Observations.get_product_list` [astroquery.mast.observations]
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table masked=True length=5</i>
+<table id="table139699512998672" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str8</th><th>str3</th><th>str5</th><th>str35</th><th>str64</th><th>str1</th><th>str94</th><th>str9</th><th>str28</th><th>str11</th><th>str1</th><th>str7</th><th>str20</th><th>str4</th><th>str49</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>25516311</td><td>HLA</td><td>image</td><td>hst_9026_01_acs_wfc_f502n_01</td><td>Preview-Full</td><td>S</td><td>mast:HLA/url/cgi-bin/preview.cgi?dataset=hst_9026_01_acs_wfc_f502n_01</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>HLA</td><td>--</td><td>9026</td><td>hst_9026_01_acs_wfc_f502n_01_drz.jpg</td><td>--</td><td>26095264</td><td>PUBLIC</td><td>2</td><td>F502N</td></tr>
+<tr><td>25516311</td><td>HLA</td><td>image</td><td>hst_9026_01_acs_wfc_f502n_01</td><td>HLA simple fits science image</td><td>S</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_9026_01_acs_wfc_f502n_01_drz.fits</td><td>SCIENCE</td><td>--</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>9026</td><td>hst_9026_01_acs_wfc_f502n_01_drz.fits</td><td>138614400</td><td>26095264</td><td>PUBLIC</td><td>2</td><td>F502N</td></tr>
+<tr><td>25516312</td><td>HLA</td><td>image</td><td>hst_9026_01_acs_wfc_f502n_02</td><td>Preview-Full</td><td>S</td><td>mast:HLA/url/cgi-bin/preview.cgi?dataset=hst_9026_01_acs_wfc_f502n_02</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>HLA</td><td>--</td><td>9026</td><td>hst_9026_01_acs_wfc_f502n_02_drz.jpg</td><td>--</td><td>26095264</td><td>PUBLIC</td><td>2</td><td>F502N</td></tr>
+<tr><td>25516312</td><td>HLA</td><td>image</td><td>hst_9026_01_acs_wfc_f502n_02</td><td>HLA simple fits science image</td><td>S</td><td>mast:HLA/url/cgi-bin/getdata.cgi?dataset=hst_9026_01_acs_wfc_f502n_02_drz.fits</td><td>SCIENCE</td><td>--</td><td>DRZ</td><td>--</td><td>HLA</td><td>--</td><td>9026</td><td>hst_9026_01_acs_wfc_f502n_02_drz.fits</td><td>138614400</td><td>26095264</td><td>PUBLIC</td><td>2</td><td>F502N</td></tr>
+<tr><td>25516313</td><td>HLA</td><td>image</td><td>hst_9026_01_acs_wfc_f658n_01</td><td>Preview-Full</td><td>S</td><td>mast:HLA/url/cgi-bin/preview.cgi?dataset=hst_9026_01_acs_wfc_f658n_01</td><td>PREVIEW</td><td>--</td><td>--</td><td>--</td><td>HLA</td><td>--</td><td>9026</td><td>hst_9026_01_acs_wfc_f658n_01_drz.jpg</td><td>--</td><td>26095265</td><td>PUBLIC</td><td>2</td><td>F658N</td></tr>
+</table></div></div></div>
+</div>
+<p>These observations alone returned over 500 unique products! We are not interested in all of them, and luckily, we have a handy function to filter them for us. <code class="docutils literal notranslate"><span class="pre">Observations.filter_products()</span></code> allows us to filter based on file extension, whether a product is a minimum recommended product, and any other metadata column in the products table.</p>
+<p>For this example, let’s filter for the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mrp_only=True</span></code> to select only the minimum recommended products (MRPs) for each observation. MRPs are a subset of data products that are recommended for scientific analysis based on quality and calibration level.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">productSubGroupDescription=&quot;DRZ&quot;</span></code> to select calibrated image products that combine multiple exposures using the Drizzle algorithm. DRZ products are often used for scientific analysis as they have been processed to correct for geometric distortion and combine multiple exposures to improve signal-to-noise.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter for MRP products and DRZ images</span>
+<span class="n">filtered_hst_prods</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">hst_prods</span><span class="p">,</span>
+                                                  <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                  <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="s2">&quot;DRZ&quot;</span><span class="p">)</span>
+<span class="n">filtered_hst_prods</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table masked=True length=12</i>
+<table id="table139699508927312" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
+<thead><tr><th>str8</th><th>str3</th><th>str5</th><th>str35</th><th>str64</th><th>str1</th><th>str94</th><th>str9</th><th>str28</th><th>str11</th><th>str1</th><th>str7</th><th>str20</th><th>str4</th><th>str49</th><th>int64</th><th>str8</th><th>str6</th><th>int64</th><th>str9</th></tr></thead>
+<tr><td>26091352</td><td>HST</td><td>image</td><td>j8ck01040</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8ck01041_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8ck01041_drz.fits</td><td>214300800</td><td>26091352</td><td>PUBLIC</td><td>3</td><td>FR656N</td></tr>
+<tr><td>26091354</td><td>HST</td><td>image</td><td>j8ck01060</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8ck01061_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8ck01061_drz.fits</td><td>214352640</td><td>26091354</td><td>PUBLIC</td><td>3</td><td>FR656N</td></tr>
+<tr><td>26095264</td><td>HST</td><td>image</td><td>j8ck01030</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8ck01031_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8ck01031_drz.fits</td><td>214404480</td><td>26095264</td><td>PUBLIC</td><td>3</td><td>F502N</td></tr>
+<tr><td>26095265</td><td>HST</td><td>image</td><td>j8ck01050</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8ck01051_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8ck01051_drz.fits</td><td>214352640</td><td>26095265</td><td>PUBLIC</td><td>3</td><td>F658N</td></tr>
+<tr><td>26095321</td><td>HST</td><td>image</td><td>j8cka1040</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8cka1041_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8cka1041_drz.fits</td><td>15963840</td><td>26095321</td><td>PUBLIC</td><td>3</td><td>FR656N</td></tr>
+<tr><td>26095326</td><td>HST</td><td>image</td><td>j8cka1030</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8cka1031_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8cka1031_drz.fits</td><td>15963840</td><td>26095326</td><td>PUBLIC</td><td>3</td><td>F502N</td></tr>
+<tr><td>26098573</td><td>HST</td><td>image</td><td>j8ck01020</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8ck01021_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8ck01021_drz.fits</td><td>214300800</td><td>26098573</td><td>PUBLIC</td><td>3</td><td>FR505N</td></tr>
+<tr><td>26098577</td><td>HST</td><td>image</td><td>j8ck01010</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8ck01011_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8ck01011_drz.fits</td><td>214352640</td><td>26098577</td><td>PUBLIC</td><td>3</td><td>FR388N</td></tr>
+<tr><td>26098612</td><td>HST</td><td>image</td><td>j8cka1010</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8cka1011_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8cka1011_drz.fits</td><td>15963840</td><td>26098612</td><td>PUBLIC</td><td>3</td><td>FR388N</td></tr>
+<tr><td>26098614</td><td>HST</td><td>image</td><td>j8cka1060</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8cka1061_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8cka1061_drz.fits</td><td>15963840</td><td>26098614</td><td>PUBLIC</td><td>3</td><td>FR656N</td></tr>
+<tr><td>26098616</td><td>HST</td><td>image</td><td>j8cka1020</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8cka1021_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8cka1021_drz.fits</td><td>15963840</td><td>26098616</td><td>PUBLIC</td><td>3</td><td>FR505N</td></tr>
+<tr><td>26098620</td><td>HST</td><td>image</td><td>j8cka1050</td><td>DADS DRZ file - Calibrated combined image ACS/WFC3/WFPC2/STIS</td><td>D</td><td>mast:HST/product/j8cka1051_drz.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>DRZ</td><td>--</td><td>CALACS</td><td>DrizzlePac 3.10.0</td><td>9026</td><td>j8cka1051_drz.fits</td><td>15963840</td><td>26098620</td><td>PUBLIC</td><td>3</td><td>F658N</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="accessing-cloud-hosted-data">
+<h2>Accessing Cloud-Hosted Data<a class="headerlink" href="#accessing-cloud-hosted-data" title="Link to this heading">#</a></h2>
+<p>At this point, in a traditional workflow, we might use the <code class="docutils literal notranslate"><span class="pre">Observations.download_products()</span></code> method to download these files to our local machine. However, since these data products are hosted in the cloud, we can access them directly without downloading.</p>
+<p>To retrieve a list of S3 URIs for a set of products, we can use the <code class="docutils literal notranslate"><span class="pre">Observations.get_cloud_uris()</span></code> method, which accepts either:</p>
+<ul class="simple">
+<li><p>A table of data products (like the one we have after filtering)</p></li>
+<li><p>Observation query criteria (as keyword arguments) and optional product filters (through the <code class="docutils literal notranslate"><span class="pre">mrp_only</span></code>, <code class="docutils literal notranslate"><span class="pre">extension</span></code>, and <code class="docutils literal notranslate"><span class="pre">filter_products</span></code> parameters)</p></li>
+</ul>
+<p>S3 URIs may be returned as:</p>
+<ul class="simple">
+<li><p>Native S3 URIs (e.g., <code class="docutils literal notranslate"><span class="pre">s3://stpubdata...</span></code>)</p></li>
+<li><p>HTTP URLs suitable for streaming (set <code class="docutils literal notranslate"><span class="pre">full_url=True</span></code> and <code class="docutils literal notranslate"><span class="pre">include_bucket=False</span></code>)</p></li>
+<li><p>A mapping between MAST URIs and S3 URIs (set <code class="docutils literal notranslate"><span class="pre">return_uri_map=True</span></code>)</p></li>
+</ul>
+<p>If a particular product is not hosted in the cloud, the corresponding URI will be returned as <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>To continue with our example, let’s retrieve the S3 URIs for our filtered HST products. We can simply pass our <code class="docutils literal notranslate"><span class="pre">filtered_hst_prods</span></code> table to the <code class="docutils literal notranslate"><span class="pre">Observations.get_cloud_uris()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a list cloud URIs for the filtered products</span>
+<span class="n">hst_s3_uris</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_cloud_uris</span><span class="p">(</span><span class="n">filtered_hst_prods</span><span class="p">)</span>
+<span class="n">hst_s3_uris</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;s3://stpubdata/hst/public/j8ck/j8ck01040/j8ck01041_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8ck01060/j8ck01061_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8ck01030/j8ck01031_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8ck01050/j8ck01051_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8cka1040/j8cka1041_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8cka1030/j8cka1031_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8ck01020/j8ck01021_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8ck01010/j8ck01011_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8cka1010/j8cka1011_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8cka1060/j8cka1061_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8cka1020/j8cka1021_drz.fits&#39;,
+ &#39;s3://stpubdata/hst/public/j8ck/j8cka1050/j8cka1051_drz.fits&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In some cases, it may be useful to have a mapping between MAST URIs and S3 URIs. MAST URIs are unique identifiers for data products in the MAST archive and are given in the <code class="docutils literal notranslate"><span class="pre">dataURI</span></code> column of the product table. S3 URIs point to the location of files in cloud storage. To retrieve this mapping, we can set <code class="docutils literal notranslate"><span class="pre">return_uri_map=True</span></code> when calling <code class="docutils literal notranslate"><span class="pre">get_cloud_uris()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a list cloud URIs for the filtered products</span>
+<span class="n">hst_s3_uri_map</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_cloud_uris</span><span class="p">(</span><span class="n">filtered_hst_prods</span><span class="p">,</span> <span class="n">return_uri_map</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">hst_s3_uri_map</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{np.str_(&#39;mast:HST/product/j8ck01041_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8ck01040/j8ck01041_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8ck01061_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8ck01060/j8ck01061_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8ck01031_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8ck01030/j8ck01031_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8ck01051_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8ck01050/j8ck01051_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8cka1041_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8cka1040/j8cka1041_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8cka1031_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8cka1030/j8cka1031_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8ck01021_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8ck01020/j8ck01021_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8ck01011_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8ck01010/j8ck01011_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8cka1011_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8cka1010/j8cka1011_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8cka1061_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8cka1060/j8cka1061_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8cka1021_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8cka1020/j8cka1021_drz.fits&#39;,
+ np.str_(&#39;mast:HST/product/j8cka1051_drz.fits&#39;): &#39;s3://stpubdata/hst/public/j8ck/j8cka1050/j8cka1051_drz.fits&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<section id="opening-a-cloud-fits-file-with-astropy">
+<h3>Opening a Cloud FITS File with Astropy<a class="headerlink" href="#opening-a-cloud-fits-file-with-astropy" title="Link to this heading">#</a></h3>
+<p>Now that we know exactly where our data is located in the cloud, we can access it directly in cloud-based workflows or with cloud-enabled libraries such as <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/usage/cloud.html">Astropy</a>. To read a FITS file directly from an S3 URI, we can use the <code class="docutils literal notranslate"><span class="pre">astropy.io.fits.open()</span></code> function with the S3 URI and the appropriate <code class="docutils literal notranslate"><span class="pre">fsspec</span></code> keyword arguments. We need to set <code class="docutils literal notranslate"><span class="pre">anon=True</span></code> in <code class="docutils literal notranslate"><span class="pre">fsspec_kwargs</span></code> to indicate that we are accessing public data without authentication.</p>
+<p>To start, let’s inspect the first file in our list of S3 URIs. We’ll read in the science data and plot the image using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this cell is SLOW; see the following cell for the fast implementation</span>
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">hst_s3_uri_map</span><span class="p">[</span><span class="s2">&quot;mast:HST/product/j8ck01041_drz.fits&quot;</span><span class="p">],</span>
+               <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hst_hdul</span><span class="p">:</span>  
+    <span class="n">hst_hdul</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    <span class="c1"># The science data is stored in the &quot;SCI&quot; extension of the FITS file. We can access it using the `data` attribute of the corresponding `ImageHDU` object.</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">hst_hdul</span><span class="p">[</span><span class="s2">&quot;SCI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+<span class="c1"># Plot the image data</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">simple_norm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="s1">&#39;asinh&#39;</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="mf">99.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;HST Image of NGC 6543 (Cat&#39;s Eye Nebula)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: &lt;class &#39;s3fs.core.S3File&#39;&gt;
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU     753   ()      
+  1  SCI           1 ImageHDU        82   (4214, 4235)   float32   
+  2  WHT           1 ImageHDU        44   (4214, 4235)   float32   
+  3  CTX           1 ImageHDU        37   (4214, 4235)   int32   
+  4  HDRTAB        1 BinTableHDU    595   4R x 293C   [9A, 3A, K, D, D, D, D, D, D, D, D, D, D, D, D, D, K, 10A, 9A, 7A, 18A, 4A, D, D, D, D, 3A, D, D, D, D, D, D, D, D, D, D, D, D, K, 8A, 23A, D, D, D, D, K, K, K, 8A, K, 23A, 9A, 20A, K, 4A, K, K, K, K, K, K, 23A, D, D, D, D, K, K, 3A, 3A, 4A, 7A, L, D, D, D, 23A, 1A, K, D, D, D, D, D, 4A, 4A, 12A, 12A, 23A, 8A, 23A, 10A, 10A, D, D, 3A, 3A, 3A, 4A, 8A, 7A, 23A, D, K, D, 6A, 9A, 8A, D, D, L, 4A, 18A, 3A, K, 7A, 6A, 3A, D, 13A, 8A, 4A, 3A, L, K, L, K, L, K, K, D, D, D, D, D, D, 3A, 1A, D, 23A, D, D, D, 3A, 23A, L, 1A, 3A, 1A, D, 3A, 6A, K, D, D, D, D, D, D, D, D, D, D, 23A, D, D, D, D, 3A, D, D, D, 1A, K, K, K, K, K, K, 3A, K, 5A, 7A, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, 12A, D, 24A, 23A, D, 1A, 1A, D, K, D, D, 1A, 1A, D, 4A, K, D, K, 7A, D, D, D, D, D, 23A, 23A, D, 8A, D, 35A, D, 3A, D, L, D, D, 3A, 6A, 9A, 2A, D, 10A, K, 1A, 1A, 1A, 1A, D, D, D, D, D, D, 4A, D, 4A, D, 4A, K, 4A, 3A, 1A, L, K, K, 11A, 1A, D, D, D, D, K, 3A, L, L, 6A, L, D, D, 7A, D, D, 3A, 8A, 1A, D, K, D, L, 30A, L, 5A]   
+</pre></div>
+</div>
+<img alt="../../../_images/54b6816865b965bec673b03222f14c63678b7be22315942ab3c5c676c74e1b01.png" src="../../../_images/54b6816865b965bec673b03222f14c63678b7be22315942ab3c5c676c74e1b01.png" />
+</div>
+</div>
+<p>Notice that this is a relatively large image. To fully read in the data, we had to wait for the entire file to be transferred from the cloud. Depending on your internet connection and the size of the file, this may take some time.</p>
+<p>If we only wanted to read in a subset of the data, we could use the <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/usage/image.html#data-sections"><code class="docutils literal notranslate"><span class="pre">section</span></code></a> attribute of the <code class="docutils literal notranslate"><span class="pre">ImageHDU</span></code> object. By indexing into the section object, we can access only the portion of the file that we need, which can significantly reduce data transfer time for large files. Keep in mind that the <code class="docutils literal notranslate"><span class="pre">section</span></code> attribute is only available for <code class="docutils literal notranslate"><span class="pre">ImageHDU</span></code> and <code class="docutils literal notranslate"><span class="pre">CompImageHDU</span></code> objects, so this method is specific to image data products.</p>
+<p>Let’s read in the same file again, but this time, we’ll access the <code class="docutils literal notranslate"><span class="pre">section</span></code> attribute and zoom in on a the region of the image containing the nebula. You’ll notice that this cell executes much faster since we are only reading in a small portion of the data instead of the entire file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">hst_s3_uris</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">use_fsspec</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hst_hdul</span><span class="p">:</span>
+    <span class="c1"># Access the `section` attribute to only read in a subset of the file</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">hst_hdul</span><span class="p">[</span><span class="s2">&quot;SCI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">[</span><span class="mi">2850</span><span class="p">:</span><span class="mi">3550</span><span class="p">,</span> <span class="mi">2800</span><span class="p">:</span><span class="mi">3400</span><span class="p">]</span>
+
+<span class="c1"># Plot the image data</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">simple_norm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="s1">&#39;asinh&#39;</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="mf">99.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;HST Image of NGC 6543 (Cat&#39;s Eye Nebula)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/cde5e8432590ed0bf69325392c64f452a17db74886a2e902b88ed88047691c74.png" src="../../../_images/cde5e8432590ed0bf69325392c64f452a17db74886a2e902b88ed88047691c74.png" />
+</div>
+</div>
+<p>What a beautiful nebula! By accessing the data directly from the cloud and only reading in the section of the file that we needed, we were able to visualize this image much more quickly than if we had downloaded the entire file locally.</p>
+</section>
+<section id="opening-a-cloud-file-with-s3fs">
+<h3>Opening a Cloud File with s3fs<a class="headerlink" href="#opening-a-cloud-file-with-s3fs" title="Link to this heading">#</a></h3>
+<p>You may wish to open a cloud file that is not in FITS format, and in this case, the <a class="reference external" href="https://s3fs.readthedocs.io/en/latest/#"><code class="docutils literal notranslate"><span class="pre">s3fs</span></code></a> package will come in handy. <code class="docutils literal notranslate"><span class="pre">s3fs</span></code> is a Pythonic file interface to Amazon S3 that allows you to browse and access cloud files as if they were local.</p>
+<p>You can access data from cloud files using the <code class="docutils literal notranslate"><span class="pre">s3fs.S3FileSystem.open</span></code> function and perform further operations within the function’s context. Below, we open a FITS file with <code class="docutils literal notranslate"><span class="pre">s3fs</span></code> and open it again with <code class="docutils literal notranslate"><span class="pre">astropy.io.fits</span></code> to access its content. If we were accessing another filetype like XML or PDF, we would want to use other libraries/functions that are built to handle them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the S3 filesystem for an anonymous user</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Open the file with s3fs</span>
+<span class="k">with</span> <span class="n">fs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">hst_s3_uris</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># Open the file&#39;s contents with astropy.io.fits</span>
+    <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdu</span><span class="p">:</span>
+        <span class="n">hdu</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: &lt;class &#39;s3fs.core.S3File&#39;&gt;
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU     719   ()      
+  1  SCI           1 ImageHDU        69   (1163, 1134)   float32   
+  2  WHT           1 ImageHDU        44   (1163, 1134)   float32   
+  3  CTX           1 ImageHDU        37   (1163, 1134)   int32   
+  4  HDRTAB        1 BinTableHDU    595   2R x 293C   [9A, 3A, K, D, D, D, D, D, D, D, D, D, D, D, D, 4A, K, 7A, 9A, 7A, 18A, 4A, D, D, D, D, 3A, D, D, D, D, D, D, D, D, D, D, D, D, K, 8A, 23A, D, D, D, D, K, K, K, 8A, K, 23A, 9A, 20A, D, 1A, D, K, K, K, K, K, 23A, D, D, D, D, K, K, 3A, 3A, D, 7A, L, D, D, D, 23A, 1A, K, D, D, D, D, D, 4A, 4A, 12A, 12A, 3A, 8A, 23A, 10A, 10A, D, D, 3A, 3A, 3A, 4A, 8A, 7A, 3A, D, K, D, 6A, 9A, 8A, D, D, L, 4A, 18A, 3A, K, 5A, 7A, 3A, D, 13A, 8A, 4A, 3A, L, K, L, K, L, K, K, D, D, D, D, D, D, 3A, 1A, D, 23A, D, D, D, 3A, 23A, L, 1A, 3A, 1A, D, 3A, 6A, D, D, D, D, D, D, D, D, D, D, D, 23A, D, D, D, D, 3A, D, D, D, 1A, K, K, K, K, K, K, 3A, K, 5A, 7A, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, 12A, D, 24A, 23A, D, 1A, 1A, D, K, D, D, 1A, 1A, D, 4A, K, D, K, 4A, D, D, D, D, D, 3A, 23A, D, 8A, D, 28A, D, 3A, D, L, D, D, 3A, 6A, 9A, 2A, D, 7A, K, 1A, 1A, 1A, 1A, D, D, D, D, D, D, 4A, D, 4A, D, 4A, K, 4A, 3A, 1A, L, K, K, 11A, 1A, D, D, D, D, K, 3A, L, L, 6A, L, D, D, 7A, D, D, 3A, 8A, 1A, D, K, D, D, 19A, L, 5A]   
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="another-example-accessing-time-series-data-from-tess">
+<h2>Another Example: Accessing Time-Series Data from TESS<a class="headerlink" href="#another-example-accessing-time-series-data-from-tess" title="Link to this heading">#</a></h2>
+<p>Let’s look at another example of accessing cloud-hosted data; this time we’ll search for timeseries data from the <a class="reference external" href="https://archive.stsci.edu/missions-and-data/tess">Transiting Exoplanet Survey Satellite (TESS)</a>. We’ll use this opportunity to show off the streamlined workflow for <code class="docutils literal notranslate"><span class="pre">get_cloud_uris()</span></code> where we can pass query criteria and product filters directly to the method without having to write out separate queries and filtering steps beforehand.</p>
+<p>We’ll call <code class="docutils literal notranslate"><span class="pre">get_cloud_uris()</span></code> with the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">object_name=&quot;WASP-18&quot;</span></code> to search for observations of the <a class="reference external" href="https://exoplanetarchive.ipac.caltech.edu/overview/WASP-18b">exoplanet host star WASP-18</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radius=0.01</span></code> to specify a search radius of 0.01 degrees around the target object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obs_collection=&quot;TESS&quot;</span></code> to restrict our search to the TESS mission.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataproduct_type=&quot;timeseries&quot;</span></code> to look for timeseries data products.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mrp_only=True</span></code> to select only the minimum recommended products (MRPs) for each observation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter_products={&quot;productSubGroupDescription&quot;:</span> <span class="pre">&quot;LC&quot;}</span></code> to select light curve products. This filter is passed as a dictionary where the key is the name of a metadata column in the products table and the value is the desired value to filter by.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get cloud URIs for TESS light curve data products around WASP-18</span>
+<span class="n">tess_s3_uris</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_cloud_uris</span><span class="p">(</span><span class="n">object_name</span><span class="o">=</span><span class="s2">&quot;WASP-18&quot;</span><span class="p">,</span>
+                                           <span class="n">radius</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                                           <span class="n">obs_collection</span><span class="o">=</span><span class="s2">&quot;TESS&quot;</span><span class="p">,</span>
+                                           <span class="n">dataproduct_type</span><span class="o">=</span><span class="s2">&quot;timeseries&quot;</span><span class="p">,</span>
+                                           <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                           <span class="n">filter_products</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;productSubGroupDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;LC&quot;</span><span class="p">})</span>
+<span class="n">tess_s3_uris</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;s3://stpubdata/tess/public/tid/s0029/0000/0001/0010/0827/tess2020238165205-s0029-0000000100100827-0193-s_lc.fits&#39;,
+ &#39;s3://stpubdata/tess/public/tid/s0030/0000/0001/0010/0827/tess2020266004630-s0030-0000000100100827-0195-s_lc.fits&#39;,
+ &#39;s3://stpubdata/tess/public/tid/s0002/0000/0001/0010/0827/tess2018234235059-s0002-0000000100100827-0121-s_lc.fits&#39;,
+ &#39;s3://stpubdata/tess/public/tid/s0003/0000/0001/0010/0827/tess2018263035959-s0003-0000000100100827-0123-s_lc.fits&#39;,
+ &#39;s3://stpubdata/tess/public/tid/s0069/0000/0001/0010/0827/tess2023237165326-s0069-0000000100100827-0264-s_lc.fits&#39;,
+ &#39;s3://stpubdata/tess/public/tid/s0096/0000/0001/0010/0827/tess2025232030459-s0096-0000000100100827-0293-s_lc.fits&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We found several files in the cloud that match our search! Each one seems to correspond to a different sector’s observation of WASP-18. Now, let’s read in one of these files and plot the light curve data. Since TESS timeseries files are stored as FITS files with a specific structure, we can use <code class="docutils literal notranslate"><span class="pre">astropy.io.fits.open</span></code> to read in the data and extract the relevant columns for plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tess_s3_uris</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">tess_hdul</span><span class="p">:</span>
+    <span class="n">tess_hdul</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">tess_hdul</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
+    <span class="n">flux</span> <span class="o">=</span> <span class="n">tess_hdul</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;PDCSAP_FLUX&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plot the TESS light curve</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;TESS Light Curve of WASP-18&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (BJD - 2457000)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;PDCSAP Flux (e-/s)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: &lt;class &#39;s3fs.core.S3File&#39;&gt;
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      44   ()      
+  1  LIGHTCURVE    1 BinTableHDU    167   18864R x 20C   [D, E, J, E, E, E, E, E, E, J, D, E, D, E, D, E, D, E, E, E]   
+  2  APERTURE      1 ImageHDU        49   (11, 11)   int32   
+</pre></div>
+</div>
+<img alt="../../../_images/e99b552b096f6955e100cb2619d7f0382b4bf4a56a2db7b8ae31d189dd7a8e60.png" src="../../../_images/e99b552b096f6955e100cb2619d7f0382b4bf4a56a2db7b8ae31d189dd7a8e60.png" />
+</div>
+</div>
+<section id="opening-timeseries-files-with-lightkurve">
+<h3>Opening Timeseries Files with Lightkurve<a class="headerlink" href="#opening-timeseries-files-with-lightkurve" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://lightkurve.github.io/lightkurve/#"><code class="docutils literal notranslate"><span class="pre">lightkurve</span></code></a> is an open-source Python package that offers user-friendly ways to analyze astronomical time series data. <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> allow users to read data products from the cloud directly into memory. These data products must be in FITS format.</p>
+<p>To read a single data product, simply use the <code class="docutils literal notranslate"><span class="pre">lightkurve.io.read</span></code> method and pass in a cloud URI for either a light curve file or a target pixel file. The function will determine the type of the file and return the corresponding object. From here, you have access to a plethora of attributes and methods for analyzing and visualizing the data.</p>
+<p>For a <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/lightcurve.html"><code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> object</a>, these include, but are not limited to:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LightCurve.time</span></code>: Time values stored as an <code class="docutils literal notranslate"><span class="pre">astropy.time.Time</span></code> object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LightCurve.flux</span></code>: Brightness values stored as an <code class="docutils literal notranslate"><span class="pre">astropy.units.Quantity</span></code> object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LightCurve.plot()</span></code>: Plot the light curve.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LightCurve.fold()</span></code>: Fold the light curve on a given period and epoch.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LightCurve.create_transit_mask()</span></code>: Returns a boolean array that is <code class="docutils literal notranslate"><span class="pre">True</span></code> during transits and <code class="docutils literal notranslate"><span class="pre">False</span></code> elsewhere.</p></li>
+</ul>
+<p>Below, we will read and plot a single light curve file from the cloud.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read a single light curve file</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">tess_s3_uris</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Type:&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">lc</span><span class="p">))</span>
+
+<span class="c1"># Plot the light curve</span>
+<span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Type: &lt;class &#39;lightkurve.lightcurve.TessLightCurve&#39;&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Time - 2457000 [BTJD days]&#39;, ylabel=&#39;Flux [$\\mathrm{e^{-}\\,s^{-1}}$]&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../../_images/ab04be45d310d179e98c0cd2e1e8ef9904642d3b8d04613cff7a8ffa9b24c542.png" src="../../../_images/ab04be45d310d179e98c0cd2e1e8ef9904642d3b8d04613cff7a8ffa9b24c542.png" />
+</div>
+</div>
+<p>To read a multiple light curve products from the cloud, we can use the <code class="docutils literal notranslate"><span class="pre">lightkurve.io.read_lc_collection</span></code> method. This returns a <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.LightCurveCollection.html?highlight=lightcurvecollection#lightkurve.LightCurveCollection"><code class="docutils literal notranslate"><span class="pre">lightkurve.LightCurveCollection</span></code> object</a>, which holds a collection of <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> objects and has some additional attributes and methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read a collection of light curves</span>
+<span class="n">collection</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_lc_collection</span><span class="p">(</span><span class="n">tess_s3_uris</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Type:&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">collection</span><span class="p">))</span>
+
+<span class="c1"># Plot the collection</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Type: &lt;class &#39;lightkurve.collections.LightCurveCollection&#39;&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Time - 2457000 [BTJD days]&#39;, ylabel=&#39;Flux [$\\mathrm{e^{-}\\,s^{-1}}$]&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../../_images/fdc7c98b19f9834dab688f4d1e6db7ba08ab42c9326b40d28cc9465312d6eb67.png" src="../../../_images/fdc7c98b19f9834dab688f4d1e6db7ba08ab42c9326b40d28cc9465312d6eb67.png" />
+</div>
+</div>
+<p>Notice how each of the light curves is plotted in a different color according to the chart legend. To stitch all of the light curves in the collection into a single <code class="docutils literal notranslate"><span class="pre">LightCurve</span></code> object, we can set the <code class="docutils literal notranslate"><span class="pre">stitch</span></code> argument to be <code class="docutils literal notranslate"><span class="pre">True</span></code>. Each light curve will be normalized prior to stitching.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read a collection of light curves as a single, stitched light curve</span>
+<span class="n">stitched</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_lc_collection</span><span class="p">(</span><span class="n">tess_s3_uris</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">stitch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Type:&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">stitched</span><span class="p">))</span>
+
+<span class="c1"># Plot the light curve</span>
+<span class="n">stitched</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Type: &lt;class &#39;lightkurve.lightcurve.TessLightCurve&#39;&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Time - 2457000 [BTJD days]&#39;, ylabel=&#39;Normalized Flux&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../../_images/5e4eadcf2e2412d1ed026332b02c4d8e8c89fa8c9b44f5b6ba801cec09cdd6be.png" src="../../../_images/5e4eadcf2e2412d1ed026332b02c4d8e8c89fa8c9b44f5b6ba801cec09cdd6be.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-accessing-jwst-spectroscopic-data">
+<h2>Exercise: Accessing JWST Spectroscopic Data<a class="headerlink" href="#exercise-accessing-jwst-spectroscopic-data" title="Link to this heading">#</a></h2>
+<p>It’s time to test your knowledge! Using the <code class="docutils literal notranslate"><span class="pre">Observations</span></code> class, search for spectroscopic observations from the <a class="reference external" href="https://www.stsci.edu/jwst">James Webb Space Telescope</a> around a young supernova.</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">target_name</span></code> parameter to specify the name of a known young supernova (e.g., “SN2026BGD”).</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">obs_collection</span></code> parameter to restrict your search to the JWST mission.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">instrument_name</span></code> parameter to specify slitted spectrscopy with the <a class="reference external" href="https://science.nasa.gov/mission/webb/nirspec/">Near Infrared Spectrograph (NIRSpec)</a> instrument on JWST (e.g., “NIRSPEC/SLIT”).</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">dataproduct_type</span></code> parameter to search for spectroscopic data products (e.g., “spectrum”).</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">calib_level</span></code> parameter to select fully calibrated data products.</p></li>
+</ul>
+<p>From there, you’ll need to filter your products for the minimum recommended products (MRPs) and those with a <code class="docutils literal notranslate"><span class="pre">productSubGroupDescription</span></code> of “ANNN_X1D”. This will select the 1D extracted spectra that are typically used for scientific analysis.</p>
+<p>Once you have identified the relevant data products, retrieve the S3 URIs for these files, read one of the spectra directly from the cloud, and plot the spectrum using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p>
+<p>You may choose to separate this exercise into multiple steps (e.g., first write a query to find observations, then filter products, then retrieve S3 URIs, etc.) or you can try to use the streamlined workflow and pass query criteria and product filters directly to <code class="docutils literal notranslate"><span class="pre">get_cloud_uris()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query for JWST spectrscopic observations around SN2026BGD</span>
+
+<span class="c1"># jwst_s3_uris = Observations.get_cloud_uris(...)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with fits.open(jwst_s3_uris[0], fsspec_kwargs={&#39;anon&#39;: True}) as jwst_hdul:</span>
+<span class="c1">#     jwst_hdul.info()</span>
+<span class="c1">#     wavelength = jwst_hdul[1].data[&#39;WAVELENGTH&#39;]</span>
+<span class="c1">#     flux = jwst_hdul[1].data[&#39;FLUX&#39;]</span>
+
+<span class="c1"># # Plot the JWST spectrum</span>
+<span class="c1"># plt.plot(wavelength, flux, color=&#39;blue&#39;)</span>
+<span class="c1"># plt.title(&quot;JWST Spectrum of SN2026BGD&quot;)</span>
+<span class="c1"># plt.xlabel(&quot;Wavelength (microns)&quot;)</span>
+<span class="c1"># plt.ylabel(&quot;Flux (erg/s/cm^2/Å)&quot;)</span>
+<span class="c1"># plt.grid()</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-solution">
+<h2>Exercise Solution<a class="headerlink" href="#exercise-solution" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># As 3 separate steps</span>
+<span class="c1"># Query for JWST spectrscopic observations around SN2026BGD</span>
+<span class="n">jwst_obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">target_name</span><span class="o">=</span><span class="s2">&quot;SN2026BGD&quot;</span><span class="p">,</span>
+                                       <span class="n">obs_collection</span><span class="o">=</span><span class="s2">&quot;JWST&quot;</span><span class="p">,</span>
+                                       <span class="n">instrument_name</span><span class="o">=</span><span class="s2">&quot;NIRSPEC/SLIT&quot;</span><span class="p">,</span>
+                                       <span class="n">dataproduct_type</span><span class="o">=</span><span class="s2">&quot;spectrum&quot;</span><span class="p">,</span>
+                                       <span class="n">calib_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Get products</span>
+<span class="n">jwst_prods</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">jwst_obs</span><span class="p">)</span>
+
+<span class="c1"># Filter products</span>
+<span class="n">filtered_jwst_prods</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">jwst_prods</span><span class="p">,</span>
+                                                   <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                   <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="s2">&quot;ANNNN_X1D&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get cloud URIs for the filtered products</span>
+<span class="n">jwst_s3_uris</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_cloud_uris</span><span class="p">(</span><span class="n">filtered_jwst_prods</span><span class="p">)</span>
+<span class="n">jwst_s3_uris</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000014_nirspec_f290lp-g395m-s1600a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000013_nirspec_f290lp-g395m-s400a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000001_nirspec_f290lp-g395m-s200a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000012_nirspec_f290lp-g395m-s200a2_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000001_nirspec_f290lp-g395m-s200a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000012_nirspec_f290lp-g395m-s200a2_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000013_nirspec_f290lp-g395m-s400a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000014_nirspec_f290lp-g395m-s1600a1_x1d.fits&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Streamlined</span>
+<span class="n">jwst_s3_uris</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_cloud_uris</span><span class="p">(</span><span class="n">target_name</span><span class="o">=</span><span class="s2">&quot;SN2026BGD&quot;</span><span class="p">,</span>
+                                           <span class="n">obs_collection</span><span class="o">=</span><span class="s2">&quot;JWST&quot;</span><span class="p">,</span>
+                                           <span class="n">instrument_name</span><span class="o">=</span><span class="s2">&quot;NIRSPEC/SLIT&quot;</span><span class="p">,</span>
+                                           <span class="n">dataproduct_type</span><span class="o">=</span><span class="s2">&quot;spectrum&quot;</span><span class="p">,</span>
+                                           <span class="n">calib_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                           <span class="n">mrp_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                           <span class="n">filter_products</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;productSubGroupDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;ANNNN_X1D&quot;</span><span class="p">})</span>
+<span class="n">jwst_s3_uris</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000014_nirspec_f290lp-g395m-s1600a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000013_nirspec_f290lp-g395m-s400a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000001_nirspec_f290lp-g395m-s200a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o008/jw09255-o008_t007-s000000012_nirspec_f290lp-g395m-s200a2_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000001_nirspec_f290lp-g395m-s200a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000012_nirspec_f290lp-g395m-s200a2_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000013_nirspec_f290lp-g395m-s400a1_x1d.fits&#39;,
+ &#39;s3://stpubdata/jwst/public/jw09255/L3/t/o010/jw09255-o010_t007-s000000014_nirspec_f290lp-g395m-s1600a1_x1d.fits&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast_obsquery.html"><code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> Documentation for Observation Queries</a></p></li>
+<li><p><a class="reference external" href="https://registry.opendata.aws/collab/stsci/">Registry of STScI Open Data on AWS</a></p></li>
+</ul>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> for published research, please cite the
+authors. Follow these links for more information about citing <code class="docutils literal notranslate"><span class="pre">astroquery</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/astropy/astroquery/blob/main/astroquery/CITATION">Citing Astroquery</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author:</strong> Sam Bianco <br>
+<strong>Keywords:</strong> Astroquery, Observations, Cloud <br></p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/multi_mission/cloud_data_access"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-cloud-hosted-datasets">Identifying Cloud-Hosted Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-mast-observations-and-data-products">Searching for MAST Observations and Data Products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-cloud-hosted-data">Accessing Cloud-Hosted Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-a-cloud-fits-file-with-astropy">Opening a Cloud FITS File with Astropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-a-cloud-file-with-s3fs">Opening a Cloud File with s3fs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example-accessing-time-series-data-from-tess">Another Example: Accessing Time-Series Data from TESS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-timeseries-files-with-lightkurve">Opening Timeseries Files with Lightkurve</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-accessing-jwst-spectroscopic-data">Exercise: Accessing JWST Spectroscopic Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-solution">Exercise Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

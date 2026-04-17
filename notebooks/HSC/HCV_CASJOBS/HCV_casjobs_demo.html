@@ -37,8 +37,8 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -55,7 +55,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=1ae7504c"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
@@ -772,39 +772,40 @@ See <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2019A%
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">join</span>
 
 <span class="c1"># check that version of mastcasjobs is new enough</span>
 <span class="c1"># we are using some features not in version 0.0.1</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pkg_resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_distribution</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">PackageNotFoundError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">Version</span> <span class="k">as</span> <span class="n">V</span>
 
-<span class="k">assert</span> <span class="n">V</span><span class="p">(</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;mastcasjobs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">V</span><span class="p">(</span><span class="s1">&#39;0.0.2&#39;</span><span class="p">),</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">A newer version of mastcasjobs is required.</span>
-<span class="s2">Update mastcasjobs to current version using this command:</span>
-<span class="s2">pip install --upgrade git+git://github.com/rlwastro/mastcasjobs@master</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">installed_version</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="s2">&quot;mastcasjobs&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">PackageNotFoundError</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+        <span class="s2">&quot;mastcasjobs is not installed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Install or update it using this command:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;pip install --upgrade git+git://github.com/rlwastro/mastcasjobs@master&quot;</span>
+    <span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">V</span><span class="p">(</span><span class="n">installed_version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">V</span><span class="p">(</span><span class="s2">&quot;0.0.2&quot;</span><span class="p">),</span> <span class="p">(</span>
+    <span class="s2">&quot;A newer version of mastcasjobs is required.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Update mastcasjobs to current version using this command:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;pip install --upgrade git+git://github.com/rlwastro/mastcasjobs@master&quot;</span>
+<span class="p">)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">mastcasjobs</span>
 
 <span class="c1"># set width for pprint</span>
 <span class="n">astropy</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">max_width</span> <span class="o">=</span> <span class="mi">150</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2886/2985569151.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
-  from pkg_resources import get_distribution
 </pre></div>
 </div>
 </div>
@@ -907,20 +908,20 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed in 1.9 sec
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed in 2.9 sec
 Rows Affected
 -------------
         40196
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8 s: Retrieved 6.34MB table MyDB.HCV_demo
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0 s: Retrieved 6.34MB table MyDB.HCV_demo
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1 s: Converted to 40196 row table
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2 s: Converted to 40196 row table
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=522</i>
-<table id="table139881843668624" class="table-striped table-bordered table-condensed">
+<table id="table140471604724560" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>GroupID</th><th>SubGroupID</th><th>RA</th><th>Dec</th><th>AutoClass</th><th>ExpertClass</th><th>NumFilters</th><th>Filter</th><th>FilterDetFlag</th><th>VarQualFlag</th><th>NumLC</th><th>MeanMag</th><th>MeanCorrMag</th><th>MAD</th><th>Chi2</th></tr></thead>
 <thead><tr><th>int64</th><th>int32</th><th>int32</th><th>float64</th><th>float64</th><th>int32</th><th>int32</th><th>int32</th><th>str9</th><th>uint8</th><th>str5</th><th>int32</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>12131288</td><td>69810</td><td>-5</td><td>16.095659</td><td>2.161246</td><td>1</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>BACAA</td><td>12</td><td>25.248</td><td>25.250</td><td>0.1296</td><td>11.8544</td></tr>
@@ -933,10 +934,10 @@ Rows Affected
 <tr><td>78217904</td><td>69810</td><td>-5</td><td>16.110355</td><td>2.162592</td><td>2</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AACAA</td><td>9</td><td>25.374</td><td>25.375</td><td>0.4343</td><td>44.1083</td></tr>
 <tr><td>78217904</td><td>69810</td><td>-5</td><td>16.110355</td><td>2.162592</td><td>2</td><td>1</td><td>2</td><td>ACS_F814W</td><td>1</td><td>AACAB</td><td>9</td><td>25.189</td><td>25.189</td><td>0.1804</td><td>11.1780</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>65517209</td><td>69810</td><td>-5</td><td>16.140654</td><td>2.147003</td><td>1</td><td>2</td><td>2</td><td>ACS_F475W</td><td>0</td><td>AABAB</td><td>12</td><td>23.228</td><td>23.229</td><td>0.0220</td><td>57.1200</td></tr>
-<tr><td>65517209</td><td>69810</td><td>-5</td><td>16.140654</td><td>2.147003</td><td>1</td><td>2</td><td>2</td><td>ACS_F814W</td><td>1</td><td>BACAC</td><td>12</td><td>22.374</td><td>22.376</td><td>0.0439</td><td>62.7181</td></tr>
-<tr><td>48562344</td><td>69810</td><td>-5</td><td>16.147528</td><td>2.147174</td><td>1</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AACAA</td><td>12</td><td>25.381</td><td>25.381</td><td>0.0959</td><td>9.3829</td></tr>
-<tr><td>48562344</td><td>69810</td><td>-5</td><td>16.147528</td><td>2.147174</td><td>1</td><td>1</td><td>2</td><td>ACS_F814W</td><td>0</td><td>AAAAC</td><td>12</td><td>25.312</td><td>25.313</td><td>0.0572</td><td>1.9951</td></tr>
+<tr><td>99563258</td><td>69810</td><td>-5</td><td>16.101940</td><td>2.130867</td><td>1</td><td>4</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AAAAC</td><td>12</td><td>23.926</td><td>23.927</td><td>0.0434</td><td>13.8320</td></tr>
+<tr><td>99563258</td><td>69810</td><td>-5</td><td>16.101940</td><td>2.130867</td><td>1</td><td>4</td><td>2</td><td>ACS_F814W</td><td>0</td><td>ABAAC</td><td>11</td><td>22.550</td><td>22.551</td><td>0.0150</td><td>15.7979</td></tr>
+<tr><td>26648962</td><td>69810</td><td>-5</td><td>16.104919</td><td>2.131477</td><td>2</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AACBA</td><td>11</td><td>25.461</td><td>25.461</td><td>0.1582</td><td>19.5376</td></tr>
+<tr><td>26648962</td><td>69810</td><td>-5</td><td>16.104919</td><td>2.131477</td><td>2</td><td>1</td><td>2</td><td>ACS_F814W</td><td>1</td><td>BAAAB</td><td>12</td><td>25.217</td><td>25.219</td><td>0.1019</td><td>5.4801</td></tr>
 <tr><td>31257941</td><td>69810</td><td>-5</td><td>16.107393</td><td>2.128815</td><td>2</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AACAA</td><td>12</td><td>23.168</td><td>23.168</td><td>0.0664</td><td>3751.2152</td></tr>
 <tr><td>31257941</td><td>69810</td><td>-5</td><td>16.107393</td><td>2.128815</td><td>2</td><td>1</td><td>2</td><td>ACS_F814W</td><td>1</td><td>AACAA</td><td>12</td><td>22.885</td><td>22.887</td><td>0.0862</td><td>814.8062</td></tr>
 <tr><td>14005460</td><td>69810</td><td>-5</td><td>16.109657</td><td>2.127282</td><td>2</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AACCA</td><td>12</td><td>25.470</td><td>25.470</td><td>0.1774</td><td>56.3907</td></tr>
@@ -982,7 +983,7 @@ Rows Affected
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=258</i>
-<table id="table139881838651216" class="table-striped table-bordered table-condensed">
+<table id="table140471605886544" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>GroupID</th><th>SubGroupID</th><th>RA</th><th>Dec</th><th>AutoClass</th><th>ExpertClass</th><th>NumFilters_f475</th><th>Filter_f475</th><th>FilterDetFlag_f475</th><th>VarQualFlag_f475</th><th>NumLC_f475</th><th>MeanMag_f475</th><th>MeanCorrMag_f475</th><th>MAD_f475</th><th>Chi2_f475</th><th>NumFilters_f814</th><th>Filter_f814</th><th>FilterDetFlag_f814</th><th>VarQualFlag_f814</th><th>NumLC_f814</th><th>MeanMag_f814</th><th>MeanCorrMag_f814</th><th>MAD_f814</th><th>Chi2_f814</th></tr></thead>
 <thead><tr><th>int64</th><th>int32</th><th>int32</th><th>float64</th><th>float64</th><th>int32</th><th>int32</th><th>int32</th><th>str9</th><th>uint8</th><th>str5</th><th>int32</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int32</th><th>str9</th><th>uint8</th><th>str5</th><th>int32</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>96457</td><td>69810</td><td>-5</td><td>16.141516</td><td>2.177815</td><td>2</td><td>1</td><td>2</td><td>ACS_F475W</td><td>1</td><td>AACAA</td><td>12</td><td>23.192</td><td>23.192</td><td>0.0686</td><td>424.7097</td><td>2</td><td>ACS_F814W</td><td>1</td><td>AAAAC</td><td>12</td><td>22.946</td><td>22.947</td><td>0.0402</td><td>77.5733</td></tr>
@@ -1023,7 +1024,7 @@ Rows Affected
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f38c3ceaa10&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc2181943d0&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/2a577538c242ec50e8a6755226ec17b63cf81728e2dd410ac16947a63230c9c0.png" src="../../../_images/2a577538c242ec50e8a6755226ec17b63cf81728e2dd410ac16947a63230c9c0.png" />
@@ -1055,7 +1056,7 @@ Rows Affected
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f38c74dc190&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc208dd6b10&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/7eeb4f71af96853cc739e0382c9c1eeb40a3db2d887c12e0614807b6da919f52.png" src="../../../_images/7eeb4f71af96853cc739e0382c9c1eeb40a3db2d887c12e0614807b6da919f52.png" />
@@ -1085,7 +1086,7 @@ Rows Affected
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f38c73b13d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc203e6b410&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/333ffe2f83ae91c08963a9b315f214569777e5d3df8ddd5b4f86dfa2e174464d.png" src="../../../_images/333ffe2f83ae91c08963a9b315f214569777e5d3df8ddd5b4f86dfa2e174464d.png" />
@@ -1125,17 +1126,17 @@ Rows Affected
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4 sec: retrieved 21 F606W measurements
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3 sec: retrieved 21 F606W measurements
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7 sec: retrieved 22 F814W measurements
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6 sec: retrieved 22 F814W measurements
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0 sec: retrieved object info
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8 sec: retrieved object info
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=21</i>
-<table id="table139881822726608" class="table-striped table-bordered table-condensed">
+<table id="table140471222792464" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>Filter</th><th>MJD</th><th>ImageName</th><th>Mag</th><th>CorrMag</th><th>MagErr</th><th>CI</th><th>D</th></tr></thead>
 <thead><tr><th>int64</th><th>str9</th><th>float64</th><th>str26</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>1905457</td><td>ACS_F606W</td><td>53767.4197952871</td><td>hst_10543_29_acs_wfc_f606w</td><td>25.327</td><td>25.3267132802993</td><td>0.1305</td><td>0.840648114681244</td><td>13.499119758606</td></tr>
@@ -1175,7 +1176,7 @@ Rows Affected
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f38c3cbd750&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc201535d10&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/9a50d5902908987df138eb34add2754c3aac7de9db846dd14ff3f8944c613b8a.png" src="../../../_images/9a50d5902908987df138eb34add2754c3aac7de9db846dd14ff3f8944c613b8a.png" />
@@ -1245,7 +1246,7 @@ Rows Affected
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.3 s: got 6 cutouts
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.2 s: got 6 cutouts
 </pre></div>
 </div>
 <img alt="../../../_images/47823a3bfb69bf8df0be5a852441adc2d18a39de212c54b8f515ac7f3b41eb87.png" src="../../../_images/47823a3bfb69bf8df0be5a852441adc2d18a39de212c54b8f515ac7f3b41eb87.png" />
@@ -1312,12 +1313,14 @@ Rows Affected
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7 s: Retrieved 4.94MB table MyDB.HCV_demo2
-0.9 s: Converted to 31258 row table
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9 s: Converted to 31258 row table
 13533 unique MatchIDs in table
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=31258</i>
-<table id="table139881732378256" class="table-striped table-bordered table-condensed">
+<table id="table140471193786000" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>GroupID</th><th>SubGroupID</th><th>RA</th><th>Dec</th><th>AutoClass</th><th>ExpertClass</th><th>NumFilters</th><th>Filter</th><th>FilterDetFlag</th><th>VarQualFlag</th><th>NumLC</th><th>MeanMag</th><th>MeanCorrMag</th><th>MAD</th><th>Chi2</th></tr></thead>
 <thead><tr><th>int64</th><th>int32</th><th>int32</th><th>float64</th><th>float64</th><th>int32</th><th>int32</th><th>int32</th><th>str11</th><th>uint8</th><th>str5</th><th>int32</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>875</td><td>1040153</td><td>-5</td><td>64.149673</td><td>-24.110353</td><td>2</td><td>2</td><td>7</td><td>ACS_F435W</td><td>0</td><td>AAAAA</td><td>13</td><td>24.166</td><td>24.166</td><td>0.0384</td><td>7.1169</td></tr>
@@ -1501,7 +1504,7 @@ MFVC    0.390  0.453    0.158 1.000 fraction
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f38c283c190&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc203b16d90&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/99612506515eb277133f2c60e433f1e1275a2209381d632fe257ad44e2ff520f.png" src="../../../_images/99612506515eb277133f2c60e433f1e1275a2209381d632fe257ad44e2ff520f.png" />
@@ -1548,12 +1551,12 @@ MFVC    0.390  0.453    0.158 1.000 fraction
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed in 0.8 sec
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed in 0.9 sec
 MatchID 5742711 in group &#39;M31&#39; has largest MAD value = 0.86
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=1</i>
-<table id="table139881747839312" class="table-striped table-bordered table-condensed">
+<table id="table140471261698256" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>GroupID</th><th>SubGroupID</th><th>TargetName</th><th>RA</th><th>Dec</th><th>AutoClass</th><th>ExpertClass</th><th>NumFilters</th><th>Filter</th><th>FilterDetFlag</th><th>VarQualFlag</th><th>NumLC</th><th>MeanMag</th><th>MeanCorrMag</th><th>MAD</th><th>Chi2</th></tr></thead>
 <thead><tr><th>int64</th><th>int64</th><th>int64</th><th>str3</th><th>float64</th><th>float64</th><th>int64</th><th>int64</th><th>int64</th><th>str9</th><th>str4</th><th>str5</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>5742711</td><td>1045904</td><td>16</td><td>M31</td><td>10.928601</td><td>41.164295</td><td>1</td><td>0</td><td>1</td><td>ACS_F814W</td><td>True</td><td>AAAAA</td><td>5</td><td>22.264</td><td>22.265</td><td>0.8581</td><td>6698.4430</td></tr>
@@ -1577,7 +1580,7 @@ MatchID 5742711 in group &#39;M31&#39; has largest MAD value = 0.86
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4 sec: retrieved 5 ACS_F814W measurements
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5 sec: retrieved 5 ACS_F814W measurements
 </pre></div>
 </div>
 </div>
@@ -1596,7 +1599,7 @@ MatchID 5742711 in group &#39;M31&#39; has largest MAD value = 0.86
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f38c1f76450&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc203bdd550&gt;
 </pre></div>
 </div>
 <img alt="../../../_images/9e5b449b86ba70b713ec5dd0a47b426b5d683190193e416518674f73dbd44c4d.png" src="../../../_images/9e5b449b86ba70b713ec5dd0a47b426b5d683190193e416518674f73dbd44c4d.png" />
@@ -1647,20 +1650,20 @@ MatchID 5742711 in group &#39;M31&#39; has largest MAD value = 0.86
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.6 s: finished 1 of 5 epochs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.4 s: finished 1 of 5 epochs
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.0 s: finished 2 of 5 epochs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.8 s: finished 2 of 5 epochs
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.4 s: finished 3 of 5 epochs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.2 s: finished 3 of 5 epochs
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.9 s: finished 4 of 5 epochs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.6 s: finished 4 of 5 epochs
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7.4 s: finished 5 of 5 epochs
-7.4 s: got 10 cutouts
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.9 s: finished 5 of 5 epochs
+6.9 s: got 10 cutouts
 </pre></div>
 </div>
 <img alt="../../../_images/f83332cd8eb3d5eb65010f3e9a57157b2bb5d37b232cce01bb7711ac50f37706.png" src="../../../_images/f83332cd8eb3d5eb65010f3e9a57157b2bb5d37b232cce01bb7711ac50f37706.png" />
