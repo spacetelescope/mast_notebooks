@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Large downloads in astroquery.mast from AWS to local storage &#8212; MAST Notebook Repository</title>
+    <title>Large Downloads in astroquery.mast from AWS to Local Storage &#8212; MAST Notebook Repository</title>
   
   
   
@@ -78,7 +78,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="PySIAF Observation Footprint Viewer" href="../display_footprints/display_footprints.html" />
+    <link rel="next" title="Accessing Cloud-Hosted Data with Astroquery" href="../cloud_data_access/cloud_data_access.html" />
     <link rel="prev" title="Searching for Mission-Specific Data with Astroquery" href="../missions_mast_search/missions_mast_search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -376,8 +376,9 @@
 
 <li class="toctree-l2"><a class="reference internal" href="../wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a></li>
 
+<li class="toctree-l2"><a class="reference internal" href="../cloud_data_access/cloud_data_access.html">Accessing Cloud-Hosted Data with Astroquery</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
@@ -643,7 +644,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Large downloads in astroquery.mast from AWS to local storage</h1>
+    <h1>Large Downloads in astroquery.mast from AWS to Local Storage</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -653,7 +654,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
@@ -681,7 +682,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="large-downloads-in-astroquery-mast-from-aws-to-local-storage">
-<h1><strong>Large downloads in astroquery.mast from AWS to local storage</strong><a class="headerlink" href="#large-downloads-in-astroquery-mast-from-aws-to-local-storage" title="Link to this heading">#</a></h1>
+<h1>Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage<a class="headerlink" href="#large-downloads-in-astroquery-mast-from-aws-to-local-storage" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>Several MAST datasets are now available from the <a class="reference external" href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>, a cloud data storage service. These datasets <a class="reference external" href="https://registry.opendata.aws/collab/stsci/">include data from JWST, HST, TESS, Pan-STARRS, GALEX, and Kepler/K2</a>. In this notebook, you’ll learn how to download data in bulk to your local machine’s storage from two large survey missions, GALEX and Pan-STARRS (PS1).</p>
@@ -749,8 +750,8 @@
 <p>First, let’s retrieve observations in a sky coordinate range of interest. One way to search observations by coordinates is by giving <code class="docutils literal notranslate"><span class="pre">Observations.query_criteria()</span></code> a box defining the search area, consisting of two coordinates for the right ascension range and two coordinates for the declination range. You can also supply any number of missions, and various other metadata constraints. In this case, we’ll retrieve both GALEX and Pan-STARRS observations. The output is an <code class="docutils literal notranslate"><span class="pre">astropy</span></code> table.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">s_ra</span><span class="o">=</span><span class="p">[</span><span class="mf">30.2</span><span class="p">,</span> <span class="mf">31.2</span><span class="p">],</span> <span class="n">s_dec</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">10.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.25</span><span class="p">]</span>
-                                  <span class="p">,</span> <span class="n">obs_collection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GALEX&quot;</span><span class="p">,</span> <span class="s2">&quot;PS1&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">s_ra</span><span class="o">=</span><span class="p">[</span><span class="mf">30.2</span><span class="p">,</span> <span class="mf">31.2</span><span class="p">],</span> <span class="n">s_dec</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">10.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.25</span><span class="p">],</span> 
+                                  <span class="n">obs_collection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GALEX&quot;</span><span class="p">,</span> <span class="s2">&quot;PS1&quot;</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;We retrieved </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span><span class="si">}</span><span class="s1"> observations.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -809,6 +810,9 @@ target_classification
               dataURL
         proposal_type
       sequence_number
+             wave_min
+             wave_max
+          wave_region
 </pre></div>
 </div>
 </div>
@@ -876,7 +880,7 @@ target_classification
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table masked=True length=7</i>
-<table id="table140242158460752" class="table-striped table-bordered table-condensed">
+<table id="table140418457135376" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
 <thead><tr><th>str7</th><th>str5</th><th>str8</th><th>str43</th><th>str139</th><th>str1</th><th>str166</th><th>str9</th><th>str28</th><th>str56</th><th>str1</th><th>str3</th><th>str3</th><th>str3</th><th>str68</th><th>int64</th><th>str7</th><th>str10</th><th>int64</th><th>str3</th></tr></thead>
 <tr><td>665</td><td>GALEX</td><td>image</td><td>2436590472420917248</td><td>Intensity map (J2000)</td><td>C</td><td>mast:GALEX/url/data/GR6/pipe/01-vsn/03716-MISDR1_18032_0666/d/01-main/0001-img/07-try/MISDR1_18032_0666-fd-int.fits.gz</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>Imaging Only</td><td>--</td><td>MIS</td><td>--</td><td>--</td><td>MISDR1_18032_0666-fd-int.fits.gz</td><td>9559896</td><td>665</td><td>PUBLIC</td><td>2</td><td>FUV</td></tr>
@@ -910,7 +914,7 @@ target_classification
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table masked=True length=3</i>
-<table id="table140242158382032" class="table-striped table-bordered table-condensed">
+<table id="table140418457053008" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obsID</th><th>obs_collection</th><th>dataproduct_type</th><th>obs_id</th><th>description</th><th>type</th><th>dataURI</th><th>productType</th><th>productGroupDescription</th><th>productSubGroupDescription</th><th>productDocumentationURL</th><th>project</th><th>prvversion</th><th>proposal_id</th><th>productFilename</th><th>size</th><th>parent_obsid</th><th>dataRights</th><th>calib_level</th><th>filters</th></tr></thead>
 <thead><tr><th>str7</th><th>str5</th><th>str8</th><th>str43</th><th>str139</th><th>str1</th><th>str166</th><th>str9</th><th>str28</th><th>str56</th><th>str1</th><th>str3</th><th>str3</th><th>str3</th><th>str68</th><th>int64</th><th>str7</th><th>str10</th><th>int64</th><th>str3</th></tr></thead>
 <tr><td>1972016</td><td>PS1</td><td>image</td><td>rings.v3.skycell.1062.048.stk.g</td><td>stack data image</td><td>C</td><td>mast:PS1/product/rings.v3.skycell.1062.048.stk.g.unconv.fits</td><td>SCIENCE</td><td>Minimum Recommended Products</td><td>STACK</td><td>--</td><td>3PI</td><td>pv3</td><td>--</td><td>rings.v3.skycell.1062.048.stk.g.unconv.fits</td><td>66795840</td><td>1972016</td><td>PUBLIC</td><td>3</td><td>g</td></tr>
@@ -929,29 +933,50 @@ target_classification
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/2436590472420917248/MISDR1_18032_0666-fd-int.fits.gz with expected size 9559896. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR6/pipe/01-vsn/03716-MISDR1_18032_0666/d/01-main/0001-img/07-try/MISDR1_18032_0666-fd-int.fits.gz to ./mastDownload/GALEX/2436590472420917248/MISDR1_18032_0666-fd-int.fits.gz ...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/2436590472420917248/MISDR1_18032_0666-nd-int.fits.gz with expected size 17603914. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/3209978155506860032/GI5_028097_W1_18085_0274-nd-int.fits.gz with expected size 17139488. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR6/pipe/01-vsn/03716-MISDR1_18032_0666/d/01-main/0001-img/07-try/MISDR1_18032_0666-nd-int.fits.gz to ./mastDownload/GALEX/2436590472420917248/MISDR1_18032_0666-nd-int.fits.gz ...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/6380521092288610304/AIS_273_sg03-fd-int.fits.gz with expected size 1455226. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/6380521092288610304/AIS_273_sg03-nd-int.fits.gz with expected size 7683367. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR7/pipe/01-vsn/25697-GI5_028097_W1_18085_0274/d/01-main/0007-img/07-try/GI5_028097_W1_18085_0274-nd-int.fits.gz to ./mastDownload/GALEX/3209978155506860032/GI5_028097_W1_18085_0274-nd-int.fits.gz ...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/6380521100878544896/AIS_273_sg11-fd-int.fits.gz with expected size 1234059. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Found cached file ./mastDownload/GALEX/6380521100878544896/AIS_273_sg11-nd-int.fits.gz with expected size 6783917. [astroquery.mast.cloud]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR6/pipe/02-vsn/50273-AIS_273/d/01-main/0001-img/07-try/AIS_273_sg03-fd-int.fits.gz to ./mastDownload/GALEX/6380521092288610304/AIS_273_sg03-fd-int.fits.gz ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR6/pipe/02-vsn/50273-AIS_273/d/01-main/0001-img/07-try/AIS_273_sg03-nd-int.fits.gz to ./mastDownload/GALEX/6380521092288610304/AIS_273_sg03-nd-int.fits.gz ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR6/pipe/02-vsn/50273-AIS_273/d/01-main/0001-img/07-try/AIS_273_sg11-fd-int.fits.gz to ./mastDownload/GALEX/6380521100878544896/AIS_273_sg11-fd-int.fits.gz ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading URL s3://stpubdata/galex/GR6/pipe/02-vsn/50273-AIS_273/d/01-main/0001-img/07-try/AIS_273_sg11-nd-int.fits.gz to ./mastDownload/GALEX/6380521100878544896/AIS_273_sg11-nd-int.fits.gz ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> [Done]
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=7</i>
-<table id="table140242909784016" class="table-striped table-bordered table-condensed">
+<table id="table140418464582032" class="table-striped table-bordered table-condensed">
 <thead><tr><th>Local Path</th><th>Status</th><th>Message</th><th>URL</th></tr></thead>
 <thead><tr><th>str80</th><th>str8</th><th>object</th><th>object</th></tr></thead>
 <tr><td>./mastDownload/GALEX/2436590472420917248/MISDR1_18032_0666-fd-int.fits.gz</td><td>COMPLETE</td><td>None</td><td>None</td></tr>
@@ -1019,11 +1044,11 @@ target_classification
       </div>
     </a>
     <a class="right-next"
-       href="../display_footprints/display_footprints.html"
+       href="../cloud_data_access/cloud_data_access.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">PySIAF Observation Footprint Viewer</p>
+        <p class="prev-next-title">Accessing Cloud-Hosted Data with Astroquery</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1045,7 +1070,7 @@ target_classification
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>

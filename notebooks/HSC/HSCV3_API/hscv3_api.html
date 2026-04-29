@@ -376,8 +376,9 @@
 
 <li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html"><strong>Large downloads in astroquery.mast from AWS to local storage</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a></li>
 
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/cloud_data_access/cloud_data_access.html">Accessing Cloud-Hosted Data with Astroquery</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
@@ -849,7 +850,10 @@
         <span class="n">badcols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dcols</span><span class="p">:</span>
-                <span class="n">badcols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_mad&#39;</span><span class="p">):</span>
+                    <span class="n">dcols</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_mad&#39;</span><span class="p">,</span> <span class="s1">&#39;_sigma&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">badcols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">badcols</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Some columns not found in table: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">badcols</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># two different ways to specify a list of column values in the API</span>
@@ -988,9 +992,9 @@
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=19</i>
-<table id="table140552426947600" class="table-striped table-bordered table-condensed">
+<table id="table139800045037648" class="table-striped table-bordered table-condensed">
 <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
-<thead><tr><th>str17</th><th>str5</th><th>str163</th></tr></thead>
+<thead><tr><th>str16</th><th>str5</th><th>str163</th></tr></thead>
 <tr><td>MatchID</td><td>long</td><td>identifier for the match</td></tr>
 <tr><td>MatchRA</td><td>float</td><td>right ascension coordinate of the match position</td></tr>
 <tr><td>MatchDec</td><td>float</td><td>declination coordinate of the match position</td></tr>
@@ -1070,33 +1074,33 @@ dec: 2.1194959
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://catalogs.mast.stsci.edu/api/v0.1/hsc/v3/summary/magaper2.csv?A_F475W_N.gte=10&amp;A_F814W_N.gte=10&amp;ra=16.2016962&amp;dec=2.1194959&amp;radius=0.5&amp;columns=%5BMatchID%2CMatchRA%2CMatchDec%2CNumFilters%2CNumVisits%2CNumImages%2CStartMJD%2CStopMJD%2CA_F475W%2CA_F475W_N%2CA_F475W_MAD%2CA_F814W%2CA_F814W_N%2CA_F814W_MAD%5D
-5.8 s: retrieved data and converted to 18666-row astropy table
+7.6 s: retrieved data and converted to 18666-row astropy table
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=18666</i>
-<table id="table140552461645584" class="table-striped table-bordered table-condensed">
+<table id="table139800060606224" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>NumFilters</th><th>NumVisits</th><th>NumImages</th><th>StartMJD</th><th>StopMJD</th><th>A_F475W</th><th>A_F475W_N</th><th>A_F475W_MAD</th><th>A_F814W</th><th>A_F814W_N</th><th>A_F814W_MAD</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>int64</th><th>int64</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th></tr></thead>
-<tr><td>22567519</td><td>16.087035</td><td>2.166164</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.087</td><td>12</td><td>0.029</td><td>24.101</td><td>12</td><td>0.025</td></tr>
-<tr><td>22571839</td><td>16.100727</td><td>2.181899</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.249</td><td>12</td><td>0.032</td><td>26.609</td><td>12</td><td>0.074</td></tr>
-<tr><td>22575858</td><td>16.135208</td><td>2.170298</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>26.231</td><td>12</td><td>0.048</td><td>25.533</td><td>12</td><td>0.042</td></tr>
-<tr><td>22585493</td><td>16.084171</td><td>2.174568</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.930</td><td>12</td><td>0.018</td><td>26.430</td><td>12</td><td>0.084</td></tr>
-<tr><td>22414947</td><td>16.125702</td><td>2.161152</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>26.498</td><td>12</td><td>0.056</td><td>25.807</td><td>12</td><td>0.056</td></tr>
-<tr><td>22415638</td><td>16.140821</td><td>2.142492</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.201</td><td>12</td><td>0.014</td><td>24.576</td><td>12</td><td>0.017</td></tr>
-<tr><td>22557518</td><td>16.121732</td><td>2.184473</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>24.958</td><td>12</td><td>0.015</td><td>24.179</td><td>12</td><td>0.018</td></tr>
-<tr><td>22558839</td><td>16.096913</td><td>2.166141</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>25.333</td><td>12</td><td>0.028</td><td>24.444</td><td>12</td><td>0.022</td></tr>
-<tr><td>22405950</td><td>16.138241</td><td>2.151390</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.132</td><td>12</td><td>0.028</td><td>26.069</td><td>12</td><td>0.030</td></tr>
+<tr><td>39899463</td><td>16.127602</td><td>2.156358</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>26.451</td><td>12</td><td>0.042</td><td>25.696</td><td>12</td><td>0.038</td></tr>
+<tr><td>39889807</td><td>16.138746</td><td>2.170709</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>24.676</td><td>12</td><td>0.019</td><td>23.682</td><td>12</td><td>0.011</td></tr>
+<tr><td>39725123</td><td>16.141026</td><td>2.170888</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.391</td><td>12</td><td>0.022</td><td>24.906</td><td>12</td><td>0.011</td></tr>
+<tr><td>39725529</td><td>16.124398</td><td>2.132924</td><td>3</td><td>13</td><td>25</td><td>53965.29153</td><td>57009.86262</td><td>25.284</td><td>12</td><td>0.020</td><td>25.650</td><td>12</td><td>0.020</td></tr>
+<tr><td>39573952</td><td>16.106052</td><td>2.152952</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>25.698</td><td>12</td><td>0.031</td><td>24.911</td><td>12</td><td>0.014</td></tr>
+<tr><td>38066994</td><td>16.125477</td><td>2.181073</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>25.029</td><td>12</td><td>0.021</td><td>24.337</td><td>12</td><td>0.011</td></tr>
+<tr><td>38186937</td><td>16.143464</td><td>2.156483</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.662</td><td>12</td><td>0.021</td><td>26.316</td><td>12</td><td>0.035</td></tr>
+<tr><td>38187296</td><td>16.121005</td><td>2.161783</td><td>2</td><td>12</td><td>22</td><td>53965.29153</td><td>53967.71941</td><td>26.819</td><td>10</td><td>0.098</td><td>26.070</td><td>12</td><td>0.015</td></tr>
+<tr><td>38652716</td><td>16.092343</td><td>2.175979</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.189</td><td>12</td><td>0.049</td><td>26.512</td><td>12</td><td>0.035</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>91426700</td><td>16.125475</td><td>2.169733</td><td>3</td><td>13</td><td>24</td><td>53965.42473</td><td>57009.86262</td><td>26.153</td><td>11</td><td>0.030</td><td>25.386</td><td>11</td><td>0.023</td></tr>
-<tr><td>91400224</td><td>16.094329</td><td>2.139921</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.707</td><td>12</td><td>0.028</td><td>26.045</td><td>12</td><td>0.055</td></tr>
-<tr><td>91523764</td><td>16.122122</td><td>2.158761</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>26.617</td><td>12</td><td>0.040</td><td>25.935</td><td>12</td><td>0.026</td></tr>
-<tr><td>91526434</td><td>16.124352</td><td>2.185209</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.748</td><td>12</td><td>0.025</td><td>24.923</td><td>12</td><td>0.026</td></tr>
-<tr><td>91195268</td><td>16.123461</td><td>2.178478</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.404</td><td>12</td><td>0.050</td><td>26.296</td><td>12</td><td>0.042</td></tr>
-<tr><td>91205365</td><td>16.124659</td><td>2.147018</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>24.956</td><td>12</td><td>0.015</td><td>23.966</td><td>12</td><td>0.027</td></tr>
-<tr><td>91330732</td><td>16.151411</td><td>2.143873</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.531</td><td>12</td><td>0.047</td><td>25.805</td><td>12</td><td>0.016</td></tr>
-<tr><td>91335020</td><td>16.131584</td><td>2.143604</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>26.600</td><td>12</td><td>0.042</td><td>25.871</td><td>12</td><td>0.024</td></tr>
-<tr><td>91176702</td><td>16.124466</td><td>2.187494</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.166</td><td>12</td><td>0.013</td><td>26.581</td><td>12</td><td>0.048</td></tr>
-<tr><td>91302251</td><td>16.113461</td><td>2.148448</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>25.229</td><td>12</td><td>0.026</td><td>24.336</td><td>12</td><td>0.019</td></tr>
+<tr><td>31347399</td><td>16.139144</td><td>2.139708</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>24.425</td><td>12</td><td>0.030</td><td>25.068</td><td>12</td><td>0.036</td></tr>
+<tr><td>31459051</td><td>16.109366</td><td>2.160743</td><td>2</td><td>12</td><td>22</td><td>53965.29153</td><td>53967.71941</td><td>26.364</td><td>12</td><td>0.042</td><td>26.623</td><td>10</td><td>0.134</td></tr>
+<tr><td>31472322</td><td>16.134885</td><td>2.189412</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>23.973</td><td>12</td><td>0.016</td><td>22.728</td><td>12</td><td>0.007</td></tr>
+<tr><td>31445911</td><td>16.116034</td><td>2.148330</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>24.804</td><td>12</td><td>0.009</td><td>24.706</td><td>12</td><td>0.015</td></tr>
+<tr><td>31445927</td><td>16.131062</td><td>2.144627</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.041</td><td>12</td><td>0.015</td><td>26.572</td><td>12</td><td>0.042</td></tr>
+<tr><td>31452547</td><td>16.134879</td><td>2.165255</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.553</td><td>12</td><td>0.016</td><td>26.034</td><td>12</td><td>0.015</td></tr>
+<tr><td>31147096</td><td>16.144397</td><td>2.164135</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>25.452</td><td>12</td><td>0.040</td><td>24.511</td><td>12</td><td>0.019</td></tr>
+<tr><td>31148832</td><td>16.122737</td><td>2.179765</td><td>2</td><td>12</td><td>24</td><td>53965.29153</td><td>53967.71941</td><td>26.494</td><td>12</td><td>0.044</td><td>25.723</td><td>12</td><td>0.022</td></tr>
+<tr><td>31918445</td><td>16.127320</td><td>2.140646</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>25.315</td><td>12</td><td>0.026</td><td>24.550</td><td>12</td><td>0.029</td></tr>
+<tr><td>32537328</td><td>16.099075</td><td>2.172943</td><td>3</td><td>11</td><td>21</td><td>53965.29153</td><td>57009.86262</td><td>26.826</td><td>10</td><td>0.030</td><td>26.579</td><td>10</td><td>0.049</td></tr>
 </table></div></div></div>
 </div>
 </section>
@@ -1115,7 +1119,7 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/80aae5fdb6e84bb0f5270fbf2a3e582a6a73fc51067b03a99141351482851d35.png" src="../../../_images/80aae5fdb6e84bb0f5270fbf2a3e582a6a73fc51067b03a99141351482851d35.png" />
+<img alt="../../../_images/7007033fbd59d3bbb772b0b9d85bfe7d9c1d7adca7574fa14b707c4bc2e3daf8.png" src="../../../_images/7007033fbd59d3bbb772b0b9d85bfe7d9c1d7adca7574fa14b707c4bc2e3daf8.png" />
 </div>
 </div>
 </section>
@@ -1138,7 +1142,7 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/22bf5091627255c44003d85fdf7c7fe441c7163d0df85f3086a7bdb339b8a6bf.png" src="../../../_images/22bf5091627255c44003d85fdf7c7fe441c7163d0df85f3086a7bdb339b8a6bf.png" />
+<img alt="../../../_images/f782295dc14518c1da044ff7783acfabe2db3488d2b137a970e15aec089865aa.png" src="../../../_images/f782295dc14518c1da044ff7783acfabe2db3488d2b137a970e15aec089865aa.png" />
 </div>
 </div>
 </section>
@@ -1161,7 +1165,7 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/8d1a903f4a528db1f5adeef276d9de17a67ad58bb42acb95426376f8814a24e5.png" src="../../../_images/8d1a903f4a528db1f5adeef276d9de17a67ad58bb42acb95426376f8814a24e5.png" />
+<img alt="../../../_images/ec08570df96e2360b642fda810765e3ab6f8c751cd3d466e0525274544b69a91.png" src="../../../_images/ec08570df96e2360b642fda810765e3ab6f8c751cd3d466e0525274544b69a91.png" />
 </div>
 </div>
 </section>
@@ -1182,7 +1186,7 @@ dec: 2.1194959
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=29</i>
-<table id="table140552407395088" class="table-striped table-bordered table-condensed">
+<table id="table139799977383120" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>MatchRA</th><th>MatchDec</th><th>NumFilters</th><th>NumVisits</th><th>NumImages</th><th>StartMJD</th><th>StopMJD</th><th>A_F475W</th><th>A_F475W_N</th><th>A_F475W_MAD</th><th>A_F814W</th><th>A_F814W_N</th><th>A_F814W_MAD</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>int64</th><th>int64</th><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th><th>float64</th><th>int64</th><th>float64</th></tr></thead>
 <tr><td>80189155</td><td>16.140740</td><td>2.155288</td><td>3</td><td>14</td><td>26</td><td>53965.29153</td><td>57009.86262</td><td>22.451</td><td>12</td><td>0.294</td><td>22.001</td><td>12</td><td>0.198</td></tr>
@@ -1255,11 +1259,11 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4 s: retrieved data and converted to 12 (F475W) and 12 (F814W) row astropy tables
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.4 s: retrieved data and converted to 12 (F475W) and 12 (F814W) row astropy tables
 </pre></div>
 </div>
 <div class="output text_html"><div><i>Table length=12</i>
-<table id="table140552426460560" class="table-striped table-bordered table-condensed">
+<table id="table139800045430608" class="table-striped table-bordered table-condensed">
 <thead><tr><th>MatchID</th><th>SourceID</th><th>StartMJD</th><th>Detector</th><th>Filter</th><th>MagAper2</th><th>Flags</th><th>ImageName</th></tr></thead>
 <thead><tr><th>int64</th><th>int64</th><th>float64</th><th>str7</th><th>str5</th><th>float64</th><th>int64</th><th>str26</th></tr></thead>
 <tr><td>80189155</td><td>4000999062305</td><td>53965.29153</td><td>ACS/WFC</td><td>F475W</td><td>22.192</td><td>0</td><td>hst_10505_07_acs_wfc_f475w</td></tr>
@@ -1294,10 +1298,10 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd4e9685210&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f25b7f22ed0&gt;
 </pre></div>
 </div>
-<img alt="../../../_images/59be4b5894a9846dab74e08755528298917f3e6057b6c49270975f699cd9e54d.png" src="../../../_images/59be4b5894a9846dab74e08755528298917f3e6057b6c49270975f699cd9e54d.png" />
+<img alt="../../../_images/2828d8a47c622981fcc65051da05579dc64fbc67b4b0dd312507f09d1376c460.png" src="../../../_images/2828d8a47c622981fcc65051da05579dc64fbc67b4b0dd312507f09d1376c460.png" />
 </div>
 </div>
 </section>
@@ -1362,7 +1366,7 @@ dec: 2.1194959
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/f376f405d48b1a63f7a653c79d4bf5749ca1438c293df7ada77c7db092aa6cb3.png" src="../../../_images/f376f405d48b1a63f7a653c79d4bf5749ca1438c293df7ada77c7db092aa6cb3.png" />
+<img alt="../../../_images/d2f9423b09dc167577e0fa2a4d6e68e17e9255f686d70dfba739eaa45bb309a0.png" src="../../../_images/d2f9423b09dc167577e0fa2a4d6e68e17e9255f686d70dfba739eaa45bb309a0.png" />
 </div>
 </div>
 </section>
