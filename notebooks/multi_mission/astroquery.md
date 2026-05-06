@@ -19,3 +19,4 @@ The [`astroquery.mast` readthedocs](https://astroquery.readthedocs.io/en/latest/
 | Searching for Mission-Specific Data with Astroquery | Learn the basic workflow for searching mission datasets, retrieving data products, and downloading data products with the `MastMissions` class, a wrapper around the [MAST Search API.](https://mast.stsci.edu/search/docs/) |
 | Resolving Named Objects with Astroquery | Learn how to resolve named objects using the `astroquery.mast` module and specify which resolver to use in queries. |
 | Accessing Cloud-Hosted Data with Astroquery | Learn how to discover and access cloud-hosted data from cloud-hosted repositories using the `astroquery.mast` module. |
+| Searching MAST Catalogs with Astroquery | Learn how to use the `astroquery.mast` module to discover and query MAST catalogs. |
