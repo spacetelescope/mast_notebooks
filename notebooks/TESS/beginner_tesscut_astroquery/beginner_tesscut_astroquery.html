@@ -37,8 +37,8 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -670,7 +670,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
 </ul>
             </nav>
         </div>
@@ -693,7 +693,7 @@
 <a class="reference internal" href="#tesscut_ID"><span class="xref myst">Tesscut to Perform FFI Cutout</span></a> <br>
 <a class="reference internal" href="#lightcurve"><span class="xref myst">Create Light Curve</span></a> <br>
 <a class="reference internal" href="#resources_ID"><span class="xref myst">Additional Resources</span></a> <br>
-<a class="reference internal" href="#about_ID"><span class="xref myst">About this Notebook</span></a></p>
+<a class="reference internal" href="#about_ID"><span class="xref myst">About This Notebook</span></a></p>
 </section>
 <hr class="docutils" />
 <section id="import-statements">
@@ -702,7 +702,6 @@
 <p>We start with a few import statements.</p>
 <ul class="simple">
 <li><p><em>numpy</em> to handle array functions</p></li>
-<li><p><em>astropy.io fits</em> for accessing FITS files</p></li>
 <li><p><em>astropy.wcs WCS</em> to interpret the World Coordinate Systems</p></li>
 <li><p><em>matplotlib.pyplot</em> for plotting the data</p></li>
 <li><p><em>astroquery.mast</em> for the catalogs and for tesscut.</p></li>
@@ -714,7 +713,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tesscut</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.wcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">WCS</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -733,14 +731,14 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ticid</span> <span class="o">=</span> <span class="mi">261105201</span>
 
 <span class="n">starName</span> <span class="o">=</span> <span class="s2">&quot;TIC &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ticid</span><span class="p">)</span>
-<span class="n">radSearch</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">60</span> <span class="c1">#radius in degrees</span>
+<span class="n">radSearch</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">60</span> <span class="c1"># radius in degrees</span>
 
-<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">starName</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">radSearch</span><span class="p">,</span> <span class="n">catalog</span> <span class="o">=</span> <span class="s2">&quot;TIC&quot;</span><span class="p">)</span>
+<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">starName</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radSearch</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s2">&quot;TIC&quot;</span><span class="p">)</span>
 <span class="n">ra</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span>
 <span class="n">dec</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span>
 
 <span class="c1"># Print out the first row in the table</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">catalogData</span><span class="p">[:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Tmag&#39;</span><span class="p">,</span> <span class="s1">&#39;Jmag&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;objType&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">catalogData</span><span class="p">[:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Tmag&#39;</span><span class="p">,</span> <span class="s1">&#39;Jmag&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;objType&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -762,7 +760,7 @@
 <span class="n">bright</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;Tmag&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">15</span>
 
 <span class="c1"># Make it a list of Ra, Dec pairs of the bright ones. This is now a list of nearby bright stars.</span>
-<span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]))</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -781,7 +779,7 @@
 Using the TESS sector information service, we make a request to determine which sectors/cameras/CCDs contain data for this target. Remember that there is a set of FFIs for each TESS sector and those are broken up into 4 cameras which each have 4 CCDs.  We will do this with a radius=0 cone search to find only those FFI sets that contain the star of interest. You can also make the query using a larger radius, which may be important if the star is near the edge of one of the CCDs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
 
 <span class="n">sectorTable</span> <span class="o">=</span> <span class="n">Tesscut</span><span class="o">.</span><span class="n">get_sectors</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sectorTable</span><span class="p">)</span>
@@ -870,11 +868,11 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot image and add grid lines.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span> 
-           <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span>
-           <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span> 
+               <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span>
+               <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -886,8 +884,8 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">plot_cutout</span><span class="p">(</span><span class="n">firstImage</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Image Column&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Image Row&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Image Column&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Image Row&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -895,7 +893,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Image Row&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/a72baa01c67957f77b8d2c5c01ab0495d6be94b11ec99df7287ab265a26c9893.png" src="../../../_images/a72baa01c67957f77b8d2c5c01ab0495d6be94b11ec99df7287ab265a26c9893.png" />
+<img alt="../../../_images/8b095e69d9cdc00641c3174d001c6ce29c2857d611abe7c69bce2710710c36b4.png" src="../../../_images/8b095e69d9cdc00641c3174d001c6ce29c2857d611abe7c69bce2710710c36b4.png" />
 </div>
 </div>
 <section id="show-the-first-image-with-wcs-information">
@@ -909,29 +907,29 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 
 <span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdu1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">wcs</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
 <span class="n">plot_cutout</span><span class="p">(</span><span class="n">firstImage</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dec&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dec&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
 
-<span class="n">starloc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">([[</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">]],</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#Second is origin</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">starloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">starloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">s</span> <span class="o">=</span> <span class="mi">45</span><span class="p">,</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">starloc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">([[</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">]],</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Second is origin</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">starloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">starloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot nearby stars as well, which we created using our Catalog call above.</span>
-<span class="n">nearbyLoc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">nearbyLoc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> 
-            <span class="n">s</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+            <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f646e734b50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff490596ed0&gt;
 </pre></div>
 </div>
-<img alt="../../../_images/4ddfbd3bc7bb70997ea5d84778840f74480b9fa8b84855062ae3a66d2012bdbc.png" src="../../../_images/4ddfbd3bc7bb70997ea5d84778840f74480b9fa8b84855062ae3a66d2012bdbc.png" />
+<img alt="../../../_images/c38decc8a9a1416d3a70b326d9bce1ec4912b6c503d9eb211bec18003d970569.png" src="../../../_images/c38decc8a9a1416d3a70b326d9bce1ec4912b6c503d9eb211bec18003d970569.png" />
 </div>
 </div>
 <p><a id="lightcurve"></a></p>
@@ -939,7 +937,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 </section>
 <section id="create-a-light-curve-from-the-cutout">
 <h2>Create a Light Curve from the Cutout<a class="headerlink" href="#create-a-light-curve-from-the-cutout" title="Link to this heading">#</a></h2>
-<p>We create two functions.  One to appply a photometric aperture to one image and the other to then apply that to all the images in the FLUX array.</p>
+<p>We create two functions.  One to apply a photometric aperture to one image and the other to then apply that to all the images in the FLUX array.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">aperture_phot</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">aperture</span><span class="p">):</span>
@@ -953,15 +951,16 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 
     <span class="k">return</span> <span class="n">flux</span>
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">make_lc</span><span class="p">(</span><span class="n">flux_data</span><span class="p">,</span> <span class="n">aperture</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Apply the 2d aperture array to the and time series of 2D images. </span>
+<span class="sd">    Apply the 2d aperture array to the time series of 2D images. </span>
 <span class="sd">    Return the photometric series by summing over the pixels that are in the aperture.</span>
 <span class="sd">    </span>
 <span class="sd">    Aperture is a boolean array where True means it is in the desired aperture.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">aperture_phot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aperture</span><span class="p">),</span> <span class="n">flux_data</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">aperture_phot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aperture</span><span class="p">),</span> <span class="n">flux_data</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">flux</span>
 </pre></div>
@@ -979,9 +978,9 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <span class="n">flux1</span> <span class="o">=</span> <span class="n">make_lc</span><span class="p">(</span><span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">],</span> <span class="n">aperture</span><span class="p">)</span>
 <span class="n">time1</span> <span class="o">=</span> <span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">flux1</span><span class="p">,</span> <span class="s1">&#39;k.-&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1325</span><span class="p">,</span><span class="mi">1342</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">flux1</span><span class="p">,</span> <span class="s1">&#39;k.-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1325</span><span class="p">,</span> <span class="mi">1342</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (e-/s)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Flux in Photometric Aperture&#39;</span><span class="p">)</span>
@@ -992,7 +991,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Flux in Photometric Aperture&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/2f9782f0c5c091c28bd7287798e8de9f27f7c691cb0467e78acf587dfd6ebc0b.png" src="../../../_images/2f9782f0c5c091c28bd7287798e8de9f27f7c691cb0467e78acf587dfd6ebc0b.png" />
+<img alt="../../../_images/957c2fb9688f04a0e8363c298217012800ddfbb0780ee812e25da1b41d3c141a.png" src="../../../_images/957c2fb9688f04a0e8363c298217012800ddfbb0780ee812e25da1b41d3c141a.png" />
 </div>
 </div>
 </section>
@@ -1007,8 +1006,8 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <span class="n">bkgFlux1</span> <span class="o">=</span> <span class="n">make_lc</span><span class="p">(</span><span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">],</span> <span class="n">bkgAperture</span><span class="p">)</span>
 <span class="n">time1</span> <span class="o">=</span> <span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">bkgFlux1</span><span class="p">,</span> <span class="s1">&#39;r.-&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">bkgFlux1</span><span class="p">,</span> <span class="s1">&#39;r.-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Estimate of Background&#39;</span><span class="p">)</span>
@@ -1020,7 +1019,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Background Flux&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/43cd34731a7d0da3d71d8701a9f2bc8a173b2594318e20c7154c669ca2aa969a.png" src="../../../_images/43cd34731a7d0da3d71d8701a9f2bc8a173b2594318e20c7154c669ca2aa969a.png" />
+<img alt="../../../_images/6dccc7b212333b9e4055b8b92efe4d561651d78de8dcae2cce1188fa0995145b.png" src="../../../_images/6dccc7b212333b9e4055b8b92efe4d561651d78de8dcae2cce1188fa0995145b.png" />
 </div>
 </div>
 </section>
@@ -1029,10 +1028,10 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <p>Subtract this background after accounting for the number of pixels used to estimate the flux of the background relative to the entire image.  The final plot shows that the background subtraction removed much of unexpected variation.  This is likely an eclipsing binary system.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bkgSubFlux</span> <span class="o">=</span> <span class="n">flux1</span> <span class="o">-</span> <span class="p">(</span><span class="n">bkgFlux1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">aperture</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bkgAperture</span><span class="p">)</span> <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bkgSubFlux</span> <span class="o">=</span> <span class="n">flux1</span> <span class="o">-</span> <span class="p">(</span><span class="n">bkgFlux1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">aperture</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bkgAperture</span><span class="p">))</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">bkgSubFlux</span><span class="p">,</span><span class="s1">&#39;.-k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">bkgSubFlux</span><span class="p">,</span> <span class="s1">&#39;.-k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;TIME (BTJD)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (e-/s)&#39;</span><span class="p">)</span>
@@ -1044,7 +1043,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Background Subtracted Flux&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/3acf3c8556958e4b3239a9b917c7835e72bfe1b57c31f55053841c287c7550bb.png" src="../../../_images/3acf3c8556958e4b3239a9b917c7835e72bfe1b57c31f55053841c287c7550bb.png" />
+<img alt="../../../_images/6bdfff944b0b492cb7133e634fc64da5a8e6fd9d7b63322492e302e5beb9e7fb.png" src="../../../_images/6bdfff944b0b492cb7133e634fc64da5a8e6fd9d7b63322492e302e5beb9e7fb.png" />
 </div>
 </div>
 <p><a id="resources_ID"></a></p>
@@ -1060,11 +1059,13 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <p><a id="about_ID"></a></p>
 </section>
 <section id="about-this-notebook">
-<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
-<p><strong>Author:</strong> Susan E. Mullally, STScI Archive Scientist
-<br><strong>Last Updated:</strong> 2023 November</p>
+<h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author:</strong> Susan E. Mullally, STScI Archive Scientist <br>
+<strong>Keywords:</strong> Tutorial, TESS, cutouts, tesscut <br>
+<strong>Last Updated:</strong> November 2023 <br></p>
+<hr class="docutils" />
 <p><a class="reference internal" href="#title_ID"><span class="xref myst">Top of Page</span></a>
-<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png"><img alt="STScI logo" src="https://raw.githubusercontent.com/spacetelescope/notebooks/master/assets/stsci_pri_combo_mark_horizonal_white_bkgd.png" style="width: 200px;" /></a></p>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo\" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
 </section>
 </section>
 
@@ -1150,7 +1151,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
 </ul>
   </nav></div>
 
