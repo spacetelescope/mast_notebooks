@@ -1,0 +1,40 @@
+name: Deploy MAST notebooks to Fornax branch
+
+on:
+  push:
+    branches:
+      - main
+      - fornax-manifest
+  workflow_dispatch:
+
+jobs:
+  deploy_notebooks:
+    name: Deploy deploy_to_fornax branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: pip install pyaml
+
+      - name: Deploy to deploy_to_fornax branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          gith=$(git rev-parse HEAD)
+          git checkout --orphan deploy_to_fornax
+          git rm --cached -r .
+          # Do Fornax preferred renaming
+          python .github/scripts/publish_fornax.py
+          git add mast_notebooks
+          git commit -m "Deploy for fornax for commit ${gith}"
+          git add notebook_metadata.yml
+          git commit -m "Adding notebook metadata"
+          git push origin deploy_to_fornax --force
