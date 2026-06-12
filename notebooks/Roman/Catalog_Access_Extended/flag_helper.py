@@ -7,6 +7,7 @@ import pyvo as vo
 from astropy.nddata import bitmask
 from astropy.table import Table
 
+
 def tap_query_to_flags_table_info_dict(tap_url, table):
     TAP_service = vo.dal.TAPService(tap_url)
     adql_query = f"""
@@ -102,13 +103,13 @@ class FlagHelper(object):
         
         # Add a id column if specified
         if ids is not None:
-            dict_mask_tab["id"]=ids
+            dict_mask_tab["id"] = ids
 
         if flags_to_include is None:
             flags_to_include = self._flags_dict.keys()
 
         # Check if it's a comma/+/| separated string:
-        for check_val in [',','+','/']:
+        for check_val in [',', '+', '/']:
             if check_val in flags_to_include:
                 flags_to_include = flags_to_include.split(check_val)
                 try:
@@ -125,7 +126,6 @@ class FlagHelper(object):
             )
             dict_mask_tab_desc[flagn] = self._flags_dict[flagn][1]
         return Table(dict_mask_tab, descriptions=dict_mask_tab_desc)
-
 
     def make_bitmask(
         self, 
@@ -164,8 +164,8 @@ class FlagHelper(object):
 class PanSTARRSFlagHelper(FlagHelper):
     def __init__(
         self,
-        tap_url = "https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2",
-        table="dbo.ObjectQualityFlags",
+        tap_url="https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2",
+        table="ObjectQualityFlags",
     ):
 
         t_flags, flags_dict = tap_query_to_flags_table_info_dict(
