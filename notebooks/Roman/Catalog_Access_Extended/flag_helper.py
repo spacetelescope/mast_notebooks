@@ -13,7 +13,7 @@ def _tap_query_to_flags_table_info_dict(tap_url, table):
     TAP_service = vo.dal.TAPService(tap_url)
     adql_query = f"""
     SELECT * FROM {table}
-    """ #nosec
+    """ # nosec
     job = TAP_service.run_async(adql_query)
     t_flags = job.to_table()
     t_flags.sort("value")
