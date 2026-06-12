@@ -26,6 +26,7 @@ def tap_query_to_flags_table_info_dict(tap_url, table):
             )
     return t_flags, flags_dict
 
+
 def get_name_lookup_by_value(flags_dict):
     inv_dict = {}
     for flagn in flags_dict.keys():
