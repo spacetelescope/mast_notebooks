@@ -178,7 +178,7 @@ class PanSTARRSFlagHelper(FlagHelper):
 
         # Create subclassed bit flag map class
         bitflag_map = bitmask.extend_bit_flag_map(
-            f"{database.upper()}_{table.split(".")[-1]}",
+            f"{database.upper()}_{table.split('.')[-1]}",
             bitmask.BitFlagNameMap,
             **flags_dict
         )
