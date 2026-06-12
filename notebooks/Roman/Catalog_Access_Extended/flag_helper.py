@@ -8,11 +8,12 @@ from astropy.nddata import bitmask
 from astropy.table import Table
 
 
-def tap_query_to_flags_table_info_dict(tap_url, table):
+def _tap_query_to_flags_table_info_dict(tap_url, table):
+    # pylint: disable=C0103
     TAP_service = vo.dal.TAPService(tap_url)
     adql_query = f"""
     SELECT * FROM {table}
-    """
+    """ #nosec
     job = TAP_service.run_async(adql_query)
     t_flags = job.to_table()
     t_flags.sort("value")
@@ -27,14 +28,24 @@ def tap_query_to_flags_table_info_dict(tap_url, table):
     return t_flags, flags_dict
 
 
-def get_name_lookup_by_value(flags_dict):
+def _get_name_lookup_by_value(flags_dict):
     inv_dict = {}
     for flagn in flags_dict.keys():
         inv_dict[flags_dict[flagn][0]] = flagn
     return inv_dict
-        
+
 
 class FlagHelper(object):
+    """
+    Base FlagHelper class
+    """
+    # Define internal properties:
+    _flag_info_table = None
+    _flags_dict = None
+    _bitflag_map = None
+
+    _flags_name_lookup_by_value = None
+
     @abc.abstractmethod
     def __init__(self):
         raise NotImplementedError
@@ -47,15 +58,12 @@ class FlagHelper(object):
             strout += f"{flagn:>20}:  {str(val):>{nvalchar}}   {desc}\n"
         return strout
 
-    # def __str__(self):
-    #     return self.flag_info_table.__str__()
-
     def get_all_flag_names(self, bitflag):
         """
         List all flag names that are set for a single bitflag.
         """
         # ???
-        # For now, use the expand to table functionality 
+        # For now, use the expand to table functionality
         # to do this expansion. Likely there is a better way.
         # ???
 
@@ -63,7 +71,7 @@ class FlagHelper(object):
         for flagn in self._flags_dict.keys():
             if bitflag & self._flags_dict[flagn][0]:
                 flag_names.append(flagn)
-            
+
         return flag_names
 
     def get_flag_value(self, flagn):
@@ -77,7 +85,7 @@ class FlagHelper(object):
         List flag name for the given flag value
         """
         return self._flags_name_lookup_by_value[value]
-         
+
     def get_flag_info(self, flagn):
         """
         List flag description for a flag, 
@@ -88,10 +96,10 @@ class FlagHelper(object):
         return self._flags_dict[flagn][1]
 
     def expand_to_table(
-        self, 
+        self,
         bitflag, 
         flags_to_include=None,
-        ids=None, 
+        ids=None,
         dtype=bool
     ):
         """
@@ -101,7 +109,7 @@ class FlagHelper(object):
         """
         dict_mask_tab = {}
         dict_mask_tab_desc = {}
-        
+
         # Add a id column if specified
         if ids is not None:
             dict_mask_tab["id"] = ids
@@ -118,10 +126,10 @@ class FlagHelper(object):
                     flags_to_include = [int(flag) for flag in flags_to_include]
                 except ValueError:
                     pass
-            
+
         for flagn in flags_to_include:
             dict_mask_tab[flagn] = self.make_bitmask(
-                bitflag, 
+                bitflag,
                 flags_to_include=flagn,
                 dtype=dtype,
             )
@@ -129,8 +137,8 @@ class FlagHelper(object):
         return Table(dict_mask_tab, descriptions=dict_mask_tab_desc)
 
     def make_bitmask(
-        self, 
-        bitflag, 
+        self,
+        bitflag,
         flags_to_include=None,
         dtype=bool,
     ):
@@ -159,17 +167,25 @@ class FlagHelper(object):
 
     @property
     def flag_info_table(self):
+        """
+        Flag information table
+        """
         return self._flag_info_table
 
 
 class PanSTARRSFlagHelper(FlagHelper):
+    """
+    PanSTARRS FlagHelper class,
+    to parse flags with definitions 
+    available through the MAST TAP service.
+    """
     def __init__(
         self,
         tap_url="https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2",
         table="ObjectQualityFlags",
     ):
 
-        t_flags, flags_dict = tap_query_to_flags_table_info_dict(
+        t_flags, flags_dict = _tap_query_to_flags_table_info_dict(
             f"{tap_url}/", table
         )
 
@@ -187,5 +203,4 @@ class PanSTARRSFlagHelper(FlagHelper):
         self._flags_dict = flags_dict
         self._bitflag_map = bitflag_map
 
-        self._flags_name_lookup_by_value = get_name_lookup_by_value(flags_dict)
-        
+        self._flags_name_lookup_by_value = _get_name_lookup_by_value(flags_dict)
