@@ -38,7 +38,8 @@ def _get_inv_dict_frame_repr_comp_names(frame):
         inv_dict[getattr(repr_map, "reprname")] = getattr(repr_map, "framename")
 
     return inv_dict
-    
+
+
 def _infer_units_keys_from_frame(frame):
     """
     Utility function to infer default units and position key names 
@@ -76,8 +77,8 @@ def _construct_query_search_criteria_adql_circle(region, pos_keys, units_target)
     """
 
     inv_dict = _get_inv_dict_frame_repr_comp_names(region.frame)
-    lon = getattr(region.center,inv_dict["lon"])
-    lat = getattr(region.center,inv_dict["lat"])
+    lon = getattr(region.center, inv_dict["lon"])
+    lat = getattr(region.center, inv_dict["lat"])
 
     query_string = (
         f"CONTAINS(POINT({pos_keys[0]}, {pos_keys[1]}),"
@@ -193,6 +194,7 @@ def _construct_query_search_criteria_astroquery(region, units_target):
             "so complex, non-single-circle regions cannot be supported!"
         )
 
+
 def _construct_query_search_criteria(region, output_format, pos_keys, units_target):
     """
     Helper function to format search criteria (specified by a `SphericalSkyRegion` instance) 
@@ -240,11 +242,7 @@ class FrameTransformerHelper:
         and trimming to entries falling within the original selection boundary. 
 
     """
-    def __init__(
-            self,
-            sel_region=None,
-            frame_target=None,
-        ):
+    def __init__(self, sel_region=None, frame_target=None):
         # units_keys_target=None,
         if sel_region is None:
             raise ValueError("'sel_region' must be specified")
@@ -268,7 +266,6 @@ class FrameTransformerHelper:
         self.sel_region = sel_region
         self.frame_target = frame_target
 
-
         # Is units_orig better to just DEFAULT to degrees, explicitly?
         self.units_orig, self.keys_pos_orig = _infer_units_keys_from_frame(
             self.sel_region.frame
@@ -285,14 +282,14 @@ class FrameTransformerHelper:
         return self.sel_region.transform_to(self.frame_target)
 
     def get_bounds_constraints(
-            self,
-            search_type="bound_circle",
-            output_format="ADQL",
-            keys_pos_target=None,
-            units_target=None,
-            pad_angle=1*u.arcsec,
-            n_points=100,
-        ):
+        self,
+        search_type="bound_circle",
+        output_format="ADQL",
+        keys_pos_target=None,
+        units_target=None,
+        pad_angle=1*u.arcsec,
+        n_points=100,
+    ):
         """
         Obtain the transformed search boundary information for querying the database. 
 
@@ -360,7 +357,7 @@ class FrameTransformerHelper:
             )
         try:
             _ = pad_angle.to(u.arcsec)
-        except:
+        except AttributeError:
             raise ValueError(
                 f'"pad_angle" must be a Quantity or Angle! "pad_angle"={pad_angle}'
             )
@@ -430,14 +427,14 @@ class FrameTransformerHelper:
         )
 
     def parse_results(
-            self,
-            table,
-            add_orig_frame_coords_to_table=True,
-            keys_pos_orig=None,
-            units_orig=None,
-            keys_pos_target=None,
-            units_target=None,
-        ):
+        self,
+        table,
+        add_orig_frame_coords_to_table=True,
+        keys_pos_orig=None,
+        units_orig=None,
+        keys_pos_target=None,
+        units_target=None,
+    ):
         """
         Parse the results table:
         Add the back-transformed coordinates to the table, and trim to 
@@ -504,7 +501,6 @@ class FrameTransformerHelper:
         if units_target is not None:
             self.units_target = units_target
 
-
         #############################
         # Get target coordinates:
 
@@ -532,7 +528,6 @@ class FrameTransformerHelper:
         # Apply cuts to table and SkyCoord (array)
         table_out = table[mask_contains]
         coos_target = coos_target[mask_contains]
-
 
         #############################
         # Add values to table
@@ -562,4 +557,3 @@ class FrameTransformerHelper:
                     ).value
 
         return table_out
-
