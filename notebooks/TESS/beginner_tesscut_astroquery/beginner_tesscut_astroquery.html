@@ -805,23 +805,24 @@
 <span class="n">starName</span> <span class="o">=</span> <span class="s2">&quot;TIC &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ticid</span><span class="p">)</span>
 <span class="n">radSearch</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">60</span> <span class="c1"># radius in degrees</span>
 
-<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">starName</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radSearch</span><span class="p">,</span> <span class="n">catalog</span><span class="o">=</span><span class="s2">&quot;TIC&quot;</span><span class="p">)</span>
+<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">starName</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radSearch</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;tic_v82&quot;</span><span class="p">)</span>
 <span class="n">ra</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span>
 <span class="n">dec</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span>
 
 <span class="c1"># Print out the first row in the table</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">catalogData</span><span class="p">[:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Tmag&#39;</span><span class="p">,</span> <span class="s1">&#39;Jmag&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;objType&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">catalogData</span><span class="p">[:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;tmag&#39;</span><span class="p">,</span> <span class="s1">&#39;jmag&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;objtype&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    ID      Tmag   Jmag         ra               dec        objType
---------- ------- ------ ---------------- ----------------- -------
-261105201  8.3629   7.74 82.8273670408244 -79.0087723001529    STAR
-724151530 18.7511    nan 82.8150127457216 -79.0132058191133    STAR
-261105202 15.6838 13.738  82.807947620659 -79.0136350375361    STAR
-724151528 20.1425    nan   82.79364170498 -79.0085739998184    STAR
-724151541 19.6238    nan 82.8606445683429 -79.0110416543022    STAR
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    id      tmag  jmag        ra               dec        objtype
+            mag   mag        deg               deg               
+--------- ------- ---- ---------------- ----------------- -------
+724151515  19.268   -- 82.8283803808738 -79.0558328561236    STAR
+724151509 20.5791   -- 82.9000346865217 -78.9894358300008    STAR
+724151492 18.9881   -- 83.1096402127782 -79.0293739232011    STAR
+724151499 18.3792   -- 82.9064361197833 -79.0216889256942    STAR
+724151266 18.3736   -- 82.6795047152377 -79.0557806235986    STAR
 </pre></div>
 </div>
 </div>
@@ -829,7 +830,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a list of nearby bright stars (tess magnitude less than 14) from the rest of the data for later.</span>
-<span class="n">bright</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;Tmag&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">15</span>
+<span class="n">bright</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;tmag&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">15</span>
 
 <span class="c1"># Make it a list of Ra, Dec pairs of the bright ones. This is now a list of nearby bright stars.</span>
 <span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]))</span>
@@ -867,10 +868,10 @@ tess-s0004-4-3      4      4   3
 tess-s0005-4-3      5      4   3
 tess-s0007-4-4      7      4   4
 tess-s0008-4-4      8      4   4
-tess-s0009-4-4      9      4   4
 tess-s0011-4-1     11      4   1
 tess-s0012-4-1     12      4   1
 tess-s0013-3-3     13      3   3
+tess-s0028-4-2     28      4   2
            ...    ...    ... ...
 tess-s0067-3-3     67      3   3
 tess-s0068-4-2     68      4   2
@@ -882,7 +883,7 @@ tess-s0093-3-4     93      3   4
 tess-s0094-3-3     94      3   3
 tess-s0095-4-2     95      4   2
 tess-s0098-4-3     98      4   3
-Length = 36 rows
+Length = 34 rows
 </pre></div>
 </div>
 </div>
@@ -940,7 +941,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot image and add grid lines.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu_r</span><span class="p">,</span>
                <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span>
                <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
@@ -965,7 +966,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Image Row&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/8b095e69d9cdc00641c3174d001c6ce29c2857d611abe7c69bce2710710c36b4.png" src="../../../_images/8b095e69d9cdc00641c3174d001c6ce29c2857d611abe7c69bce2710710c36b4.png" />
+<img alt="../../../_images/7f5b91b6c0daf1d7fd64f049fa6b5a861388c94e41cdfc3c08ab3aab360783b3.png" src="../../../_images/7f5b91b6c0daf1d7fd64f049fa6b5a861388c94e41cdfc3c08ab3aab360783b3.png" />
 </div>
 </div>
 <section id="show-the-first-image-with-wcs-information">
@@ -992,16 +993,16 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 
 <span class="c1"># Plot nearby stars as well, which we created using our Catalog call above.</span>
 <span class="n">nearbyLoc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">],</span>
             <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff490596ed0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fe4f65682d0&gt;
 </pre></div>
 </div>
-<img alt="../../../_images/c38decc8a9a1416d3a70b326d9bce1ec4912b6c503d9eb211bec18003d970569.png" src="../../../_images/c38decc8a9a1416d3a70b326d9bce1ec4912b6c503d9eb211bec18003d970569.png" />
+<img alt="../../../_images/2e7f94e21f3ca93c3e95c56dbcb5de765d3ae3b3e0c43cda37e9b18ce0f92ab4.png" src="../../../_images/2e7f94e21f3ca93c3e95c56dbcb5de765d3ae3b3e0c43cda37e9b18ce0f92ab4.png" />
 </div>
 </div>
 <p><a id="lightcurve"></a></p>
@@ -1016,7 +1017,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sum-up the pixels that are in the aperture for one image.</span>
 <span class="sd">    image and aperture are 2D arrays that need to be the same size.</span>
-<span class="sd">    </span>
+
 <span class="sd">    aperture is a boolean array where True means to include the light of those pixels.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">aperture</span><span class="p">])</span>
@@ -1026,12 +1027,12 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 
 <span class="k">def</span><span class="w"> </span><span class="nf">make_lc</span><span class="p">(</span><span class="n">flux_data</span><span class="p">,</span> <span class="n">aperture</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Apply the 2d aperture array to the time series of 2D images. </span>
+<span class="sd">    Apply the 2d aperture array to the time series of 2D images.</span>
 <span class="sd">    Return the photometric series by summing over the pixels that are in the aperture.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Aperture is a boolean array where True means it is in the desired aperture.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">aperture_phot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aperture</span><span class="p">),</span> <span class="n">flux_data</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">flux</span>
@@ -1063,7 +1064,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Flux in Photometric Aperture&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/957c2fb9688f04a0e8363c298217012800ddfbb0780ee812e25da1b41d3c141a.png" src="../../../_images/957c2fb9688f04a0e8363c298217012800ddfbb0780ee812e25da1b41d3c141a.png" />
+<img alt="../../../_images/ffc88b3defeea371adac309bccee16c6c1e737b23ba7eb0c028cc884b2e82e13.png" src="../../../_images/ffc88b3defeea371adac309bccee16c6c1e737b23ba7eb0c028cc884b2e82e13.png" />
 </div>
 </div>
 </section>
@@ -1091,7 +1092,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Background Flux&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/6dccc7b212333b9e4055b8b92efe4d561651d78de8dcae2cce1188fa0995145b.png" src="../../../_images/6dccc7b212333b9e4055b8b92efe4d561651d78de8dcae2cce1188fa0995145b.png" />
+<img alt="../../../_images/1a14af27fec3288e9db57ffa97625b2ccfe16672ca989c8dedc9ecaec9e1f130.png" src="../../../_images/1a14af27fec3288e9db57ffa97625b2ccfe16672ca989c8dedc9ecaec9e1f130.png" />
 </div>
 </div>
 </section>
@@ -1115,7 +1116,7 @@ We use the WCS in the header to place a red dot on the image for the catalog pos
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Background Subtracted Flux&#39;)
 </pre></div>
 </div>
-<img alt="../../../_images/6bdfff944b0b492cb7133e634fc64da5a8e6fd9d7b63322492e302e5beb9e7fb.png" src="../../../_images/6bdfff944b0b492cb7133e634fc64da5a8e6fd9d7b63322492e302e5beb9e7fb.png" />
+<img alt="../../../_images/3fa214ddbb5b5afbe2877dfcad8ffc1da3f970d7d0dccde98f5e0e629abde503.png" src="../../../_images/3fa214ddbb5b5afbe2877dfcad8ffc1da3f970d7d0dccde98f5e0e629abde503.png" />
 </div>
 </div>
 <p><a id="resources_ID"></a></p>

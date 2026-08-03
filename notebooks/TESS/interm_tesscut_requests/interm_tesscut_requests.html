@@ -808,23 +808,24 @@
 <span class="n">starName</span> <span class="o">=</span> <span class="s2">&quot;TIC &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ticid</span><span class="p">)</span>
 <span class="n">radSearch</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span> <span class="c1"># radius in degrees</span>
 
-<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">starName</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">radSearch</span><span class="p">,</span> <span class="n">catalog</span> <span class="o">=</span> <span class="s2">&quot;TIC&quot;</span><span class="p">)</span>
+<span class="n">catalogData</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="n">starName</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radSearch</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;tic_v82&quot;</span><span class="p">)</span>
 <span class="n">Ra</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span>
 <span class="n">Dec</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span>
 
 <span class="c1"># Print out the first five rows in the table</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">catalogData</span><span class="p">[:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Tmag&#39;</span><span class="p">,</span> <span class="s1">&#39;Jmag&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;objType&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">catalogData</span><span class="p">[:</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;tmag&#39;</span><span class="p">,</span> <span class="s1">&#39;jmag&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;objtype&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    ID      Tmag   Jmag         ra               dec        objType
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    id      tmag   jmag         ra               dec        objtype
+            mag    mag         deg               deg               
 --------- ------- ------ ---------------- ----------------- -------
-261136679  5.1054  4.869 84.2911879979852 -80.4691197969941    STAR
-261139071  13.995 13.495        84.257651         -80.46656    STAR
-724137557  20.476    nan 84.2520122339161   -80.47060236557    STAR
-724137554 19.2521    nan 84.3377837896451 -80.4686446189646    STAR
-724137558 17.8818    nan 84.2799547508233 -80.4566970989506    STAR
+724137549 20.5105     -- 84.1335985334322 -80.4709912900573    STAR
+724137834 19.7145     -- 84.1222631131395 -80.3974770946282    STAR
+724137780 20.7122     -- 84.6566488084288  -80.443990799317    STAR
+724137543 20.6361     -- 84.0681842266655 -80.4964255751624    STAR
+261136654 17.5878 16.174 84.2901682430075 -80.3916643790572    STAR
 </pre></div>
 </div>
 </div>
@@ -832,10 +833,10 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a list of nearby bright stars (tess magnitude less than 14) from the rest of the data for later.</span>
-<span class="n">bright</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;Tmag&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">14</span>
+<span class="n">bright</span> <span class="o">=</span> <span class="n">catalogData</span><span class="p">[</span><span class="s1">&#39;tmag&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">14</span>
 
 <span class="c1"># Make it a list of Ra, Dec pairs of the bright ones. So this is now a list of nearby bright stars.</span>
-<span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">nearbyStars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">catalogData</span><span class="p">[</span><span class="n">bright</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]))</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -857,9 +858,9 @@ Note, the request is returned in a json format. The 'results' key contains an ar
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="n">urlroot</span> <span class="o">+</span> <span class="s2">&quot;/sector&quot;</span>
 
-<span class="n">myparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ra&quot;</span><span class="p">:</span><span class="n">Ra</span><span class="p">,</span> <span class="s2">&quot;dec&quot;</span><span class="p">:</span><span class="n">Dec</span><span class="p">,</span> <span class="s2">&quot;radius&quot;</span><span class="p">:</span><span class="s2">&quot;0m&quot;</span><span class="p">}</span>
+<span class="n">myparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ra&quot;</span><span class="p">:</span> <span class="n">Ra</span><span class="p">,</span> <span class="s2">&quot;dec&quot;</span><span class="p">:</span> <span class="n">Dec</span><span class="p">,</span> <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="s2">&quot;0m&quot;</span><span class="p">}</span>
 
-<span class="n">requestData</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">myparams</span><span class="p">)</span>
+<span class="n">requestData</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">myparams</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">requestData</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content-type&#39;</span><span class="p">))</span>
 </pre></div>
@@ -894,12 +895,12 @@ Note, the request is returned in a json format. The 'results' key contains an ar
 <p>&lt; Response [200] &gt; means that your request succeeded.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ra&quot;</span><span class="p">:</span><span class="n">Ra</span><span class="p">,</span> <span class="s2">&quot;dec&quot;</span><span class="p">:</span><span class="n">Dec</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span><span class="mi">35</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span> 
-           <span class="s2">&quot;units&quot;</span><span class="p">:</span><span class="s2">&quot;px&quot;</span><span class="p">,</span> <span class="s2">&quot;sector&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ra&quot;</span><span class="p">:</span> <span class="n">Ra</span><span class="p">,</span> <span class="s2">&quot;dec&quot;</span><span class="p">:</span> <span class="n">Dec</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span>
+            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;px&quot;</span><span class="p">,</span> <span class="s2">&quot;sector&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urlroot</span> <span class="o">+</span> <span class="s2">&quot;/astrocut&quot;</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">myparams</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">myparams</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content-type&#39;</span><span class="p">))</span>
@@ -931,7 +932,7 @@ application/zip
 <p>We use python’s zipfile to unzip the file, but this could also be done using unzip from the command line. In many cases you will get more than one file, one for each sector that observed the star.  If you ask for a large cutout, you might also get more than one because the pixels are on more than one CCD.  In this case, we got back one file. The name contains the RA and Dec as well as the sector number, camera and chip.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zipRef</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s1">&#39;astrocut.zip&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zipRef</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s1">&#39;astrocut.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
 <span class="n">zipRef</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 <span class="n">zipRef</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
@@ -942,7 +943,7 @@ application/zip
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;tess-s0001-4-2_84.291188_-80.469120_35x45_astrocut.fits&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;tess-s0001-4-2_84.133599_-80.470991_35x45_astrocut.fits&#39;]
 </pre></div>
 </div>
 </div>
@@ -959,7 +960,7 @@ application/zip
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: tess-s0001-4-2_84.291188_-80.469120_35x45_astrocut.fits
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: tess-s0001-4-2_84.133599_-80.470991_35x45_astrocut.fits
 No.    Name      Ver    Type      Cards   Dimensions   Format
   0  PRIMARY       1 PrimaryHDU      57   ()      
   1  PIXELS        1 BinTableHDU    281   1282R x 12C   [D, E, J, 1575J, 1575E, 1575E, 1575E, 1575E, J, E, E, 38A]   
@@ -1003,17 +1004,17 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">firstImage</span> <span class="o">=</span> <span class="n">hdu1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> \
-           <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span><span class="mi">92</span><span class="p">),</span> <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;CCD Column&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;CCD Row&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span>
+           <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span> <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;CCD Column&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;CCD Row&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/0d36b0881499f6d75d192ce17e31c815b040518ea65f576ac8389bbb8fd44fc5.png" src="../../../_images/0d36b0881499f6d75d192ce17e31c815b040518ea65f576ac8389bbb8fd44fc5.png" />
+<img alt="../../../_images/40dd3b3794475fc32bc71946f10aac1a021d9ed7b3ffa68d7baee4612c672f41.png" src="../../../_images/40dd3b3794475fc32bc71946f10aac1a021d9ed7b3ffa68d7baee4612c672f41.png" />
 </div>
 </div>
 <section id="add-a-wcs-to-the-image-and-mark-the-requested-star-as-well-as-nearby-stars">
@@ -1024,29 +1025,29 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdu1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">wcs</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span><span class="mi">92</span><span class="p">),</span>\
-           <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span>
+           <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">firstImage</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;CCD Column&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;CCD Row&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;CCD Column&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;CCD Row&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
 
-<span class="n">starLoc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">([[</span><span class="n">Ra</span><span class="p">,</span><span class="n">Dec</span><span class="p">]],</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#Second is origin</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">starLoc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">starLoc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">45</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">starLoc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">([[</span><span class="n">Ra</span><span class="p">,</span> <span class="n">Dec</span><span class="p">]],</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Second is origin</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">starLoc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">starLoc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot nearby stars as well, which we created using our Catalog call above.</span>
 <span class="n">nearbyLoc</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">nearbyStars</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nearbyLoc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff2578dcb10&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f49ba726350&gt;
 </pre></div>
 </div>
-<img alt="../../../_images/af8153a4ad355b027ab6a6fd9da57b5d5479b32cf7fadab016bb95d7948f179d.png" src="../../../_images/af8153a4ad355b027ab6a6fd9da57b5d5479b32cf7fadab016bb95d7948f179d.png" />
+<img alt="../../../_images/2cce13676b5c686f3db8d5d760ffdcae10cc7d14bab58e3976a805e82e6b7bf5.png" src="../../../_images/2cce13676b5c686f3db8d5d760ffdcae10cc7d14bab58e3976a805e82e6b7bf5.png" />
 </div>
 </div>
 <p><a id="resources_ID"></a></p>
