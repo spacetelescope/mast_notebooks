@@ -1,6 +1,6 @@
-# Simple flag helper class, 
-# to work with the PanSTARRS flag information 
+# Flag helper class to work with the PanSTARRS flag information
 # that is stored in a TAP-accessible table.
+# Includes a simple base class that can be extended for other datasets.
 
 import abc
 import pyvo as vo
