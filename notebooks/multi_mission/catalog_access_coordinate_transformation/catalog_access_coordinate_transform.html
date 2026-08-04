@@ -1,0 +1,1544 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Catalog Access: Querying Sky Regions in User-Specified Coordinate Frame &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/multi_mission/catalog_access_coordinate_transformation/catalog_access_coordinate_transform';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Surveying dust structure via GALEX MIS" href="../../GALEX/mis_mosaic/mis_mosaic.html" />
+    <link rel="prev" title="Downloading Subscription Products with Astroquery" href="../subscriptions/subscriptions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-dark pst-js-only" alt="MAST Notebook Repository - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../resolve_objects/resolve_objects.html">Resolving Named Objects with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud_data_access/cloud_data_access.html">Accessing Cloud-Hosted Data with Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../subscriptions/subscriptions.html">Downloading Subscription Products with Astroquery</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Catalog Access: Querying Sky Regions in User-Specified Coordinate Frame</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Interactive Data Exploration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/inspect_long_tables/inspect_long_tables.html">How to Inspect Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/organize_widgets/organize_widgets.html">How to Organize Widgets with <code class="docutils literal notranslate"><span class="pre">jupyterlab-sidecar</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/browse_roman_observations/browse_roman_observations.html">How to Browse Roman Observations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/Lightcurve/Lightcurve.html">Beginner: Read and Plot A K2 Light Curve File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/multi_mission/catalog_access_coordinate_transformation/catalog_access_coordinate_transform.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/multi_mission/catalog_access_coordinate_transformation/catalog_access_coordinate_transform.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/multi_mission/catalog_access_coordinate_transformation/catalog_access_coordinate_transform.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Catalog Access: Querying Sky Regions in User-Specified Coordinate Frame</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-spatial-catalogs-selections-with-changes-of-coordinate-frame">Performing Spatial Catalogs Selections with Changes of Coordinate Frame</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-blue-stars-on-the-galactic-plane">Identifying blue stars on the Galactic plane</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-astroquery">Using astroquery</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-subset-selection-region">Defining a subset selection region</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-helper-class">Using the helper class</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-transformed-query-spatial-constraints">Obtaining transformed query spatial constraints</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-and-submitting-the-query">Constructing and submitting the query</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-helper-class-to-transform-and-trim-the-results">Using the helper class to transform and trim the results</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-subset-region-objects">Visualizing the subset region objects</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-tap">Using TAP</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-over-the-full-galactic-plane-using-tap">Querying over the full Galactic plane using TAP</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-tap-results-across-the-full-galactic-plane">Visualizing TAP results across the full Galactic plane</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astropy-coordinate-transformations">Astropy Coordinate Transformations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astroquery-mast">Astroquery.mast</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-access-protocol-tap-the-astronomy-query-data-language-adql">Table Access Protocol (TAP) &amp; the Astronomy Query Data Language (ADQL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#panstarrs-1-dr-2">PanSTARRS 1 DR 2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="catalog-access-querying-sky-regions-in-user-specified-coordinate-frame">
+<h1>Catalog Access: Querying Sky Regions in User-Specified Coordinate Frame<a class="headerlink" href="#catalog-access-querying-sky-regions-in-user-specified-coordinate-frame" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to use <code class="docutils literal notranslate"><span class="pre">astropy</span> <span class="pre">regions.SphericalSkyRegion</span></code> region instances to define a selection region in an arbitrary coordinate frame.</p></li>
+<li><p>Understand how to use the <code class="docutils literal notranslate"><span class="pre">FrameTransformerHelper</span></code> helper class included with this notebook to conveniently obtain coordinate-transformed query syntax from a <code class="docutils literal notranslate"><span class="pre">SphericalSkyRegion</span></code> instance, and post-process the results table to only include objects within the selected region (in the original frame) and to add columns containing the original frame spatial coordinates.</p></li>
+</ul>
+<section id="table-of-contents">
+<h3>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#Introduction"><span class="xref myst">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#Imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#Performing-Spatial-Catalogs-Selections-wit-Changes-of-Coordinate-Frame"><span class="xref myst">Performing Spatial Catalogs Selections with Changes of Coordinate Frame</span></a></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#Identifying-blue-stars-on-the-Galactic-plane"><span class="xref myst">Identifying blue stars on the Galactic plane</span></a></p></li>
+<li><p><a class="reference internal" href="#Using-astroquery"><span class="xref myst">Using astroquery</span></a></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#Defining-a-subset-selection-region"><span class="xref myst">Defining a subset selection region</span></a></p></li>
+<li><p><a class="reference internal" href="#Using-the-helper-class"><span class="xref myst">Using the helper class</span></a></p></li>
+<li><p><a class="reference internal" href="#Obtaining-transformed-query-spatial-constraints"><span class="xref myst">Obtaining transformed query spatial constraints</span></a></p></li>
+<li><p><a class="reference internal" href="#Constructing-and-submitting-the-query"><span class="xref myst">Constructing and submitting the query</span></a></p></li>
+<li><p><a class="reference internal" href="#Using-the-helper-class-to-transform-and-trim-the-results"><span class="xref myst">Using the helper class to transform and trim the results</span></a></p></li>
+<li><p><a class="reference internal" href="#Visualizing-the-subset-region-objects"><span class="xref myst">Visualizing the subset region objects</span></a></p></li>
+</ol>
+</li>
+<li><p><a class="reference internal" href="#Using-TAP"><span class="xref myst">Using TAP</span></a></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#Querying-over-the-full-Galactic-plane-using-TAP"><span class="xref myst">Querying over the full Galactic plane using TAP</span></a></p></li>
+<li><p><a class="reference internal" href="#Visualizing-TAP-results-across-the-full-Galactic-plane"><span class="xref myst">Visualizing TAP results across the full Galactic plane</span></a></p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><a class="reference internal" href="#Additional-Resources"><span class="xref myst">Additional Resources</span></a></p></li>
+<li><p><a class="reference internal" href="#About-this-Notebook"><span class="xref myst">About This Notebook</span></a></p></li>
+</ol>
+</section>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This notebook demonstrates how to translate selection regions of interest defined in a non-ICRS frame, translate that region on the sky to ICRS (the typical coordinate frame used to specify object coordinates in MAST’s and other archives’ catalogs), perform a spatial query, and then ensure the results catalog is populated with the longitude and latitude information for our non-ICRS frame.</p>
+<p>The methods demonstrated in this tutorial are <strong>broadly applicable</strong>. These methods can be used for any of MAST’s catalog holdings — from PanSTARRS (as shown in this notebook) to Roman.  Furthermore, these tools can be used for coordinate transform queries of catalogs at <em>other</em> archives (either directly using <code class="docutils literal notranslate"><span class="pre">regions.SphericalSkyRegions</span></code> to specify ICRS-frame direct/bounding regions, or using the helper class/query syntax with modifications as needed).</p>
+<p>As an example, this tutorial demonstrates how to query the MAST PanSTARRS DR2 catalog for objects within regions defined in the Galactic coordinate frame, leveraging the <code class="docutils literal notranslate"><span class="pre">astropy</span> <span class="pre">regions</span></code> package to transform the selection region from Galactic to ICRS coordinates, peforming a catalog query, and then post-processing to add Galactic coordinates to the results table (via an included helper class).</p>
+<p>While some catalogs already provide Galactic coordinates (<span class="math notranslate nohighlight">\(\ell, b\)</span>), this generalized approach supports:</p>
+<ul class="simple">
+<li><p>Selection regions defined in arbitrary, user-specified coordinate frames (such as the Heliocentric spherical coordinate system for the orbit of the GD1 stream described in Koposov et al. 2010, <a class="reference external" href="https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html">as provided by the gala package</a>).</p></li>
+<li><p>Potential performance improvements by transforming the query to use ICRS coordinates, even if the coordinate frame longitude and latitude are columns (if the database is not spatially indexed on the coordinate in questions, while ICRS position columns are).</p></li>
+</ul>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>This tutorial makes use of the following libraries:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://numpy.org/"><em>numpy</em></a> for numerical calculations</p></li>
+<li><p><a class="reference external" href="https://docs.astropy.org/en/stable/coordinates/index.html"><em>astropy.coordinates Angle</em></a> for defining angles</p></li>
+<li><p><a class="reference external" href="https://docs.astropy.org/en/stable/units/index.html"><em>astropy.units</em></a> to specify angular units</p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html"><em>astroquery.mast Catalogs</em></a> for querying the MAST database</p></li>
+<li><p><a class="reference external" href="https://pyvo.readthedocs.io"><em>pyvo</em></a> for querying the MAST catalogs via TAP (extended example)</p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/stable/api/pyplot_summary.html#module-matplotlib.pyplot"><em>matplotlib.pyplot</em></a> for plotting data</p></li>
+<li><p><a class="reference external" href="https://github.com/astropy/regions/tree/main"><em>regions RangeSphericalSkyRegion</em></a> to define spherical sky regions and handle coordinate frame transformations</p></li>
+<li><p>A simple <em>FrameTransformerHelper</em> class to prepare catalog queries and post-process the results (adding longitude/latitude columns for the specified coordinate frame).</p></li>
+<li><p><a class="reference external" href="https://docs.astropy.org/en/stable/table/index.html"><em>astropy.table</em></a> to combine and manipulate result tables</p></li>
+<li><p><em>time, datetime</em> to time queries.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">Angle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">Catalogs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">table</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">regions</span><span class="w"> </span><span class="kn">import</span> <span class="n">RangeSphericalSkyRegion</span>
+
+<span class="c1"># Helper classes for handling coordinate transformations with queries:</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">frame_transformer_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">FrameTransformerHelper</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="performing-spatial-catalogs-selections-with-changes-of-coordinate-frame">
+<h2>Performing Spatial Catalogs Selections with Changes of Coordinate Frame<a class="headerlink" href="#performing-spatial-catalogs-selections-with-changes-of-coordinate-frame" title="Link to this heading">#</a></h2>
+<p>In this notebook, we will construct a sample of bright (<span class="math notranslate nohighlight">\(i&lt;18\)</span>), blue (<span class="math notranslate nohighlight">\(g-y &lt; 0.8\)</span>) stars located along the Galactic plane, combining color, magnitude, and spatial constraints, using PanSTARRS DR1 catalogs.</p>
+<p>We will demonstrate how to perform this query using both (1) <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html"><code class="docutils literal notranslate"><span class="pre">astroquery</span></code></a> and (2) MAST’s <a class="reference internal" href="#%22https://mast.stsci.edu/vo-tap/%22"><span class="xref myst">Table Access Protocol (TAP)</span></a> service using the <a class="reference external" href="http://www.ivoa.net/documents/latest/ADQL.html">Astronomical Data Query Language (ADQL)</a>.</p>
+<section id="identifying-blue-stars-on-the-galactic-plane">
+<h3>Identifying blue stars on the Galactic plane<a class="headerlink" href="#identifying-blue-stars-on-the-galactic-plane" title="Link to this heading">#</a></h3>
+<p>After consulting the <a class="reference external" href="https://outerspace.stsci.edu/spaces/PANSTARRS/pages/298812351/PS1+Source+extraction+and+catalogs">PanSTARRS DR2 catalogs documentation</a>, we decide to use the
+<code class="docutils literal notranslate"><span class="pre">mean_object</span></code> table.
+This table provides the relevant photometric (columns <code class="docutils literal notranslate"><span class="pre">gmeanpsfmag</span></code>, <code class="docutils literal notranslate"><span class="pre">imeanpsfmag</span></code>, <code class="docutils literal notranslate"><span class="pre">ymeanpsfmag</span></code>, optimized for point sources; and <code class="docutils literal notranslate"><span class="pre">imeankronmag</span></code>, used to distinguish between stars and galaxies) and position (<code class="docutils literal notranslate"><span class="pre">ramean</span></code>, <code class="docutils literal notranslate"><span class="pre">decmean</span></code>) information.</p>
+<p>We define our sample selection as:</p>
+<ul class="simple">
+<li><p>Located within <span class="math notranslate nohighlight">\(\pm\)</span>0.1 degree of the Galactic plane (<span class="math notranslate nohighlight">\(|b| \leq 0.1\)</span>deg)</p></li>
+<li><p>Have <span class="math notranslate nohighlight">\(i\)</span> band magnitudes brighter than 18</p></li>
+<li><p>Have <span class="math notranslate nohighlight">\(g-y\)</span> colors less than 0.8  (the bluest, reddest filters for PanSTARRS)</p></li>
+<li><p>Are point sources (not extended objects; point sources typically have <code class="docutils literal notranslate"><span class="pre">imeanpsfmag-imeankronmag</span> <span class="pre">&lt;=</span> <span class="pre">0.05</span></code>, as presented in the <a class="reference external" href="https://outerspace.stsci.edu/spaces/PANSTARRS/pages/298812369/How+to+separate+stars+and+galaxies#Howtoseparatestarsandgalaxies-PSF-Kron">PanSTARRS documentation</a>).</p></li>
+</ul>
+<p>We additionally apply quality cuts to ensure flux is detected in the <span class="math notranslate nohighlight">\(g\)</span>, <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(y\)</span> bands (magnitudes &gt; -999, the missing value), and there are at least 3 detection in each of these bands (<code class="docutils literal notranslate"><span class="pre">ng</span></code>, <code class="docutils literal notranslate"><span class="pre">ni</span></code>, <code class="docutils literal notranslate"><span class="pre">ny</span></code> &gt; 3; to avoid data artifacts).</p>
+</section>
+<section id="using-astroquery">
+<h3>Using astroquery<a class="headerlink" href="#using-astroquery" title="Link to this heading">#</a></h3>
+<p>To begin, we will implement this catalog search using <code class="docutils literal notranslate"><span class="pre">astroquery</span></code>.</p>
+<p>We will begin by defining a small, test region of a limited <span class="math notranslate nohighlight">\((\ell,b)\)</span> range, as we can include only a subset of these constraints in the database query. The remaining constraints — the color cut <span class="math notranslate nohighlight">\(g-y&lt;0.8\)</span>, and removing extended sources — will need to be applied in-memory after obtaining the initial results table.</p>
+<section id="defining-a-subset-selection-region">
+<h4>Defining a subset selection region<a class="headerlink" href="#defining-a-subset-selection-region" title="Link to this heading">#</a></h4>
+<p>We begin by defining a small subset, covering a limited range of <span class="math notranslate nohighlight">\(\ell=[100,101]\)</span> deg, and <span class="math notranslate nohighlight">\(b=[-0.1,0.1]\)</span> deg, using the <code class="docutils literal notranslate"><span class="pre">RangeSphericalSkyRegion</span></code> class. Note that we must specify the coordinate frame, as either an astropy <code class="docutils literal notranslate"><span class="pre">BaseCoordinateFrame</span></code> instance or a string indicating an astropy-registered coordinate frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Subset selection region:</span>
+<span class="n">lon_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">lat_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+
+<span class="n">sel_region</span> <span class="o">=</span> <span class="n">RangeSphericalSkyRegion</span><span class="p">(</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;galactic&quot;</span><span class="p">,</span> 
+    <span class="n">longitude_range</span><span class="o">=</span><span class="n">lon_range</span><span class="p">,</span>
+    <span class="n">latitude_range</span><span class="o">=</span><span class="n">lat_range</span><span class="p">,</span> 
+<span class="p">)</span>
+<span class="n">sel_region</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;RangeSphericalSkyRegion(
+frame=galactic,
+longitude_range=[100. 101.] deg,
+latitude_range=[-0.1  0.1] deg
+)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-the-helper-class">
+<h4>Using the helper class<a class="headerlink" href="#using-the-helper-class" title="Link to this heading">#</a></h4>
+<p>We then create an instance of the <code class="docutils literal notranslate"><span class="pre">FrameTransformerHelper</span></code> class, which we will use to
+help prepare our transformed query constraints and ensure the results are translated back to our coordinate frame (for this example, Galactic coordinates).</p>
+<p>We specify our selection spherical sky region and our target coordinate frame for our query (ICRS).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transf_helper</span> <span class="o">=</span> <span class="n">FrameTransformerHelper</span><span class="p">(</span>
+    <span class="n">sel_region</span><span class="o">=</span><span class="n">sel_region</span><span class="p">,</span> 
+    <span class="n">frame_target</span><span class="o">=</span><span class="s2">&quot;icrs&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This transformation helper contains a property <code class="docutils literal notranslate"><span class="pre">sel_region_target</span></code> that represents the transformation of our region into the ICRS coordinate frame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transf_helper</span><span class="o">.</span><span class="n">sel_region_target</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;RangeSphericalSkyRegion(
+frame=icrs,
+longitude_bounds=&lt;LuneSphericalSkyRegion(center_gc1=&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (91.94042232, 20.2900295)&gt;, center_gc2=&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (272.45586549, -19.41540611)&gt;)&gt;,
+latitude_bounds=&lt;CircleAnnulusSphericalSkyRegion(center=&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (192.85947789, 27.12825241)&gt;, inner_radius=89.9 deg, outer_radius=90.1 deg)&gt;
+)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is a convenience method for other internal helper processing that is equivalent to transforming the original region directly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sel_region</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;RangeSphericalSkyRegion(
+frame=icrs,
+longitude_bounds=&lt;LuneSphericalSkyRegion(center_gc1=&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (91.94042232, 20.2900295)&gt;, center_gc2=&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (272.45586549, -19.41540611)&gt;)&gt;,
+latitude_bounds=&lt;CircleAnnulusSphericalSkyRegion(center=&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (192.85947789, 27.12825241)&gt;, inner_radius=89.9 deg, outer_radius=90.1 deg)&gt;
+)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="obtaining-transformed-query-spatial-constraints">
+<h4>Obtaining transformed query spatial constraints<a class="headerlink" href="#obtaining-transformed-query-spatial-constraints" title="Link to this heading">#</a></h4>
+<p>We now need to use this transformed region to determing our spatial constraints.</p>
+<p>Currently, the <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span> <span class="pre">Catalogs</span></code> module only supports cone searches. Thus, we will need to use the bounding circle of this transformed region.</p>
+<p>Our helper class can provide specifically formatted spatial constraints using the <code class="docutils literal notranslate"><span class="pre">get_bounds_constraints()</span></code> method. The arguments specify the search type (bounding circle,
+bounding lon/lat, polygon), the output format (either “ADQL” or “astroquery.mast”),
+and the column names for longitude, latitude in the database table (“keys_pos_target”; for the PanSTARRS mean object table, these are <code class="docutils literal notranslate"><span class="pre">raMean</span></code>, <code class="docutils literal notranslate"><span class="pre">decMean</span></code></p>
+<p>We now use this method to obtain the bounding circle constraints for use with astroquery.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spatial_constraints</span> <span class="o">=</span> <span class="n">transf_helper</span><span class="o">.</span><span class="n">get_bounds_constraints</span><span class="p">(</span>
+    <span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;bound_circle&quot;</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s2">&quot;astroquery.mast&quot;</span><span class="p">,</span> 
+<span class="p">)</span>
+<span class="n">spatial_constraints</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;coordinates&#39;: &lt;SkyCoord (ICRS): (ra, dec) in deg
+     (330.70354523, 55.35053603)&gt;,
+ &#39;radius&#39;: &lt;Angle 0.5099017 deg&gt;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="constructing-and-submitting-the-query">
+<h4>Constructing and submitting the query<a class="headerlink" href="#constructing-and-submitting-the-query" title="Link to this heading">#</a></h4>
+<p>We now submit the full query using the <code class="docutils literal notranslate"><span class="pre">Catalogs.query_criteria()</span></code> method, as we will be using a mix of spatial and non-spatial filters. We then apply the post-processing cuts (as noted above) on the preliminary table, to obtain our final sample in this subset region.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Submit query:</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
+    <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;ps1_dr2&quot;</span><span class="p">,</span>
+    <span class="n">catalog</span><span class="o">=</span><span class="s2">&quot;mean_object&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">spatial_constraints</span><span class="p">,</span> 
+    <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;objID&quot;</span><span class="p">,</span> <span class="s2">&quot;raMean&quot;</span><span class="p">,</span> <span class="s2">&quot;decMean&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;gMeanPSFMag&quot;</span><span class="p">,</span> <span class="s2">&quot;iMeanPSFMag&quot;</span><span class="p">,</span> <span class="s2">&quot;yMeanPSFMag&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;iMeanKronMag&quot;</span><span class="p">],</span>    <span class="c1"># List of columns to return</span>
+    <span class="n">iMeanPSFMag</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&lt;18&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;-999&quot;</span><span class="p">],</span>  <span class="c1"># i &lt; 18; &gt;-999 (missing mag); i band constraint</span>
+    <span class="n">gMeanPSFMag</span><span class="o">=</span><span class="s2">&quot;&gt;-999&quot;</span><span class="p">,</span>   <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
+    <span class="n">yMeanPSFMag</span><span class="o">=</span><span class="s2">&quot;&gt;-999&quot;</span><span class="p">,</span>   <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
+    <span class="n">iMeanKronMag</span><span class="o">=</span><span class="s2">&quot;&gt;-999&quot;</span><span class="p">,</span>  <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
+    <span class="n">ng</span><span class="o">=</span><span class="s2">&quot;&gt;3&quot;</span><span class="p">,</span>   <span class="c1"># ng &gt; 3; Number of detections in g</span>
+    <span class="n">ni</span><span class="o">=</span><span class="s2">&quot;&gt;3&quot;</span><span class="p">,</span>   <span class="c1"># ni &gt; 3; Number of detections in i</span>
+    <span class="n">ny</span><span class="o">=</span><span class="s2">&quot;&gt;3&quot;</span><span class="p">,</span>   <span class="c1"># ny &gt; 3; Number of detections in y</span>
+    <span class="n">limit</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>  <span class="c1"># Maximum number of rows to return</span>
+<span class="p">)</span>
+
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed time: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Note: the returned table column names are all lower case, </span>
+<span class="c1"># which we use below.</span>
+
+<span class="c1"># Apply post-process cuts:</span>
+<span class="c1"># 1. Distinguish stars from extended objects using</span>
+<span class="c1">#    difference of PSF, Kron magnitudes</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;imeanpsfmag&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;imeankronmag&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mf">0.05</span>
+<span class="p">]</span>
+
+<span class="c1"># 2. Apply color cut</span>
+<span class="c1"># Copy original catalog for reference:</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;gmeanpsfmag&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ymeanpsfmag&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.8</span>
+<span class="p">]</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:00:04.379530
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>204
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-the-helper-class-to-transform-and-trim-the-results">
+<h4>Using the helper class to transform and trim the results<a class="headerlink" href="#using-the-helper-class-to-transform-and-trim-the-results" title="Link to this heading">#</a></h4>
+<p>Finally, we will use the helper class to post-process the returned table using the helper’s <code class="docutils literal notranslate"><span class="pre">parse_results()</span></code> method:</p>
+<ol class="arabic simple">
+<li><p>As we used a bounding circle for our query, we need to remove entries outside our specified region.</p></li>
+<li><p>To easily work with our results, the helper class will also add derived columns containing the transformed coordinates. <strong>This requires the database position columns to be specified.</strong> Here, we set <code class="docutils literal notranslate"><span class="pre">keys_pos_target=[&quot;raMean&quot;,</span> <span class="pre">&quot;decMean&quot;]</span></code>.</p></li>
+</ol>
+<p>By default, the names for the derived columns will be inferred from the coordinate frame longitude/latitude names. However, custom names can be specified using <code class="docutils literal notranslate"><span class="pre">keys_pos_orig</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">keys_pos_orig=[&quot;l_derived&quot;,</span> <span class="pre">&quot;b_derived&quot;]</span></code>).  The default units of the output coordinates will be degrees; this can be customized by setting <code class="docutils literal notranslate"><span class="pre">units_orig</span></code> to some other astropy angular unit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">transf_helper</span><span class="o">.</span><span class="n">parse_results</span><span class="p">(</span>
+    <span class="n">results</span><span class="p">,</span>
+    <span class="n">keys_pos_target</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ramean&quot;</span><span class="p">,</span> <span class="s2">&quot;decmean&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=41</i>
+<table id="table140105869649840" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>gmeanpsfmag</th><th>imeanpsfmag</th><th>ymeanpsfmag</th><th>imeankronmag</th><th>l</th><th>b</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mag</th><th>mag</th><th>mag</th><th>mag</th><th>deg</th><th>deg</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>174053302446793639</td><td>330.24468579610266</td><td>55.04413099821821</td><td>14.3659</td><td>13.8669</td><td>13.7115</td><td>13.8605</td><td>100.10664775665033</td><td>-0.08800943466668062</td></tr>
+<tr><td>174073301024487454</td><td>330.10241823663506</td><td>55.0639590939772</td><td>13.05</td><td>16.9829</td><td>16.3765</td><td>17.093</td><td>100.0536271259632</td><td>-0.023026302327829262</td></tr>
+<tr><td>174173304387015951</td><td>330.4386968484305</td><td>55.14609511054367</td><td>14.9612</td><td>14.3322</td><td>14.2051</td><td>14.3733</td><td>100.25666651226535</td><td>-0.0733239967537609</td></tr>
+<tr><td>174473311029894182</td><td>331.1029707511971</td><td>55.394574043833245</td><td>15.5397</td><td>14.9394</td><td>14.7567</td><td>14.9797</td><td>100.70862140826411</td><td>-0.09965515226638054</td></tr>
+<tr><td>174613312841652732</td><td>331.28423512</td><td>55.51004063</td><td>14.8062</td><td>14.2839</td><td>14.0657</td><td>14.3066</td><td>100.85980901573423</td><td>-0.0673847785064649</td></tr>
+<tr><td>174153300974792642</td><td>330.09746041459704</td><td>55.12664846899192</td><td>14.4471</td><td>13.7693</td><td>13.6501</td><td>13.8123</td><td>100.08924565275774</td><td>0.028639223390290715</td></tr>
+<tr><td>174243303985338935</td><td>330.39852372376544</td><td>55.2069012503039</td><td>14.7298</td><td>14.1937</td><td>13.9555</td><td>14.2316</td><td>100.27484352646091</td><td>-0.010927951631761761</td></tr>
+<tr><td>174683312540719858</td><td>331.25406289</td><td>55.57428954</td><td>14.3575</td><td>13.903</td><td>13.7119</td><td>13.9324</td><td>100.8839917560475</td><td>-0.005461023136037635</td></tr>
+<tr><td>174633313906662355</td><td>331.39065833</td><td>55.52634684</td><td>14.2813</td><td>13.7813</td><td>13.5561</td><td>13.8382</td><td>100.9180770468461</td><td>-0.08976574194897476</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>174833312484521721</td><td>331.24844576</td><td>55.69252056</td><td>14.8575</td><td>14.3566</td><td>14.1632</td><td>14.3965</td><td>100.95130637967985</td><td>0.09178800297733512</td></tr>
+<tr><td>174493310413019407</td><td>331.04128996</td><td>55.41559535</td><td>15.3906</td><td>14.8938</td><td>14.6785</td><td>14.9507</td><td>100.69289120671188</td><td>-0.06196039125780394</td></tr>
+<tr><td>174503310746027019</td><td>331.07459761198743</td><td>55.42194032359174</td><td>14.9289</td><td>14.39</td><td>14.1417</td><td>14.4219</td><td>100.71187408742465</td><td>-0.06806709088980577</td></tr>
+<tr><td>174723312420544300</td><td>331.2420624192428</td><td>55.6030253920621</td><td>15.0472</td><td>14.5133</td><td>14.2928</td><td>14.5444</td><td>100.89550457591672</td><td>0.021727161602114936</td></tr>
+<tr><td>174643310880142655</td><td>331.08804422</td><td>55.53496295</td><td>14.4219</td><td>13.9337</td><td>13.6689</td><td>13.9497</td><td>100.78502745035131</td><td>0.018424365917864963</td></tr>
+<tr><td>174663314701059833</td><td>331.47016886</td><td>55.55760231</td><td>14.2557</td><td>13.7873</td><td>13.6022</td><td>13.8174</td><td>100.97284241340091</td><td>-0.09099780591410377</td></tr>
+<tr><td>174323307260501477</td><td>330.726037629448</td><td>55.26730646545417</td><td>14.6214</td><td>14.1435</td><td>13.9201</td><td>14.2392</td><td>100.4605645764392</td><td>-0.07440355458678234</td></tr>
+<tr><td>174723311320329719</td><td>331.132046</td><td>55.60750604</td><td>13.844</td><td>13.4918</td><td>13.3715</td><td>13.5626</td><td>100.84805657407185</td><td>0.062113436088432</td></tr>
+<tr><td>174743311344916461</td><td>331.13450117</td><td>55.62144825</td><td>13.038</td><td>15.8893</td><td>15.5783</td><td>15.9631</td><td>100.8574324052183</td><td>0.07252505125748354</td></tr>
+</table></div></div></div>
+</div>
+<p>Our final sample in this subset region is small (41 objects).</p>
+</section>
+<section id="visualizing-the-subset-region-objects">
+<h4>Visualizing the subset region objects<a class="headerlink" href="#visualizing-the-subset-region-objects" title="Link to this heading">#</a></h4>
+<p>The targets selected in this subset Galactic longitude/latitute range are shown below in the ICRS (database) and Galactic (selection) frames:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ICRS&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;RA&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Dec&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;ramean&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;decmean&quot;</span><span class="p">],</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Galactic&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\ell$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$b$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/2bf98b84fc94965cd1cd4adc769e4db6aeefbd00bd288bc44cc79f081fa54eab.png" src="../../../_images/2bf98b84fc94965cd1cd4adc769e4db6aeefbd00bd288bc44cc79f081fa54eab.png" />
+</div>
+</div>
+<p>As this individual chunk query took about 30 seconds, it would take about 2.5 hours query over all chunks; we leave iterating over all chunks as an exercise to interested readers.</p>
+<p>However, MAST’s PanSTARRS TAP service runs on a much more powerful database, making it possible to much more quickly iterate over all subsets to obtain the full sample across the whole Galactic plane, as shown below.</p>
+</section>
+</section>
+<section id="using-tap">
+<h3>Using TAP<a class="headerlink" href="#using-tap" title="Link to this heading">#</a></h3>
+<p>We now demonstrate how to implement this search using <a class="reference external" href="http://www.ivoa.net/documents/latest/ADQL.html">ADQL</a> to query MAST’s PanSTARRS <a class="reference external" href="https://mast.stsci.edu/vo-tap/">TAP</a> service.</p>
+<p>This advanced query patterns possible with ADQL streamline this search, enabling us to avoid in-memory post-filtering (for the color and star/extended object cuts).</p>
+<p>However, as currently this TAP service only supports cone searches, we will still need to chunk over multiple longitude ranges.</p>
+<section id="querying-over-the-full-galactic-plane-using-tap">
+<h4>Querying over the full Galactic plane using TAP<a class="headerlink" href="#querying-over-the-full-galactic-plane-using-tap" title="Link to this heading">#</a></h4>
+<p>In this case, we’ll proceed directly iterating over all longitude ranges.</p>
+<p>First, we connect to the MAST PanSTARRS DR2 TAP service.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use `pyvo` to connect to the MAST PanSTARRS TAP service:</span>
+<span class="n">TAP_service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span>
+    <span class="s2">&quot;https://mast.stsci.edu/vo-tap/api/v0.1/mast_catalogs/&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we will access the mean object catalog (<code class="docutils literal notranslate"><span class="pre">mean_object</span></code> here; see the <a class="reference external" href="https://outerspace.stsci.edu/spaces/PANSTARRS/pages/298812351/PS1+Source+extraction+and+catalogs">PanSTARRS DR2 catalogs documentation</a>), which contains all the columns we will need.</p>
+<p>(<em>Note:</em> this TAP service is backed by a new, more powerful database. The column names in this database are entirely lowercase, but are otherwise equivalent to the columns of the legacy database as documented above.)</p>
+<p>We now construct our query, including the color/magnitude constraints and
+star/extended object separation. As an overview, our query is constructed as follows.</p>
+<p>The table, <code class="docutils literal notranslate"><span class="pre">ps1_dr2.mean_object</span></code>, is specified using the “FROM” statement.
+We specify the coluns to be returned (<code class="docutils literal notranslate"><span class="pre">objid</span></code>, <code class="docutils literal notranslate"><span class="pre">ramean</span></code>, <code class="docutils literal notranslate"><span class="pre">decmean</span></code>, <code class="docutils literal notranslate"><span class="pre">gmeanpsfmag</span></code>, <code class="docutils literal notranslate"><span class="pre">imeanpsfmag</span></code>, <code class="docutils literal notranslate"><span class="pre">ymeanpsfmag</span></code>, <code class="docutils literal notranslate"><span class="pre">imeankronmag</span></code>) using the “SELECT” statement.
+The query constraints are specified in the “WHERE” statement, with multiple constraints linked using “AND”.
+This includes:</p>
+<ul class="simple">
+<li><p>the cone search (as in the “CONTAINS(…)” clause; note that for ADQL, the radius must be expressed in degrees),</p></li>
+<li><p>requiring the <span class="math notranslate nohighlight">\(g\)</span>, <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(y\)</span> mean PSF magnitudes and <span class="math notranslate nohighlight">\(i\)</span> mean Kron magnitude to be present (cutting objects that have any of these values missing),</p></li>
+<li><p>the PanSTARRS-specific cut to select stars (<code class="docutils literal notranslate"><span class="pre">imeanpsfmag</span> <span class="pre">-</span> <span class="pre">imeankronmag</span> <span class="pre">&lt;=</span> <span class="pre">0.05</span></code>), and</p></li>
+<li><p>the <span class="math notranslate nohighlight">\(g-y\)</span> color and <span class="math notranslate nohighlight">\(i\)</span> magnitude cuts.</p></li>
+</ul>
+<p>As before, for each longitude chunk, we (1) define the subset region, (2) leverage the helper to define the ADQL-specific spatial constraint syntax, (3) integrate this into the full query, and (4) query the database and obtain the result, and (5) cut back to our selection region using the helper.</p>
+<p>Because we can perform all non-spatial filtering server-side, we use wider longitude ranges (5 degrees) in this case (though still relatively small to ensure no truncation of returned rows).</p>
+<p><code class="docutils literal notranslate"><span class="pre">Note!</span></code> We are iterating over 72 queries; this cell will take approximately 90 seconds to finish running.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Selection regions:</span>
+<span class="c1"># Same latitude range for all chunks</span>
+<span class="n">lat_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+
+<span class="c1"># Prepare aggregate table:</span>
+<span class="n">results_tap</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">lon</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">72</span><span class="p">):</span>
+    <span class="c1"># Define subset longitude range:</span>
+    <span class="n">lon_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lon</span><span class="p">,</span> <span class="n">lon</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+
+    <span class="c1"># Define subset spherical region:</span>
+    <span class="n">sel_region</span> <span class="o">=</span> <span class="n">RangeSphericalSkyRegion</span><span class="p">(</span>
+        <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;galactic&quot;</span><span class="p">,</span>
+        <span class="n">longitude_range</span><span class="o">=</span><span class="n">lon_range</span><span class="p">,</span>
+        <span class="n">latitude_range</span><span class="o">=</span><span class="n">lat_range</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Define transform helper:</span>
+    <span class="n">transf_helper</span> <span class="o">=</span> <span class="n">FrameTransformerHelper</span><span class="p">(</span>
+        <span class="n">sel_region</span><span class="o">=</span><span class="n">sel_region</span><span class="p">,</span>
+        <span class="n">frame_target</span><span class="o">=</span><span class="s2">&quot;icrs&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Obtain query spatial constraints:</span>
+    <span class="n">spatial_constraints</span> <span class="o">=</span> <span class="n">transf_helper</span><span class="o">.</span><span class="n">get_bounds_constraints</span><span class="p">(</span>
+        <span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;bound_circle&quot;</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s2">&quot;ADQL&quot;</span><span class="p">,</span>
+        <span class="n">keys_pos_target</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ramean&quot;</span><span class="p">,</span> <span class="s2">&quot;decmean&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Specify query</span>
+    <span class="c1"># Note: ADQL comments are preceded by &quot;--&quot;</span>
+    <span class="n">adql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT objid, ramean, decmean, </span>
+<span class="s2">        gmeanpsfmag, imeanpsfmag, ymeanpsfmag, </span>
+<span class="s2">        imeankronmag</span>
+<span class="s2">    FROM ps1_dr2.mean_object</span>
+<span class="s2">    WHERE </span><span class="si">{</span><span class="n">spatial_constraints</span><span class="si">}</span><span class="s2">                -- search constraints from the helper</span>
+<span class="s2">    AND imeanpsfmag &lt; 18                      -- magnitude cut</span>
+<span class="s2">    AND (gmeanpsfmag-ymeanpsfmag) &lt; 0.8       -- color cut</span>
+<span class="s2">    AND (imeanpsfmag - imeankronmag) &lt;= 0.05  -- distinguish stars from extended objects</span>
+<span class="s2">    AND imeanpsfmag &gt; -999                    -- mag &gt; -999; missing magnitudes are -999</span>
+<span class="s2">    AND gmeanpsfmag &gt; -999                    -- mag &gt; -999; missing magnitudes are -999</span>
+<span class="s2">    AND ymeanpsfmag &gt; -999                    -- mag &gt; -999; missing magnitudes are -999</span>
+<span class="s2">    AND imeankronmag &gt; -999                   -- mag &gt; -999; missing magnitudes are -999</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Submit query to the MAST TAP service:</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">TAP_service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="n">adql_query</span><span class="p">)</span>
+    
+    <span class="c1"># Retrieve results:</span>
+    <span class="n">results_tap_chunk</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+
+    <span class="c1"># Parse results &amp; restrict to original region:</span>
+    <span class="n">results_tap_chunk</span> <span class="o">=</span> <span class="n">transf_helper</span><span class="o">.</span><span class="n">parse_results</span><span class="p">(</span><span class="n">results_tap_chunk</span><span class="p">)</span>
+
+    <span class="c1"># Combine with the full results set:</span>
+    <span class="k">if</span> <span class="n">results_tap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results_tap</span> <span class="o">=</span> <span class="n">results_tap_chunk</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results_tap</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">results_tap</span><span class="p">,</span> <span class="n">results_tap_chunk</span><span class="p">])</span>
+
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed time: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ensure all entries are unique:</span>
+<span class="n">results_tap</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">results_tap</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="s2">&quot;objid&quot;</span><span class="p">)</span>
+<span class="n">results_tap</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.13/site-packages/pyvo/dal/query.py:403: DALOverflowWarning: Results truncated due to server limits. Consider setting a maxrec value.
+  warn(&quot;Results truncated due to server limits. Consider &quot;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:45.183870
+</pre></div>
+</div>
+<div class="output text_html"><div><i>Table length=29002</i>
+<table id="table140105863326976" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>gmeanpsfmag</th><th>imeanpsfmag</th><th>ymeanpsfmag</th><th>imeankronmag</th><th>l</th><th>b</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mag</th><th>mag</th><th>mag</th><th>mag</th><th>deg</th><th>deg</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>72001200013223769</td><td>120.00131469904031</td><td>-29.997081841796135</td><td>15.7394</td><td>15.1145</td><td>14.981</td><td>15.161</td><td>247.08103767408764</td><td>-0.04555065009153811</td></tr>
+<tr><td>72001200684165401</td><td>120.06841472723237</td><td>-29.995696919616464</td><td>15.2666</td><td>14.6233</td><td>14.4907</td><td>14.6652</td><td>247.11044461809476</td><td>0.0045912063560663435</td></tr>
+<tr><td>72001200956252668</td><td>120.0956245894987</td><td>-29.998025913661344</td><td>15.242</td><td>14.6488</td><td>14.5247</td><td>14.7048</td><td>247.12483503616158</td><td>0.023396994510247286</td></tr>
+<tr><td>72011199430687271</td><td>119.94304480361075</td><td>-29.985860720768944</td><td>14.0489</td><td>13.4376</td><td>13.3462</td><td>13.4685</td><td>247.04495553333217</td><td>-0.0825772280946197</td></tr>
+<tr><td>72011200126627280</td><td>120.01264330895721</td><td>-29.9857925217605</td><td>14.6645</td><td>14.0704</td><td>13.9188</td><td>14.1092</td><td>247.0765987945898</td><td>-0.03126727637247311</td></tr>
+<tr><td>72011200843455834</td><td>120.08433206969568</td><td>-29.98705283174382</td><td>15.0164</td><td>14.3621</td><td>14.2419</td><td>14.3994</td><td>247.1103560216468</td><td>0.02086286194769272</td></tr>
+<tr><td>72011201614017443</td><td>120.16137299352742</td><td>-29.985733088628248</td><td>14.6284</td><td>14.2434</td><td>14.1624</td><td>14.2586</td><td>247.14439713314678</td><td>0.07827055962941741</td></tr>
+<tr><td>72011201856516198</td><td>120.18563810356255</td><td>-29.986748076707087</td><td>16.8427</td><td>16.3088</td><td>16.1026</td><td>16.3312</td><td>247.15634245426213</td><td>0.09559276915387996</td></tr>
+<tr><td>72021199690015286</td><td>119.96899020537775</td><td>-29.979157187522375</td><td>16.1082</td><td>15.6401</td><td>15.433</td><td>15.699</td><td>247.0510676721462</td><td>-0.05993589389327513</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>183540135539655039</td><td>13.55399080646288</td><td>62.953577896093456</td><td>14.9378</td><td>14.3906</td><td>14.1565</td><td>14.42</td><td>123.24772299257917</td><td>0.0835337399315858</td></tr>
+<tr><td>183540137820673234</td><td>13.782092015587033</td><td>62.952067722834165</td><td>14.4656</td><td>14.1926</td><td>14.1153</td><td>14.2356</td><td>123.35145692792221</td><td>0.08332636565422787</td></tr>
+<tr><td>183540143971627343</td><td>14.397157786737592</td><td>62.95549709218812</td><td>15.454</td><td>15.0319</td><td>14.8573</td><td>15.0816</td><td>123.6310156048488</td><td>0.09209872977637203</td></tr>
+<tr><td>183540145332737422</td><td>14.533260044303136</td><td>62.955554050323805</td><td>15.3289</td><td>14.8672</td><td>14.68</td><td>14.914</td><td>123.69287825157329</td><td>0.09369897260282552</td></tr>
+<tr><td>183550128469189483</td><td>12.846917335297487</td><td>62.96561080642373</td><td>14.8221</td><td>14.2626</td><td>14.0473</td><td>14.3019</td><td>122.92621615693002</td><td>0.09386377833133315</td></tr>
+<tr><td>183550134613881319</td><td>13.461443650822023</td><td>62.95879460196472</td><td>14.7587</td><td>14.2299</td><td>14.0063</td><td>14.2486</td><td>123.20559398082449</td><td>0.08832648911503542</td></tr>
+<tr><td>183550137023539109</td><td>13.702378507245434</td><td>62.96529891351043</td><td>14.3178</td><td>13.8239</td><td>13.6261</td><td>13.8501</td><td>123.3150384892771</td><td>0.09605939851848017</td></tr>
+<tr><td>183550139933169430</td><td>13.993353995654445</td><td>62.96556024908344</td><td>16.1147</td><td>15.72</td><td>15.536</td><td>15.7852</td><td>123.44727548135715</td><td>0.09835111784095454</td></tr>
+<tr><td>183550143165376539</td><td>14.316500813865918</td><td>62.963096929789145</td><td>15.4421</td><td>14.9939</td><td>14.8114</td><td>15.0204</td><td>123.59418018730264</td><td>0.09884374404115584</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="visualizing-tap-results-across-the-full-galactic-plane">
+<h4>Visualizing TAP results across the full Galactic plane<a class="headerlink" href="#visualizing-tap-results-across-the-full-galactic-plane" title="Link to this heading">#</a></h4>
+<p>We now display our final sample using a full-sky Aitoff projection, first in ICRS (left) and then Galactic (right) coordinates.</p>
+<p>(Note that the columns from the TAP results table have units.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;aitoff&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ICRS, Aitoff projection&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;RA&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Dec&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">Angle</span><span class="p">(</span><span class="n">results_tap</span><span class="p">[</span><span class="s2">&quot;ramean&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span> 
+    <span class="n">Angle</span><span class="p">(</span><span class="n">results_tap</span><span class="p">[</span><span class="s2">&quot;decmean&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span> 
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Galactic, Aitoff projection&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\ell$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$b$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">Angle</span><span class="p">(</span><span class="n">results_tap</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span>
+    <span class="n">Angle</span><span class="p">(</span><span class="n">results_tap</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/5e2b59162b2c583ef29f3f271488bbc9cbb38376513ebfb3b1cfe0dd7cd2cad7.png" src="../../../_images/5e2b59162b2c583ef29f3f271488bbc9cbb38376513ebfb3b1cfe0dd7cd2cad7.png" />
+</div>
+</div>
+<p>We can see the observational limitation of PanSTARRS (observing only Decl &gt; -30 degrees) clearly in the left panel (showing ICRS), while the Galactic coordinates of the right panel very closely follow the Galactic midplane (as expected given our spatial constraint).</p>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">#</a></h2>
+<section id="astropy-coordinate-transformations">
+<h3>Astropy Coordinate Transformations<a class="headerlink" href="#astropy-coordinate-transformations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">astropy.coordinates</span></code> documentation provides full details about <a class="reference external" href="https://docs.astropy.org/en/stable/coordinates/transforming.html">transforming between coordinate frames</a> using astropy classes.</p></li>
+<li><p>Custom coordinate frames can be defined for use with the <code class="docutils literal notranslate"><span class="pre">astropy.coordinates</span></code> functionality. To support transformations between custom frames and other frames such as ICRS, it is also necessary to define a transformation to transform between the custom frame and (at least) one of frames included in <code class="docutils literal notranslate"><span class="pre">astropy.coordinates</span></code>. See <a class="reference external" href="https://docs.astropy.org/en/stable/coordinates/frames.html#defining-transformations-between-frames">the <code class="docutils literal notranslate"><span class="pre">astropy.coordinates</span></code> documentation</a> for full details.</p></li>
+</ul>
+</section>
+<section id="astroquery-mast">
+<h3>Astroquery.mast<a class="headerlink" href="#astroquery-mast" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Access to MAST holdings, including catalogs, through the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast.html">Astropy-affiliated astroquery package</a>.</p></li>
+<li><p>A full list of available MAST Astroquery catalog services is available through the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/mast/mast_catalog.html">astroquery documentation</a>.</p></li>
+</ul>
+</section>
+<section id="table-access-protocol-tap-the-astronomy-query-data-language-adql">
+<h3>Table Access Protocol (TAP) &amp; the Astronomy Query Data Language (ADQL)<a class="headerlink" href="#table-access-protocol-tap-the-astronomy-query-data-language-adql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pyvo.readthedocs.io/en/latest/index.html">Documentation for <code class="docutils literal notranslate"><span class="pre">pyvo</span></code></a>, a package to retrieve astronomical data available from archives that support standard IVOA virtual observatory service protocols.</p></li>
+<li><p><a class="reference external" href="http://www.ivoa.net/documents/latest/ADQL.html">Documentation on ADQL</a>, covering the specifications of this IVOA standard for querying astronomical data in tabular format, with geometric search support.</p></li>
+<li><p><a class="reference external" href="http://www.ivoa.net/documents/TAP/">Documentation on TAP</a>, the IVOA standard for RESTful web service access to tabular data.</p></li>
+<li><p><a class="reference external" href="https://mast.stsci.edu/vo-tap">Full list of TAP services at MAST</a>.</p></li>
+</ul>
+</section>
+<section id="panstarrs-1-dr-2">
+<h3>PanSTARRS 1 DR 2<a class="headerlink" href="#panstarrs-1-dr-2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>See the <a class="reference external" href="https://outerspace.stsci.edu/display/PANSTARRS/">PanSTARRS documentation</a> for full details regarding PanSTARRS DR2 catalogs.</p></li>
+</ul>
+</section>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the
+authors. Follow these links for more information about citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code></a></p></li>
+</ul>
+<p>If you use PanSTARRS data accessed through MAST for published research,
+please include the following acknowledgements, found at the following links:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive.stsci.edu/publishing/mission-acknowledgements#section-895d38a0-86b3-4143-b521-6cc3312701f9">Acknowledging PanSTARRS</a></p></li>
+<li><p><a class="reference external" href="https://archive.stsci.edu/gsc/mast_data_use.html">Acknowledging MAST</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Authors:</strong> Sedona Price<br>
+<strong>Keywords:</strong> Tutorial, coordinate frames, astroquery, TAP<br>
+<strong>Last updated:</strong> August 2026 <br></p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/multi_mission/catalog_access_coordinate_transformation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../subscriptions/subscriptions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Downloading Subscription Products with Astroquery</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../GALEX/mis_mosaic/mis_mosaic.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Surveying dust structure via GALEX MIS</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-spatial-catalogs-selections-with-changes-of-coordinate-frame">Performing Spatial Catalogs Selections with Changes of Coordinate Frame</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-blue-stars-on-the-galactic-plane">Identifying blue stars on the Galactic plane</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-astroquery">Using astroquery</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-subset-selection-region">Defining a subset selection region</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-helper-class">Using the helper class</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-transformed-query-spatial-constraints">Obtaining transformed query spatial constraints</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-and-submitting-the-query">Constructing and submitting the query</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-helper-class-to-transform-and-trim-the-results">Using the helper class to transform and trim the results</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-subset-region-objects">Visualizing the subset region objects</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-tap">Using TAP</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-over-the-full-galactic-plane-using-tap">Querying over the full Galactic plane using TAP</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-tap-results-across-the-full-galactic-plane">Visualizing TAP results across the full Galactic plane</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astropy-coordinate-transformations">Astropy Coordinate Transformations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astroquery-mast">Astroquery.mast</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-access-protocol-tap-the-astronomy-query-data-language-adql">Table Access Protocol (TAP) &amp; the Astronomy Query Data Language (ADQL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#panstarrs-1-dr-2">PanSTARRS 1 DR 2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
