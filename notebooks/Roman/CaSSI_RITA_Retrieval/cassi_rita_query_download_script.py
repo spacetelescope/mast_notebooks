@@ -148,7 +148,7 @@ def download_cassi_file(
     # Payload header:
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f'token {token}'
+        "Authorization": f'Bearer {token}'
     }
 
     payload = {"product_url": product_url}
@@ -166,7 +166,7 @@ def download_cassi_file(
             if verbose:
                 print(f"{thread_label} Downloading {filename}...")
 
-            response = requests.post(
+            response = requests.get(
                 endpoint_url,
                 headers=headers,
                 json=payload,
@@ -607,7 +607,7 @@ def query_cassi_general(
 
     # Set headers with authentication
     headers = {
-        "Authorization": f"token {token}",
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
 
