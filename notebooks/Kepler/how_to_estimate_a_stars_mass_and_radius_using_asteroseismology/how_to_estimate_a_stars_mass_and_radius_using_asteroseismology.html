@@ -804,9 +804,9 @@
 <p>We will investigate this spectrum using the Sun-like star KIC 10963065 as an example. This star is also colloquially known as “Rudy” (cf. <a class="reference external" href="https://arxiv.org/pdf/1612.00436.pdf">Lund et al. 2016</a>). In order to get a good resolution in the frequency domain, we start by downloading and combining four quarters of Short Cadence <em>Kepler</em> data as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">&#39;KIC 10963065&#39;</span><span class="p">,</span>
-                                     <span class="n">cadence</span><span class="o">=</span><span class="s1">&#39;short&#39;</span><span class="p">,</span> 
-                                     <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;Kepler&#39;</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_lightcurve</span><span class="p">(</span><span class="s1">'KIC 10963065'</span><span class="p">,</span>
+                                     <span class="n">cadence</span><span class="o">=</span><span class="s1">'short'</span><span class="p">,</span> 
+                                     <span class="n">mission</span><span class="o">=</span><span class="s1">'Kepler'</span><span class="p">,</span>
                                      <span class="n">quarter</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 <span class="n">lc</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span><span class="o">.</span><span class="n">stitch</span><span class="p">()</span>
 </pre></div>
@@ -816,7 +816,7 @@
 <p>In one of the companion tutorials, we already identified the location of the modes of oscillation, so we’ll zoom in on that region right away when creating the periodogram. We also set the <a class="reference external" href="https://docs.lightkurve.org/api/lightkurve.periodogram.LombScarglePeriodogram.html#lightkurve.periodogram.LombScarglePeriodogram.from_lightcurve"><code class="docutils literal notranslate"><span class="pre">normalization='psd'</span></code></a> keyword argument, to match the common conventions in asteroseismology of solar-like oscillators.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">normalization</span><span class="o">=</span><span class="s1">&#39;psd&#39;</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">to_periodogram</span><span class="p">(</span><span class="n">normalization</span><span class="o">=</span><span class="s1">'psd'</span><span class="p">,</span>
                        <span class="n">minimum_frequency</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span>
                        <span class="n">maximum_frequency</span><span class="o">=</span><span class="mi">2700</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
@@ -832,24 +832,24 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a smoothed version of the power spectrum on top in green</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original spectrum&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Original spectrum'</span><span class="p">)</span>
 <span class="n">pg</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">filter_width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-                                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span>
-                                 <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Smoothed spectrum&#39;</span><span class="p">)</span>
+                                 <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span>
+                                 <span class="n">label</span><span class="o">=</span><span class="s1">'Smoothed spectrum'</span><span class="p">)</span>
 
-<span class="c1"># Highlight the &quot;mode envelope&quot; using a Gaussian curve</span>
+<span class="c1"># Highlight the "mode envelope" using a Gaussian curve</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">value</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mf">5e-11</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">f</span><span class="o">-</span><span class="mi">2100</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">230</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span>
-        <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mode envelope&#39;</span><span class="p">);</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Mode envelope'</span><span class="p">);</span>
 
 <span class="c1"># Annotate the modes using red arrows</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-  <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span>
               <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">1831.66</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="mf">103.8</span><span class="p">,</span> <span class="mf">5.2e-11</span><span class="p">),</span>
               <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mf">1831.66</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="mf">103.8</span><span class="p">,</span> <span class="mf">7e-11</span><span class="p">),</span> 
-              <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span>
-              <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+              <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s1">'-&gt;'</span><span class="p">,</span>
+              <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span>
               <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
@@ -994,7 +994,7 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.11/site-packages/uncertainties/core.py:1024: UserWarning: Using UFloat objects with std_dev==0 may give unexpected results.
-  warn(&quot;Using UFloat objects with std_dev==0 may give unexpected results.&quot;)
+  warn("Using UFloat objects with std_dev==0 may give unexpected results.")
 </pre></div>
 </div>
 <div class="output text_latex math notranslate nohighlight">
@@ -1369,7 +1369,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

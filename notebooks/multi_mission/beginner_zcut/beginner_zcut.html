@@ -827,7 +827,7 @@
 <p>To begin, we we create a SkyCoord object from our known RA and Dec. This is an unambigious, machine-friendly way of storing this information for later use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">189.49206</span><span class="p">,</span> <span class="mf">62.20615</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">189.49206</span><span class="p">,</span> <span class="mf">62.20615</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -851,7 +851,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;candels_gn_60mas&#39;, &#39;candels_gn_30mas&#39;, &#39;goods_north&#39;, &#39;3dhst_goods-n&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>['candels_gn_60mas', 'candels_gn_30mas', 'goods_north', '3dhst_goods-n']
 </pre></div>
 </div>
 </div>
@@ -863,7 +863,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutoutList</span> <span class="o">=</span> <span class="n">Zcut</span><span class="o">.</span><span class="n">download_cutouts</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
-                                   <span class="n">cutout_format</span><span class="o">=</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="n">survey</span><span class="o">=</span><span class="s2">&quot;3dhst_goods-n&quot;</span><span class="p">)</span>
+                                   <span class="n">cutout_format</span><span class="o">=</span><span class="s2">"jpg"</span><span class="p">,</span> <span class="n">survey</span><span class="o">=</span><span class="s2">"3dhst_goods-n"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">cutoutList</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -897,24 +897,24 @@
 <p>For the example below, we’ll use Subaru’s suprime-cam, which has five <a class="reference external" href="https://subarutelescope.org/Observing/Instruments/SCam/sensitivity.html">available filters</a> for this observation. We’ll select the ones that correspond (roughly) to red, green, and blue light. After we look at the individual cutouts, we can process them into a true-color image.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s create a function that returns the filename based on the suprime-cam filter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let's create a function that returns the filename based on the suprime-cam filter</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">imgname</span><span class="p">(</span><span class="n">filt</span><span class="p">,</span> <span class="n">cutout_files</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">cutout_files</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;./hlsp_3dhst_subaru_suprimecam_goods-n_&quot;</span> <span class="o">+</span> <span class="n">filt</span> <span class="ow">in</span> <span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">"./hlsp_3dhst_subaru_suprimecam_goods-n_"</span> <span class="o">+</span> <span class="n">filt</span> <span class="ow">in</span> <span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <span class="c1"># For further convenience, assign colors to the filenames</span>
-<span class="n">red</span> <span class="o">=</span> <span class="n">imgname</span><span class="p">(</span><span class="s1">&#39;rc&#39;</span><span class="p">,</span> <span class="n">cutoutList</span><span class="p">)</span>
-<span class="n">green</span> <span class="o">=</span> <span class="n">imgname</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">cutoutList</span><span class="p">)</span>
-<span class="n">blue</span> <span class="o">=</span> <span class="n">imgname</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">cutoutList</span><span class="p">)</span>
+<span class="n">red</span> <span class="o">=</span> <span class="n">imgname</span><span class="p">(</span><span class="s1">'rc'</span><span class="p">,</span> <span class="n">cutoutList</span><span class="p">)</span>
+<span class="n">green</span> <span class="o">=</span> <span class="n">imgname</span><span class="p">(</span><span class="s1">'v'</span><span class="p">,</span> <span class="n">cutoutList</span><span class="p">)</span>
+<span class="n">blue</span> <span class="o">=</span> <span class="n">imgname</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">cutoutList</span><span class="p">)</span>
 
 <span class="c1"># Create three plots and fill them with the cutouts</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">]):</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -925,7 +925,7 @@
 <p>Next, we combine the three <code class="docutils literal notranslate"><span class="pre">.jpg</span></code> cutouts into a single, colorized image:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">red</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">green</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">blue</span><span class="p">)])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">,</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">red</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">green</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">blue</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -944,7 +944,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># As before, we define our coordinates</span>
-<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">53.22706</span><span class="p">,</span> <span class="o">-</span><span class="mf">27.90232</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">53.22706</span><span class="p">,</span> <span class="o">-</span><span class="mf">27.90232</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
 
 <span class="c1"># And request cutouts at that location</span>
 <span class="n">cutouts</span> <span class="o">=</span> <span class="n">Zcut</span><span class="o">.</span><span class="n">get_cutouts</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
@@ -961,7 +961,7 @@
 <span class="n">cutout_img</span> <span class="o">=</span> <span class="n">cutouts</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># Search Gaia for data in the vicinity of our target</span>
-<span class="n">sources</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="s2">&quot;gaiadr3&quot;</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcmin</span><span class="p">)</span>
+<span class="n">sources</span> <span class="o">=</span> <span class="n">Catalogs</span><span class="o">.</span><span class="n">query_region</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="s2">"gaiadr3"</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcmin</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -970,20 +970,20 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the figure on a WCS projection</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">cutout_wcs</span><span class="p">})</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">'projection'</span><span class="p">:</span> <span class="n">cutout_wcs</span><span class="p">})</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">)</span>
 
 <span class="c1"># Setup WCS axes</span>
 <span class="n">xcoords</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">ycoords</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">xcoords</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="s1">&#39;d.ddd&#39;</span><span class="p">)</span>
-<span class="n">ycoords</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="s1">&#39;d.ddd&#39;</span><span class="p">)</span>
-<span class="n">xcoords</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s2">&quot;RA (deg)&quot;</span><span class="p">)</span>
-<span class="n">ycoords</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s2">&quot;Dec (deg)&quot;</span><span class="p">)</span>
+<span class="n">xcoords</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="s1">'d.ddd'</span><span class="p">)</span>
+<span class="n">ycoords</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="s1">'d.ddd'</span><span class="p">)</span>
+<span class="n">xcoords</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s2">"RA (deg)"</span><span class="p">)</span>
+<span class="n">ycoords</span><span class="o">.</span><span class="n">set_axislabel</span><span class="p">(</span><span class="s2">"Dec (deg)"</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sources</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">],</span> <span class="n">sources</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">],</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mew</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#df0040&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sources</span><span class="p">[</span><span class="s1">'ra'</span><span class="p">],</span> <span class="n">sources</span><span class="p">[</span><span class="s1">'dec'</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mew</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#df0040"</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">'icrs'</span><span class="p">))</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cutout_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">cutout_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -1120,7 +1120,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

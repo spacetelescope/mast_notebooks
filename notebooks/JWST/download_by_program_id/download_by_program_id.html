@@ -877,12 +877,12 @@ token: None
 <p>We can use a program ID to query the MAST Archive for data. In the example below, we’ll use 2733 as the ID. This is the program that produced the <a class="reference external" href="https://webbtelescope.org/contents/media/images/2022/033/01G709QXZPFH83NZFAFP66WVCZ">stunning images</a> of the Southern Ring Nebula!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s get a list of all observations associated with this proposal</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let's get a list of all observations associated with this proposal</span>
 <span class="n">obs_list</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">proposal_id</span><span class="o">=</span><span class="mi">2733</span><span class="p">)</span>
 
 <span class="c1"># We can chooose the columns we want to display in our table</span>
-<span class="n">disp_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dataproduct_type&#39;</span><span class="p">,</span> <span class="s1">&#39;calib_level&#39;</span><span class="p">,</span> <span class="s1">&#39;obs_id&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;target_name&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;proposal_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;obs_collection&#39;</span><span class="p">]</span>
+<span class="n">disp_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'dataproduct_type'</span><span class="p">,</span> <span class="s1">'calib_level'</span><span class="p">,</span> <span class="s1">'obs_id'</span><span class="p">,</span>
+            <span class="s1">'target_name'</span><span class="p">,</span> <span class="s1">'filters'</span><span class="p">,</span> <span class="s1">'proposal_pi'</span><span class="p">,</span> <span class="s1">'obs_collection'</span><span class="p">]</span>
 <span class="n">obs_list</span><span class="p">[</span><span class="n">disp_col</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -917,7 +917,7 @@ token: None
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We explicity get the 2nd observation by name in this cell.</span>
 
-<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">obs_list</span><span class="p">[</span><span class="s1">&#39;obs_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;jw02733-o002_t001_miri_f1130w&#39;</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">obs_list</span><span class="p">[</span><span class="s1">'obs_id'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'jw02733-o002_t001_miri_f1130w'</span><span class="p">)</span>
 <span class="n">data_products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs_list</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_products</span><span class="p">))</span>
 </pre></div>
@@ -939,10 +939,10 @@ token: None
 <p>In this example, let’s try filtering for only the level 2, calibrated exposures. It is important that we also filter by “SCIENCE” type products; otherwise, our results will include guide star acquisition images.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filtered_prod</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">data_products</span><span class="p">,</span> <span class="n">calib_level</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">productType</span><span class="o">=</span><span class="s2">&quot;SCIENCE&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filtered_prod</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">filter_products</span><span class="p">(</span><span class="n">data_products</span><span class="p">,</span> <span class="n">calib_level</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">productType</span><span class="o">=</span><span class="s2">"SCIENCE"</span><span class="p">)</span>
 
 <span class="c1"># Again, we choose columns of interest for convenience</span>
-<span class="n">disp_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;obsID&#39;</span><span class="p">,</span> <span class="s1">&#39;dataproduct_type&#39;</span><span class="p">,</span> <span class="s1">&#39;productFilename&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="s1">&#39;calib_level&#39;</span><span class="p">]</span>
+<span class="n">disp_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'obsID'</span><span class="p">,</span> <span class="s1">'dataproduct_type'</span><span class="p">,</span> <span class="s1">'productFilename'</span><span class="p">,</span> <span class="s1">'size'</span><span class="p">,</span> <span class="s1">'calib_level'</span><span class="p">]</span>
 <span class="n">filtered_prod</span><span class="p">[</span><span class="n">disp_col</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -968,8 +968,8 @@ token: None
 <p>As a final check before we proceed to the download, let’s find the total file size of our results:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">filtered_prod</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1"> GB&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">filtered_prod</span><span class="p">[</span><span class="s1">'size'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="si">{:.2f}</span><span class="s1"> GB'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -987,12 +987,12 @@ token: None
 <p><strong>Note</strong>: By default, this will only download the first five files. This reduces download time for the purposes of the tutorial while still demonstrating a successful download.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t forget to login, if accessing non-public data! You can un-comment the line below:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don't forget to login, if accessing non-public data! You can un-comment the line below:</span>
 <span class="c1"># Observations.login()</span>
 
-<span class="c1"># You can download all of the products by removing the &#39;[:5]&#39; from the line below:</span>
+<span class="c1"># You can download all of the products by removing the '[:5]' from the line below:</span>
 <span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span><span class="n">filtered_prod</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s1">'Status'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1199,7 +1199,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

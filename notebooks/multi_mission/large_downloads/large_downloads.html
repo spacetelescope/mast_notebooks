@@ -794,9 +794,9 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matched_obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span>
-        <span class="n">obs_collection</span><span class="o">=</span><span class="s1">&#39;JWST&#39;</span><span class="p">,</span>
-        <span class="n">proposal_id</span><span class="o">=</span><span class="s1">&#39;1073&#39;</span><span class="p">,</span>
-        <span class="n">instrument_name</span><span class="o">=</span><span class="s1">&#39;NIRCAM/IMAGE&#39;</span> <span class="c1"># Be sure to specify the full &quot;instrument/mode&quot; configuration!</span>
+        <span class="n">obs_collection</span><span class="o">=</span><span class="s1">'JWST'</span><span class="p">,</span>
+        <span class="n">proposal_id</span><span class="o">=</span><span class="s1">'1073'</span><span class="p">,</span>
+        <span class="n">instrument_name</span><span class="o">=</span><span class="s1">'NIRCAM/IMAGE'</span> <span class="c1"># Be sure to specify the full "instrument/mode" configuration!</span>
         <span class="p">)</span>
 </pre></div>
 </div>
@@ -805,7 +805,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This displays selected columns from the observation table, as a sanity check</span>
-<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dataproduct_type&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;calib_level&#39;</span><span class="p">,</span> <span class="s1">&#39;t_exptime&#39;</span><span class="p">,</span> <span class="s1">&#39;proposal_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;intentType&#39;</span><span class="p">,</span> <span class="s1">&#39;obsid&#39;</span><span class="p">,</span> <span class="s1">&#39;instrument_name&#39;</span><span class="p">]</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'dataproduct_type'</span><span class="p">,</span> <span class="s1">'filters'</span><span class="p">,</span> <span class="s1">'calib_level'</span><span class="p">,</span> <span class="s1">'t_exptime'</span><span class="p">,</span> <span class="s1">'proposal_pi'</span><span class="p">,</span> <span class="s1">'intentType'</span><span class="p">,</span> <span class="s1">'obsid'</span><span class="p">,</span> <span class="s1">'instrument_name'</span><span class="p">]</span>
 <span class="n">matched_obs</span><span class="p">[</span><span class="n">columns</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -830,7 +830,7 @@
 <p><strong>Note: It is wise to avoid requesting all of the products simultaneously.</strong> This is extremely likely to take an enormous amount of time, fail, or worse, do both, ultimately giving you a headache. MAST offers no medical advice, but we are decidedly anti-headache. Requesting products in groups of five offers the best balance between speed and reliability.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split the observations into &quot;chunks&quot; of size five</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split the observations into "chunks" of size five</span>
 <span class="n">sz_chunk</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">matched_obs</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">sz_chunk</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_obs</span><span class="p">),</span> <span class="n">sz_chunk</span><span class="p">)]</span>
 
@@ -838,10 +838,10 @@
 <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
 
 <span class="c1"># Keep only the unique files</span>
-<span class="n">files</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">vstack</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">keys</span><span class="o">=</span><span class="s1">&#39;productFilename&#39;</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">vstack</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">keys</span><span class="o">=</span><span class="s1">'productFilename'</span><span class="p">)</span>
 
 <span class="c1"># How many files are there? How large are they?</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique files, which are </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> GB in size.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"There are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique files, which are </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s1">'size'</span><span class="p">])</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> GB in size."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -866,9 +866,9 @@
 
 <span class="n">manifest</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">download_products</span><span class="p">(</span>
            <span class="n">files</span><span class="p">,</span>
-           <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="s1">&#39;UNCAL&#39;</span><span class="p">,</span>
+           <span class="n">productSubGroupDescription</span><span class="o">=</span><span class="s1">'UNCAL'</span><span class="p">,</span>
            <span class="n">curl_flag</span><span class="o">=</span><span class="kc">True</span>
-           <span class="c1">#, dataproduct_type=&#39;IMAGE&#39;</span>
+           <span class="c1">#, dataproduct_type='IMAGE'</span>
            <span class="c1">#, calib_level = [2]</span>
            <span class="p">)</span>
 </pre></div>
@@ -1005,7 +1005,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

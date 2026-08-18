@@ -802,19 +802,19 @@
 <p>To make this task a little easier, we’ll create a helper function called <code class="docutils literal notranslate"><span class="pre">get_image_table()</span></code> that takes in our coordinates and returns a table of results. To do this, we are essentially generating a URL with our query embedded, then reading the resulting webpage.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_image_table</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;grizy&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_image_table</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">"grizy"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Query ps1filenames.py service to get a list of images</span>
 <span class="sd">    </span>
 <span class="sd">    ra, dec = position in degrees</span>
 <span class="sd">    filters = string with filters to include. includes all by default</span>
 <span class="sd">    Returns a table with the results</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">service</span> <span class="o">=</span> <span class="s2">&quot;https://ps1images.stsci.edu/cgi-bin/ps1filenames.py&quot;</span>
+<span class="sd">    """</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="s2">"https://ps1images.stsci.edu/cgi-bin/ps1filenames.py"</span>
     <span class="c1"># The final URL appends our query to the PS1 image service</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">service</span><span class="si">}</span><span class="s2">?ra=</span><span class="si">{</span><span class="n">ra</span><span class="si">}</span><span class="s2">&amp;dec=</span><span class="si">{</span><span class="n">dec</span><span class="si">}</span><span class="s2">&amp;filters=</span><span class="si">{</span><span class="n">filters</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">service</span><span class="si">}</span><span class="s2">?ra=</span><span class="si">{</span><span class="n">ra</span><span class="si">}</span><span class="s2">&amp;dec=</span><span class="si">{</span><span class="n">dec</span><span class="si">}</span><span class="s2">&amp;filters=</span><span class="si">{</span><span class="n">filters</span><span class="si">}</span><span class="s2">"</span>
     <span class="c1"># Read the ASCII table returned by the url</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'ascii'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">table</span>
 </pre></div>
 </div>
@@ -854,58 +854,58 @@
 <p><strong>Note:</strong> you can make this function much simpler by removing the error handling. However, it is usually harder to diagnose ‘invalid request’ errors from the PS1 server than these customized error messages.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_imurl</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;grizy&quot;</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_imurl</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">"grizy"</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s2">"jpg"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get URL for images in the table</span>
 <span class="sd">    </span>
 <span class="sd">    ra, dec = position in degrees</span>
 <span class="sd">    size = extracted image size in pixels (0.25 arcsec/pixel)</span>
 <span class="sd">    output_size = output (display) image size in pixels (default = size).</span>
 <span class="sd">                  output_size has no effect for fits format images.</span>
-<span class="sd">    filters = string with filters to include. choose from &quot;grizy&quot;</span>
-<span class="sd">    format = data format (options are &quot;jpg&quot;, &quot;png&quot; or &quot;fits&quot;)</span>
+<span class="sd">    filters = string with filters to include. choose from "grizy"</span>
+<span class="sd">    format = data format (options are "jpg", "png" or "fits")</span>
 <span class="sd">    color = if True, creates a color image (only for jpg or png format).</span>
 <span class="sd">            Default is return a list of URLs for single-filter grayscale images.   </span>
 <span class="sd">    Returns a string with the URL</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Check for user input errors</span>
-    <span class="k">if</span> <span class="n">color</span> <span class="ow">and</span> <span class="p">(</span><span class="n">im_format</span> <span class="o">==</span> <span class="s2">&quot;fits&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;color images are available only for jpg or png formats&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">im_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span><span class="s2">&quot;png&quot;</span><span class="p">,</span><span class="s2">&quot;fits&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;format must be one of jpg, png, fits&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">color</span> <span class="ow">and</span> <span class="p">(</span><span class="n">im_format</span> <span class="o">==</span> <span class="s2">"fits"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"color images are available only for jpg or png formats"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">im_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"jpg"</span><span class="p">,</span><span class="s2">"png"</span><span class="p">,</span><span class="s2">"fits"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"format must be one of jpg, png, fits"</span><span class="p">)</span>
         
     <span class="c1"># Call the original helper function to get the table</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">get_image_table</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://ps1images.stsci.edu/cgi-bin/fitscut.cgi?&quot;</span>
-           <span class="sa">f</span><span class="s2">&quot;ra=</span><span class="si">{</span><span class="n">ra</span><span class="si">}</span><span class="s2">&amp;dec=</span><span class="si">{</span><span class="n">dec</span><span class="si">}</span><span class="s2">&amp;size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&amp;format=</span><span class="si">{</span><span class="n">im_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"https://ps1images.stsci.edu/cgi-bin/fitscut.cgi?"</span>
+           <span class="sa">f</span><span class="s2">"ra=</span><span class="si">{</span><span class="n">ra</span><span class="si">}</span><span class="s2">&amp;dec=</span><span class="si">{</span><span class="n">dec</span><span class="si">}</span><span class="s2">&amp;size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&amp;format=</span><span class="si">{</span><span class="n">im_format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     
     <span class="c1"># Append an output size, if requested</span>
     <span class="k">if</span> <span class="n">output_size</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&amp;output_size=</span><span class="si">{</span><span class="n">output_size</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"&amp;output_size=</span><span class="si">{</span><span class="n">output_size</span><span class="si">}</span><span class="s2">"</span>
         
     <span class="c1"># Sort filters from red to blue</span>
-    <span class="n">flist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;yzirg&quot;</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]]</span>
+    <span class="n">flist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"yzirg"</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="s1">'filter'</span><span class="p">]]</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">flist</span><span class="p">)]</span>
     
     <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
         <span class="c1"># We need at least 3 filters to create a color image</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;at least three filters are required for an RGB color image&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"at least three filters are required for an RGB color image"</span><span class="p">)</span>
         <span class="c1"># If more than 3 filters, pick 3 filters from the availble results</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
         <span class="c1"># Create the red, green, and blue files for our image</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="s2">&quot;blue&quot;</span><span class="p">]):</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&amp;</span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">table</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">"red"</span><span class="p">,</span><span class="s2">"green"</span><span class="p">,</span><span class="s2">"blue"</span><span class="p">]):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"&amp;</span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">table</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
    
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># If not a color image, only one filter should be given.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Too many filters for monochrome image. Using only 1st filter.&#39;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'Too many filters for monochrome image. Using only 1st filter.'</span><span class="p">)</span>
         <span class="c1"># Use red for monochrome images</span>
-        <span class="n">urlbase</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;&amp;red=&quot;</span>
+        <span class="n">urlbase</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="s2">"&amp;red="</span>
         <span class="n">url</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'filename'</span><span class="p">]</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">urlbase</span><span class="o">+</span><span class="n">filename</span>
     <span class="k">return</span> <span class="n">url</span>
 </pre></div>
@@ -915,12 +915,12 @@
 <p>Phew! That’s a long function. Let’s run a little sanity check below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_imurl</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_imurl</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s1">'png'</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://ps1images.stsci.edu/cgi-bin/fitscut.cgi?ra=83.63321&amp;dec=22.01446&amp;size=240&amp;format=png&amp;red=/rings.v3.skycell/1784/059/rings.v3.skycell.1784.059.stk.y.unconv.fits&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>'https://ps1images.stsci.edu/cgi-bin/fitscut.cgi?ra=83.63321&amp;dec=22.01446&amp;size=240&amp;format=png&amp;red=/rings.v3.skycell/1784/059/rings.v3.skycell.1784.059.stk.y.unconv.fits'
 </pre></div>
 </div>
 </div>
@@ -934,8 +934,8 @@
 <p>Now that we have the image URL, we can get the image itself. FITS files require a little more effort than standard image files to process, but we can write our last helper function to handle that for us.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">"g"</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s2">"jpg"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get image at a sky position. Depends on get_imurl</span>
 <span class="sd">    </span>
 <span class="sd">    ra, dec = position in degrees</span>
@@ -943,12 +943,12 @@
 <span class="sd">    output_size = output (display) image size in pixels (default = size).</span>
 <span class="sd">                  output_size has no effect for fits format images.</span>
 <span class="sd">    filters = string with filters to include</span>
-<span class="sd">    format = data format (options are &quot;jpg&quot;, &quot;png&quot;)</span>
+<span class="sd">    format = data format (options are "jpg", "png")</span>
 <span class="sd">    Returns the image</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># For either format, we need the image URL</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">get_imurl</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span><span class="n">output_size</span><span class="o">=</span><span class="n">output_size</span><span class="p">,</span><span class="n">im_format</span><span class="o">=</span><span class="n">im_format</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">im_format</span> <span class="o">==</span> <span class="s2">&quot;fits&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">im_format</span> <span class="o">==</span> <span class="s2">"fits"</span><span class="p">:</span>
         <span class="n">fh</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="c1"># The image is contained within the data unit</span>
         <span class="n">fits_im</span> <span class="o">=</span> <span class="n">fh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
@@ -975,22 +975,22 @@
 <span class="n">size</span> <span class="o">=</span> <span class="mi">1500</span>
 
 <span class="c1"># Greyscale image</span>
-<span class="n">gim</span> <span class="o">=</span> <span class="n">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">gim</span> <span class="o">=</span> <span class="n">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># Color image</span>
-<span class="n">cim</span> <span class="o">=</span> <span class="n">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;grz&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cim</span> <span class="o">=</span> <span class="n">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">"grz"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Create the figure</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 
 <span class="c1"># Grey image subplot on left</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gim</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Crab Nebula PS1 i&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gim</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Crab Nebula PS1 i'</span><span class="p">)</span>
 
 <span class="c1"># Color image subplot on right</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Crab Nebula PS1 grz&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cim</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Crab Nebula PS1 grz'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cim</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1010,24 +1010,24 @@
 <p>Let’s display a FITS image in the i-band to see if there are any differences from the JPEG version.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a new fits image in the &#39;i&#39; band</span>
-<span class="n">fitsim</span> <span class="o">=</span> <span class="n">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a new fits image in the 'i' band</span>
+<span class="n">fitsim</span> <span class="o">=</span> <span class="n">get_im</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">im_format</span><span class="o">=</span><span class="s2">"fits"</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="c1"># As before, plot the grayscale JPG on the left</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gim</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;afmhot&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Crab Nebula PS1 i (jpeg)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gim</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'afmhot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Crab Nebula PS1 i (jpeg)'</span><span class="p">)</span>
 
 <span class="c1"># Now plot the greyscale FITS on the right</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fitsim</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;afmhot&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Crab Nebula PS1 i (fits)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fitsim</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'afmhot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Crab Nebula PS1 i (fits)'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Crab Nebula PS1 i (fits)&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, 'Crab Nebula PS1 i (fits)')
 </pre></div>
 </div>
 <img alt="../../../_images/fab6a3afb2195b05ba3e1324d96bf62d512f4fcd0a5641319479f342ba5d051c.png" src="../../../_images/fab6a3afb2195b05ba3e1324d96bf62d512f4fcd0a5641319479f342ba5d051c.png" />
@@ -1148,7 +1148,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

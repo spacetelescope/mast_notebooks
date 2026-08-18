@@ -834,7 +834,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">convert_coords</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Wrap the input coordinates `ra` and `dec` around the upper limit of 180</span>
+<span class="w">    </span><span class="sd">""" Wrap the input coordinates `ra` and `dec` around the upper limit of 180</span>
 <span class="sd">    degrees and convert to radians so that they may be plotted on the Aitoff canvas.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameter(s)</span>
@@ -852,14 +852,14 @@
 <span class="sd">        The Right Ascension of your target in radians.</span>
 <span class="sd">    dec_rad : float</span>
 <span class="sd">        The Declination of your target in radians.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Make a SkyCoord object out of the RA, Dec</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">'icrs'</span><span class="p">)</span>
 
     <span class="c1"># The plotting only works when the coordinates are in radians.</span>
-    <span class="c1"># And because it&#39;s an aitoff projection, we can&#39;t </span>
-    <span class="c1"># go beyond 180 degrees, so let&#39;s wrap the RA vals around that upper limit.</span>
+    <span class="c1"># And because it's an aitoff projection, we can't </span>
+    <span class="c1"># go beyond 180 degrees, so let's wrap the RA vals around that upper limit.</span>
     <span class="n">ra_rad</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span>
     <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">radian</span>
 
@@ -867,7 +867,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_footprint</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plots a polygon of 4 vertices onto an aitoff projection on a matplotlib canvas.</span>
+<span class="w">    </span><span class="sd">""" Plots a polygon of 4 vertices onto an aitoff projection on a matplotlib canvas.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameter(s)</span>
 <span class="sd">    -----------</span>
@@ -881,22 +881,22 @@
 <span class="sd">    -------</span>
 <span class="sd">    ax : Matplotlib.pyplot figure object subplot</span>
 <span class="sd">        The subplot that contains the aitoff projection and footprint drawing.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;We need 5 sets of coordinates. 1 for each vertice + 1 to return to the starting point.&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'We need 5 sets of coordinates. 1 for each vertice + 1 to return to the starting point.'</span>
     <span class="n">instructions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">]</span>
     
     <span class="c1"># Create the path patch using the `coords` list of tuples and the</span>
     <span class="c1"># instructions from above</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">instructions</span><span class="p">)</span>
-    <span class="n">ppatch</span> <span class="o">=</span> <span class="n">PathPatch</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;salmon&#39;</span><span class="p">)</span>
+    <span class="n">ppatch</span> <span class="o">=</span> <span class="n">PathPatch</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'salmon'</span><span class="p">)</span>
 
     <span class="c1"># Create a matplotlib canvas</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
     
     <span class="c1"># We will be using the `aitoff` projection for a globe canvas</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;aitoff&#39;</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'aitoff'</span><span class="p">)</span>
     
     <span class="c1"># Need grids!</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
@@ -921,11 +921,11 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will pass in the coordinates as a Sky Coord object</span>
-<span class="n">coordinates</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">289.0979</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.3370</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="mf">289.0979</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.3370</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
 
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">query_criteria</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
-                                  <span class="n">target_name</span><span class="o">=</span><span class="s1">&#39;TICA FFI&#39;</span><span class="p">,</span>
-                                  <span class="n">dataproduct_type</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">,</span>
+                                  <span class="n">target_name</span><span class="o">=</span><span class="s1">'TICA FFI'</span><span class="p">,</span>
+                                  <span class="n">dataproduct_type</span><span class="o">=</span><span class="s1">'image'</span><span class="p">,</span>
                                   <span class="n">sequence_number</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
 
 <span class="n">obs</span>
@@ -945,9 +945,9 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the polygon vertices, then store them in separate lists</span>
-<span class="n">polygon</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;s_region&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">split</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-<span class="c1"># Removing the &quot;POLYGON&quot; string</span>
+<span class="n">polygon</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="s1">'s_region'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">split</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)</span>
+<span class="c1"># Removing the "POLYGON" string</span>
 <span class="n">split</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="c1"># Storing the RAs and Decs separately</span>
 <span class="n">ras</span><span class="p">,</span> <span class="n">decs</span> <span class="o">=</span> <span class="n">split</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
@@ -958,19 +958,19 @@
     <span class="n">ra_rad</span><span class="p">,</span> <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
     <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ra_rad</span><span class="p">,</span> <span class="n">dec_rad</span><span class="p">))</span>
 
-<span class="c1"># We use Matplotlib&#39;s Path and PathPatch to plot the footprint of sector 27, camera 1, CCD 4</span>
+<span class="c1"># We use Matplotlib's Path and PathPatch to plot the footprint of sector 27, camera 1, CCD 4</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_footprint</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
 
-<span class="c1"># Now let&#39;s plot our input target&#39;s RA, Dec on top of the footprint to see its relative position</span>
+<span class="c1"># Now let's plot our input target's RA, Dec on top of the footprint to see its relative position</span>
 <span class="n">target_ra</span><span class="p">,</span> <span class="n">target_dec</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">degree</span>
 <span class="n">target_coords</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">target_ra</span><span class="p">,</span> <span class="n">target_dec</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">target_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;target coords&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">target_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'target coords'</span><span class="p">)</span>
 
-<span class="c1"># And lastly, let&#39;s plot the s_ra and s_dec coordinates to see what they represent</span>
-<span class="n">s_coords</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;s_ra&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;s_dec&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">s_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;s_ra, s_dec&#39;</span><span class="p">)</span>
+<span class="c1"># And lastly, let's plot the s_ra and s_dec coordinates to see what they represent</span>
+<span class="n">s_coords</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">'s_ra'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="s1">'s_dec'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">s_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'s_ra, s_dec'</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sector 27, Camera 1, CCD 4 Footprint&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Sector 27, Camera 1, CCD 4 Footprint'</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="s1">' '</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -984,7 +984,7 @@
 <p>From this observation we can now retrieve the corresponding TICA products (FFIs). Let’s use the <code class="docutils literal notranslate"><span class="pre">get_product_list</span></code> method to retrieve these FFIs.</p>
 <div class="alert alert-block alert-info"><b>Note:</b> If you do not know which sectors contain your target, you should query for your target without the `sequence_number` filter to see what is available. However, the cutout functionality does not currently support making cross-sector cutouts, so FFI products from different sectors cannot be stacked into the same cube. Keep this in mind when retrieving the FFI products intended for your cube.</div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;obsid&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">Observations</span><span class="o">.</span><span class="n">get_product_list</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">'obsid'</span><span class="p">])</span>
 <span class="n">products</span>
 </pre></div>
 </div>
@@ -1080,11 +1080,11 @@
 <p>Now that we have the TICA FFIs stored locally, let’s do some quick plotting and inspection. We can use the <code class="docutils literal notranslate"><span class="pre">manifest</span></code> output from our download call above to get the list of our downloaded FFIs in their respective locations. Let’s open up one of them and do some plotting and header inspection.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ffi</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FFI&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ffi</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s1">'Local Path'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'FFI'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ffi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HDU List&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'HDU List'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">ffi</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1122,7 +1122,7 @@ NAXIS2  =                 2078
 EXTEND  =                    T                                                  
 CRM_N   =                   10 / Window for CRM min/max rejection               
 ORBIT_ID=                   61 / Orbit ID, not a physical orbit                 
-ACS_MODE= &#39;FP      &#39;           / Attitude Control System mode                   
+ACS_MODE= 'FP      '           / Attitude Control System mode                   
 SC_RA   =    326.8525352094406 / Predicted RA                                   
 SC_DEC  =   -72.42645616046441 / Predicted Dec                                  
 SC_ROLL =   -145.4939246174957 / Predicted roll                                 
@@ -1147,17 +1147,17 @@ CADENCE =               117679 / Cadence number since start of data collection
 CRM     =                    T / Whether or not cosmic ray were mitigated       
 CAMNUM  =                    1 / Camera Number                                  
 CCDNUM  =                    4 / CCD number                                     
-SCIPIXS = &#39;[45:2092,1:2048]&#39;                                                    
+SCIPIXS = '[45:2092,1:2048]'                                                    
 GAIN_A  =                 5.35 / e/ADU for CCD Sector A                         
 GAIN_B  =                 5.22 / e/ADU for CCD Sector B                         
 GAIN_C  =                 5.22 / e/ADU for CCD Sector C                         
 GAIN_D  =                 5.18 / e/ADU for CCD Sector D                         
-UNITS   = &#39;electrons&#39;          / Units (ADU or electrons)                       
-TICAVER = &#39;0.2.1   &#39;           / tica software version                          
+UNITS   = 'electrons'          / Units (ADU or electrons)                       
+TICAVER = '0.2.1   '           / tica software version                          
 EQUINOX =               2000.0                                                  
-INSTRUME= &#39;TESS Photometer&#39;                                                     
-TELESCOP= &#39;TESS    &#39;                                                            
-FILTER  = &#39;TESS    &#39;                                                            
+INSTRUME= 'TESS Photometer'                                                     
+TELESCOP= 'TESS    '                                                            
+FILTER  = 'TESS    '                                                            
 MJD-BEG =    59044.17390585085                                                  
 MJD-END =    59044.18085029488                                                  
 TESS_X  =          55775678.76 / Spacecraft X coord, J2000 (km from barycenter) 
@@ -1166,8 +1166,8 @@ TESS_Z  =         -55695333.42 / Spacecraft Z coord, J2000 (km from barycenter)
 TESS_VX =                26.83 / Spacecraft X velocity (km/s)                   
 TESS_VY =    9.380000000000001 / Spacecraft Y velocity (km/s)                   
 TESS_VZ =                 4.37 / Spacecraft Z velocity (km/s)                   
-CTYPE1  = &#39;RA---TAN-SIP&#39;                                                        
-CTYPE2  = &#39;DEC--TAN-SIP&#39;                                                        
+CTYPE1  = 'RA---TAN-SIP'                                                        
+CTYPE2  = 'DEC--TAN-SIP'                                                        
 CRPIX1  =               1069.0                                                  
 CRPIX2  =               1024.0                                                  
 CRVAL1  =    292.5177419248363                                                  
@@ -1292,8 +1292,8 @@ WCSGDF  =   0.9858442871587462 / Fraction of control point targs valid
 CTRPCOL =                    5 / Subregion analysis blocks over columns         
 CTRPROW =                    5 / Subregion analysis blocks over rows            
 FLXWIN  =                   11 / Width in pixels of Flux-weight centroid region 
-CHECKSUM= &#39;EaAnHa3kEaAkEa3k&#39;   / HDU checksum updated 2020-12-30T18:31:30       
-DATASUM = &#39;28350624&#39;           / data unit checksum updated 2020-12-30T18:31:30 
+CHECKSUM= 'EaAnHa3kEaAkEa3k'   / HDU checksum updated 2020-12-30T18:31:30       
+DATASUM = '28350624'           / data unit checksum updated 2020-12-30T18:31:30 
 COMMENT calibration applied at 2020-12-30T19:26:06.560458                       
 </pre></div>
 </div>
@@ -1304,16 +1304,16 @@ COMMENT calibration applied at 2020-12-30T19:26:06.560458
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve the data and some header metadata for labeling</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">ffi</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">cam</span><span class="p">,</span> <span class="n">ccd</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;CAMNUM&#39;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;CCDNUM&#39;</span><span class="p">]</span>
+<span class="n">cam</span><span class="p">,</span> <span class="n">ccd</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'CAMNUM'</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s1">'CCDNUM'</span><span class="p">]</span>
 
 <span class="c1"># Plotting</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
 
 <span class="c1"># Labeling</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sector 27, Cam </span><span class="si">{</span><span class="n">cam</span><span class="si">}</span><span class="s1">, CCD </span><span class="si">{</span><span class="n">ccd</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;COLUMNS (X)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;ROWS (Y)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Sector 27, Cam </span><span class="si">{</span><span class="n">cam</span><span class="si">}</span><span class="s1">, CCD </span><span class="si">{</span><span class="n">ccd</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'COLUMNS (X)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ROWS (Y)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">'major'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -1343,7 +1343,7 @@ COMMENT calibration applied at 2020-12-30T19:26:06.560458
 <p>We will utilize the <code class="docutils literal notranslate"><span class="pre">manifest</span></code> output from our <code class="docutils literal notranslate"><span class="pre">download_products</span></code> call in the previous section to feed <code class="docutils literal notranslate"><span class="pre">TicaCubeFactory.make_cube</span></code> the batch of 5 TICA FFIs for the cube-making process. The <code class="docutils literal notranslate"><span class="pre">verbose</span></code> argument is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by default, which will print updates about the call, but you may change <code class="docutils literal notranslate"><span class="pre">verbose</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> if you so choose.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span> <span class="o">=</span> <span class="n">tica_cube_maker</span><span class="o">.</span><span class="n">make_cube</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s1">&#39;Local Path&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span> <span class="o">=</span> <span class="n">tica_cube_maker</span><span class="o">.</span><span class="n">make_cube</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="s1">'Local Path'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1423,7 +1423,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 
 <span class="c1"># from astrocut import CubeFactory</span>
 <span class="c1">#spoc_cube_maker = CubeFactory()</span>
-<span class="c1">#spoc_cube_maker.make_cube(manifest[&#39;Local Path&#39;])</span>
+<span class="c1">#spoc_cube_maker.make_cube(manifest['Local Path'])</span>
 </pre></div>
 </div>
 </div>
@@ -1436,7 +1436,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_maker</span> <span class="o">=</span> <span class="n">CutoutFactory</span><span class="p">()</span>
 
-<span class="n">cutout_file</span> <span class="o">=</span> <span class="n">cutout_maker</span><span class="o">.</span><span class="n">cube_cut</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">cutout_size</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">&#39;TICA&#39;</span><span class="p">)</span>
+<span class="n">cutout_file</span> <span class="o">=</span> <span class="n">cutout_maker</span><span class="o">.</span><span class="n">cube_cut</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">cutout_size</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">'TICA'</span><span class="p">)</span>
 <span class="n">cutout_file</span>
 </pre></div>
 </div>
@@ -1446,7 +1446,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 WARNING: AstropyDeprecationWarning: The `product` argument is deprecated and will be removed in a future version. Astrocut will only support cutouts from SPOC products. [astrocut.cutout_factory]
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;img_289.0979000_-29.3370000_25-x-25_astrocut.fits&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>'img_289.0979000_-29.3370000_25-x-25_astrocut.fits'
 </pre></div>
 </div>
 </div>
@@ -1489,30 +1489,30 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 BITPIX  =                    8 / array data type                                
 NAXIS   =                    0 / number of array dimensions                     
 EXTEND  =                    T                                                  
-TICAVER = &#39;0.2.1   &#39;           / tica software version                          
+TICAVER = '0.2.1   '           / tica software version                          
 EQUINOX =               2000.0                                                  
-INSTRUME= &#39;TESS Photometer&#39;                                                     
-TELESCOP= &#39;TESS    &#39;                                                            
-CHECKSUM= &#39;3aBF4aAE3aAE3aAE&#39;   / HDU checksum updated 2026-08-03T15:46:44       
-DATASUM = &#39;0       &#39;           / data unit checksum updated 2026-08-03T15:46:44 
-ORIGIN  = &#39;STScI/MAST&#39;                                                          
-DATE    = &#39;2026-08-03&#39;         / FFI cube creation date                         
+INSTRUME= 'TESS Photometer'                                                     
+TELESCOP= 'TESS    '                                                            
+CHECKSUM= '3aBF4aAE3aAE3aAE'   / HDU checksum updated 2026-08-03T15:46:44       
+DATASUM = '0       '           / data unit checksum updated 2026-08-03T15:46:44 
+ORIGIN  = 'STScI/MAST'                                                          
+DATE    = '2026-08-03'         / FFI cube creation date                         
 SECTOR  =  / Observing sector                                                   
-EXTNAME = &#39;PRIMARY &#39;                                                            
-CREATOR = &#39;astrocut&#39;           / software used to produce this file             
-PROCVER = &#39;1.2.0   &#39;           / software version                               
-FFI_TYPE= &#39;TICA    &#39;           / the FFI type used to make the cutouts          
+EXTNAME = 'PRIMARY '                                                            
+CREATOR = 'astrocut'           / software used to produce this file             
+PROCVER = '1.2.0   '           / software version                               
+FFI_TYPE= 'TICA    '           / the FFI type used to make the cutouts          
 RA_OBJ  =             289.0979 / [deg] right ascension                          
 DEC_OBJ =              -29.337 / [deg] declination                              
 TIMEREF =  / barycentric correction applied to times                            
 TASSIGN =  / where time is assigned                                             
-TIMESYS = &#39;TDB     &#39;           / time system is Barycentric Dynamical Time (TDB)
+TIMESYS = 'TDB     '           / time system is Barycentric Dynamical Time (TDB)
 BJDREFI =              2457000 / integer part of BTJD reference date            
 BJDREFF =                  0.0 / fraction of the day in BTJD reference date     
-TIMEUNIT= &#39;d       &#39;           / time unit for TIME, TSTART, and TSTOP          
-EXTVER  = &#39;1       &#39;           / extension version number (not format version)  
+TIMEUNIT= 'd       '           / time unit for TIME, TSTART, and TSTOP          
+EXTVER  = '1       '           / extension version number (not format version)  
 SIMDATA =                    F / file is based on simulated data                
-NEXTEND = &#39;2       &#39;           / number of standard extensions                  
+NEXTEND = '2       '           / number of standard extensions                  
 TSTART  =    2044.062795019605 / observation start time in TJD of first FFI     
 TSTOP   =    2047.569737859931 / observation stop time in TJD of last FFI       
 CAMERA  =                    1 / Camera number                                  
@@ -1526,10 +1526,10 @@ FILEVER =  / file format version
 RADESYS =  / reference frame of celestial coordinates                           
 SCCONFIG=  / spacecraft configuration ID                                        
 TIMVERSN=  / OGIP memo number for file format                                   
-DATE-OBS= &#39;2020-07-13 13:30:25.490&#39; / TSTART as Julian Date of first FFI        
-DATE-END= &#39;2020-07-17 01:40:25.351&#39; / TSTOP as Julian Date of last FFI          
+DATE-OBS= '2020-07-13 13:30:25.490' / TSTART as Julian Date of first FFI        
+DATE-END= '2020-07-17 01:40:25.351' / TSTOP as Julian Date of last FFI          
 TELAPSE =    3.506942840326019 / [d] TSTOP - TSTART                             
-OBJECT  = &#39;&#39; / string version of target ID                                      
+OBJECT  = '' / string version of target ID                                      
 TCID    =                    0 / unique TESS target identifier                  
 PXTABLE =                    0 / pixel table ID                                 
 PMRA    =                  0.0 / [mas/yr] RA proper motion                      
@@ -1549,14 +1549,14 @@ TICID   =  / unique TESS target identifier
 <p>As mentioned previously, the cutout files will have header information that is inherited from the first FFI and the middle FFI in the cube stack (just like the cube files), so most of these keywords should look familiar. However, there are some new header keywords in the cutout files that are added after processing:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cutout_header</span><span class="o">.</span><span class="n">cards</span><span class="p">[</span><span class="s1">&#39;FFI_TYPE&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">cutout_header</span><span class="o">.</span><span class="n">cards</span><span class="p">[</span><span class="s1">&#39;PROCVER&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cutout_header</span><span class="o">.</span><span class="n">cards</span><span class="p">[</span><span class="s1">'FFI_TYPE'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cutout_header</span><span class="o">.</span><span class="n">cards</span><span class="p">[</span><span class="s1">'PROCVER'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FFI_TYPE= &#39;TICA    &#39;           / the FFI type used to make the cutouts          
-PROCVER = &#39;1.2.0   &#39;           / software version                               
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FFI_TYPE= 'TICA    '           / the FFI type used to make the cutouts          
+PROCVER = '1.2.0   '           / software version                               
 </pre></div>
 </div>
 </div>
@@ -1565,15 +1565,15 @@ PROCVER = &#39;1.2.0   &#39;           / software version
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting the cutouts science data from the BinTable HDU</span>
-<span class="n">cutouts</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">cutout_file</span><span class="p">)[</span><span class="s1">&#39;FLUX&#39;</span><span class="p">]</span>
+<span class="n">cutouts</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">cutout_file</span><span class="p">)[</span><span class="s1">'FLUX'</span><span class="p">]</span>
 
 <span class="c1"># Plotting an arbitrary cutout from the FLUX column</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutouts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
 
 <span class="c1"># Labeling</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;COLUMNS (X)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;ROWS (Y)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'COLUMNS (X)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ROWS (Y)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">'major'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -1603,8 +1603,8 @@ PROCVER = &#39;1.2.0   &#39;           / software version
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a cube with the SPOC FFIs.</span>
-<span class="c1"># If you&#39;ve stored the output from the `astroquery.mast.Observations.download_products` call above, </span>
-<span class="c1"># it&#39;s helpful to use the Local Path column as the CubeFactory input.</span>
+<span class="c1"># If you've stored the output from the `astroquery.mast.Observations.download_products` call above, </span>
+<span class="c1"># it's helpful to use the Local Path column as the CubeFactory input.</span>
 </pre></div>
 </div>
 </div>
@@ -1772,7 +1772,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

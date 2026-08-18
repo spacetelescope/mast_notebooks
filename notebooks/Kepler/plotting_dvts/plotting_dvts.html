@@ -785,7 +785,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For the purposes of this tutorial, we just know the MAST URL location of the file we want to examine.</span>
-<span class="n">dvt_file</span> <span class="o">=</span> <span class="s2">&quot;https://archive.stsci.edu/missions/kepler/dv_files/0114/011446443/kplr011446443-20160128150956_dvt.fits&quot;</span>
+<span class="n">dvt_file</span> <span class="o">=</span> <span class="s2">"https://archive.stsci.edu/missions/kepler/dv_files/0114/011446443/kplr011446443-20160128150956_dvt.fits"</span>
 </pre></div>
 </div>
 </div>
@@ -819,16 +819,16 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
-    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2454833&#39;; disp = &#39;D14.7&#39;
-    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E13.6&#39;
-    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
-    name = &#39;PHASE&#39;; format = &#39;E&#39;; unit = &#39;days&#39;; disp = &#39;E14.7&#39;
-    name = &#39;LC_INIT&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
-    name = &#39;LC_INIT_ERR&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
-    name = &#39;LC_WHITE&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
-    name = &#39;LC_DETREND&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
-    name = &#39;MODEL_INIT&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
-    name = &#39;MODEL_WHITE&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
+    name = 'TIME'; format = 'D'; unit = 'BJD - 2454833'; disp = 'D14.7'
+    name = 'TIMECORR'; format = 'E'; unit = 'd'; disp = 'E13.6'
+    name = 'CADENCENO'; format = 'J'; disp = 'I10'
+    name = 'PHASE'; format = 'E'; unit = 'days'; disp = 'E14.7'
+    name = 'LC_INIT'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
+    name = 'LC_INIT_ERR'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
+    name = 'LC_WHITE'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
+    name = 'LC_DETREND'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
+    name = 'MODEL_INIT'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
+    name = 'MODEL_WHITE'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
 )
 </pre></div>
 </div>
@@ -841,28 +841,28 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <p>Let’s open the FITS file and extract some metadata from the headers, and also store some of the columns from the TCE signal for use later when we plot the results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dvt_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"readonly"</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdulist</span><span class="p">:</span>
     
-    <span class="c1"># Extract stellar parameters from the primary header.  We&#39;ll get the effective temperature, surface gravity,</span>
+    <span class="c1"># Extract stellar parameters from the primary header.  We'll get the effective temperature, surface gravity,</span>
     <span class="c1"># and Kepler magnitude.</span>
-    <span class="n">star_teff</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TEFF&#39;</span><span class="p">]</span>
-    <span class="n">star_logg</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;LOGG&#39;</span><span class="p">]</span>
-    <span class="n">star_tmag</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;KEPMAG&#39;</span><span class="p">]</span>
+    <span class="n">star_teff</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'TEFF'</span><span class="p">]</span>
+    <span class="n">star_logg</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'LOGG'</span><span class="p">]</span>
+    <span class="n">star_tmag</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'KEPMAG'</span><span class="p">]</span>
     
     <span class="c1"># Extract some of the fit parameters for the first TCE.  These are stored in the FITS header of the first</span>
     <span class="c1"># extension.</span>
-    <span class="n">period</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TPERIOD&#39;</span><span class="p">]</span>
-    <span class="n">duration</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TDUR&#39;</span><span class="p">]</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TEPOCH&#39;</span><span class="p">]</span>
-    <span class="n">depth</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TDEPTH&#39;</span><span class="p">]</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'TPERIOD'</span><span class="p">]</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'TDUR'</span><span class="p">]</span>
+    <span class="n">epoch</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'TEPOCH'</span><span class="p">]</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">'TDEPTH'</span><span class="p">]</span>
     
     <span class="c1"># Extract some of the columns of interest for the TCE signal.  These are stored in the binary FITS table</span>
-    <span class="c1"># in the first extension.  We&#39;ll extract the timestamps in BKJD, phase, initial fluxes, and corresponding</span>
+    <span class="c1"># in the first extension.  We'll extract the timestamps in BKJD, phase, initial fluxes, and corresponding</span>
     <span class="c1"># model fluxes.</span>
-    <span class="n">times</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span>
-    <span class="n">phases</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;PHASE&#39;</span><span class="p">]</span>
-    <span class="n">fluxes_init</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;LC_INIT&#39;</span><span class="p">]</span>
-    <span class="n">model_fluxes_init</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;MODEL_INIT&#39;</span><span class="p">]</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'TIME'</span><span class="p">]</span>
+    <span class="n">phases</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'PHASE'</span><span class="p">]</span>
+    <span class="n">fluxes_init</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'LC_INIT'</span><span class="p">]</span>
+    <span class="n">model_fluxes_init</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'MODEL_INIT'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -877,23 +877,23 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 
 <span class="c1"># Plot the detrended fluxes as black circles.  We will plot them in sorted order.</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phases</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="n">fluxes_init</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phases</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="n">fluxes_init</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="s1">'ko'</span><span class="p">,</span>
        <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Plot the model fluxes as a red line.  We will plot them in sorted order so the line connects between points cleanly.</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phases</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="n">model_fluxes_init</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phases</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="n">model_fluxes_init</span><span class="p">[</span><span class="n">sort_indexes</span><span class="p">],</span> <span class="s1">'-r'</span><span class="p">)</span>
 
-<span class="c1"># Let&#39;s label the axes and define a title for the figure.</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;KIC 11446443 - Folded Light Curve And Transit Model.&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Flux (relative)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Orbital Phase&quot;</span><span class="p">)</span>
+<span class="c1"># Let's label the axes and define a title for the figure.</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'KIC 11446443 - Folded Light Curve And Transit Model.'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Flux (relative)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Orbital Phase"</span><span class="p">)</span>
 
-<span class="c1"># Let&#39;s add some text in the top-right containing some of the fit parameters.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s2">&quot;Period = </span><span class="si">{0:10.6f}</span><span class="s2"> days&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">,</span> <span class="s2">&quot;Duration = </span><span class="si">{0:10.6f}</span><span class="s2"> hours&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s2">&quot;Depth = </span><span class="si">{0:10.6f}</span><span class="s2"> ppm&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">depth</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s2">&quot;Star Teff = </span><span class="si">{0:10.6f}</span><span class="s2"> K&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_teff</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">,</span> <span class="s2">&quot;Star log(g) = </span><span class="si">{0:10.6f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_logg</span><span class="p">))</span>
+<span class="c1"># Let's add some text in the top-right containing some of the fit parameters.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s2">"Period = </span><span class="si">{0:10.6f}</span><span class="s2"> days"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">,</span> <span class="s2">"Duration = </span><span class="si">{0:10.6f}</span><span class="s2"> hours"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s2">"Depth = </span><span class="si">{0:10.6f}</span><span class="s2"> ppm"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">depth</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s2">"Star Teff = </span><span class="si">{0:10.6f}</span><span class="s2"> K"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_teff</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">,</span> <span class="s2">"Star log(g) = </span><span class="si">{0:10.6f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_logg</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -915,56 +915,56 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColDefs(
-    name = &#39;TIME&#39;; format = &#39;D&#39;; unit = &#39;BJD - 2454833&#39;; disp = &#39;D14.7&#39;
-    name = &#39;TIMECORR&#39;; format = &#39;E&#39;; unit = &#39;d&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CADENCENO&#39;; format = &#39;J&#39;; disp = &#39;I10&#39;
-    name = &#39;PDCSAP_FLUX&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
-    name = &#39;PDCSAP_FLUX_ERR&#39;; format = &#39;E&#39;; unit = &#39;e-/s&#39;; disp = &#39;E14.7&#39;
-    name = &#39;RESIDUAL_LC&#39;; format = &#39;E&#39;; unit = &#39;dimensionless&#39;; disp = &#39;E14.7&#39;
-    name = &#39;DEWEIGHTS&#39;; format = &#39;E&#39;; unit = &#39;proportion&#39;; disp = &#39;E14.7&#39;
-    name = &#39;QUALITY&#39;; format = &#39;J&#39;; disp = &#39;B24.24&#39;
-    name = &#39;SES_CORR_1_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_2_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_2_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_3_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_3_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_4_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_5_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_6_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_7_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_9_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_10_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_12_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_12_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_CORR_15_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_1_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_2_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_2_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_3_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_3_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_4_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_5_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_6_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_7_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_9_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_10_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_12_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_12_5&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;SES_NORM_15_0&#39;; format = &#39;E&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_1_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_2_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_2_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_3_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_3_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_4_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_5_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_6_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_7_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_9_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_10_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_12_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_12_5&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
-    name = &#39;CDPP_15_0&#39;; format = &#39;E&#39;; unit = &#39;ppm&#39;; disp = &#39;E14.7&#39;
+    name = 'TIME'; format = 'D'; unit = 'BJD - 2454833'; disp = 'D14.7'
+    name = 'TIMECORR'; format = 'E'; unit = 'd'; disp = 'E14.7'
+    name = 'CADENCENO'; format = 'J'; disp = 'I10'
+    name = 'PDCSAP_FLUX'; format = 'E'; unit = 'e-/s'; disp = 'E14.7'
+    name = 'PDCSAP_FLUX_ERR'; format = 'E'; unit = 'e-/s'; disp = 'E14.7'
+    name = 'RESIDUAL_LC'; format = 'E'; unit = 'dimensionless'; disp = 'E14.7'
+    name = 'DEWEIGHTS'; format = 'E'; unit = 'proportion'; disp = 'E14.7'
+    name = 'QUALITY'; format = 'J'; disp = 'B24.24'
+    name = 'SES_CORR_1_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_2_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_2_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_3_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_3_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_4_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_5_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_6_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_7_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_9_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_10_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_12_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_12_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_CORR_15_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_1_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_2_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_2_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_3_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_3_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_4_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_5_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_6_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_7_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_9_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_10_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_12_0'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_12_5'; format = 'E'; disp = 'E14.7'
+    name = 'SES_NORM_15_0'; format = 'E'; disp = 'E14.7'
+    name = 'CDPP_1_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_2_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_2_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_3_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_3_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_4_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_5_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_6_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_7_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_9_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_10_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_12_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_12_5'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
+    name = 'CDPP_15_0'; format = 'E'; unit = 'ppm'; disp = 'E14.7'
 )
 </pre></div>
 </div>
@@ -1076,7 +1076,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>

@@ -811,8 +811,8 @@
 <p>Below is a function to connect to the EDB web service and retrieve the data files. It will be used later in this tutorial.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_edb_datafiles</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_edb_datafiles</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">''</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Download filenames to directory</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -828,22 +828,22 @@
 <span class="sd">    -------</span>
 <span class="sd">    int</span>
 <span class="sd">       Success status for each mnemonic retrieval</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
             
     <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
-    <span class="n">urlStr</span> <span class="o">=</span> <span class="s2">&quot;https://mast.stsci.edu</span><span class="si">{}</span><span class="s2">/api/v0.1/Download/file?uri=mast:jwstedb/</span><span class="si">{}</span><span class="s2">&quot;</span>
+    <span class="n">urlStr</span> <span class="o">=</span> <span class="s2">"https://mast.stsci.edu</span><span class="si">{}</span><span class="s2">/api/v0.1/Download/file?uri=mast:jwstedb/</span><span class="si">{}</span><span class="s2">"</span>
     <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Downloading File: mast:jwstedb/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot; To: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Downloading File: mast:jwstedb/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">" To: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">urlStr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ***Error downloading file***&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"  ***Error downloading file***"</span><span class="p">)</span>
             <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
     
     <span class="k">return</span> <span class="n">status</span>
@@ -868,12 +868,12 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="p">{</span> 
-         <span class="s1">&#39;t_start&#39;</span><span class="p">:</span> <span class="s1">&#39;20220701T000000&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;t_end&#39;</span><span class="p">:</span>   <span class="s1">&#39;20220701T030000&#39;</span>
+         <span class="s1">'t_start'</span><span class="p">:</span> <span class="s1">'20220701T000000'</span><span class="p">,</span>
+         <span class="s1">'t_end'</span><span class="p">:</span>   <span class="s1">'20220701T030000'</span>
         <span class="p">}</span>
 <span class="n">mnemonics</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;SA_ZADUCMDX&#39;</span><span class="p">:</span> <span class="n">times</span><span class="p">,</span>
-            <span class="s1">&#39;SA_ZADUCMDY&#39;</span><span class="p">:</span> <span class="n">times</span>
+            <span class="s1">'SA_ZADUCMDX'</span><span class="p">:</span> <span class="n">times</span><span class="p">,</span>
+            <span class="s1">'SA_ZADUCMDY'</span><span class="p">:</span> <span class="n">times</span>
            <span class="p">}</span>
 <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mnemonics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -881,8 +881,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SA_ZADUCMDX {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39;20220701T030000&#39;}
-SA_ZADUCMDY {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39;20220701T030000&#39;}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SA_ZADUCMDX {'t_start': '20220701T000000', 't_end': '20220701T030000'}
+SA_ZADUCMDY {'t_start': '20220701T000000', 't_end': '20220701T030000'}
 </pre></div>
 </div>
 </div>
@@ -898,13 +898,13 @@ SA_ZADUCMDY {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39
 <p>Use a dictionary comprehension to construct a list of file names; these will be passed to the webservice calling function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t_start&#39;</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t_end&#39;</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mnemonics</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s1">'t_start'</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="s1">'t_end'</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">'.csv'</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mnemonics</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fnames</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;SA_ZADUCMDX-20220701T000000-20220701T030000.csv&#39;, &#39;SA_ZADUCMDY-20220701T000000-20220701T030000.csv&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>['SA_ZADUCMDX-20220701T000000-20220701T030000.csv', 'SA_ZADUCMDY-20220701T000000-20220701T030000.csv']
 </pre></div>
 </div>
 </div>
@@ -916,7 +916,7 @@ SA_ZADUCMDY {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sub-directory where the data files will be written:</span>
-<span class="n">subdir</span> <span class="o">=</span> <span class="s1">&#39;edb-data&#39;</span>
+<span class="n">subdir</span> <span class="o">=</span> <span class="s1">'edb-data'</span>
 </pre></div>
 </div>
 </div>
@@ -957,7 +957,7 @@ SA_ZADUCMDY {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39
 <p>Make sure the sizes of the dataframes are equal, and take a look at the first dataframe.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dataframes have the same size? </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">'Dataframes have the same size? </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
 <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1089,7 +1089,7 @@ SA_ZADUCMDY {&#39;t_start&#39;: &#39;20220701T000000&#39;, &#39;t_end&#39;: &#39
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># The following method is needed for bokeh display in a Notebook.</span>
-<span class="c1"># Note that it does not activate the display. This happens in the &#39;Plot Timeseries&#39; section.</span>
+<span class="c1"># Note that it does not activate the display. This happens in the 'Plot Timeseries' section.</span>
 <span class="n">output_notebook</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1426,7 +1426,7 @@ function(Bokeh) {
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_breaks</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">max_flats</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x_data : pandas.DataFrame</span>
@@ -1440,19 +1440,19 @@ function(Bokeh) {
 <span class="sd">    -------</span>
 <span class="sd">    list of pandas.DataFrame</span>
 <span class="sd">        Each DataFrame contains a continuous set of changing EDB timeseries data with X/Y-paired values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     
     <span class="c1"># Get the MJD and position values out of the DataFrames.</span>
-    <span class="n">x_vals</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;euvalue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">x_dates</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">y_vals</span> <span class="o">=</span> <span class="n">y_data</span><span class="p">[</span><span class="s1">&#39;euvalue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">y_dates</span> <span class="o">=</span> <span class="n">y_data</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">x_vals</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">'euvalue'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">x_dates</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">'MJD'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y_vals</span> <span class="o">=</span> <span class="n">y_data</span><span class="p">[</span><span class="s1">'euvalue'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y_dates</span> <span class="o">=</span> <span class="n">y_data</span><span class="p">[</span><span class="s1">'MJD'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     
     <span class="c1"># Combine the x and y data into a single DataFrame.</span>
-    <span class="n">xy_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">x_dates</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">])</span>
-    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;theTime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">&#39;x_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_vals</span>
-    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">&#39;y_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_vals</span>
+    <span class="n">xy_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">x_dates</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'MJD'</span><span class="p">])</span>
+    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">'theTime'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">'x_value'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_vals</span>
+    <span class="n">xy_frame</span><span class="p">[</span><span class="s1">'y_value'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_vals</span>
     
     <span class="c1"># Scan the timeseries data to look for flat periods of no reading change.</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1490,7 +1490,7 @@ function(Bokeh) {
     <span class="k">if</span> <span class="n">recording</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xy_frame</span><span class="p">[</span><span class="n">m</span><span class="p">:])</span>
     
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;returning </span><span class="si">{}</span><span class="s2"> timeseries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"returning </span><span class="si">{}</span><span class="s2"> timeseries"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)))</span>
     
     <span class="k">return</span> <span class="n">results</span>
 </pre></div>
@@ -1502,10 +1502,10 @@ function(Bokeh) {
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">split_series</span> <span class="o">=</span> <span class="n">find_breaks</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">max_flats</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="n">split_series</span><span class="p">:</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">ss</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">ss</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 <span class="c1"># Inserting this print statement into the for loop will print all 41 timeseries</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">{0}</span><span class="s2"> - </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"    </span><span class="si">{0}</span><span class="s2"> - </span><span class="si">{1}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -1523,52 +1523,52 @@ function(Bokeh) {
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_x_v_y_color</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Plot x-versus-y timeseries data with color mapping based on the timing.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : pandas.DataFrame</span>
 <span class="sd">        A combined x &amp; y timeseries data set.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     
-    <span class="n">mjd</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;MJD&#39;</span><span class="p">]</span>
+    <span class="n">mjd</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'MJD'</span><span class="p">]</span>
     <span class="n">n_ticks</span> <span class="o">=</span> <span class="mi">10</span>
     
     <span class="c1"># Create a bokeh.plotting figure object.</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">match_aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
     <span class="c1"># Set up a linear color map based on the MJD data.</span>
-    <span class="n">mapper</span> <span class="o">=</span> <span class="n">linear_cmap</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;MJD&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">mjd</span><span class="p">),</span> <span class="n">high</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">mjd</span><span class="p">))</span>
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">linear_cmap</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'MJD'</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">mjd</span><span class="p">),</span> <span class="n">high</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">mjd</span><span class="p">))</span>
     
     <span class="c1"># Add lines to make 0 axis a bit more obvious.</span>
     <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.3</span>
-    <span class="n">vline</span> <span class="o">=</span> <span class="n">Span</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-    <span class="n">hline</span> <span class="o">=</span> <span class="n">Span</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+    <span class="n">vline</span> <span class="o">=</span> <span class="n">Span</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">'height'</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+    <span class="n">hline</span> <span class="o">=</span> <span class="n">Span</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">'width'</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
     <span class="n">n</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">vline</span><span class="p">,</span> <span class="n">hline</span><span class="p">])</span>
     
     <span class="c1"># Add a circle plot of x vs y with the color map applied.</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;x_value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x_value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Standardize the radius of points</span>
-    <span class="n">n</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x_value&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y_value&#39;</span><span class="p">,</span> <span class="n">fill_alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="n">mapper</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'x_value'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">'x_value'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Standardize the radius of points</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'x_value'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'y_value'</span><span class="p">,</span> <span class="n">fill_alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="n">mapper</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
     
     <span class="c1"># Translate legend values from MJD to time stamps.</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mjd</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span><span class="o">/</span><span class="n">n_ticks</span><span class="p">)))</span>
-    <span class="n">tick_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">mjd</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">}</span>
+    <span class="n">tick_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">mjd</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span> <span class="n">data</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">}</span>
     <span class="n">ticks</span> <span class="o">=</span> <span class="n">FixedTicker</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">tick_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
     
     <span class="c1"># Add some labels to our axes</span>
-    <span class="n">n</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="s2">&quot;FSM x-axis commanded angle (arcsec)&quot;</span>
-    <span class="n">n</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="s2">&quot;FSM y-axis commanded angle (arcsec)&quot;</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="s2">"FSM x-axis commanded angle (arcsec)"</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="s2">"FSM y-axis commanded angle (arcsec)"</span>
     
     <span class="c1"># Add a color bar legend for the MJD data.</span>
-    <span class="n">color_bar</span> <span class="o">=</span> <span class="n">ColorBar</span><span class="p">(</span><span class="n">color_mapper</span><span class="o">=</span><span class="n">mapper</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">],</span> 
+    <span class="n">color_bar</span> <span class="o">=</span> <span class="n">ColorBar</span><span class="p">(</span><span class="n">color_mapper</span><span class="o">=</span><span class="n">mapper</span><span class="p">[</span><span class="s1">'transform'</span><span class="p">],</span> 
                          <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
                          <span class="n">ticker</span><span class="o">=</span><span class="n">ticks</span><span class="p">,</span>
                          <span class="n">major_label_overrides</span><span class="o">=</span><span class="n">tick_dict</span><span class="p">,</span>
                          <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> 
                          <span class="n">label_standoff</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
                          <span class="p">)</span>
-    <span class="n">n</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">color_bar</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">color_bar</span><span class="p">,</span> <span class="s1">'right'</span><span class="p">)</span>
     
     <span class="c1"># Display the figure.</span>
     <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -1753,7 +1753,7 @@ By STScI
 
   <p class="copyright">
     
-      © Copyright 2022-2025.
+      © Copyright 2022-2026.
       <br/>
     
   </p>
