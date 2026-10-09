@@ -13,6 +13,7 @@ The notebooks in this section demonstrate how to execute example science queries
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Pan-STARRS "20 queries": Filtering](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_filtering_tutorial.html) | Tutorial for how to query Pan-STARRS DR2 (PS1 DR2) catalogs using the Table Access Protocol (TAP) service at MAST. The example queries here demonstrate how to perform queries requiring only filtering, including bitflag operations. |
 | [Pan-STARRS "20 queries": Queries with Cutout Visualizations](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_20_query_tutorials/PS1_20q_query_cutouts_tutorial/PS1_20q_query_cutouts_tutorial.html) | Tutorial for how to query Pan-STARRS DR2 (PS1 DR2) catalogs using MAST's TAP service, and use cutouts for visualization of galaxies from the selected samples. |
+| [Pan-STARRS "20 queries": Spatial Binning](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_20_query_tutorials/PS1_20q_spatial_binning/PS1_20q_spatial_binning.html) | Tutorial demonstrating how to spatially bin (with selection criteria filtering) objects from the Pan-STARRS DR2 catalogs, using the Table Access Protocol (TAP) service at MAST. |
 
 
 More Pan-STARRS example query notebooks will be coming soon!
