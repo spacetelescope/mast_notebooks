@@ -7,24 +7,20 @@ on:
   # Run weekly on Sundays at 2 AM UTC
   schedule:
     - cron: '0 2 * * 0'
-          
+
+env:
+  JDAVIZ_SKIP_DISPLAY: "true"  # prevents nbval timeouts with jdaviz in sidecar
+
 jobs:
   execute-all:  
     uses: spacetelescope/notebook-ci-actions/.github/workflows/notebook-ci-unified.yml@v1
     with:
       execution-mode: 'on-demand'
       trigger-event: 'execute'
-      python-version: '3.11'
-      enable-validation: false
-      enable-security: false
+      python-version: '3.13'
+      enable-validation: true
+      enable-security: true
       enable-execution: true
       enable-storage: false
-      enable-html-build: false
+      #enable-html-build: false
     secrets: inherit
-
-
-
-
-
-
-
