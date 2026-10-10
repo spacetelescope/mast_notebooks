@@ -1,0 +1,1711 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Accessing MAST TAP services: How to chunk large / long queries &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table.css?v=cd6c26fb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/main.css?v=32d70693" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/PanSTARRS/PS1_query_chunking/PS1_query_chunking';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <img src="../../../_static/mastlogo.svg" class="logo__image only-dark pst-js-only" alt="MAST Notebook Repository - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/resolve_objects/resolve_objects.html">Resolving Named Objects with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multi_mission/cloud_data_access/cloud_data_access.html">Accessing Cloud-Hosted Data with Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/subscriptions/subscriptions.html">Downloading Subscription Products with Astroquery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi_mission/catalog_access_coordinate_transformation/catalog_access_coordinate_transform.html">Catalog Access: Querying Sky Regions in User-Specified Coordinate Frame</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV4_SMC_CASJOBS/hscv4_smc_casjobs.html">Hubble Source Catalog CasJobs Notebook: SMC Color-Magnitude Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Interactive Data Exploration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/inspect_long_tables/inspect_long_tables.html">How to Inspect Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/organize_widgets/organize_widgets.html">How to Organize Widgets with <code class="docutils literal notranslate"><span class="pre">jupyterlab-sidecar</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/organize_widgets_with_motorcycle/organize_widgets_with_motorcycle.html">How to Organize Widgets with <code class="docutils literal notranslate"><span class="pre">motorcycle</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/browse_roman_observations/browse_roman_observations.html">How to Browse Roman Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interactive_data_exploration/how_to/overlay_non_roman_source_catalogs/overlay_non_roman_source_catalogs.html">How to Overlay non-Roman Source Catalogs into <code class="docutils literal notranslate"><span class="pre">mast-aladin</span></code></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../K2/Lightcurve/Lightcurve.html">Beginner: Read and Plot A K2 Light Curve File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Roman</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Roman/Catalog_Access_Data_Quality_Cuts/catalog_access_data_quality_cuts.html">Accessing Roman Catalogs: Leveraging Ancillary Tables and Visualization to Apply Data Quality Cuts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/PanSTARRS/PS1_query_chunking/PS1_query_chunking.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/PanSTARRS/PS1_query_chunking/PS1_query_chunking.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/PanSTARRS/PS1_query_chunking/PS1_query_chunking.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Accessing MAST TAP services: How to chunk large / long queries</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connect-to-tap-service">Connect to TAP service</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tap-service-limits">TAP service limits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#too-many-rows">Too many rows</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-query-row-time-scaling">Determining the query row/time scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-the-partitioned-query">Submitting the partitioned query</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#long-query-duration">Long query duration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Determining the query row/time scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Submitting the partitioned query</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-chunking-option-for-panstarrs-randomid">Another chunking option for PanSTARRS: <code class="docutils literal notranslate"><span class="pre">randomid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-access-protocol">Table Access Protocol</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#panstarrs-1-dr-2">PanSTARRS 1 DR 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astronomical-query-data-language-2-0">Astronomical Query Data Language (2.0)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyvo">PyVO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-list-of-mast-tap-services">Full list of MAST/TAP services</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<!-- # PanSTARRS access using MAST's TAP service: How to chunk large / long queries -->
+<section class="tex2jax_ignore mathjax_ignore" id="accessing-mast-tap-services-how-to-chunk-large-long-queries">
+<h1>Accessing MAST TAP services: How to chunk large / long queries<a class="headerlink" href="#accessing-mast-tap-services-how-to-chunk-large-long-queries" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>This notebook demonstrates how to split up a large query (in terms of total number of rows returned or total execution time) for submission to Table Access Protocol (TAP) services at MAST. The examples presented here access the PanSTARRS TAP service.</p>
+<p>This includes how to scope out the query execution time and “row density” (number of rows for a given ID or spatial range), how to scale to appropriately-sized query chunks given the TAP service limitations, and how to structure the chunks with parallel and serial components (to avoid overusing database resources with too many queries in parallel).</p>
+</section>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to <strong>estimate the scaling of execution time and numbers of rows returned</strong> with ID range or sky coverage</p></li>
+<li><p>Understand how to <strong>use the scaling estimation to design full query chunks</strong> that are compatible with TAP service limitations</p></li>
+<li><p>Understand how to submit the chunked queries in a manner that <strong>does not overuse</strong> database resources.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="table-of-contents">
+<h3>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#connect-to-tap-service"><span class="xref myst">Connect to TAP service</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#tap-service-limits"><span class="xref myst">TAP service limits</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#too-many-rows"><span class="xref myst">Too many rows</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#q2-query-scaling"><span class="xref myst">Determining the query row/time scaling</span></a></p></li>
+<li><p><a class="reference internal" href="#q2-submitting-query"><span class="xref myst">Submitting the partitioned query</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#long-query-duration"><span class="xref myst">Long query duration</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#q4-query-scaling"><span class="xref myst">Determining the query row/time scaling</span></a></p></li>
+<li><p><a class="reference internal" href="#q4-submitting-query"><span class="xref myst">Submitting the partitioned query</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#additional-resources"><span class="xref myst">Additional Resources</span></a></p></li>
+<li><p><a class="reference internal" href="#citations"><span class="xref myst">Citations</span></a></p></li>
+<li><p><a class="reference internal" href="#about-this-notebook"><span class="xref myst">About This Notebook</span></a></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Welcome! This notebook demonstrates how to perform large queries accessing the PanSTARRS catalogs at MAST through a Virual Observatory Table Access Protocol (TAP) service, where the full query has:</p>
+<ol class="arabic simple">
+<li><p><strong>an execution time <em>longer</em> than the time limit</strong> for queries to the TAP service, and/or</p></li>
+<li><p><strong><em>more</em> result rows than the maximum size of rows</strong> returned by the TAP service.</p></li>
+</ol>
+<p>In this tutorial, the example queries are drawn from the PanSTARRS “20 queries” tutorials. Please see <a class="reference internal" href="../PS1_20_query_tutorials/panstarrs_20_query_tutorials.html"><span class="std std-doc">the tutorial notebooks</span></a> for full information about these queries.</p>
+<div class="alert alert-block alert-info">
+<b>Note:</b> ADQL/SQL comments follow "--". Comments are used throughout the queries to explain the purpose of specific clauses.
+</div></section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>This tutorial makes use of the following libraries:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://numpy.org/"><em>numpy</em></a> for numerical calculations</p></li>
+<li><p><a class="reference external" href="https://pyvo.readthedocs.io"><em>pyvo</em></a> for querying the MAST catalogs via TAP</p></li>
+<li><p><em>time</em>, <em>datetime</em> to determine query duration</p></li>
+<li><p><a class="reference external" href="https://docs.astropy.org/en/stable/table/index.html"><em>astropy.table vstack</em></a> to concatenate chunk result tables</p></li>
+<li><p><a class="reference external" href="https://docs.astropy.org/en/stable/config/index.html"><em>astropy.conf</em></a> to modify number of lines displayed for tables, for brevity</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">vstack</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">conf</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">max_lines</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="connect-to-tap-service">
+<h2>Connect to TAP service<a class="headerlink" href="#connect-to-tap-service" title="Link to this heading">#</a></h2>
+<p>We will be connecting to the PanSTARRS (PS1) Data release 2 (DR2) catalog. Specifically, we will use the <code class="docutils literal notranslate"><span class="pre">ps1_dr2</span></code> catalogs available from the new <a class="reference external" href="https://mast.stsci.edu/vo-tap/api/v0.1/mast_catalogs/">postgres-backed TAP service</a>, which offers improved performance relative to the legacy database (by factors of 100 or greater, in many cases).</p>
+<p>See the <a class="reference external" href="https://outerspace.stsci.edu/x/DIFeGg">PS1 documentation</a>) for information about the tables available with this new TAP service.</p>
+<p>We begin by connecting to the MAST PanSTARRS DR2 TAP service.</p>
+<p><em>(Note: See https://mast.stsci.edu/vo-tap/ for a full list of MAST TAP services.)</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span>
+    <span class="s2">"https://mast.stsci.edu/vo-tap/api/v0.1/mast_catalogs"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="tap-service-limits">
+<h3>TAP service limits<a class="headerlink" href="#tap-service-limits" title="Link to this heading">#</a></h3>
+<p>We will use the pyvo <code class="docutils literal notranslate"><span class="pre">describe()</span></code> method to discover the methods, capabilities, and maximum result set size for this service.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_service</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Capability ivo://ivoa.net/std/TAP
+
+Interface vs:ParamHTTP
+    https://mast.stsci.edu/vo-tap/api/v0.1/mast_catalogs
+
+Language ADQL
+    ivo://ivoa.net/std/TAPRegExt#features-adqlgeo
+        CONTAINS
+
+        POINT
+
+        CIRCLE
+
+
+    ivo://edu.stsci.archive/std/exts#features-adql-bitwise
+        BIT_AND
+            The ampersand (&amp;) operator performs a bitwise AND operation on two integer operands
+
+        BIT_OR
+            The vertical bar (|) operator performs a bitwise OR operation on two integer operands.
+
+        BIT_XOR
+            The circumflex (^) operator performs a bitwise XOR (exclusive or) operation on two integer operands.
+
+        BIT_NOT
+            The tilde (~) operator performs a bitwise NOT operation on an integer operand.
+
+
+Output format application/json
+    Also available as json
+
+Output format text/csv;header=present
+    Also available as csv
+
+Output format application/xml
+    Also available as xml
+
+Output format application/x-votable+xml
+    Also available as votable
+
+Maximum size of resultsets
+    Default 100000 row
+    Maximum 100000 row
+
+
+Capability ivo://ivoa.net/std/DALI#examples
+
+Interface vr:WebBrowser
+    https://mast.stsci.edu/vo-tap/api/v0.1/mast_catalogs/examples
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see the service supports queries with ADQL, with a few specific ADQL features for geometric searching and bigwise operations), and that the maximum result size is <strong>100,000 rows</strong>.</p>
+<p>For pyvo, the default job execution duration is 600 seconds.</p>
+<p>It is possible to set this to longer durations, but most tap services enforace a maximum duration.</p>
+<p>We do the following to find the maximum duration for the MAST TAP service:</p>
+<ol class="arabic simple">
+<li><p><em>Create a job with an empty query.</em></p></li>
+<li><p><em>Set the execution duration to a very long time.</em></p></li>
+<li><p><em>Print the job execution duration: this will be the lesser of the requested or service-maximum duration.</em></p></li>
+<li><p><em>Delete the job</em></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the empty job</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">TAP_service</span><span class="o">.</span><span class="n">submit_job</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+
+<span class="c1"># Set execution duration</span>
+<span class="n">job</span><span class="o">.</span><span class="n">execution_duration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e7</span><span class="p">)</span>   <span class="c1"># seconds; Almost 1/3 of a year</span>
+
+<span class="c1"># Print the duration allowed, the lesser of the requested or service-maximum value:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">execution_duration</span><span class="p">)</span>
+
+<span class="c1"># Clean up &amp; delete the job</span>
+<span class="n">job</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1200.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, we were not able to set the duration to 1/3 of a year. Instead, the service-imposed maximum duration is <strong>1200 seconds</strong> (20 min).</p>
+<hr class="docutils" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="too-many-rows">
+<h2>Too many rows<a class="headerlink" href="#too-many-rows" title="Link to this heading">#</a></h2>
+<p>We will begin with the case of how to chunk a query that would return too many rows.</p>
+<p>Here, we will work from the query <a class="reference internal" href="#../PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_basic_filtering_tutorial.md"><span class="xref myst">Q2 from the PanSTARRS “20 queries”</span></a>, which looks for galaxies with a specified blue surface brightness within a fairly large swath of the sky (RA between 170 and 190 deg, and Decl. less than 0).</p>
+<p>The full query, with no subselections to implement chunking, is written as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_adql_query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">SELECT fmo.objid, fmo.gfkronmag,</span>
+<span class="s2">   fmo.gfkronmag + 2.5*log10(PI()*POWER(so.gkronrad,2)) AS bsurfmag, </span>
+<span class="s2">   fmo.ramean, fmo.decmean</span>
+<span class="s2">FROM ps1_dr2.forced_mean_object as fmo</span>
+<span class="s2">JOIN ps1_dr2.stack_object AS so ON </span>
+<span class="s2">    fmo.objid=so.objid</span>
+<span class="s2">WHERE ((fmo.gfkronmag &gt; 0) AND</span>
+<span class="s2">       (fmo.gfpsfmag - fmo.gfkronmag &gt; 0.05)) -- galaxies</span>
+<span class="s2">AND fmo.ramean BETWEEN 170 AND 190            -- ra substitute for super-gal coords</span>
+<span class="s2">AND fmo.decmean &lt; 0</span>
+<span class="s2">AND fmo.gfkronmag + 2.5*log10(PI()*POWER(so.gkronrad,2))</span>
+<span class="s2">       BETWEEN 23 AND 25                      -- mag per sq arcsec</span>
+<span class="s2">AND so.primarydetection = 1                   -- primary detection in stack_object"""</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p><a id="Q2-query-scaling"></a></p>
+<section id="determining-the-query-row-time-scaling">
+<h3>Determining the query row/time scaling<a class="headerlink" href="#determining-the-query-row-time-scaling" title="Link to this heading">#</a></h3>
+<p>First, we need submit a test query with a restricted range in order to estimate how the query execution time and number of rows scales with ID range (or area).</p>
+<p>To do this, we will place limits on the <code class="docutils literal notranslate"><span class="pre">objid</span></code>.</p>
+<p>We will leverage the fact that <a class="reference external" href="https://outerspace.stsci.edu/spaces/PanSTARRS/pages/298812384/PS1+Object+Identifiers">PanSTARRS object identifiers</a> are determined from their position on the sky to determine an <code class="docutils literal notranslate"><span class="pre">objid</span></code> range. Since the first 5 digits of <code class="docutils literal notranslate"><span class="pre">objid</span></code> are determined from <code class="docutils literal notranslate"><span class="pre">floor((decl+90)/0.00833333)</span></code>, we can easily determine objid ranges from a declination range.</p>
+<p>For this first test query, we will limit <code class="docutils literal notranslate"><span class="pre">objid</span></code> based on a declination range of -5<span class="math notranslate nohighlight">\(^{\circ}\)</span><span class="math notranslate nohighlight">\(\leq\)</span>decmean<span class="math notranslate nohighlight">\(&lt;\)</span>0<span class="math notranslate nohighlight">\(^{\circ}\)</span>.</p>
+<p>We begin by writing a convenience function to obtain an objid from a given declination value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_objid_from_decl</span><span class="p">(</span><span class="n">decl</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">decl</span><span class="o">+</span><span class="mi">90</span><span class="p">)</span><span class="o">/</span><span class="mf">0.00833333</span><span class="p">)</span><span class="o">*</span><span class="mf">1e13</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we compute the objids that correspond to the declination range of [-5, 0].</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">decl_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">objidrange</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_objid_from_decl</span><span class="p">(</span><span class="n">decl</span><span class="p">)</span> <span class="k">for</span> <span class="n">decl</span> <span class="ow">in</span> <span class="n">decl_range</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now construct our test query by appending constraints that the objid be between this range to the full, non-chunked query, and print the resulting query string for inspection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_adql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">full_adql_query</span><span class="si">}</span>
+<span class="s2">AND fmo.objid &gt;= </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">           -- dec range subselection</span>
+<span class="s2">AND fmo.objid &lt; </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"""</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_adql_query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT fmo.objid, fmo.gfkronmag,
+   fmo.gfkronmag + 2.5*log10(PI()*POWER(so.gkronrad,2)) AS bsurfmag, 
+   fmo.ramean, fmo.decmean
+FROM ps1_dr2.forced_mean_object as fmo
+JOIN ps1_dr2.stack_object AS so ON 
+    fmo.objid=so.objid
+WHERE ((fmo.gfkronmag &gt; 0) AND
+       (fmo.gfpsfmag - fmo.gfkronmag &gt; 0.05)) -- galaxies
+AND fmo.ramean BETWEEN 170 AND 190            -- ra substitute for super-gal coords
+AND fmo.decmean &lt; 0
+AND fmo.gfkronmag + 2.5*log10(PI()*POWER(so.gkronrad,2))
+       BETWEEN 23 AND 25                      -- mag per sq arcsec
+AND so.primarydetection = 1                   -- primary detection in stack_object
+AND fmo.objid &gt;= 102000000000000000           -- dec range subselection
+AND fmo.objid &lt; 108000000000000000
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lastly, we submit this test query to the TAP service.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">TAP_service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="n">test_adql_query</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Elapsed time: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:02:04.331509
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.13/site-packages/pyvo/dal/query.py:403: DALOverflowWarning: Results truncated due to server limits. Consider setting a maxrec value.
+  warn("Results truncated due to server limits. Consider "
+</pre></div>
+</div>
+</div>
+</div>
+<p>This test query takes about 1 minute to run, well under the service maximum, so timing is not an immediate concern for our chunk partitioning.</p>
+<p>To inspect the results, we convert the returned table to an astropy table, for easy viewing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_results</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+<span class="n">TAP_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=100000</i>
+<table id="table140101714388112" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>gfkronmag</th><th>bsurfmag</th><th>ramean</th><th>decmean</th></tr></thead>
+<thead><tr><th></th><th>mag</th><th></th><th>deg</th><th>deg</th></tr></thead>
+<thead><tr><th>int64</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>102041706316048423</td><td>21.0636</td><td>24.630941</td><td>170.6315858100054</td><td>-4.959970575634733</td></tr>
+<tr><td>102121709753724579</td><td>20.6712</td><td>24.51368</td><td>170.9753464296523</td><td>-4.896576727600447</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>107161880533667430</td><td>20.7642</td><td>24.834213</td><td>188.05341636166565</td><td>-0.6942819353511632</td></tr>
+<tr><td>107311880468313499</td><td>18.2554</td><td>23.077982</td><td>188.04681959696865</td><td>-0.5724883104145339</td></tr>
+</table></div></div></div>
+</div>
+<p>We see that the results table has <strong><em>100,000 rows</em>, equal to the service maximum limit</strong> — indicating that the results were almost certainly truncated.</p>
+<p>Thus, we will submit a second test query with a smaller declination limit range of -1<span class="math notranslate nohighlight">\(^{\circ}\)</span><span class="math notranslate nohighlight">\(\leq\)</span>decmean<span class="math notranslate nohighlight">\(&lt;\)</span>0<span class="math notranslate nohighlight">\(^{\circ}\)</span>.</p>
+<p>We again compute the objid range corresponding to the declination range [-1, 0], and construct our test query by appending this objid range constraint to the full query. We once more print the test query for inspection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">decl_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">objidrange</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_objid_from_decl</span><span class="p">(</span><span class="n">decl</span><span class="p">)</span> <span class="k">for</span> <span class="n">decl</span> <span class="ow">in</span> <span class="n">decl_range</span><span class="p">]</span>
+
+<span class="n">test_adql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">full_adql_query</span><span class="si">}</span>
+<span class="s2">AND fmo.objid &gt;= </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">           -- dec range subselection</span>
+<span class="s2">AND fmo.objid &lt; </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"""</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_adql_query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT fmo.objid, fmo.gfkronmag,
+   fmo.gfkronmag + 2.5*log10(PI()*POWER(so.gkronrad,2)) AS bsurfmag, 
+   fmo.ramean, fmo.decmean
+FROM ps1_dr2.forced_mean_object as fmo
+JOIN ps1_dr2.stack_object AS so ON 
+    fmo.objid=so.objid
+WHERE ((fmo.gfkronmag &gt; 0) AND
+       (fmo.gfpsfmag - fmo.gfkronmag &gt; 0.05)) -- galaxies
+AND fmo.ramean BETWEEN 170 AND 190            -- ra substitute for super-gal coords
+AND fmo.decmean &lt; 0
+AND fmo.gfkronmag + 2.5*log10(PI()*POWER(so.gkronrad,2))
+       BETWEEN 23 AND 25                      -- mag per sq arcsec
+AND so.primarydetection = 1                   -- primary detection in stack_object
+AND fmo.objid &gt;= 106800000000000000           -- dec range subselection
+AND fmo.objid &lt; 108000000000000000
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now submit this second, smaller test query to the TAP service.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">TAP_service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="n">test_adql_query</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Elapsed time: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:07.736002
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, this test query takes less time to run.</p>
+<p>We again convert the results to an astropy table, and inspect our sample.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_results</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+<span class="n">TAP_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=41150</i>
+<table id="table140100817302064" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>gfkronmag</th><th>bsurfmag</th><th>ramean</th><th>decmean</th></tr></thead>
+<thead><tr><th></th><th>mag</th><th></th><th>deg</th><th>deg</th></tr></thead>
+<thead><tr><th>int64</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>106801761804537246</td><td>21.0264</td><td>24.37091</td><td>176.1804180719795</td><td>-0.9943372995909542</td></tr>
+<tr><td>106801786560799476</td><td>21.8899</td><td>24.966534</td><td>178.65605510089486</td><td>-0.992580678856578</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>107981892069445744</td><td>21.3656</td><td>24.538668</td><td>189.20695140477864</td><td>-0.012241674146264888</td></tr>
+<tr><td>107991856640141349</td><td>20.6315</td><td>24.43889</td><td>185.66373688234964</td><td>-0.007689622447400427</td></tr>
+</table></div></div></div>
+</div>
+<p>This second test query has fewer results than the maximum (41,150), indicating we have received all matching results.</p>
+<p>Since the area of a 1 degree range of declination, for the same RA range, decreases away from the equator, all other 1 degree declination chunks from -30 deg to 0 deg likely have fewer objects.</p>
+<p>So in this case, we will proceed with <strong>declination range chunks of [-30,-29), [-29,-28), …, [-2, -1), [-1, 0.01).</strong>  Note we slightly pad the upper limit (to account for the remaining digits in the objids), ensuring the objects very close to decl. ~ 0 deg are included.</p>
+<p><em>(Note that in general, the number of results will also scale with source density — a concern for high density regions such as the galactic plane.)</em></p>
+<hr class="docutils" />
+<p><a id="Q2-submitting-query"></a></p>
+</section>
+<section id="submitting-the-partitioned-query">
+<h3>Submitting the partitioned query<a class="headerlink" href="#submitting-the-partitioned-query" title="Link to this heading">#</a></h3>
+<p>With the query chunking scheme defined, we next proceed to submit the partitioned queries.</p>
+<p>Submitting all chunks in parallel (simultaneously) will overuse database resources, and is <strong>likely to result in your IP address being blocked</strong> by MAST. It is acceptable to submit a few (<strong><span class="math notranslate nohighlight">\(\boldsymbol{\sim}\)</span>5</strong>) simultaneous queries to MAST’s TAP services.</p>
+<p>Thus, for our example query, we will structure our job submission as follows:</p>
+<ol class="arabic simple">
+<li><p>Generate all 1 deg. declination range query ADQL strings.</p></li>
+<li><p>Loop over the full set of chunked queries: submit 5 queries simultaneously, wait for these to complete, and gather the results; then proceed to the next simultaneous set of queries.</p></li>
+</ol>
+<p>As part of this process, we well also check that each query chunk returns FEWER than the maximum number of rows (to ensure no results are lost), and that each query chunk successfully executed.</p>
+<p>We use a short helper function, defined below, to handle the process of submitting simultaneous queries and gathering the results, including checking for errors or potentially missing results:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Helper function to run simultaneous queries and gather the results:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_simultaneous_queries</span><span class="p">(</span>
+    <span class="n">queries</span><span class="p">,</span> <span class="n">tap_service</span><span class="p">,</span>
+    <span class="n">sleep_interval_sec</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">maximum_rows</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="n">execution_duration</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="c1"># Start simultaneous jobs:</span>
+    <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="c1"># Initialize job</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">tap_service</span><span class="o">.</span><span class="n">submit_job</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="c1"># Set execution time, if specified:</span>
+        <span class="k">if</span> <span class="n">execution_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">execution_duration</span> <span class="o">=</span> <span class="n">execution_duration</span>
+
+        <span class="c1"># Run job and add to list:</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+
+    <span class="c1"># Wait for all jobs to be finished. </span>
+    <span class="c1"># Based on pyvo AsyncTAPJob.wait()</span>
+    <span class="c1"># https://pyvo.readthedocs.io/en/latest/_modules/pyvo/dal/tap.html#AsyncTAPJob.wait</span>
+    <span class="c1"># Active phases:</span>
+    <span class="n">active_phases</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"QUEUED"</span><span class="p">,</span> <span class="s2">"EXECUTING"</span><span class="p">,</span> <span class="s2">"RUN"</span><span class="p">,</span> <span class="s2">"COMPLETED"</span><span class="p">,</span> <span class="s2">"ERROR"</span><span class="p">,</span> <span class="s2">"UNKNOWN"</span><span class="p">}</span>
+    <span class="n">completed_phases</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"COMPLETED"</span><span class="p">}</span>
+    <span class="n">failed_phases</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"ABORTED"</span><span class="p">,</span> <span class="s2">"ERROR"</span><span class="p">}</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Check all job phases:</span>
+        <span class="n">statuses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">job</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">jobs</span><span class="p">):</span>
+            <span class="n">job_phase</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">phase</span>
+            <span class="k">if</span> <span class="n">job_phase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">active_phases</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"Job no longer active!</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"URL: </span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="s2">"Query:</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">job_phase</span> <span class="ow">in</span> <span class="n">failed_phases</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Job status: </span><span class="si">{</span><span class="n">job_phase</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"URL: </span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="s2">"Query:</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+
+            <span class="n">statuses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span> <span class="k">if</span> <span class="n">job_phase</span> <span class="ow">in</span> <span class="n">completed_phases</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Break if all jobs are completed:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">statuses</span><span class="p">):</span>
+            <span class="k">break</span>
+
+        <span class="c1"># Otherwise, pause until next check</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_interval_sec</span><span class="p">)</span>
+
+    <span class="c1"># Collect results, and check that no query hit the maximum number of results</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">()</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="n">maximum_rows</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Query hit maximum number of results!</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"URL: </span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"Query:</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># Delete the job:</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define variables with the chunked declination ranges, and make a list constaining the ADQL query strings for each of the 1-degree declination chunks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the full set of query chunks, with 1 deg. declination ranges:</span>
+
+<span class="n">full_decl_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">decl_step</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Generate an array with declination values on the boundaries:</span>
+<span class="n">decl_bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">full_decl_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">full_decl_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">decl_step</span><span class="p">,</span> <span class="n">decl_step</span><span class="p">)</span>
+<span class="c1"># List comprehension to make lists for each decl. chunk range:</span>
+<span class="n">decl_ranges</span> <span class="o">=</span> <span class="p">[[</span><span class="n">decl_bounds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">decl_bounds</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">decl_bounds</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># Pad the upper limit on the last range, to account for other digits in the objids </span>
+<span class="c1"># for objects at decl = 0 deg.</span>
+<span class="n">decl_ranges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c1"># Generate chunk queries</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">decl_range</span> <span class="ow">in</span> <span class="n">decl_ranges</span><span class="p">:</span>
+    <span class="n">objidrange</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_objid_from_decl</span><span class="p">(</span><span class="n">decl</span><span class="p">)</span> <span class="k">for</span> <span class="n">decl</span> <span class="ow">in</span> <span class="n">decl_range</span><span class="p">]</span>
+    <span class="n">chunk_adql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">full_adql_query</span><span class="si">}</span>
+<span class="s2">        AND fmo.objid &gt;= </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">           -- dec range subselection</span>
+<span class="s2">        AND fmo.objid &lt; </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"""</span>
+    <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk_adql_query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Submit these queries in batches of 5 chunks, gathering the results for all before moving on to the next batch. At the end, we aggregate all the results into a single astropy table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Submit all query chunks and gather results:</span>
+
+<span class="n">n_per_chunk</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Number of queries run simultaneously</span>
+<span class="n">n_queries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+<span class="n">results_all</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Get wall-time to run full set of query chunks</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_queries</span><span class="o">/</span><span class="n">n_per_chunk</span><span class="p">))):</span>
+    <span class="n">imin</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">n_per_chunk</span>
+    <span class="n">imax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">n_queries</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">n_per_chunk</span><span class="p">])</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">run_simultaneous_queries</span><span class="p">(</span>
+        <span class="n">queries</span><span class="p">[</span><span class="n">imin</span><span class="p">:</span><span class="n">imax</span><span class="p">],</span> <span class="n">TAP_service</span><span class="p">,</span>
+        <span class="n">sleep_interval_sec</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">maximum_rows</span><span class="o">=</span><span class="mi">100000</span>
+    <span class="p">)</span>
+    <span class="n">results_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Elapsed time for full query: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Aggregate all results into one table:</span>
+<span class="c1"># Concatenate individual tables:</span>
+<span class="n">TAP_results</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">results_all</span><span class="p">)</span>
+
+<span class="c1"># Clear memory:</span>
+<span class="n">results_all</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">results</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time for full query: 0:11:29.796263
+</pre></div>
+</div>
+</div>
+</div>
+<p>By submitting 5 query chunks at a time, it takes about <strong>9 minutes</strong> to run all partitions of the full query, obtaining the full result set of about <strong>1.07 million objects</strong>, which we show an exerpt of below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=1067932</i>
+<table id="table140100812442624" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>gfkronmag</th><th>bsurfmag</th><th>ramean</th><th>decmean</th></tr></thead>
+<thead><tr><th></th><th>mag</th><th></th><th>deg</th><th>deg</th></tr></thead>
+<thead><tr><th>int64</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>72001769310881822</td><td>20.8664</td><td>24.617413</td><td>176.93109533987945</td><td>-29.998744200495256</td></tr>
+<tr><td>72001879471499507</td><td>20.6658</td><td>24.056337</td><td>187.94717451</td><td>-29.99228677</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>107991822978745717</td><td>20.649</td><td>24.1048</td><td>182.29772275420174</td><td>-0.003948844347721814</td></tr>
+<tr><td>107991857512912362</td><td>21.6208</td><td>24.814499</td><td>185.75138589629026</td><td>-0.006763278134239454</td></tr>
+</table></div></div></div>
+</div>
+<div class="alert alert-block alert-info">
+<b><u>Tip:</u> <i>Ensuring robustness against individual query chunk failures</i></b>
+<p>Depending on the complexity and total time required to run a query, it would be beneficial to modify the above approach to
+ensure that results from successfully executed chunks are not lost in the event that another chunk query fails (due to, e.g., isolated timeout issues).</p>
+<p>This could be accomplished by saving the individual chunk results to disk, and then only rerunning those chunks where the query was previously unsuccessful.</p>
+</div><hr class="docutils" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="long-query-duration">
+<h2>Long query duration<a class="headerlink" href="#long-query-duration" title="Link to this heading">#</a></h2>
+<p>Next we will cover the case of how to chunk a query that would take too long to execute.</p>
+<p>We will use <a class="reference internal" href="#../PS1_20_query_tutorials/PS1_20q_query_cutouts_tutorial/PS1_20q_query_cutouts_tutorial.md"><span class="xref myst">Q4 from the PanSTARRS “20 queries”</span></a>, which looks for galaxies with large galaxies with large red surface brightnes and high ellipticity.</p>
+<p>The full query (again with no sub-selections to implement chunking) is written as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_adql_query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">SELECT so.objid, so.ramean, so.decmean, so.rkronrad, so.rkronmag,</span>
+<span class="s2">   so.rkronmag + 2.5*log10(PI()*POWER(so.rkronrad,2)) as rsurfmag,</span>
+<span class="s2">   smf.rserab, smf.rserchisq,</span>
+<span class="s2">   sqrt(1-power(smf.rserab,2)) as ellipticity</span>
+<span class="s2">FROM ps1_dr2.stack_model_fit_ser AS smf</span>
+<span class="s2">JOIN ps1_dr2.stack_object AS so ON </span>
+<span class="s2">    smf.objid=so.objid </span>
+<span class="s2">    AND smf.uniquepspsstid=so.uniquepspsstid</span>
+<span class="s2">WHERE so.rkronrad BETWEEN 30 AND 60</span>
+<span class="s2">  AND so.rkronmag &gt; 0</span>
+<span class="s2">  AND so.rkronmag + 2.5*log10(PI()*POWER(so.rkronrad,2)) &lt; 24 -- mag per sq arcsec</span>
+<span class="s2">  AND smf.rserchisq &gt; 0</span>
+<span class="s2">  AND smf.rserab &lt; sqrt(0.75)</span>
+<span class="s2">  AND so.rpsfqfperfect &gt; 0.9</span>
+<span class="s2">  AND so.ndetections &gt; 3</span>
+<span class="s2">  AND so.nr &gt; 1"""</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p><a id="Q4-query-scaling"></a></p>
+<section id="id1">
+<h3>Determining the query row/time scaling<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>As before, we will submit a test query with a restricted range in order to estimate how the query execution time and number of rows scales.</p>
+<p>Again, we will limit the <code class="docutils literal notranslate"><span class="pre">objid</span></code> range in for our test query.</p>
+<p>Since the first 5 digits of PanSTARRS <code class="docutils literal notranslate"><span class="pre">objid</span></code> are determined by <code class="docutils literal notranslate"><span class="pre">floor((decl+90)/0.00833333)</span></code> (see the <a class="reference external" href="https://outerspace.stsci.edu/spaces/PanSTARRS/pages/298812384/PS1+Object+Identifiers">PanSTARRS object identifiers</a> documentation), PanSTARRS <code class="docutils literal notranslate"><span class="pre">objid</span></code>s fall within the estimated range 72000000000000000 to 216010000000000000 (using declination -30 to 90.01 deg, with padding to ensuring all objects within -30 to 90 deg are included).</p>
+<p>For this test query, we will restrict the <code class="docutils literal notranslate"><span class="pre">objid</span></code>s to between 129500000000000000 and 133500000000000000 (roughly 1/36th of the estimated full range).</p>
+<p>We construct this test query by appending the objid range constraints to the end of the full query, and print the ADQL query for inspection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_adql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">full_adql_query</span><span class="si">}</span>
+<span class="s2">  AND so.objid &gt;= 129500000000000000     -- objid range subselection</span>
+<span class="s2">  AND so.objid &lt; 133500000000000000"""</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_adql_query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT so.objid, so.ramean, so.decmean, so.rkronrad, so.rkronmag,
+   so.rkronmag + 2.5*log10(PI()*POWER(so.rkronrad,2)) as rsurfmag,
+   smf.rserab, smf.rserchisq,
+   sqrt(1-power(smf.rserab,2)) as ellipticity
+FROM ps1_dr2.stack_model_fit_ser AS smf
+JOIN ps1_dr2.stack_object AS so ON 
+    smf.objid=so.objid 
+    AND smf.uniquepspsstid=so.uniquepspsstid
+WHERE so.rkronrad BETWEEN 30 AND 60
+  AND so.rkronmag &gt; 0
+  AND so.rkronmag + 2.5*log10(PI()*POWER(so.rkronrad,2)) &lt; 24 -- mag per sq arcsec
+  AND smf.rserchisq &gt; 0
+  AND smf.rserab &lt; sqrt(0.75)
+  AND so.rpsfqfperfect &gt; 0.9
+  AND so.ndetections &gt; 3
+  AND so.nr &gt; 1
+  AND so.objid &gt;= 129500000000000000     -- objid range subselection
+  AND so.objid &lt; 133500000000000000
+</pre></div>
+</div>
+</div>
+</div>
+<p>As is now familiar, we now submit this query to the MAST TAP service.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">TAP_service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="n">test_adql_query</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Elapsed time: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:26.424628
+</pre></div>
+</div>
+</div>
+</div>
+<p>This test query takes about 45 seconds and returns 67 rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_results</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+<span class="n">TAP_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=67</i>
+<table id="table140101714608560" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>rkronrad</th><th>rkronmag</th><th>rsurfmag</th><th>rserab</th><th>rserchisq</th><th>ellipticity</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th></th><th>mag</th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
+<tr><td>129571656898942488</td><td>165.68995133731482</td><td>17.97665909588929</td><td>30.2251</td><td>14.0329</td><td>22.677614</td><td>0.627762</td><td>35.8625</td><td>0.77840537</td></tr>
+<tr><td>133411457834359729</td><td>145.7834986534657</td><td>21.182652122551964</td><td>32.8805</td><td>13.5707</td><td>22.398266</td><td>0.662182</td><td>70.7057</td><td>0.74934304</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>132951722099024557</td><td>172.20989583868442</td><td>20.795019985650388</td><td>31.9708</td><td>11.9064</td><td>20.673042</td><td>0.320779</td><td>38750.6</td><td>0.94715405</td></tr>
+<tr><td>130591826543795979</td><td>182.65443880387303</td><td>18.829378785040024</td><td>30.0693</td><td>14.6184</td><td>23.25189</td><td>0.208932</td><td>16.0258</td><td>0.9779302</td></tr>
+</table></div></div></div>
+</div>
+<p>As this test query has fewer than the maximum number of rows, no results were omitted — and we can thus use this to determine the query scaling.</p>
+<p>We thus estimate that executing the query over the full PanSTARRS catalog (~36 times larger) would take about <strong>27 minutes</strong> and return about <strong>2100 rows</strong>.</p>
+<p>This full query would take <strong>longer than the service time limit</strong>, requiring us to submit query chunks in order to obtain our full sample.</p>
+<p>Based on our test query execution time, and the service maximum time of 20 minutes, we will thus proceed by splitting our query in half, with objid chunks of [72000000000000000, 144005000000000000), [144005000000000000, 216010000000000000).</p>
+<hr class="docutils" />
+<p><a id="Q4-submitting-query"></a></p>
+</section>
+<section id="id2">
+<h3>Submitting the partitioned query<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>As before, we now proceed to generate and submit the partitioned queries.</p>
+<p>Since we will only use 2 chunks in this case, we can submit both simultaneously (because up to 5 parallel queries is reasonable given database resources).</p>
+<p>However, we need to increase the the execution duration to its <strong>maximum of 20 minutes</strong>, to cover the estimated ~13.5 minute execution time per chunk.</p>
+<p>We will again use the previously-defined helper function to handle job submission, result gathering, and error checks.</p>
+<p>We first define our chunk objid ranges, and construct a list with the chunked ADQL queries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the full set of query chunks, with the two objid ranges:</span>
+<span class="n">objid_ranges</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">72000000000000000</span><span class="p">,</span> <span class="mi">144005000000000000</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">144005000000000000</span><span class="p">,</span> <span class="mi">216010000000000000</span><span class="p">]</span>
+    <span class="p">]</span>
+<span class="c1"># Generate chunk queries</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">objidrange</span> <span class="ow">in</span> <span class="n">objid_ranges</span><span class="p">:</span>
+    <span class="n">chunk_adql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">full_adql_query</span><span class="si">}</span>
+<span class="s2">  AND so.objid &gt;= </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">     -- objid range subselection</span>
+<span class="s2">  AND so.objid &lt; </span><span class="si">{</span><span class="n">objidrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"""</span>
+    <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk_adql_query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now submit both queries at the same time, using our helper function as before. Here we also specify that the execution duration should be increased to its maximum (1200 seconds).
+The results of each chunk are combined into a single astropy table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Submit all query chunks and gather results:</span>
+
+<span class="c1"># Get wall-time to run full set of query chunks</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">run_simultaneous_queries</span><span class="p">(</span>
+    <span class="n">queries</span><span class="p">,</span> <span class="n">TAP_service</span><span class="p">,</span>
+    <span class="n">sleep_interval_sec</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">maximum_rows</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="n">execution_duration</span><span class="o">=</span><span class="mi">1200</span>
+<span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Elapsed time for full query: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Aggregate all results into one table:</span>
+<span class="c1"># Concatenate individual tables:</span>
+<span class="n">TAP_results</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+<span class="c1"># Clear memory:</span>
+<span class="n">results</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time for full query: 0:16:35.069876
+</pre></div>
+</div>
+</div>
+</div>
+<p>By submitting the 2 query chunks simultaneously, it takes about <strong>8 minutes</strong> to run both partitions of the full query,
+obtaining the full result set of <strong>1745 objects</strong>, as we show below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAP_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=1745</i>
+<table id="table140100813945536" class="table-striped table-bordered table-condensed">
+<thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>rkronrad</th><th>rkronmag</th><th>rsurfmag</th><th>rserab</th><th>rserchisq</th><th>ellipticity</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th></th><th>mag</th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
+<tr><td>99180237751995701</td><td>23.775260209125967</td><td>-7.345575226444742</td><td>36.4107</td><td>11.8984</td><td>20.94742</td><td>0.655394</td><td>81.3848</td><td>0.7552872</td></tr>
+<tr><td>109310398482563789</td><td>39.84826018165527</td><td>1.094452132664483</td><td>36.5539</td><td>11.8371</td><td>20.894644</td><td>0.630445</td><td>389.114</td><td>0.7762339</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>165032517455643543</td><td>251.74543742</td><td>47.5273768</td><td>35.5246</td><td>8.94353</td><td>17.93905</td><td>0.570735</td><td>23971.6</td><td>0.8211343</td></tr>
+<tr><td>188521240781043229</td><td>124.07799943301033</td><td>67.10203597322113</td><td>32.4299</td><td>14.9076</td><td>23.705204</td><td>0.254754</td><td>38.9095</td><td>0.9670059</td></tr>
+</table></div></div></div>
+</div>
+<p>This does turn out to be faster than our initial estimate.  However, this exercise does demonstrate what points to consider when benchmarking how a large query should be partitioned.</p>
+<div class="alert alert-block alert-info">
+<b><u>Note:</u> <i>Intrinsic source density variations</i></b>
+<p>In this case, the full result set size is only about 80% of what we estimated, suggesting our test query selected objects in an ID range (equivalently, a portion of the sky) with a higher than average source density.</p>
+<p>If the source density is known to be variable (with many selected objects in e.g., the galactic plane or nearby galaxies), submitting a test query covering a high density region/ID range will provide a conservative scaling estimate.  This will ensure none of the chunks go over the TAP service time/row limits.</p>
+</div></section>
+</section>
+<hr class="docutils" />
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">#</a></h2>
+<section id="another-chunking-option-for-panstarrs-randomid">
+<h3>Another chunking option for PanSTARRS: <code class="docutils literal notranslate"><span class="pre">randomid</span></code><a class="headerlink" href="#another-chunking-option-for-panstarrs-randomid" title="Link to this heading">#</a></h3>
+<p>Another option available for the PanSTARRS catalogs (though not universally available for other surveys) is to chunk
+queries by ranges of <code class="docutils literal notranslate"><span class="pre">randomid</span></code> from the ObjectThin table (and joins thereof). <code class="docutils literal notranslate"><span class="pre">randomid</span></code> is a random number between 0 and 1 assigned to each object, regardless of position on the sky.</p>
+<p>However, this tutorial presented focuses on using object ID ranges (extensible to position ranges) to provide broader applicability to queries with other datasets without similar random IDs.</p>
+</section>
+<section id="table-access-protocol">
+<h3>Table Access Protocol<a class="headerlink" href="#table-access-protocol" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>IVOA standard for RESTful web service access to tabular data</p></li>
+<li><p>http://www.ivoa.net/documents/TAP/</p></li>
+</ul>
+</section>
+<section id="panstarrs-1-dr-2">
+<h3>PanSTARRS 1 DR 2<a class="headerlink" href="#panstarrs-1-dr-2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>https://outerspace.stsci.edu/display/PanSTARRS/</p></li>
+<li><p><a class="reference external" href="https://outerspace.stsci.edu/x/DIFeGg">Migration guide from legacy to new PS1 TAP service</a></p></li>
+</ul>
+</section>
+<section id="astronomical-query-data-language-2-0">
+<h3>Astronomical Query Data Language (2.0)<a class="headerlink" href="#astronomical-query-data-language-2-0" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>IVOA standard for querying astronomical data in tabular format, with geometric search support</p></li>
+<li><p>http://www.ivoa.net/documents/latest/ADQL.html</p></li>
+</ul>
+</section>
+<section id="pyvo">
+<h3>PyVO<a class="headerlink" href="#pyvo" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>an affiliated package for <a class="reference external" href="https://www.astropy.org/">astropy</a></p></li>
+<li><p>find and retrieve astronomical data available from archives that support standard IVOA virtual observatory service protocols.</p></li>
+<li><p>https://pyvo.readthedocs.io/en/latest/index.html</p></li>
+</ul>
+</section>
+<section id="full-list-of-mast-tap-services">
+<h3>Full list of MAST/TAP services<a class="headerlink" href="#full-list-of-mast-tap-services" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A full list of available MAST TAP services can be found at:</p></li>
+<li><p>https://mast.stsci.edu/vo-tap</p></li>
+</ul>
+</section>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the
+authors. Follow these links for more information about citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code></a></p></li>
+</ul>
+<p>If you use PanSTARRS data accessed through MAST for published research,
+please include the following acknowledgements, found at the following links:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive.stsci.edu/publishing/mission-acknowledgements#section-895d38a0-86b3-4143-b521-6cc3312701f9">Acknowledging PanSTARRS</a></p></li>
+<li><p><a class="reference external" href="https://archive.stsci.edu/gsc/mast_data_use.html">Acknowledging MAST</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author(s):</strong>  Sedona Price<br>
+<strong>Keyword(s):</strong> Tutorial, TAP, pyvo, ADQL, PanSTARRS <br>
+<strong>Last Updated:</strong> October 2026</p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/PanSTARRS/PS1_query_chunking"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connect-to-tap-service">Connect to TAP service</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tap-service-limits">TAP service limits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#too-many-rows">Too many rows</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-query-row-time-scaling">Determining the query row/time scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-the-partitioned-query">Submitting the partitioned query</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#long-query-duration">Long query duration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Determining the query row/time scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Submitting the partitioned query</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-chunking-option-for-panstarrs-randomid">Another chunking option for PanSTARRS: <code class="docutils literal notranslate"><span class="pre">randomid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-access-protocol">Table Access Protocol</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#panstarrs-1-dr-2">PanSTARRS 1 DR 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astronomical-query-data-language-2-0">Astronomical Query Data Language (2.0)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyvo">PyVO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-list-of-mast-tap-services">Full list of MAST/TAP services</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
