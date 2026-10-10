@@ -23,7 +23,7 @@ For more general information regarding Pan-STARRS1, see the [MAST Pan-STARRS1 ho
 ## Notebooks in this Chapter
 
 
-| Notebook        | Description                                                                                                                                                  |
+| Notebook / Tutorial Set     | Description                                                                                                                                                  |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [MAST Table Access Protocol Pan-STARRS1 DR2 Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html) | Tutorial demonstrating how to access Pan-STARRS 1 Data Release 2 catalogs via a Virtual Observatory standard Table Access Protocol (TAP) service at MAST. |
 | [Retrieving Pan-STARRS images Tutorial](https://spacetelescope.github.io/mast_notebooks/notebooks/PanSTARRS/PS1_image/PS1_image.html) | Tutorial of how to programmatically retrieve Pan-STARRS1 image cutouts using the PS1 Image Server at MAST. |
