@@ -921,7 +921,7 @@ latitude_bounds=&lt;CircleAnnulusSphericalSkyRegion(center=&lt;SkyCoord (ICRS): 
 <p>Currently, the <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span> <span class="pre">Catalogs</span></code> module only supports cone searches. Thus, we will need to use the bounding circle of this transformed region.</p>
 <p>Our helper class can provide specifically formatted spatial constraints using the <code class="docutils literal notranslate"><span class="pre">get_bounds_constraints()</span></code> method. The arguments specify the search type (bounding circle,
 bounding lon/lat, polygon), the output format (either “ADQL” or “astroquery.mast”),
-and the column names for longitude, latitude in the database table (“keys_pos_target”; for the PanSTARRS mean object table, these are <code class="docutils literal notranslate"><span class="pre">raMean</span></code>, <code class="docutils literal notranslate"><span class="pre">decMean</span></code></p>
+and the column names for longitude, latitude in the database table (“keys_pos_target”; for the PanSTARRS mean object table, these are <code class="docutils literal notranslate"><span class="pre">ramean</span></code>, <code class="docutils literal notranslate"><span class="pre">decmean</span></code></p>
 <p>We now use this method to obtain the bounding circle constraints for use with astroquery.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -953,13 +953,13 @@ and the column names for longitude, latitude in the database table (“keys_pos_
     <span class="n">collection</span><span class="o">=</span><span class="s2">"ps1_dr2"</span><span class="p">,</span>
     <span class="n">catalog</span><span class="o">=</span><span class="s2">"mean_object"</span><span class="p">,</span>
     <span class="o">**</span><span class="n">spatial_constraints</span><span class="p">,</span> 
-    <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">"objID"</span><span class="p">,</span> <span class="s2">"raMean"</span><span class="p">,</span> <span class="s2">"decMean"</span><span class="p">,</span>
-                 <span class="s2">"gMeanPSFMag"</span><span class="p">,</span> <span class="s2">"iMeanPSFMag"</span><span class="p">,</span> <span class="s2">"yMeanPSFMag"</span><span class="p">,</span>
-                 <span class="s2">"iMeanKronMag"</span><span class="p">],</span>    <span class="c1"># List of columns to return</span>
-    <span class="n">iMeanPSFMag</span><span class="o">=</span><span class="p">[</span><span class="s2">"&lt;18"</span><span class="p">,</span> <span class="s2">"&gt;-999"</span><span class="p">],</span>  <span class="c1"># i &lt; 18; &gt;-999 (missing mag); i band constraint</span>
-    <span class="n">gMeanPSFMag</span><span class="o">=</span><span class="s2">"&gt;-999"</span><span class="p">,</span>   <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
-    <span class="n">yMeanPSFMag</span><span class="o">=</span><span class="s2">"&gt;-999"</span><span class="p">,</span>   <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
-    <span class="n">iMeanKronMag</span><span class="o">=</span><span class="s2">"&gt;-999"</span><span class="p">,</span>  <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
+    <span class="n">select_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">"objid"</span><span class="p">,</span> <span class="s2">"ramean"</span><span class="p">,</span> <span class="s2">"decmean"</span><span class="p">,</span>
+                 <span class="s2">"gmeanpsfmag"</span><span class="p">,</span> <span class="s2">"imeanpsfmag"</span><span class="p">,</span> <span class="s2">"ymeanpsfmag"</span><span class="p">,</span>
+                 <span class="s2">"imeankronmag"</span><span class="p">],</span>    <span class="c1"># List of columns to return</span>
+    <span class="n">imeanpsfmag</span><span class="o">=</span><span class="p">[</span><span class="s2">"&lt;18"</span><span class="p">,</span> <span class="s2">"&gt;-999"</span><span class="p">],</span>  <span class="c1"># i &lt; 18; &gt;-999 (missing mag); i band constraint</span>
+    <span class="n">gmeanpsfmag</span><span class="o">=</span><span class="s2">"&gt;-999"</span><span class="p">,</span>   <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
+    <span class="n">ymeanpsfmag</span><span class="o">=</span><span class="s2">"&gt;-999"</span><span class="p">,</span>   <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
+    <span class="n">imeankronmag</span><span class="o">=</span><span class="s2">"&gt;-999"</span><span class="p">,</span>  <span class="c1"># mag &gt; -999; missing magnitudes are -999</span>
     <span class="n">ng</span><span class="o">=</span><span class="s2">"&gt;3"</span><span class="p">,</span>   <span class="c1"># ng &gt; 3; Number of detections in g</span>
     <span class="n">ni</span><span class="o">=</span><span class="s2">"&gt;3"</span><span class="p">,</span>   <span class="c1"># ni &gt; 3; Number of detections in i</span>
     <span class="n">ny</span><span class="o">=</span><span class="s2">"&gt;3"</span><span class="p">,</span>   <span class="c1"># ny &gt; 3; Number of detections in y</span>
@@ -989,7 +989,7 @@ and the column names for longitude, latitude in the database table (“keys_pos_
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:00:03.874060
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:00:05.508052
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>204
@@ -1003,7 +1003,7 @@ and the column names for longitude, latitude in the database table (“keys_pos_
 <p>Finally, we will use the helper class to post-process the returned table using the helper’s <code class="docutils literal notranslate"><span class="pre">parse_results()</span></code> method:</p>
 <ol class="arabic simple">
 <li><p>As we used a bounding circle for our query, we need to remove entries outside our specified region.</p></li>
-<li><p>To easily work with our results, the helper class will also add derived columns containing the transformed coordinates. <strong>This requires the database position columns to be specified.</strong> Here, we set <code class="docutils literal notranslate"><span class="pre">keys_pos_target=[&quot;raMean&quot;,</span> <span class="pre">&quot;decMean&quot;]</span></code>.</p></li>
+<li><p>To easily work with our results, the helper class will also add derived columns containing the transformed coordinates. <strong>This requires the database position columns to be specified.</strong> Here, we set <code class="docutils literal notranslate"><span class="pre">keys_pos_target=[&quot;ramean&quot;,</span> <span class="pre">&quot;decmean&quot;]</span></code>.</p></li>
 </ol>
 <p>By default, the names for the derived columns will be inferred from the coordinate frame longitude/latitude names. However, custom names can be specified using <code class="docutils literal notranslate"><span class="pre">keys_pos_orig</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">keys_pos_orig=[&quot;l_derived&quot;,</span> <span class="pre">&quot;b_derived&quot;]</span></code>).  The default units of the output coordinates will be degrees; this can be customized by setting <code class="docutils literal notranslate"><span class="pre">units_orig</span></code> to some other astropy angular unit.</p>
 <div class="cell docutils container">
@@ -1018,29 +1018,29 @@ and the column names for longitude, latitude in the database table (“keys_pos_
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=41</i>
-<table id="table140020469506576" class="table-striped table-bordered table-condensed">
+<table id="table140567113412880" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>gmeanpsfmag</th><th>imeanpsfmag</th><th>ymeanpsfmag</th><th>imeankronmag</th><th>l</th><th>b</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mag</th><th>mag</th><th>mag</th><th>mag</th><th>deg</th><th>deg</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
 <tr><td>174173304387015951</td><td>330.4386968484305</td><td>55.14609511054367</td><td>14.9612</td><td>14.3322</td><td>14.2051</td><td>14.3733</td><td>100.25666651226535</td><td>-0.0733239967537609</td></tr>
+<tr><td>174643310880142655</td><td>331.08804422</td><td>55.53496295</td><td>14.4219</td><td>13.9337</td><td>13.6689</td><td>13.9497</td><td>100.78502745035131</td><td>0.018424365917864963</td></tr>
+<tr><td>174533310689273523</td><td>331.0689271095068</td><td>55.444025946870084</td><td>16.2279</td><td>15.6779</td><td>15.4466</td><td>15.7223</td><td>100.72238187721683</td><td>-0.04837668556972694</td></tr>
+<tr><td>174123301453439176</td><td>330.14540262047836</td><td>55.1070899557265</td><td>14.7468</td><td>14.1746</td><td>14.0548</td><td>14.1708</td><td>100.09928478725283</td><td>-0.0035091430797302824</td></tr>
+<tr><td>174723312420544300</td><td>331.2420624192428</td><td>55.6030253920621</td><td>15.0472</td><td>14.5133</td><td>14.2928</td><td>14.5444</td><td>100.89550457591672</td><td>0.021727161602114936</td></tr>
 <tr><td>174153300974792642</td><td>330.09746041459704</td><td>55.12664846899192</td><td>14.4471</td><td>13.7693</td><td>13.6501</td><td>13.8123</td><td>100.08924565275774</td><td>0.028639223390290715</td></tr>
 <tr><td>174243303985338935</td><td>330.39852372376544</td><td>55.2069012503039</td><td>14.7298</td><td>14.1937</td><td>13.9555</td><td>14.2316</td><td>100.27484352646091</td><td>-0.010927951631761761</td></tr>
+<tr><td>174613312841652732</td><td>331.28423512</td><td>55.51004063</td><td>14.8062</td><td>14.2839</td><td>14.0657</td><td>14.3066</td><td>100.85980901573423</td><td>-0.0673847785064649</td></tr>
 <tr><td>174053302446793639</td><td>330.24468579610266</td><td>55.04413099821821</td><td>14.3659</td><td>13.8669</td><td>13.7115</td><td>13.8605</td><td>100.10664775665033</td><td>-0.08800943466668062</td></tr>
-<tr><td>174073301024487454</td><td>330.10241823663506</td><td>55.0639590939772</td><td>13.05</td><td>16.9829</td><td>16.3765</td><td>17.093</td><td>100.0536271259632</td><td>-0.023026302327829262</td></tr>
-<tr><td>174123301453439176</td><td>330.14540262047836</td><td>55.1070899557265</td><td>14.7468</td><td>14.1746</td><td>14.0548</td><td>14.1708</td><td>100.09928478725283</td><td>-0.0035091430797302824</td></tr>
-<tr><td>174263306037985069</td><td>330.60380323645705</td><td>55.22036453119728</td><td>14.451</td><td>13.9382</td><td>13.696</td><td>13.9642</td><td>100.37664058463054</td><td>-0.07038129371668994</td></tr>
-<tr><td>174143304395985727</td><td>330.43960598656327</td><td>55.12089732473622</td><td>14.7507</td><td>14.1011</td><td>13.9754</td><td>14.1438</td><td>100.24195452440424</td><td>-0.09378753501098032</td></tr>
-<tr><td>174173303324476748</td><td>330.33254952</td><td>55.14684059</td><td>10.8807</td><td>10.2023</td><td>11.6217</td><td>13.3527</td><td>100.20862969354452</td><td>-0.03627276030493398</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>174833312484521721</td><td>331.24844576</td><td>55.69252056</td><td>14.8575</td><td>14.3566</td><td>14.1632</td><td>14.3965</td><td>100.95130637967985</td><td>0.09178800297733512</td></tr>
-<tr><td>174493310413019407</td><td>331.04128996</td><td>55.41559535</td><td>15.3906</td><td>14.8938</td><td>14.6785</td><td>14.9507</td><td>100.69289120671188</td><td>-0.06196039125780394</td></tr>
-<tr><td>174503310746027019</td><td>331.07459761198743</td><td>55.42194032359174</td><td>14.9289</td><td>14.39</td><td>14.1417</td><td>14.4219</td><td>100.71187408742465</td><td>-0.06806709088980577</td></tr>
-<tr><td>174723312420544300</td><td>331.2420624192428</td><td>55.6030253920621</td><td>15.0472</td><td>14.5133</td><td>14.2928</td><td>14.5444</td><td>100.89550457591672</td><td>0.021727161602114936</td></tr>
-<tr><td>174643310880142655</td><td>331.08804422</td><td>55.53496295</td><td>14.4219</td><td>13.9337</td><td>13.6689</td><td>13.9497</td><td>100.78502745035131</td><td>0.018424365917864963</td></tr>
-<tr><td>174663314701059833</td><td>331.47016886</td><td>55.55760231</td><td>14.2557</td><td>13.7873</td><td>13.6022</td><td>13.8174</td><td>100.97284241340091</td><td>-0.09099780591410377</td></tr>
+<tr><td>174483309324461612</td><td>330.9324322</td><td>55.4007488</td><td>14.3238</td><td>13.681</td><td>13.5259</td><td>13.7059</td><td>100.63435669506771</td><td>-0.03719049331321842</td></tr>
+<tr><td>174463307316533817</td><td>330.73164119</td><td>55.38590855</td><td>13.0809</td><td>12.7126</td><td>12.3161</td><td>13.5669</td><td>100.53393035324751</td><td>0.018838507181340204</td></tr>
+<tr><td>174523306073120063</td><td>330.60728539365624</td><td>55.43281900861694</td><td>14.4878</td><td>13.9957</td><td>13.8283</td><td>14.0456</td><td>100.50536982071232</td><td>0.09864422529072855</td></tr>
+<tr><td>174643313385378840</td><td>331.3385207301192</td><td>55.540087595195835</td><td>15.5127</td><td>15.0832</td><td>14.8972</td><td>15.131</td><td>100.90234889673351</td><td>-0.061269309372230095</td></tr>
+<tr><td>174473311029894182</td><td>331.1029707511971</td><td>55.394574043833245</td><td>15.5397</td><td>14.9394</td><td>14.7567</td><td>14.9797</td><td>100.70862140826411</td><td>-0.09965515226638054</td></tr>
+<tr><td>174653310842193817</td><td>331.08419545</td><td>55.54432082</td><td>14.6676</td><td>14.2847</td><td>14.0464</td><td>14.2866</td><td>100.78882199561835</td><td>0.0272512482310004</td></tr>
+<tr><td>174323307260501477</td><td>330.726037629448</td><td>55.26730646545417</td><td>14.6214</td><td>14.1435</td><td>13.9201</td><td>14.2392</td><td>100.4605645764392</td><td>-0.07440355458678234</td></tr>
 <tr><td>174723311320329719</td><td>331.132046</td><td>55.60750604</td><td>13.844</td><td>13.4918</td><td>13.3715</td><td>13.5626</td><td>100.84805657407185</td><td>0.062113436088432</td></tr>
-<tr><td>174553309943701839</td><td>330.99436906</td><td>55.45927257</td><td>14.3775</td><td>14.0666</td><td>13.9218</td><td>14.0971</td><td>100.69740207855197</td><td>-0.011010456369010165</td></tr>
-<tr><td>174743311344916461</td><td>331.13450117</td><td>55.62144825</td><td>13.038</td><td>15.8893</td><td>15.5783</td><td>15.9631</td><td>100.8574324052183</td><td>0.07252505125748354</td></tr>
+<tr><td>174713313682226559</td><td>331.36821636</td><td>55.59653213</td><td>14.1576</td><td>13.9537</td><td>13.8729</td><td>14.0068</td><td>100.94919892208767</td><td>-0.02559037915620497</td></tr>
 </table></div></div></div>
 </div>
 <p>Our final sample in this subset region is small (41 objects).</p>
@@ -1077,7 +1077,7 @@ and the column names for longitude, latitude in the database table (“keys_pos_
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/2bf98b84fc94965cd1cd4adc769e4db6aeefbd00bd288bc44cc79f081fa54eab.png" src="../../../_images/2bf98b84fc94965cd1cd4adc769e4db6aeefbd00bd288bc44cc79f081fa54eab.png" />
+<img alt="../../../_images/ac4c5871a1066a88d26d449772dda76a22b2fb2a563e1661006d32b51f0c3762.png" src="../../../_images/ac4c5871a1066a88d26d449772dda76a22b2fb2a563e1661006d32b51f0c3762.png" />
 </div>
 </div>
 <p>As this individual chunk query took about 30 seconds, it would take about 2.5 hours query over all chunks; we leave iterating over all chunks as an exercise to interested readers.</p>
@@ -1199,11 +1199,11 @@ This includes:</p>
   warn("Results truncated due to server limits. Consider "
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:31.318323
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:02:52.806576
 </pre></div>
 </div>
-<div class="output text_html"><div><i>Table length=29014</i>
-<table id="table140020468830768" class="table-striped table-bordered table-condensed">
+<div class="output text_html"><div><i>Table length=28988</i>
+<table id="table140567113009824" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>gmeanpsfmag</th><th>imeanpsfmag</th><th>ymeanpsfmag</th><th>imeankronmag</th><th>l</th><th>b</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mag</th><th>mag</th><th>mag</th><th>mag</th><th>deg</th><th>deg</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
@@ -1266,7 +1266,7 @@ This includes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/24990d14d3b4b94a8c78a3e250d3eebe94c3e7606b0b4dd03a2d6fa0400360eb.png" src="../../../_images/24990d14d3b4b94a8c78a3e250d3eebe94c3e7606b0b4dd03a2d6fa0400360eb.png" />
+<img alt="../../../_images/851f05ff6988eb7e84efc658c1b049555b203bfd4da7fcd70c77a87c73f43410.png" src="../../../_images/851f05ff6988eb7e84efc658c1b049555b203bfd4da7fcd70c77a87c73f43410.png" />
 </div>
 </div>
 <p>We can see the observational limitation of PanSTARRS (observing only Decl &gt; -30 degrees) clearly in the left panel (showing ICRS), while the Galactic coordinates of the right panel very closely follow the Galactic midplane (as expected given our spatial constraint).</p>
@@ -1324,7 +1324,7 @@ please include the following acknowledgements, found at the following links:</p>
 <h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <p><strong>Authors:</strong> Sedona Price<br>
 <strong>Keywords:</strong> Tutorial, coordinate frames, astroquery, TAP<br>
-<strong>Last updated:</strong> August 2026 <br></p>
+<strong>Last updated:</strong> October 2026 <br></p>
 <hr class="docutils" />
 <p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
 <a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
