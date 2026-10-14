@@ -80,6 +80,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/PanSTARRS/PS1_query_chunking/PS1_query_chunking';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Accessing Roman Catalogs: Leveraging Ancillary Tables and Visualization to Apply Data Quality Cuts" href="../../Roman/Catalog_Access_Data_Quality_Cuts/catalog_access_data_quality_cuts.html" />
+    <link rel="prev" title="PanSTARRS “20 queries” using MAST’s TAP service: Multiple detections" href="../PS1_20_query_tutorials/PS1_20q_multiple_detection_tutorial/PS1_20q_multiple_detection_tutorial.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -130,8 +132,6 @@
     <div class="bd-container__inner bd-page-width">
       
       
-      
-        
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
@@ -399,11 +399,21 @@
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../panstarrs.html">Panoramic Survey Telescope and Rapid Response System (Pan-STARRS)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
 
 
-<li class="toctree-l1"><a class="reference internal" href="../PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../PS1_20_query_tutorials/panstarrs_20_query_tutorials.html">Example “20 queries” with PanSTARRS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_filtering_tutorial.html">PanSTARRS “20 queries” using MAST’s TAP service: Filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PS1_20_query_tutorials/PS1_20q_spatial_binning/PS1_20q_spatial_binning.html">PanSTARRS “20 queries” using MAST’s TAP service: Spatial Binning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PS1_20_query_tutorials/PS1_20q_multiple_detection_tutorial/PS1_20q_multiple_detection_tutorial.html">PanSTARRS “20 queries” using MAST’s TAP service: Multiple detections</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Accessing MAST TAP services: How to chunk large / long queries</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Roman</span></p>
 <ul class="nav bd-sidenav">
@@ -918,7 +928,7 @@ Interface vr:WebBrowser
 <section id="too-many-rows">
 <h2>Too many rows<a class="headerlink" href="#too-many-rows" title="Link to this heading">#</a></h2>
 <p>We will begin with the case of how to chunk a query that would return too many rows.</p>
-<p>Here, we will work from the query <a class="reference internal" href="#../PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_basic_filtering_tutorial.md"><span class="xref myst">Q2 from the PanSTARRS “20 queries”</span></a>, which looks for galaxies with a specified blue surface brightness within a fairly large swath of the sky (RA between 170 and 190 deg, and Decl. less than 0).</p>
+<p>Here, we will work from the query <a class="reference internal" href="#../PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_basic_filtering_tutorial.ipynb"><span class="xref myst">Q2 from the PanSTARRS “20 queries”</span></a>, which looks for galaxies with a specified blue surface brightness within a fairly large swath of the sky (RA between 170 and 190 deg, and Decl. less than 0).</p>
 <p>The full query, with no subselections to implement chunking, is written as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1007,7 +1017,7 @@ AND fmo.objid &lt; 108000000000000000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:02:04.331509
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:29.590129
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/micromamba/envs/ci-env/lib/python3.13/site-packages/pyvo/dal/query.py:403: DALOverflowWarning: Results truncated due to server limits. Consider setting a maxrec value.
@@ -1027,15 +1037,15 @@ AND fmo.objid &lt; 108000000000000000
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=100000</i>
-<table id="table140101714388112" class="table-striped table-bordered table-condensed">
+<table id="table139998755169104" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>gfkronmag</th><th>bsurfmag</th><th>ramean</th><th>decmean</th></tr></thead>
 <thead><tr><th></th><th>mag</th><th></th><th>deg</th><th>deg</th></tr></thead>
 <thead><tr><th>int64</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>102041706316048423</td><td>21.0636</td><td>24.630941</td><td>170.6315858100054</td><td>-4.959970575634733</td></tr>
-<tr><td>102121709753724579</td><td>20.6712</td><td>24.51368</td><td>170.9753464296523</td><td>-4.896576727600447</td></tr>
+<tr><td>102051700683203026</td><td>21.758</td><td>24.827238</td><td>170.06829549481645</td><td>-4.956144890282068</td></tr>
+<tr><td>102351700064822153</td><td>21.2696</td><td>24.92203</td><td>170.00651369278813</td><td>-4.706850072863837</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>107161880533667430</td><td>20.7642</td><td>24.834213</td><td>188.05341636166565</td><td>-0.6942819353511632</td></tr>
-<tr><td>107311880468313499</td><td>18.2554</td><td>23.077982</td><td>188.04681959696865</td><td>-0.5724883104145339</td></tr>
+<tr><td>105191774284958326</td><td>20.3033</td><td>23.997683</td><td>177.42846750630974</td><td>-2.335097590988124</td></tr>
+<tr><td>104971781509292525</td><td>19.7177</td><td>23.526714</td><td>178.15089486111103</td><td>-2.523315390990911</td></tr>
 </table></div></div></div>
 </div>
 <p>We see that the results table has <strong><em>100,000 rows</em>, equal to the service maximum limit</strong> — indicating that the results were almost certainly truncated.</p>
@@ -1084,7 +1094,7 @@ AND fmo.objid &lt; 108000000000000000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:07.736002
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:00:50.152719
 </pre></div>
 </div>
 </div>
@@ -1100,15 +1110,15 @@ AND fmo.objid &lt; 108000000000000000
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=41150</i>
-<table id="table140100817302064" class="table-striped table-bordered table-condensed">
+<table id="table139997788337296" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>gfkronmag</th><th>bsurfmag</th><th>ramean</th><th>decmean</th></tr></thead>
 <thead><tr><th></th><th>mag</th><th></th><th>deg</th><th>deg</th></tr></thead>
 <thead><tr><th>int64</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>106801761804537246</td><td>21.0264</td><td>24.37091</td><td>176.1804180719795</td><td>-0.9943372995909542</td></tr>
-<tr><td>106801786560799476</td><td>21.8899</td><td>24.966534</td><td>178.65605510089486</td><td>-0.992580678856578</td></tr>
+<tr><td>106801764304375189</td><td>21.1141</td><td>24.604227</td><td>176.4304496425183</td><td>-0.996004230717282</td></tr>
+<tr><td>106811765831376397</td><td>21.8875</td><td>24.8599</td><td>176.58312827</td><td>-0.9867112</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>107981892069445744</td><td>21.3656</td><td>24.538668</td><td>189.20695140477864</td><td>-0.012241674146264888</td></tr>
-<tr><td>107991856640141349</td><td>20.6315</td><td>24.43889</td><td>185.66373688234964</td><td>-0.007689622447400427</td></tr>
+<tr><td>107991770560199138</td><td>21.7522</td><td>24.818466</td><td>177.05600555448433</td><td>-0.0011015989769555254</td></tr>
+<tr><td>107991869432196716</td><td>20.9373</td><td>24.95478</td><td>186.9432443160625</td><td>-0.0031884319996914002</td></tr>
 </table></div></div></div>
 </div>
 <p>This second test query has fewer results than the maximum (41,150), indicating we have received all matching results.</p>
@@ -1272,7 +1282,7 @@ AND fmo.objid &lt; 108000000000000000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time for full query: 0:11:29.796263
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time for full query: 0:10:16.395380
 </pre></div>
 </div>
 </div>
@@ -1286,15 +1296,15 @@ AND fmo.objid &lt; 108000000000000000
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=1067932</i>
-<table id="table140100812442624" class="table-striped table-bordered table-condensed">
+<table id="table139997788081152" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>gfkronmag</th><th>bsurfmag</th><th>ramean</th><th>decmean</th></tr></thead>
 <thead><tr><th></th><th>mag</th><th></th><th>deg</th><th>deg</th></tr></thead>
 <thead><tr><th>int64</th><th>float32</th><th>float32</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>72001769310881822</td><td>20.8664</td><td>24.617413</td><td>176.93109533987945</td><td>-29.998744200495256</td></tr>
-<tr><td>72001879471499507</td><td>20.6658</td><td>24.056337</td><td>187.94717451</td><td>-29.99228677</td></tr>
+<tr><td>72001790158436596</td><td>20.7439</td><td>24.496178</td><td>179.01582199045458</td><td>-29.99482066466325</td></tr>
+<tr><td>72011716234965470</td><td>20.7184</td><td>24.515955</td><td>171.62346826236762</td><td>-29.987299477602395</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>107991822978745717</td><td>20.649</td><td>24.1048</td><td>182.29772275420174</td><td>-0.003948844347721814</td></tr>
-<tr><td>107991857512912362</td><td>21.6208</td><td>24.814499</td><td>185.75138589629026</td><td>-0.006763278134239454</td></tr>
+<tr><td>107991866729264162</td><td>18.3819</td><td>23.64122</td><td>186.67293150216565</td><td>-0.005142773657562474</td></tr>
+<tr><td>108001739249470408</td><td>18.926</td><td>23.615623</td><td>173.9248817</td><td>-2.855e-05</td></tr>
 </table></div></div></div>
 </div>
 <div class="alert alert-block alert-info">
@@ -1309,7 +1319,7 @@ ensure that results from successfully executed chunks are not lost in the event 
 <section id="long-query-duration">
 <h2>Long query duration<a class="headerlink" href="#long-query-duration" title="Link to this heading">#</a></h2>
 <p>Next we will cover the case of how to chunk a query that would take too long to execute.</p>
-<p>We will use <a class="reference internal" href="#../PS1_20_query_tutorials/PS1_20q_query_cutouts_tutorial/PS1_20q_query_cutouts_tutorial.md"><span class="xref myst">Q4 from the PanSTARRS “20 queries”</span></a>, which looks for galaxies with large galaxies with large red surface brightnes and high ellipticity.</p>
+<p>We will use <a class="reference internal" href="../PS1_20_query_tutorials/PS1_20q_query_cutouts_tutorial/PS1_20q_query_cutouts_tutorial.html"><span class="std std-doc">Q4 from the PanSTARRS “20 queries”</span></a>, which looks for galaxies with large galaxies with large red surface brightnes and high ellipticity.</p>
 <p>The full query (again with no sub-selections to implement chunking) is written as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1386,7 +1396,7 @@ WHERE so.rkronrad BETWEEN 30 AND 60
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:26.424628
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 0:01:01.728317
 </pre></div>
 </div>
 </div>
@@ -1401,15 +1411,15 @@ WHERE so.rkronrad BETWEEN 30 AND 60
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=67</i>
-<table id="table140101714608560" class="table-striped table-bordered table-condensed">
+<table id="table139998754765504" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>rkronrad</th><th>rkronmag</th><th>rsurfmag</th><th>rserab</th><th>rserchisq</th><th>ellipticity</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th></th><th>mag</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>129571656898942488</td><td>165.68995133731482</td><td>17.97665909588929</td><td>30.2251</td><td>14.0329</td><td>22.677614</td><td>0.627762</td><td>35.8625</td><td>0.77840537</td></tr>
-<tr><td>133411457834359729</td><td>145.7834986534657</td><td>21.182652122551964</td><td>32.8805</td><td>13.5707</td><td>22.398266</td><td>0.662182</td><td>70.7057</td><td>0.74934304</td></tr>
+<tr><td>129571656922317917</td><td>165.6923071955835</td><td>17.981267322589133</td><td>47.0225</td><td>13.2262</td><td>22.830603</td><td>0.357503</td><td>29.6362</td><td>0.933912</td></tr>
+<tr><td>131270045772232272</td><td>4.577224170663361</td><td>19.39307903744058</td><td>34.501</td><td>14.2829</td><td>23.214933</td><td>0.561647</td><td>33.9179</td><td>0.82737696</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>132951722099024557</td><td>172.20989583868442</td><td>20.795019985650388</td><td>31.9708</td><td>11.9064</td><td>20.673042</td><td>0.320779</td><td>38750.6</td><td>0.94715405</td></tr>
-<tr><td>130591826543795979</td><td>182.65443880387303</td><td>18.829378785040024</td><td>30.0693</td><td>14.6184</td><td>23.25189</td><td>0.208932</td><td>16.0258</td><td>0.9779302</td></tr>
+<tr><td>132950287005949436</td><td>28.700615672001273</td><td>20.799065836275325</td><td>31.128</td><td>13.3508</td><td>22.059431</td><td>0.645344</td><td>13.0363</td><td>0.7638921</td></tr>
+<tr><td>132902397965196100</td><td>239.7964967142369</td><td>20.754637660810484</td><td>31.369</td><td>13.3085</td><td>22.033878</td><td>0.519927</td><td>86.8206</td><td>0.8542107</td></tr>
 </table></div></div></div>
 </div>
 <p>As this test query has fewer than the maximum number of rows, no results were omitted — and we can thus use this to determine the query scaling.</p>
@@ -1470,7 +1480,7 @@ The results of each chunk are combined into a single astropy table.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time for full query: 0:16:35.069876
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time for full query: 0:06:56.606347
 </pre></div>
 </div>
 </div>
@@ -1485,15 +1495,15 @@ obtaining the full result set of <strong>1745 objects</strong>, as we show below
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=1745</i>
-<table id="table140100813945536" class="table-striped table-bordered table-condensed">
+<table id="table139997788092240" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objid</th><th>ramean</th><th>decmean</th><th>rkronrad</th><th>rkronmag</th><th>rsurfmag</th><th>rserab</th><th>rserchisq</th><th>ellipticity</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th></th><th>mag</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>99180237751995701</td><td>23.775260209125967</td><td>-7.345575226444742</td><td>36.4107</td><td>11.8984</td><td>20.94742</td><td>0.655394</td><td>81.3848</td><td>0.7552872</td></tr>
-<tr><td>109310398482563789</td><td>39.84826018165527</td><td>1.094452132664483</td><td>36.5539</td><td>11.8371</td><td>20.894644</td><td>0.630445</td><td>389.114</td><td>0.7762339</td></tr>
+<tr><td>81392104361132383</td><td>210.4360728073643</td><td>-22.173254765809727</td><td>32.4506</td><td>14.7477</td><td>23.546688</td><td>0.131296</td><td>86.1017</td><td>0.9913432</td></tr>
+<tr><td>96100141729412692</td><td>14.173036434421656</td><td>-9.91475991038833</td><td>35.0216</td><td>12.9219</td><td>21.886454</td><td>0.520825</td><td>35.9412</td><td>0.85366344</td></tr>
 <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>165032517455643543</td><td>251.74543742</td><td>47.5273768</td><td>35.5246</td><td>8.94353</td><td>17.93905</td><td>0.570735</td><td>23971.6</td><td>0.8211343</td></tr>
-<tr><td>188521240781043229</td><td>124.07799943301033</td><td>67.10203597322113</td><td>32.4299</td><td>14.9076</td><td>23.705204</td><td>0.254754</td><td>38.9095</td><td>0.9670059</td></tr>
+<tr><td>176072149413142528</td><td>214.94132768</td><td>56.72652778</td><td>32.1392</td><td>8.0933</td><td>16.87135</td><td>0.05</td><td>4.0052e+07</td><td>0.9987492</td></tr>
+<tr><td>151892142716600795</td><td>214.271614555078</td><td>36.57518668391893</td><td>30.4779</td><td>13.4689</td><td>22.1317</td><td>0.455428</td><td>100.865</td><td>0.8902726</td></tr>
 </table></div></div></div>
 </div>
 <p>This does turn out to be faster than our initial estimate.  However, this exercise does demonstrate what points to consider when benchmarking how a large query should be partitioned.</p>
@@ -1604,6 +1614,24 @@ please include the following acknowledgements, found at the following links:</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../PS1_20_query_tutorials/PS1_20q_multiple_detection_tutorial/PS1_20q_multiple_detection_tutorial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">PanSTARRS “20 queries” using MAST’s TAP service: Multiple detections</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../Roman/Catalog_Access_Data_Quality_Cuts/catalog_access_data_quality_cuts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Accessing Roman Catalogs: Leveraging Ancillary Tables and Visualization to Apply Data Quality Cuts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
