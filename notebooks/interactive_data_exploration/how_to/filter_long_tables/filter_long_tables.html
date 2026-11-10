@@ -1,0 +1,1025 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to Filter Long Tables with mast-table &#8212; MAST Notebook Repository</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/main.css?v=32d70693" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table.css?v=cd6c26fb" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-SK672ZMP7G"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-SK672ZMP7G');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"00e474c21fc5419ea8d86ce9226bdd94": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "enable_load_in_app": false, "events": ["open_selected_rows_in_aladin", "open_selected_rows_in_jdaviz"], "filter_tray_open": false, "headers": [{"description": "ArchiveFileID    ", "key": "ArchiveFileID", "title": "ArchiveFileID"}, {"description": "Of the form jwpppppooovvv_ggsaa_eeeee where ppppp - Program Number, ooo - Observation Number, vvv - Visit Number, gg - Visit Group, s - Parallel Sequence id (1 prime, 2-5 parallel), aa - Activity (base 36), and eeeee - Exposure Number, all padded by zeros where necessary. Source-based data set names are expressed as jwppppp-oOOO_tTTT_instrument, where: ppppp - Program number, OOO - observation number, TTT - target number, and instrument - Instrument name    ", "key": "fileSetName", "title": "fileSetName"}, {"description": "Product levels, 1b is an uncalibrated FITS file, 2a = countrate exposure, 2b = calibrated (exposure-based), 2bs = calibrated (source-based), 2c = cosmic-ray-flagged (exposure-based), 2cs = cosmic-ray-flagged (source-based), and 3 = combined data.", "key": "productLevel", "title": "productLevel"}, {"description": "Proposer prefered name for the target    ", "key": "targprop", "title": "targprop"}, {"description": "Right Ascension (J2000), from 0 to 360, in degrees    ", "key": "targ_ra", "title": "targ_ra"}, {"description": "Declination (J2000), from -90 to +90, in degrees    ", "key": "targ_dec", "title": "targ_dec"}, {"description": "Identifies the instrument used to acquire the data.    ", "key": "instrume", "title": "instrume"}, {"description": "Exposure type is used by DMS to direct Science Data Processing code (SDP) and calibration, as well as provide metadata for archive searches. For a given template the EXP_TYPE keyword value is obtained for each exposure from the EXPOSURE_TYPE exposure-level parameter in the Observatory Status File (OSF). In a few cases, additional information is required to set the value for the EXP_TYPE keyword    ", "key": "exp_type", "title": "exp_type"}, {"description": "A comma-separated list of filters, gratings, pupil, channel, band, & coronmsk used (e.g. F150W, G140H, CH12;SHORT, F290LP)    ", "key": "opticalElements", "title": "opticalElements"}, {"description": "UTC date of the start of the exposure with format yyyy-mm-dd hh:mm:ss.ss. The start date is calculated by Science Data Processing code (SDP) based on the science telemetry image headers time stamps and the calculated exposure duration    ", "key": "date_obs", "title": "date_obs"}, {"description": "Total duration of exposure in sec, exclusive of dead time.    ", "key": "duration", "title": "duration"}, {"description": "The 5-digit number that identifies the observing program used to obtain the data.    ", "key": "program", "title": "program"}, {"description": "The observation number is three character number that specifies an observation within a parallel proposal (note: large numbers of observations are expected per proposal).    ", "key": "observtn", "title": "observtn"}, {"description": "The visit number is a three character number that indentifies the visit within an observation. Multiple visits per observation are needed for mosaics and some long observations. Note fields that trace back to the proposal are called numbers rather than IDs to emphasize that only decimal numbers can be used.    ", "key": "visit", "title": "visit"}, {"description": "Date of public release    ", "key": "publicReleaseDate", "title": "publicReleaseDate"}, {"description": "Name of principal investigator (last, first, mi).    ", "key": "pi_name", "title": "pi_name"}, {"description": "The program type. Includes Early Release Observations (ERO), Early Release Science (ERS), General Observers (GO), Guaranteed Time Observations (GTO), Director's Discretionary (DD), Survey Proposals (SURVEY), NASA Proposals (NASA), Calibration Proposals (Calibration), and Treasury Proposals (Treasury)    ", "key": "proposal_type", "title": "proposal_type"}, {"description": "The proposal cycle in which the observation is associated with    ", "key": "proposal_cycle", "title": "proposal_cycle"}, {"description": "Fixed target, moving target, or generic target (e.g., FIXED, MOVING, GENERIC, UNKNOWN)    ", "key": "targtype", "title": "targtype"}, {"description": "Data access status (PUBLIC or EXCLUSIVE_ACCESS)    ", "key": "access", "title": "access"}, {"description": "The version number of the calibration software (e.g. 1.11.4)    ", "key": "cal_ver", "title": "cal_ver"}, {"description": "Angular separation from the target coordinates, in arcmin.    ", "key": "ang_sep", "title": "ang_sep"}, {"description": "Spatial Footprint    ", "key": "s_region", "title": "s_region"}, {"description": null, "key": "_unique_row_index", "title": "_unique_row_index"}], "headers_avail": ["ArchiveFileID", "fileSetName", "productLevel", "targprop", "targ_ra", "targ_dec", "instrume", "exp_type", "opticalElements", "date_obs", "duration", "program", "observtn", "visit", "publicReleaseDate", "pi_name", "proposal_type", "proposal_cycle", "targtype", "access", "cal_ver", "ang_sep", "s_region"], "headers_visible": ["ArchiveFileID", "fileSetName", "productLevel", "targprop", "targ_ra", "targ_dec", "instrume", "exp_type", "opticalElements", "date_obs", "duration", "program", "observtn", "visit", "publicReleaseDate", "pi_name", "proposal_type", "proposal_cycle", "targtype", "access", "cal_ver", "ang_sep"], "item_key": "_unique_row_index", "items": [{"ArchiveFileID": "264937490", "_unique_row_index": "0", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T02:49:57.2040000", "duration": "138.752", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02101_00001", "instrume": "MIRI", "observtn": "1", "opticalElements": "F560W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:38:23", "s_region": "POLYGON ICRS  83.620763784 22.002789691 83.654481962 22.001837212 83.655563535 22.033234147 83.621792264 22.034478016", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264937478", "_unique_row_index": "1", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T02:53:39.2200000", "duration": "138.752", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02101_00002", "instrume": "MIRI", "observtn": "1", "opticalElements": "F560W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:38:36", "s_region": "POLYGON ICRS  83.649418913 22.002168629 83.649788642 22.012205242 83.650523705 22.033564908 83.620060857 22.034686248 83.616751747 22.034790385 83.615725007 22.003119338", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264937642", "_unique_row_index": "2", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T02:57:23.9880000", "duration": "138.752", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02101_00003", "instrume": "MIRI", "observtn": "1", "opticalElements": "F560W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:36:13", "s_region": "POLYGON ICRS  83.650223099 22.006570054 83.650592894 22.016606449 83.651328117 22.037966327 83.620864229 22.039087829 83.617555117 22.039191980 83.616528154 22.007520938", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264937392", "_unique_row_index": "3", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:01:06.0030000", "duration": "138.752", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02101_00004", "instrume": "MIRI", "observtn": "1", "opticalElements": "F560W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:35:43", "s_region": "POLYGON ICRS  83.620386882 22.006718593 83.654105998 22.005766255 83.655187449 22.037163195 83.621415234 22.038406922", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264937359", "_unique_row_index": "4", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:06:50.0870000", "duration": "105.452", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02103_00001", "instrume": "MIRI", "observtn": "1", "opticalElements": "F1130W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:36:54", "s_region": "POLYGON ICRS  83.654441114 22.001845271 83.654804154 22.011690046 83.655546548 22.033241738 83.625072410 22.034364409 83.621775281 22.034468278 83.620747224 22.002797268", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264937341", "_unique_row_index": "5", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:09:58.8230000", "duration": "105.452", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02103_00002", "instrume": "MIRI", "observtn": "1", "opticalElements": "F1130W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:38:59", "s_region": "POLYGON ICRS  83.615708382 22.003127034 83.649426355 22.002175472 83.650506615 22.033572655 83.616735782 22.034815315", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264936841", "_unique_row_index": "6", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:13:07.5590000", "duration": "105.452", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02103_00003", "instrume": "MIRI", "observtn": "1", "opticalElements": "F1130W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:37:07", "s_region": "POLYGON ICRS  83.650206483 22.006577546 83.650569206 22.016422176 83.651310924 22.037974045 83.620835766 22.039095856 83.617538489 22.039199632 83.616511436 22.007528594", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264936890", "_unique_row_index": "7", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:16:18.9830000", "duration": "105.452", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02103_00004", "instrume": "MIRI", "observtn": "1", "opticalElements": "F1130W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:37:49", "s_region": "POLYGON ICRS  83.620370189 22.006726264 83.654088987 22.005773770 83.655170286 22.037170923 83.621398634 22.038414517", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264936818", "_unique_row_index": "8", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:21:10.3800000", "duration": "  27.75", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02105_00001", "instrume": "MIRI", "observtn": "1", "opticalElements": "F1800W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:35:06", "s_region": "POLYGON ICRS  83.654436939 22.001852931 83.654797873 22.011641189 83.655542067 22.033249470 83.625073177 22.034371899 83.621771036 22.034475920 83.620742930 22.002804912", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}, {"ArchiveFileID": "264936851", "_unique_row_index": "9", "access": "PUBLIC", "ang_sep": "0.0", "cal_ver": "3.0.0", "date_obs": "2023-02-24T03:23:01.4200000", "duration": "  27.75", "exp_type": "MIR_IMAGE", "fileSetName": "jw01714001003_02105_00002", "instrume": "MIRI", "observtn": "1", "opticalElements": "F1800W", "pi_name": "Temim, Tea", "productLevel": "1b, 2a, 2b, 2c", "program": "1714", "proposal_cycle": "1", "proposal_type": "GO", "publicReleaseDate": "2024-02-24T13:38:48", "s_region": "POLYGON ICRS  83.649398289 22.002183469 83.649758879 22.011971857 83.650502299 22.033580042 83.620033207 22.034701539 83.616731145 22.034805455 83.615704169 22.003134416", "targ_dec": "22.01641666666667", "targ_ra": "83.63604958333333", "targprop": "CRAB-NEBULA", "targtype": "FIXED", "visit": "3"}], "items_per_page": 10, "layout": "IPY_MODEL_ba3b36ea9cc64f0c922b1024c3e6d7d3", "menu_open": false, "mission": "", "selected_rows": [], "server_items_length": 249, "server_pagination": true, "show_if_empty": true, "show_rowselect": true, "show_tooltips": true, "sort_by": [], "tabbable": null, "table_options": {"itemsPerPage": 10, "page": 1}, "template": "IPY_MODEL_35273f8d0b0c4fe89e218b239791ba96", "tooltip": null}}, "0125302b102e425b9fa5f4dd4b88c178": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_019ead83a02646fb99a8c3ffff5cff1b"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": true, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": "<", "variant": "elevated", "width": null}}, "019ead83a02646fb99a8c3ffff5cff1b": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-code-less-than"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": false, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "02903734249c4958b127b2abe6a24b2a": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-code-less-than-or-equal"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": false, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "03e2a7a311a74a7194a02a90f3ea2d9b": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "events": [], "layout": "IPY_MODEL_03e79d66425549deb06594f43652654d", "tabbable": null, "template": "\n<template>\n    <span style=\"display: none\">\n    </span>\n</template>\n\n<script>\nmodule.exports = {\n  destroyed() {\n    this.cleanup();\n  },\n  unmounted() {\n    this.cleanup();\n  },\n  methods: {\n    cleanup() {\n      document.querySelectorAll(\"style\").forEach((style) => {\n        if (style.textContent.includes(\"solara-style-70417b0d-055c-4f9d-bfe4-8f47cd8e3092-97a2217a2f2572fdcccc3d59a5ba5a0cd834f001065466c2a72e1cf3fec3e202\")) {\n          style.remove();\n        }\n      });\n    },\n  },\n};\n<\/script>\n    \n<style id=\"70417b0d-055c-4f9d-bfe4-8f47cd8e3092-97a2217a2f2572fdcccc3d59a5ba5a0cd834f001065466c2a72e1cf3fec3e202\">\n/* solara-style-70417b0d-055c-4f9d-bfe4-8f47cd8e3092-97a2217a2f2572fdcccc3d59a5ba5a0cd834f001065466c2a72e1cf3fec3e202 */\n\n                        .popout-button {\n                            position: relative;\n                        }\n\n                        .popout-button::after {\n                            content: \"Display in a new window\";\n                            position: absolute;\n                            top: calc(100% + 6px);\n                            right: 0;\n                            padding: 6px 10px;\n                            background-color: #424242;\n                            color: white;\n                            border-radius: 4px;\n                            font-size: 14px;\n                            white-space: nowrap;\n                            opacity: 0;\n                            visibility: hidden;\n                            pointer-events: none;\n                            z-index: 10000;\n                        }\n\n                        .popout-button:hover::after {\n                            opacity: 1;\n                            visibility: visible;\n                        }\n                        \n</style>\n    ", "tooltip": null}}, "03e79d66425549deb06594f43652654d": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "05d10b9c73264e05b57ed8f75a75e3fb": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ThemeColorsModel", "state": {"_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ThemeColorsModel", "_theme_name": "dark", "_view_count": null, "_view_module": null, "_view_module_version": "3.1.0", "_view_name": null, "background": "#121212", "custom_theme_colors": {}, "error": "#CF6679", "info": "#2196F3", "on_surface_variant": "#424242", "primary": "#013b4d", "primary_darken_1": "#3700B3", "secondary": "#03DAC5", "secondary_darken_1": "#03DAC5", "success": "#4CAF50", "surface": "#212121", "surface_bright": "#ccbfd6", "surface_variant": "#a3a3a3", "warning": "#FB8C00"}}, "0a06faebecaf46249842f333e4f87a7f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "VBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "VBoxModel", "_view_count": 0, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_823351a6d6494272a09a51ce60cb1f39"], "layout": "IPY_MODEL_2d5a5088714d4d25a9f80c4f0a005693", "tabbable": null, "tooltip": null}}, "0dd2fbcecc1e455cacf8f7da3c23943f": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-code-greater-than"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": false, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "14397e0778054fefbc8aeff4265d86f9": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "16af27cfaf1a46888e5e355d6f1230a2": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "18f63143ea704de09cf3d5514617c3cc": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_72a67ad19c864203a0c35d114f5b87c5"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": true, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": "!=", "variant": "elevated", "width": null}}, "19ceee6ec00b4876bcfb9e802a1bf2aa": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "RowModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "RowModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "align": null, "align_content": null, "align_content_lg": null, "align_content_md": null, "align_content_sm": null, "align_content_xl": null, "align_content_xxl": null, "align_lg": null, "align_md": null, "align_sm": null, "align_xl": null, "align_xxl": null, "attributes": {}, "children": ["IPY_MODEL_9caa08b11f0946c2b631aa7541648192"], "class_": "solara-content-main", "dense": null, "justify": null, "justify_lg": null, "justify_md": null, "justify_sm": null, "justify_xl": null, "justify_xxl": null, "layout": null, "no_gutters": false, "slot": null, "style_": null, "tabbable": null, "tag": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "1e8ba5eb20cd4c67a4ab5f2b5ea66058": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "events": [], "layout": "IPY_MODEL_c5e206b087bd4cb3b8eb1753ba266e17", "tabbable": null, "template": "\n<template>\n    <span style=\"display: none\">\n    </span>\n</template>\n\n<script>\nmodule.exports = {\n  destroyed() {\n    this.cleanup();\n  },\n  unmounted() {\n    this.cleanup();\n  },\n  methods: {\n    cleanup() {\n      document.querySelectorAll(\"style\").forEach((style) => {\n        if (style.textContent.includes(\"solara-style-71dc9c97-e1c6-4008-ae00-5dedd84ec8c4-2a98b95cb3f99d4fd10681e8a6fa35ab0a10ba7cd13b9d2cc181190b56f0fdf0\")) {\n          style.remove();\n        }\n      });\n    },\n  },\n};\n<\/script>\n    \n<style id=\"71dc9c97-e1c6-4008-ae00-5dedd84ec8c4-2a98b95cb3f99d4fd10681e8a6fa35ab0a10ba7cd13b9d2cc181190b56f0fdf0\">\n/* solara-style-71dc9c97-e1c6-4008-ae00-5dedd84ec8c4-2a98b95cb3f99d4fd10681e8a6fa35ab0a10ba7cd13b9d2cc181190b56f0fdf0 */\n\n            body.jupyter-widgets-popout-container .mast-table-view {\n                width: 100vw;\n                max-width: 100vw;\n            }\n            \n</style>\n    ", "tooltip": null}}, "21cef60012004b47b6f39c32c00784af": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_3174cc8fa67a45dcbcc65012fe01fbdb", "IPY_MODEL_390fccc89ab24e74ba78251750c88eab"], "class_": "d-flex ma-0 crossfilter-slider", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: row; align-items: stretch; justify-content: start; column-gap: 12px;display:flex;alignItems:bottom;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "23db506cf2d44705bafd1f92f40c1223": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_2c4d18ef129b4a848163356fd6c42dbc", "IPY_MODEL_9396d0255fa94338a5f7a64aa5199f55"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: column; align-items: stretch; row-gap: 12px;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "26f2bc512cd542eb896d22d45028cfd5": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "events": [], "layout": "IPY_MODEL_14397e0778054fefbc8aeff4265d86f9", "tabbable": null, "template": "\n<template>\n    <div class=\"solara-markdown rendered_html jp-RenderedHTMLCommon\" style=\"\"><p>No active filters</p></div>\n</template>\n\n<script>\nmodule.exports = {\n    async mounted() {\n        this.cdn = null;\n        await this.loadRequire();\n        this.mermaid = await this.loadMermaid();\n        this.mermaid.init();\n        this.latexSettings = {\n                delimiters: [\n                    {left: \"$$\", right: \"$$\", display: true},\n                    {left: \"$\", right: \"$\", display: false},\n                    {left: \"\\\\[\", right: \"\\\\]\", display: true},\n                    {left: \"\\\\(\", right: \"\\\\)\", display: false}\n                ],\n                ignoredClasses: [\"solara-markdown-output\", \"jupyter-widgets\"]\n            };\n        if (window.renderMathInElement) {\n            window.renderMathInElement(this.$el, this.latexSettings);\n        } else if (window.MathJax && MathJax.Hub) {\n            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$el]);\n        } else {\n            window.renderMathInElement = await this.loadKatexExt();\n            window.renderMathInElement(this.$el, this.latexSettings);\n        }\n        this.$el.querySelectorAll(\"a\").forEach(a => this.setupRouter(a))\n        window.md = this.$el\n    },\n    methods: {\n        setupRouter(a) {\n            let href = a.attributes['href'].value;\n            if(href.startsWith(\"./\")) {\n                // TODO: should we really do this?\n                href = location.pathname + href.substr(1);\n                a.attributes['href'].href = href;\n            }\n            let authLink = href.startsWith(\"/_solara/auth/\");\n            if( (href.startsWith(\"./\") || href.startsWith(\"/\")) && !authLink) {\n                a.onclick = e => {\n                    console.log(\"clicked\", href)\n                    if(href.startsWith(\"./\")) {\n                        solara.router.push(href);\n                    } else {\n                        solara.router.push(href);\n                    }\n                    e.preventDefault()\n                }\n            } else if(href.startsWith(\"#\")) {\n                href = location.pathname + href;\n                a.attributes['href'].value = href;\n            } else {\n                console.log(\"href\", href, \"is not a local link\")\n            }\n        },\n        async loadKatex() {\n            require.config({\n                map: {\n                    '*': {\n                        'katex': `${this.getCdn()}/katex@0.16.9/dist/katex.min.js`,\n                    }\n                }\n            });\n            const link = document.createElement('link');\n            link.type = \"text/css\";\n            link.rel = \"stylesheet\";\n            link.href = `${this.getCdn()}/katex@0.16.9/dist/katex.min.css`;\n            document.head.appendChild(link);\n        },\n        async loadKatexExt() {\n            this.loadKatex();\n            return (await this.import([`${this.getCdn()}/katex@0.16.9/dist/contrib/auto-render.min.js`]))[0]\n        },\n        async loadMermaid() {\n            return (await this.import([`${this.getCdn()}/mermaid@10.8.0/dist/mermaid.min.js`]))[0]\n        },\n        import(dependencies) {\n            return this.loadRequire().then(\n                () => {\n                    if (window.jupyterVue) {\n                        // in jupyterlab, we take Vue from ipyvue/jupyterVue\n                        define(\"vue\", [], () => window.jupyterVue.Vue);\n                    } else {\n                        define(\"vue\", ['jupyter-vue'], jupyterVue => jupyterVue.Vue);\n                    }\n                    return new Promise((resolve, reject) => {\n                        requirejs(dependencies, (...modules) => resolve(modules));\n                    })\n                }\n            );\n        },\n        loadRequire() {\n            if (window.requirejs) {\n                return Promise.resolve();\n            }\n            return new Promise((resolve, reject) => {\n                const script = document.createElement('script');\n                script.src = `${this.getCdn()}/requirejs@2.3.6/require.min.js`;\n                script.onload = resolve;\n                script.onerror = reject;\n                document.head.appendChild(script);\n            });\n        },\n        getJupyterBaseUrl() {\n            // if base url is set, we use ./ for relative paths compared to the base url\n            if (document.getElementsByTagName(\"base\").length) {\n                return \"./\";\n            }\n            const labConfigData = document.getElementById('jupyter-config-data');\n            if (labConfigData) {\n                /* lab and Voila */\n                return JSON.parse(labConfigData.textContent).baseUrl;\n            }\n            let base = document.body.dataset.baseUrl || document.baseURI;\n            if (!base.endsWith('/')) {\n                base += '/';\n            }\n            return base\n        },\n        getCdn() {\n            return this.cdn || (window.solara ? window.solara.cdn : `${this.getJupyterBaseUrl()}_solara/cdn`);\n        }\n    },\n    updated() {\n        // if the html gets update, re-run mermaid\n        this.mermaid.init();\n\n        if(window.MathJax && MathJax.Hub) {\n            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$el]);\n        } else {\n            window.renderMathInElement(this.$el, this.latexSettings);\n        }\n    }\n}\n<\/script>\n    ", "tooltip": null}}, "28df818ef17747f5a2fbfab55e728c2d": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_eb0c16e638064488b55e79d28e0c6aed", "Apply filter"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": null, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "background-color:light-dark(#00617e, #013b4d);color:white;", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": null, "variant": "elevated", "width": null}}, "2c4d18ef129b4a848163356fd6c42dbc": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_1e8ba5eb20cd4c67a4ab5f2b5ea66058", "IPY_MODEL_2faa6ce3c2ec4a84abf9c774b81a2a5f"], "class_": "d-flex ma-0 mast-table-view", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: column; align-items: stretch; row-gap: 12px;width:100%;min-width:0;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "2d5a5088714d4d25a9f80c4f0a005693": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2faa6ce3c2ec4a84abf9c774b81a2a5f": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_3356279afa20467faac81af9ba900094", "IPY_MODEL_7483dcd6dd2941328f894b5457ad15fa"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: row; align-items: stretch; justify-content: start; column-gap: 12px;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "3174cc8fa67a45dcbcc65012fe01fbdb": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "events": [], "layout": "IPY_MODEL_16af27cfaf1a46888e5e355d6f1230a2", "max": 265445927.0, "min": 264929082.0, "step": 0.1, "tabbable": null, "template": "IPY_MODEL_553076d4fd9e4d4e8d439621b3347854", "tooltip": null, "value": 264929082}}, "31c8a404d11740c781a6d5cd28c199d6": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ThemeModel", "state": {"_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ThemeModel", "_view_count": null, "_view_module": null, "_view_module_version": "3.1.0", "_view_name": null, "dark": null, "dark_effective": null}}, "3356279afa20467faac81af9ba900094": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "CardModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "CardModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "append_avatar": null, "append_icon": null, "attributes": {}, "border": null, "children": ["IPY_MODEL_e6ca911605444a0aac483d2149b16c95"], "class_": "ma-2", "color": null, "density": null, "disabled": null, "elevation": 2.0, "exact": null, "flat": null, "height": null, "hover": null, "href": null, "image": null, "layout": null, "link": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_avatar": null, "prepend_icon": null, "replace": null, "ripple": null, "rounded": null, "slot": null, "style_": "display:none;width:320px;flex-shrink:0;min-height:420px;max-height:550px;overflow-y:auto;", "subtitle": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "title": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "variant": null, "width": null}}, "35273f8d0b0c4fe89e218b239791ba96": {"model_module": "jupyter-vue", "model_module_version": "3.1.1", "model_name": "TemplateModel", "state": {"_model_module": "jupyter-vue", "_model_module_version": "3.1.1", "_model_name": "TemplateModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "esm_export": null, "esm_module": null, "source_url": "base.vue", "template": "<template>\n  <v-container fluid class=\"base-mast-table\">\n    <div class=\"base-mast-table-toolbar\">\n      <v-btn\n        :style=\"{\n          backgroundColor: filter_tray_open\n            ? 'transparent'\n            : 'light-dark(#b4dbe9, #013b4d)'\n        }\"\n        @click=\"filter_tray_open = !filter_tray_open\"\n      >\n        {{ 'Filters' }}\n        <v-icon>\n          {{ filter_tray_open ? 'mdi-chevron-left' : 'mdi-chevron-right' }}\n        </v-icon>\n      </v-btn>\n\n      <div v-if=\"show_if_empty || items.length\">\n        <v-col style=\"max-width: 400px;\">\n          <v-select\n            v-model=\"headers_visible\"\n            :items=\"headers_avail\"\n            item-title=\"title\"\n            item-value=\"key\"\n            label=\"Display columns\"\n            multiple\n            density=\"compact\"\n            hide-details\n            class=\"column-select\"\n            bg-color=\"transparent\"\n            :menu-props=\"{ contentClass: 'base-mast-column-menu' }\"\n          >\n            <template v-slot:selection=\"{ index }\">\n              <span v-if=\"index === 0\">\n                ({{ headers_visible.length }} of {{ headers_avail.length }} columns displayed)\n              </span>\n            </template>\n            <template v-slot:prepend-item>\n              <v-list-item\n                class=\"select-all-item\"\n                density=\"compact\"\n                ripple\n                @mousedown.prevent\n                @click=\"\n                  headers_visible.length < headers_avail.length\n                    ? headers_visible = [...headers_avail]\n                    : headers_visible = []\n                \"\n              >\n                <div class=\"select-all-content\">\n                  <v-icon size=\"24\">\n                    {{ headers_visible.length == headers_avail.length ? 'mdi-close-box' : headers_visible.length ? 'mdi-minus-box' : 'mdi-checkbox-blank-outline' }}\n                  </v-icon>\n                  <span>\n                    {{ headers_visible.length < headers_avail.length ? \"Select All\" : \"Clear All\" }}\n                  </span>\n                </div>\n              </v-list-item>\n              <v-divider></v-divider>\n            </template>\n          </v-select>\n        </v-col>\n      </div>\n\n      <v-menu v-model=\"menu_open\" :close-on-content-click=\"false\">\n        <template v-slot:activator=\"{ props }\">\n          <v-btn\n            v-bind=\"props\"\n            icon=\"mdi-menu\"\n            variant=\"text\"\n          />\n        </template>\n\n        <v-card class=\"base-mast-settings-menu\" min-width=\"300\">\n          <v-switch\n            v-model=\"show_tooltips\"\n            label=\"Show column definition on hover\"\n            color=\"#00617e\"\n            hide-details\n          />\n        </v-card>\n      </v-menu>\n\n      <div v-if=\"mission == 'list_products' && enable_load_in_app\">\n        <v-tooltip location=\"top\">\n        <template v-slot:activator=\"{ props }\">\n          <v-btn\n            v-bind=\"props\"\n            :disabled=\"selected_rows.length === 0\"\n            class=\"open-in elevation-1\"\n            @click=\"open_selected_rows_in_aladin\"\n            ><v-icon>mdi-open-in-app</v-icon>aladin</v-btn>\n          </template>\n          <div style=\"text-align: center;\">Download, open selection<br />in mast-aladin-lite</div>\n        </v-tooltip>\n\n        <v-tooltip location=\"top\">\n        <template v-slot:activator=\"{ props }\">\n          <v-btn\n            v-bind=\"props\"\n            :disabled=\"selected_rows.length === 0\"\n            class=\"open-in elevation-1\"\n            @click=\"open_selected_rows_in_jdaviz\"\n            ><v-icon>mdi-open-in-app</v-icon>jdaviz</v-btn>\n          </template>\n          <div style=\"text-align: center;\">Download, open<br />selection in jdaviz</div>\n        </v-tooltip>\n      </div>\n    </div>\n\n    <v-data-table-server\n      :headers=\"headers.filter(h => headers_visible.includes(h.key))\"\n      :items=\"items\"\n      :items-length=\"server_items_length\"\n      :item-value=\"item_key\"\n      v-model:items-per-page=\"items_per_page\"\n      v-model:sort-by=\"sort_by\"\n      :items-per-page-options=\"[\n        { value: 5, title: '5' },\n        { value: 10, title: '10' },\n        { value: 15, title: '15' },\n        { value: -1, title: 'All' }\n      ]\"\n      :show-select=\"show_rowselect\"\n      :footer-props=\"{ 'itemsPerPageText': 'Items per page:' }\"\n      v-model=\"selected_rows\"\n      v-model:options=\"table_options\"\n      class=\"base-mast-data-table elevation-2\"\n      density=\"compact\"\n    >\n      <template\n        v-for=\"header in headers.filter(h => headers_visible.includes(h.key))\"\n        v-slot:[`header.${header.key}`]=\"{\n          column,\n          toggleSort,\n          getSortIcon,\n          isSorted\n        }\"\n      >\n        <div\n          class=\"mast-header-cell\"\n          :class=\"{ 'mast-header-cell--sortable': column.sortable !== false }\"\n          @click=\"toggleSort(column)\"\n        >\n          <v-tooltip\n            v-if=\"show_tooltips && header.description\"\n            location=\"top\"\n          >\n            <template v-slot:activator=\"{ props }\">\n              <span v-bind=\"props\" class=\"mast-header-title\">\n                <strong>{{ column.title }}</strong>\n              </span>\n            </template>\n\n            <div style=\"max-width: 300px\">\n              <strong>{{ column.title }}</strong>: {{ header.description }}\n            </div>\n          </v-tooltip>\n\n          <span v-else class=\"mast-header-title\">\n            <strong>{{ column.title }}</strong>\n          </span>\n\n          <v-icon\n            v-if=\"column.sortable !== false\"\n            class=\"mast-header-sort\"\n            :class=\"{ 'mast-header-sort--active': isSorted(column) }\"\n            size=\"16\"\n          >\n            {{ getSortIcon(column) }}\n          </v-icon>\n        </div>\n      </template>\n    </v-data-table-server>\n  </v-container>\n</template>\n\n\n<style scoped>\n.base-mast-table-toolbar {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n}\n\n.column-select {\n  min-width: 300px;\n  max-width: 400px;\n}\n\n/* header */\n:deep(.base-mast-data-table thead) {\n  background-color: light-dark(#b4dbe9, #013b4d);\n}\n:deep(.base-mast-data-table thead th) {\n  background-color: light-dark(#b4dbe9, #013b4d);\n  color: light-dark(black, white);\n}\n\n/* sortable column icons */\n.mast-header-cell {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  cursor: pointer;\n}\n.mast-header-title {\n  display: inline-flex;\n  align-items: center;\n}\n.mast-header-sort {\n  opacity: 0;\n  transition: opacity 0.15s;\n}\n.mast-header-cell:hover .mast-header-sort {\n  opacity: 0.38;\n}\n.mast-header-sort--active {\n  opacity: 1;\n}\n\n/* alternating rows */\n:deep(.base-mast-data-table .v-data-table__tr:nth-child(even)) {\n  background: light-dark(#f1f2f7, black);\n}\n:deep(.base-mast-data-table .v-data-table__tr:nth-child(odd)) {\n  background: light-dark(white, #172a32);\n}\n\n/* selected */\n:deep(.base-mast-data-table tbody tr:has(.v-selection-control--dirty)) td {\n  background-color: #bdf0fd;\n  color: black;\n}\n\n/* footer */\n:deep(.base-mast-data-table .v-data-table-footer) {\n  background-color: light-dark(#b4dbe9, #013b4d);\n  color: light-dark(black, white);\n}\n:deep(.base-mast-data-table .v-data-table-footer .v-field) {\n  background-color: light-dark(#b4dbe9, #013b4d);\n}\n:deep(.base-mast-data-table .v-data-table-footer .v-field__input),\n:deep(.base-mast-data-table .v-data-table-footer .v-label) {\n  color: light-dark(black, white);\n}\n:deep(.base-mast-data-table .v-data-table-footer .v-btn) {\n  color: light-dark(black, white);\n}\n:deep(.base-mast-data-table .v-data-table-footer .items-per-page-options) {\n  color: light-dark(black, white);\n}\n\n/* reducing whitespace between rows */\n/* compact body rows */\n:deep(.base-mast-data-table tbody .v-data-table__td) {\n  white-space: nowrap;\n  padding-top: 0;\n  padding-bottom: 0;\n  height: 24px;\n  line-height: 1;\n}\n/* make selection control fit the row */\n:deep(.base-mast-data-table tbody .v-selection-control) {\n  min-height: 24px;\n  height: 24px;\n}\n:deep(.base-mast-data-table tbody .v-selection-control__wrapper) {\n  height: 24px;\n  width: 24px;\n}\n/* don't let checkbox's internal input create extra space */\n:deep(.base-mast-data-table tbody .v-selection-control__input) {\n  height: 24px;\n  width: 24px;\n}\n\n/* reducing footer whitespace */\n/* compact table footer */\n:deep(.base-mast-data-table .v-data-table-footer) {\n  min-height: 45px;\n  height: 45px;\n  padding-top: 0;\n  padding-bottom: 0;\n}\n/* compact items-per-page select */\n:deep(.base-mast-data-table .v-data-table-footer .v-field) {\n  min-height: 28px;\n  height: 28px;\n}\n:deep(.base-mast-data-table .v-data-table-footer .v-field__input) {\n  min-height: 28px;\n  padding-top: 0;\n  padding-bottom: 0;\n}\n:deep(.base-mast-data-table .v-data-table-footer .v-select) {\n  height: 28px;\n}\n\n/* select/clear columns */\n.select-all-item {\n  min-height: 36px;\n  padding: 0 20px;\n}\n\n</style>\n\n<style>\n/* column menu */\n.base-mast-column-menu .v-list {\n  padding: 4px 0;\n}\n.base-mast-column-menu .v-list-item {\n  min-height: 32px;\n  height: 32px;\n  padding: 0 12px;\n}\n.base-mast-column-menu .v-list-item__content {\n  padding: 0;\n}\n.base-mast-column-menu .v-list-item__prepend {\n  padding: 0;\n}\n.base-mast-column-menu .v-list-item__append {\n  padding: 0;\n}\n\n/* column menu select/clear all */\n.base-mast-column-menu .select-all-item {\n  min-height: 32px;\n  height: 32px;\n  padding: 0 12px;\n}\n.base-mast-column-menu .select-all-content {\n  display: flex;\n  align-items: center;\n  width: 100%;\n  white-space: nowrap;\n  gap: 0;\n}\n.base-mast-column-menu .select-all-content .v-icon {\n  flex: 0 0 40px;\n  width: 40px;\n}\n.base-mast-column-menu .select-all-content > span {\n  margin-left: 0;\n}\n\n/* open-in buttons */\n.open-in {\n  background-color: light-dark(#b4dbe8, #00617e);\n  margin-left: 0.5em;\n  width: 7em;\n}\n.open-in:not(:disabled):hover {\n  background-color: light-dark(#b4dbe8, #00617e);\n  color: light-dark(black, white);\n}\n.open-in:disabled {\n  background-color: light-dark(#e0e0e0, #424242);\n  color: light-dark(black, white);\n  opacity: 0.6;\n}\n\n/* defintions toggle menu */\n.base-mast-settings-menu {\n  padding: 8px 12px;\n  overflow: visible;\n}\n.base-mast-settings-menu .v-switch {\n  overflow: visible;\n}\n</style>\n"}}, "3728c09beece4835aa3f3e7e432f35ba": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "390fccc89ab24e74ba78251750c88eab": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SliderModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SliderModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "append_icon": null, "attributes": {}, "base_color": null, "center_affix": null, "children": [], "class_": null, "color": "primary", "density": null, "direction": null, "disabled": null, "elevation": null, "error": null, "error_messages": null, "focused": null, "glow": null, "hide_details": null, "hide_spin_buttons": null, "hint": null, "icon_color": null, "id": null, "label": "", "layout": null, "max": 265445927.0, "max_errors": null, "max_width": null, "messages": null, "min": 264929082.0, "min_width": null, "model_value": null, "name": null, "no_keyboard": null, "persistent_hint": null, "prepend_icon": null, "readonly": null, "reverse": null, "ripple": null, "rounded": null, "rules": null, "show_ticks": null, "slot": null, "step": 0.1, "style_": null, "tabbable": null, "theme": null, "thumb_color": null, "thumb_label": false, "thumb_size": null, "tick_size": null, "ticks": null, "tile": null, "tooltip": null, "track_color": null, "track_fill_color": null, "track_size": null, "v_bind": null, "v_model": 264929082, "v_on": null, "v_slots": [], "validate_on": null, "validation_value": null, "width": null}}, "3fd1f6a87ec84bd296848aafa92d02b6": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "events": [], "layout": "IPY_MODEL_efca31d429d14e1e80507f1896b451e5", "tabbable": null, "template": "\n<template>\n    <div class=\"solara-markdown rendered_html jp-RenderedHTMLCommon\" style=\"margin:0;padding:0;line-height:1;\"><h2 id=\"active-filters\">Active filters</h2></div>\n</template>\n\n<script>\nmodule.exports = {\n    async mounted() {\n        this.cdn = null;\n        await this.loadRequire();\n        this.mermaid = await this.loadMermaid();\n        this.mermaid.init();\n        this.latexSettings = {\n                delimiters: [\n                    {left: \"$$\", right: \"$$\", display: true},\n                    {left: \"$\", right: \"$\", display: false},\n                    {left: \"\\\\[\", right: \"\\\\]\", display: true},\n                    {left: \"\\\\(\", right: \"\\\\)\", display: false}\n                ],\n                ignoredClasses: [\"solara-markdown-output\", \"jupyter-widgets\"]\n            };\n        if (window.renderMathInElement) {\n            window.renderMathInElement(this.$el, this.latexSettings);\n        } else if (window.MathJax && MathJax.Hub) {\n            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$el]);\n        } else {\n            window.renderMathInElement = await this.loadKatexExt();\n            window.renderMathInElement(this.$el, this.latexSettings);\n        }\n        this.$el.querySelectorAll(\"a\").forEach(a => this.setupRouter(a))\n        window.md = this.$el\n    },\n    methods: {\n        setupRouter(a) {\n            let href = a.attributes['href'].value;\n            if(href.startsWith(\"./\")) {\n                // TODO: should we really do this?\n                href = location.pathname + href.substr(1);\n                a.attributes['href'].href = href;\n            }\n            let authLink = href.startsWith(\"/_solara/auth/\");\n            if( (href.startsWith(\"./\") || href.startsWith(\"/\")) && !authLink) {\n                a.onclick = e => {\n                    console.log(\"clicked\", href)\n                    if(href.startsWith(\"./\")) {\n                        solara.router.push(href);\n                    } else {\n                        solara.router.push(href);\n                    }\n                    e.preventDefault()\n                }\n            } else if(href.startsWith(\"#\")) {\n                href = location.pathname + href;\n                a.attributes['href'].value = href;\n            } else {\n                console.log(\"href\", href, \"is not a local link\")\n            }\n        },\n        async loadKatex() {\n            require.config({\n                map: {\n                    '*': {\n                        'katex': `${this.getCdn()}/katex@0.16.9/dist/katex.min.js`,\n                    }\n                }\n            });\n            const link = document.createElement('link');\n            link.type = \"text/css\";\n            link.rel = \"stylesheet\";\n            link.href = `${this.getCdn()}/katex@0.16.9/dist/katex.min.css`;\n            document.head.appendChild(link);\n        },\n        async loadKatexExt() {\n            this.loadKatex();\n            return (await this.import([`${this.getCdn()}/katex@0.16.9/dist/contrib/auto-render.min.js`]))[0]\n        },\n        async loadMermaid() {\n            return (await this.import([`${this.getCdn()}/mermaid@10.8.0/dist/mermaid.min.js`]))[0]\n        },\n        import(dependencies) {\n            return this.loadRequire().then(\n                () => {\n                    if (window.jupyterVue) {\n                        // in jupyterlab, we take Vue from ipyvue/jupyterVue\n                        define(\"vue\", [], () => window.jupyterVue.Vue);\n                    } else {\n                        define(\"vue\", ['jupyter-vue'], jupyterVue => jupyterVue.Vue);\n                    }\n                    return new Promise((resolve, reject) => {\n                        requirejs(dependencies, (...modules) => resolve(modules));\n                    })\n                }\n            );\n        },\n        loadRequire() {\n            if (window.requirejs) {\n                return Promise.resolve();\n            }\n            return new Promise((resolve, reject) => {\n                const script = document.createElement('script');\n                script.src = `${this.getCdn()}/requirejs@2.3.6/require.min.js`;\n                script.onload = resolve;\n                script.onerror = reject;\n                document.head.appendChild(script);\n            });\n        },\n        getJupyterBaseUrl() {\n            // if base url is set, we use ./ for relative paths compared to the base url\n            if (document.getElementsByTagName(\"base\").length) {\n                return \"./\";\n            }\n            const labConfigData = document.getElementById('jupyter-config-data');\n            if (labConfigData) {\n                /* lab and Voila */\n                return JSON.parse(labConfigData.textContent).baseUrl;\n            }\n            let base = document.body.dataset.baseUrl || document.baseURI;\n            if (!base.endsWith('/')) {\n                base += '/';\n            }\n            return base\n        },\n        getCdn() {\n            return this.cdn || (window.solara ? window.solara.cdn : `${this.getJupyterBaseUrl()}_solara/cdn`);\n        }\n    },\n    updated() {\n        // if the html gets update, re-run mermaid\n        this.mermaid.init();\n\n        if(window.MathJax && MathJax.Hub) {\n            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$el]);\n        } else {\n            window.renderMathInElement(this.$el, this.latexSettings);\n        }\n    }\n}\n<\/script>\n    ", "tooltip": null}}, "427babb3577a47df842caaf79f32dbf2": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "4d8b7d0fd4c64076a7eaaaa9a31b5b4f": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "HtmlModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "HtmlModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["Operator"], "class_": "", "layout": null, "slot": null, "style_": "margin:0;padding:0;", "tabbable": null, "tag": "span", "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "4dfb739054ef4e209b4ce41896441b9f": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_28df818ef17747f5a2fbfab55e728c2d"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: row; align-items: stretch; justify-content: end; column-gap: 12px;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "536d69f12d494fe299ca608093584a06": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "553076d4fd9e4d4e8d439621b3347854": {"model_module": "jupyter-vue", "model_module_version": "3.1.1", "model_name": "TemplateModel", "state": {"_model_module": "jupyter-vue", "_model_module_version": "3.1.1", "_model_name": "TemplateModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "esm_export": null, "esm_module": null, "source_url": "cross_filter_input.vue", "template": "<template>\n  <input\n    type=\"number\"\n    :value=\"value\"\n    :min=\"min\"\n    :max=\"max\"\n    :step=\"step\"\n    @change=\"onChange\"\n    @wheel.prevent\n    class=\"crossfilter-input\"\n  />\n</template>\n\n<script>\nexport default {\n  methods: {\n    onChange(event) {\n      let newValue = Number(event.target.value)\n      if (Number.isNaN(newValue)) {return}\n      newValue = Math.max(this.min, Math.min(this.max, newValue))\n      this.value = newValue\n    },\n  },\n}\n<\/script>\n\n<style>\n.crossfilter-input {\n    width: 100px;\n    height: 32px;\n    padding: 4px 8px;\n    font-size: 16px;\n    line-height: 20px;\n    overflow-y: \"auto\";\n}\n.crossfilter-input::-webkit-inner-spin-button, \n.crossfilter-input::-webkit-outer-spin-button {\n  -webkit-appearance: auto;\n  opacity: 1;\n  margin: 0;\n}\n.crossfilter-input:hover,\n.crossfilter-input:focus,\n.crossfilter-input:focus-visible,\n.crossfilter-input:active {\n    outline: none;\n    border-color: none;\n    box-shadow: none;\n}\n</style>\n"}}, "5afbeb086c8c466087afc7813739a2d5": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnToggleModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnToggleModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "base_color": null, "border": null, "children": ["IPY_MODEL_764197860d4246bc8430b2dc4f781dd5", "IPY_MODEL_18f63143ea704de09cf3d5514617c3cc", "IPY_MODEL_0125302b102e425b9fa5f4dd4b88c178", "IPY_MODEL_62a198f10f6e4c25b2a58425c62ff719", "IPY_MODEL_ba673c8e50ce416b9bd982aa036f30cf", "IPY_MODEL_83dc5e970b5a463386595718966a0110"], "class_": "", "color": null, "density": null, "direction": null, "disabled": null, "divided": null, "elevation": null, "layout": null, "mandatory": true, "max": null, "model_value": null, "multiple": false, "rounded": null, "selected_class": null, "slot": null, "style_": "", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": ">=", "v_on": null, "v_slots": [], "variant": null}}, "5b109aa2f9cf4fc3af50dc4acb07c945": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_3fd1f6a87ec84bd296848aafa92d02b6"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: row; align-items: stretch; justify-content: start; column-gap: 12px;align-items:center;justify-content:space-between;width:100%;padding:0;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "62a198f10f6e4c25b2a58425c62ff719": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_02903734249c4958b127b2abe6a24b2a"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": true, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": "<=", "variant": "elevated", "width": null}}, "72a67ad19c864203a0c35d114f5b87c5": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-code-not-equal"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": false, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "7483dcd6dd2941328f894b5457ad15fa": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_84d73cda907343cc8551ee051b1dc56a", "IPY_MODEL_03e2a7a311a74a7194a02a90f3ea2d9b", "IPY_MODEL_deda185f9d0543f498342f6289ed2be1"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: column; align-items: stretch; row-gap: 12px;flex: 1; overflow: auto; min-height: 0;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "764197860d4246bc8430b2dc4f781dd5": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_838c905595bf45ae8116e2bc4113a5d7"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": true, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": "==", "variant": "elevated", "width": null}}, "76b91dabc72646719aaafd6d2f3c8f3a": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "HtmlModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "HtmlModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["ArchiveFileID >="], "class_": "", "layout": null, "slot": null, "style_": "margin:0;padding:0;", "tabbable": null, "tag": "span", "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "774272f782704d88860f4139c8678260": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ThemeColorsModel", "state": {"_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ThemeColorsModel", "_theme_name": "dark", "_view_count": null, "_view_module": null, "_view_module_version": "3.1.0", "_view_name": null, "background": "#121212", "custom_theme_colors": {}, "error": "#CF6679", "info": "#2196F3", "on_surface_variant": "#424242", "primary": "#BB86FC", "primary_darken_1": "#3700B3", "secondary": "#03DAC5", "secondary_darken_1": "#03DAC5", "success": "#4CAF50", "surface": "#212121", "surface_bright": "#ccbfd6", "surface_variant": "#a3a3a3", "warning": "#FB8C00"}}, "813bcb1f1e064a0f9fed57b051af937d": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "823351a6d6494272a09a51ce60cb1f39": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "HtmlModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "HtmlModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["IPY_MODEL_19ceee6ec00b4876bcfb9e802a1bf2aa"], "class_": null, "layout": null, "slot": null, "style_": null, "tabbable": null, "tag": "div", "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "836402159e594125882b257b0a87c181": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_f53e724486a74a729ec2a495968875fe"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: row; align-items: stretch; justify-content: start; column-gap: 12px;width:100%;justify-content:flex-end;margin:0;padding:0;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "838c905595bf45ae8116e2bc4113a5d7": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-code-equal"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": false, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "83dc5e970b5a463386595718966a0110": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_d530966e79ae4b799a1182f2ded53fc7"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": true, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": ">=", "variant": "elevated", "width": null}}, "84399b7c74664a2faa61b611e76bb6c7": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "echo_available": true, "events": [], "is_displayed": false, "kernel_id": "", "layout": "IPY_MODEL_536d69f12d494fe299ca608093584a06", "open_tab_on_display": false, "open_window_on_display": false, "tabbable": null, "target_model_id": "2c4d18ef129b4a848163356fd6c42dbc", "template": "IPY_MODEL_ccd4541b91e84e40a756701a9de9c6b9", "tooltip": null, "use_backend": "auto", "window_features": "popup,width=1200,height=600", "window_name": "2c4d18ef129b4a848163356fd6c42dbc"}}, "84c8138776184202af5b8f983d8d2a16": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "84cf1806155a4388a218c70c2fa91146": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "AutocompleteModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "AutocompleteModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "append_icon": null, "append_inner_icon": null, "attributes": {}, "auto_select_first": null, "autocomplete": null, "autofocus": null, "base_color": null, "bg_color": "transparent", "center_affix": null, "children": [], "chips": null, "class_": null, "clear_icon": null, "clear_on_select": null, "clearable": null, "closable_chips": null, "close_text": null, "color": null, "counter": null, "counter_value": null, "custom_filter": null, "custom_key_filter": null, "density": "compact", "disabled": null, "eager": null, "error": null, "error_messages": null, "filter_keys": null, "filter_mode": null, "flat": null, "focused": null, "glow": null, "hide_details": null, "hide_no_data": null, "hide_selected": null, "hide_spin_buttons": null, "hint": null, "icon_color": null, "id": null, "item_children": null, "item_color": "light-dark(#00617e, #013b4d)", "item_props": null, "item_title": null, "item_type": null, "item_value": null, "items": ["access", "ang_sep", "ArchiveFileID", "cal_ver", "date_obs", "duration", "exp_type", "fileSetName", "instrume", "observtn", "opticalElements", "pi_name", "productLevel", "program", "proposal_cycle", "proposal_type", "publicReleaseDate", "s_region", "targ_dec", "targ_ra", "targprop", "targtype", "visit"], "label": "Column", "layout": null, "list_props": null, "loading": null, "max_errors": null, "max_width": null, "menu": null, "menu_icon": null, "menu_props": null, "messages": null, "min_width": null, "model_modifiers": null, "model_value": null, "multiple": null, "name": null, "no_auto_scroll": null, "no_data_text": null, "no_filter": null, "open_on_clear": null, "open_text": null, "persistent_clear": null, "persistent_counter": null, "persistent_hint": null, "persistent_placeholder": null, "placeholder": null, "prefix": null, "prepend_icon": null, "prepend_inner_icon": null, "readonly": null, "return_object": null, "reverse": null, "role": null, "rounded": null, "rules": null, "search": null, "single_line": null, "slot": null, "style_": null, "suffix": null, "tabbable": null, "theme": null, "tile": null, "tooltip": null, "type": null, "v_bind": null, "v_model": "ArchiveFileID", "v_on": null, "v_slots": [], "validate_on": null, "value_comparator": null, "variant": null, "width": null}}, "84d73cda907343cc8551ee051b1dc56a": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_f52fee1852f049e8811998d8c126ac08", "msg_id": "", "outputs": [{"data": {"application/vnd.jupyter.widget-view+json": {"model_id": "00e474c21fc5419ea8d86ce9226bdd94", "version_major": 2, "version_minor": 0}, "text/plain": "BaseMastTable(events=['open_selected_rows_in_aladin', 'open_selected_rows_in_jdaviz'], headers=[{'title': 'Arc\u2026"}, "metadata": {}, "output_type": "display_data"}], "tabbable": null, "tooltip": null}}, "86bf28e7f461476db2e1efd0acf210cc": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_4d8b7d0fd4c64076a7eaaaa9a31b5b4f", "IPY_MODEL_5afbeb086c8c466087afc7813739a2d5"], "class_": "d-flex ma-0", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: row; align-items: stretch; justify-content: start; column-gap: 12px;align-items:center;gap:8px;flex-wrap:wrap;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "880b255df55844b1b45dbdf0defdd2ed": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "echo_available": true, "events": [], "is_displayed": false, "kernel_id": "", "layout": "IPY_MODEL_ad5f0584297e4b6aaccba4ed2377f9e7", "open_tab_on_display": false, "open_window_on_display": false, "tabbable": null, "target_model_id": "2c4d18ef129b4a848163356fd6c42dbc", "template": "IPY_MODEL_ccd4541b91e84e40a756701a9de9c6b9", "tooltip": null, "use_backend": "auto", "window_features": "popup,width=1200,height=600", "window_name": "2c4d18ef129b4a848163356fd6c42dbc"}}, "91966509b24d481598593cee09f3d8a0": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "events": [], "layout": "IPY_MODEL_427babb3577a47df842caaf79f32dbf2", "tabbable": null, "template": "\n<template>\n    <div class=\"solara-markdown rendered_html jp-RenderedHTMLCommon\" style=\"\"><h2 id=\"add-filter\">Add filter</h2></div>\n</template>\n\n<script>\nmodule.exports = {\n    async mounted() {\n        this.cdn = null;\n        await this.loadRequire();\n        this.mermaid = await this.loadMermaid();\n        this.mermaid.init();\n        this.latexSettings = {\n                delimiters: [\n                    {left: \"$$\", right: \"$$\", display: true},\n                    {left: \"$\", right: \"$\", display: false},\n                    {left: \"\\\\[\", right: \"\\\\]\", display: true},\n                    {left: \"\\\\(\", right: \"\\\\)\", display: false}\n                ],\n                ignoredClasses: [\"solara-markdown-output\", \"jupyter-widgets\"]\n            };\n        if (window.renderMathInElement) {\n            window.renderMathInElement(this.$el, this.latexSettings);\n        } else if (window.MathJax && MathJax.Hub) {\n            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$el]);\n        } else {\n            window.renderMathInElement = await this.loadKatexExt();\n            window.renderMathInElement(this.$el, this.latexSettings);\n        }\n        this.$el.querySelectorAll(\"a\").forEach(a => this.setupRouter(a))\n        window.md = this.$el\n    },\n    methods: {\n        setupRouter(a) {\n            let href = a.attributes['href'].value;\n            if(href.startsWith(\"./\")) {\n                // TODO: should we really do this?\n                href = location.pathname + href.substr(1);\n                a.attributes['href'].href = href;\n            }\n            let authLink = href.startsWith(\"/_solara/auth/\");\n            if( (href.startsWith(\"./\") || href.startsWith(\"/\")) && !authLink) {\n                a.onclick = e => {\n                    console.log(\"clicked\", href)\n                    if(href.startsWith(\"./\")) {\n                        solara.router.push(href);\n                    } else {\n                        solara.router.push(href);\n                    }\n                    e.preventDefault()\n                }\n            } else if(href.startsWith(\"#\")) {\n                href = location.pathname + href;\n                a.attributes['href'].value = href;\n            } else {\n                console.log(\"href\", href, \"is not a local link\")\n            }\n        },\n        async loadKatex() {\n            require.config({\n                map: {\n                    '*': {\n                        'katex': `${this.getCdn()}/katex@0.16.9/dist/katex.min.js`,\n                    }\n                }\n            });\n            const link = document.createElement('link');\n            link.type = \"text/css\";\n            link.rel = \"stylesheet\";\n            link.href = `${this.getCdn()}/katex@0.16.9/dist/katex.min.css`;\n            document.head.appendChild(link);\n        },\n        async loadKatexExt() {\n            this.loadKatex();\n            return (await this.import([`${this.getCdn()}/katex@0.16.9/dist/contrib/auto-render.min.js`]))[0]\n        },\n        async loadMermaid() {\n            return (await this.import([`${this.getCdn()}/mermaid@10.8.0/dist/mermaid.min.js`]))[0]\n        },\n        import(dependencies) {\n            return this.loadRequire().then(\n                () => {\n                    if (window.jupyterVue) {\n                        // in jupyterlab, we take Vue from ipyvue/jupyterVue\n                        define(\"vue\", [], () => window.jupyterVue.Vue);\n                    } else {\n                        define(\"vue\", ['jupyter-vue'], jupyterVue => jupyterVue.Vue);\n                    }\n                    return new Promise((resolve, reject) => {\n                        requirejs(dependencies, (...modules) => resolve(modules));\n                    })\n                }\n            );\n        },\n        loadRequire() {\n            if (window.requirejs) {\n                return Promise.resolve();\n            }\n            return new Promise((resolve, reject) => {\n                const script = document.createElement('script');\n                script.src = `${this.getCdn()}/requirejs@2.3.6/require.min.js`;\n                script.onload = resolve;\n                script.onerror = reject;\n                document.head.appendChild(script);\n            });\n        },\n        getJupyterBaseUrl() {\n            // if base url is set, we use ./ for relative paths compared to the base url\n            if (document.getElementsByTagName(\"base\").length) {\n                return \"./\";\n            }\n            const labConfigData = document.getElementById('jupyter-config-data');\n            if (labConfigData) {\n                /* lab and Voila */\n                return JSON.parse(labConfigData.textContent).baseUrl;\n            }\n            let base = document.body.dataset.baseUrl || document.baseURI;\n            if (!base.endsWith('/')) {\n                base += '/';\n            }\n            return base\n        },\n        getCdn() {\n            return this.cdn || (window.solara ? window.solara.cdn : `${this.getJupyterBaseUrl()}_solara/cdn`);\n        }\n    },\n    updated() {\n        // if the html gets update, re-run mermaid\n        this.mermaid.init();\n\n        if(window.MathJax && MathJax.Hub) {\n            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$el]);\n        } else {\n            window.renderMathInElement(this.$el, this.latexSettings);\n        }\n    }\n}\n<\/script>\n    ", "tooltip": null}}, "9396d0255fa94338a5f7a64aa5199f55": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "HtmlModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "HtmlModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {"height": "0px", "src": "https://solara.dev/static/public/success.html?check=widget&version=1.66.3", "width": "0px"}, "children": [], "class_": null, "layout": null, "slot": null, "style_": "display: none;", "tabbable": null, "tag": "iframe", "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "953c8335ecfe459899ee25d851b1513b": {"model_module": "@jupyter-widgets/jupyterlab-sidecar", "model_module_version": "^1.1", "model_name": "SidecarModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/jupyterlab-sidecar", "_model_module_version": "^1.1", "_model_name": "SidecarModel", "_view_count": null, "_view_module": "@jupyter-widgets/jupyterlab-sidecar", "_view_module_version": "^1.1", "_view_name": "SidecarView", "_widget_id": null, "anchor": "split-bottom", "layout": "IPY_MODEL_3728c09beece4835aa3f3e7e432f35ba", "msg_id": "", "outputs": [], "ref": null, "tabbable": null, "title": "mast-table", "tooltip": null}}, "9caa08b11f0946c2b631aa7541648192": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ColModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ColModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "align_self": null, "attributes": {}, "children": ["IPY_MODEL_23db506cf2d44705bafd1f92f40c1223"], "class_": null, "cols": 12.0, "layout": null, "lg": null, "md": null, "offset": null, "offset_lg": null, "offset_md": null, "offset_sm": null, "offset_xl": null, "offset_xxl": null, "order": null, "order_lg": null, "order_md": null, "order_sm": null, "order_xl": null, "order_xxl": null, "slot": null, "sm": null, "style_": null, "tabbable": null, "tag": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "xl": null, "xxl": null}}, "ad5f0584297e4b6aaccba4ed2377f9e7": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ba3b36ea9cc64f0c922b1024c3e6d7d3": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ba673c8e50ce416b9bd982aa036f30cf": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "BtnModel", "state": {"_dom_classes": [], "_events": ["click"], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "BtnModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "active": null, "active_color": null, "append_icon": null, "attributes": {}, "base_color": null, "block": null, "border": null, "children": ["IPY_MODEL_0dd2fbcecc1e455cacf8f7da3c23943f"], "class_": "", "color": null, "density": null, "disabled": false, "elevation": null, "exact": null, "flat": null, "height": null, "href": null, "icon": true, "layout": null, "loading": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "prepend_icon": null, "readonly": null, "replace": null, "ripple": null, "rounded": null, "selected_class": null, "size": null, "slim": null, "slot": null, "spaced": null, "stacked": null, "style_": "", "symbol": null, "tabbable": null, "tag": null, "text": null, "theme": null, "tile": null, "to": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "value": ">", "variant": "elevated", "width": null}}, "be28ff034f0a4865b14ad66df78db704": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "VuetifyTemplateModel", "state": {"_component_instances": [], "_dom_classes": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "VuetifyTemplateModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "components": null, "echo_available": true, "events": [], "is_displayed": false, "kernel_id": "", "layout": "IPY_MODEL_813bcb1f1e064a0f9fed57b051af937d", "open_tab_on_display": false, "open_window_on_display": false, "tabbable": null, "target_model_id": "2c4d18ef129b4a848163356fd6c42dbc", "template": "IPY_MODEL_ccd4541b91e84e40a756701a9de9c6b9", "tooltip": null, "use_backend": "auto", "window_features": "popup,width=1200,height=600", "window_name": "2c4d18ef129b4a848163356fd6c42dbc"}}, "c5e206b087bd4cb3b8eb1753ba266e17": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c9363ad601a04ec49447dd7e1e9269e2": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ThemeModel", "state": {"_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ThemeModel", "_view_count": null, "_view_module": null, "_view_module_version": "3.1.0", "_view_name": null, "dark": null, "dark_effective": null}}, "ccd4541b91e84e40a756701a9de9c6b9": {"model_module": "jupyter-vue", "model_module_version": "3.1.1", "model_name": "TemplateModel", "state": {"_model_module": "jupyter-vue", "_model_module_version": "3.1.1", "_model_name": "TemplateModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "esm_export": null, "esm_module": null, "source_url": "popout_button.vue", "template": "<template>\n  <span style=\"color: inherit;\">\n    <v-btn\n        v-if=\"!isInPopupMode() && kernel_id && getBaseUrl()\"\n        @click=\"openWindow\"\n        @contextmenu.prevent=\"openTab\"\n        icon\n        variant=\"text\"\n        :disabled=\"!echo_available\"\n        style=\"color: inherit !important;\"\n    >\n      <v-icon style=\"color: inherit !important;\">mdi-application-export</v-icon>\n    </v-btn>\n  </span>\n</template>\n<script>\nmodule.exports = {\n  data() {\n    return {solaraFound: false}\n  },\n  created() {\n    const baseUrl = this.getBaseUrl();\n    if (!baseUrl) {\n      this.solaraDetectionPromise = Promise.resolve();\n      console.info('BaseUrl not found, hiding popout button.');\n    } else {\n      const solaraReadyZUrl = `${baseUrl}solara/readyz`;\n      this.solaraDetectionPromise = fetch(solaraReadyZUrl)\n        .then(response => {\n          if (response.ok) {\n            console.error('Solara found, using Solara popout page.');\n            this.solaraFound = true;\n          }\n        })\n    }\n  },\n  mounted() {\n    this.is_displayed = true;\n    this.solaraDetectionPromise.then(() => {\n      if (this.open_window_on_display) {\n        this.open_window_on_display = false;\n        this.openWindow();\n      }\n      if (this.open_tab_on_display) {\n        this.open_tab_on_display = false;\n        this.openTab();\n      }\n    });\n  },\n  methods: {\n    getBaseUrl() {\n      if(window.solara) { \n        // if on solara >=1.40, the jupyter base url is different from the solara one\n        return window.solara.rootPath + \"/\";\n      }\n      const labConfigData = document.getElementById('jupyter-config-data');\n      if (labConfigData) {\n        /* lab, Voila, and Solara */\n        return JSON.parse(labConfigData.textContent).baseUrl;\n      }\n      return document.body.dataset.baseUrl\n    },\n    getUrl() {\n      const isDark = this.$root.$vuetify.theme.isDark\n      const baseUrl = this.getBaseUrl();\n      const host = document.body.dataset.voilaHost || `${location.protocol}//${location.host}`\n      const result = `${host}${baseUrl}${this.popoutPageUrl}` +\n          `?kernelid=${this.kernel_id}&modelid=${this.target_model_id}&baseurl=${baseUrl}` + (isDark ? '&dark=true' : '');\n\n      return result;\n    },\n    openWindow() {\n      window.open(this.getUrl(), this.window_name, this.window_features);\n    },\n    openTab() {\n      window.open(this.getUrl(), '_blank');\n    },\n    isInPopupMode() {\n      const params = new URLSearchParams(window.location.search);\n      return params.get('modelid') == this.target_model_id;\n    },\n    jupyter_open_window() {\n      this.openWindow();\n    },\n    jupyter_open_tab() {\n      this.openTab();\n    }\n  },\n  computed: {\n    popoutPageUrl() {\n       if (window.solara && (solara.rootPath !== undefined)) {\n        return \"\"\n      }\n      if(this.use_backend == \"solara\" || (this.use_backend == \"auto\" && this.solaraFound)) {\n        return 'solara';\n      } else {\n        return 'voila/templates/ipypopout/static/popout.html'\n      }\n    }\n  }\n}\n<\/script>\n"}}, "d530966e79ae4b799a1182f2ded53fc7": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-code-greater-than-or-equal"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": false, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "dc698715eb6a460695114f94a0b5357c": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ThemeColorsModel", "state": {"_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ThemeColorsModel", "_theme_name": "light", "_view_count": null, "_view_module": null, "_view_module_version": "3.1.0", "_view_name": null, "background": "#FFFFFF", "custom_theme_colors": {}, "error": "#B00020", "info": "#2196F3", "on_surface_variant": "#EEEEEE", "primary": "#00617e", "primary_darken_1": "#3700B3", "secondary": "#03DAC6", "secondary_darken_1": "#018786", "success": "#4CAF50", "surface": "#FFFFFF", "surface_bright": "#FFFFFF", "surface_variant": "#424242", "warning": "#FB8C00"}}, "deda185f9d0543f498342f6289ed2be1": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "SheetModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "SheetModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "border": null, "children": ["IPY_MODEL_84399b7c74664a2faa61b611e76bb6c7"], "class_": "d-flex ma-0 popout-button", "color": null, "elevation": 0.0, "height": null, "layout": null, "location": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "position": null, "rounded": null, "slot": null, "style_": "flex-direction: column; align-items: stretch; row-gap: 12px;position:absolute;top:25px;right:10px;z-index:1000;;", "tabbable": null, "tag": null, "theme": null, "tile": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": [], "width": null}}, "e153ff6c8b7a4fb38eec09c00a54b3cd": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "ThemeColorsModel", "state": {"_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "ThemeColorsModel", "_theme_name": "light", "_view_count": null, "_view_module": null, "_view_module_version": "3.1.0", "_view_name": null, "background": "#FFFFFF", "custom_theme_colors": {}, "error": "#B00020", "info": "#2196F3", "on_surface_variant": "#EEEEEE", "primary": "#6200EE", "primary_darken_1": "#3700B3", "secondary": "#03DAC6", "secondary_darken_1": "#018786", "success": "#4CAF50", "surface": "#FFFFFF", "surface_bright": "#FFFFFF", "surface_variant": "#424242", "warning": "#FB8C00"}}, "e24fcd06e317427f9db497cdaa47dc81": {"model_module": "jupyter-vue", "model_module_version": "3.1.1", "model_name": "ForceLoadModel", "state": {"_dom_classes": [], "_model_module": "jupyter-vue", "_model_module_version": "3.1.1", "_model_name": "ForceLoadModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "layout": "IPY_MODEL_84c8138776184202af5b8f983d8d2a16", "tabbable": null, "tooltip": null}}, "e6ca911605444a0aac483d2149b16c95": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "CardTextModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "CardTextModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["IPY_MODEL_5b109aa2f9cf4fc3af50dc4acb07c945", "IPY_MODEL_26f2bc512cd542eb896d22d45028cfd5", "IPY_MODEL_91966509b24d481598593cee09f3d8a0", "IPY_MODEL_84cf1806155a4388a218c70c2fa91146", "IPY_MODEL_86bf28e7f461476db2e1efd0acf210cc", "IPY_MODEL_76b91dabc72646719aaafd6d2f3c8f3a", "IPY_MODEL_21cef60012004b47b6f39c32c00784af", "IPY_MODEL_836402159e594125882b257b0a87c181", "IPY_MODEL_4dfb739054ef4e209b4ce41896441b9f"], "class_": null, "layout": null, "opacity": null, "slot": null, "style_": null, "tabbable": null, "tag": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "eb0c16e638064488b55e79d28e0c6aed": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "IconModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_metadata": null, "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "IconModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["mdi-plus"], "class_": null, "color": null, "disabled": null, "end": null, "icon": null, "layout": null, "opacity": null, "size": null, "slot": null, "start": true, "style_": null, "tabbable": null, "tag": null, "theme": null, "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}, "efca31d429d14e1e80507f1896b451e5": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "f52fee1852f049e8811998d8c126ac08": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "f53e724486a74a729ec2a495968875fe": {"model_module": "jupyter-vuetify", "model_module_version": "3.1.0", "model_name": "HtmlModel", "state": {"_dom_classes": [], "_events": [], "_jupyter_vue": "IPY_MODEL_e24fcd06e317427f9db497cdaa47dc81", "_model_module": "jupyter-vuetify", "_model_module_version": "3.1.0", "_model_name": "HtmlModel", "_view_count": null, "_view_module": "jupyter-vuetify", "_view_module_version": "3.1.0", "_view_name": "VuetifyView", "attributes": {}, "children": ["249 of 249 after filtering"], "class_": "", "layout": null, "slot": null, "style_": "font-size:12px;margin:0;padding:0;", "tabbable": null, "tag": "span", "tooltip": null, "v_bind": null, "v_model": "!!disabled!!", "v_on": null, "v_slots": []}}}, "version_major": 2, "version_minor": 0}</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/interactive_data_exploration/how_to/filter_long_tables/filter_long_tables';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="How to Inspect Long Tables with mast-table" href="../inspect_long_tables/inspect_long_tables.html" />
+    <link rel="prev" title="How to Browse Roman Observations" href="../browse_roman_observations/browse_roman_observations.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/mastlogo.svg" class="logo__image only-light" alt="MAST Notebook Repository - Home"/>
+    <img src="../../../../_static/mastlogo.svg" class="logo__image only-dark pst-js-only" alt="MAST Notebook Repository - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../intro.html">
+                    Welcome to the MAST Notebook Repository!
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-Mission Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../multi_mission/astroquery.html">Astroquery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/beginner_search/beginner_search.html">Beginner: Searching MAST using astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/beginner_zcut/beginner_zcut.html">Beginner: Zcut and Astroquery Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/large_downloads/large_downloads.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/historic_quasar_observations/historic_quasar_observations.html">Historical Quasar Observations</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/wildcard_searches/wildcard_searches.html">Wildcard Handling with Astroquery.mast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/missions_mast_search/missions_mast_search.html">Searching for Mission-Specific Data with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/galex_panstarrs_bulk_download/galex_panstarrs_bulk_download.html">Large Downloads in <code class="docutils literal notranslate"><span class="pre">astroquery.mast</span></code> from AWS to Local Storage</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/resolve_objects/resolve_objects.html">Resolving Named Objects with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../multi_mission/cloud_data_access/cloud_data_access.html">Accessing Cloud-Hosted Data with Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi_mission/display_footprints/display_footprints.html">PySIAF Observation Footprint Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi_mission/subscriptions/subscriptions.html">Downloading Subscription Products with Astroquery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi_mission/catalog_access_coordinate_transformation/catalog_access_coordinate_transform.html">Catalog Access: Querying Sky Regions in User-Specified Coordinate Frame</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GALEX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../GALEX/mis_mosaic/mis_mosaic.html">Surveying dust structure via GALEX MIS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">HSC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../HSC/queries.html">Intro HSC Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/HSCV4_SMC_CASJOBS/hscv4_smc_casjobs.html">Hubble Source Catalog CasJobs Notebook: SMC Color-Magnitude Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/HSCV3_API/hscv3_api.html">Hubble Source Catalog API Notebook</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/HSCV3_SMC_API/hscv3_smc_api.html">Hubble Source Catalog API Notebook: SMC Color-Magnitude Diagram</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/HSC_TAP/HSC_TAP.html">MAST Table Access Protocol Hubble Source Catalog Demo</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../HSC/SWEEPS.html">SWEEPS Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/SWEEPS_HSCV3P1/sweeps_hscv3p1.html">Hubble Source Catalog SWEEPS Proper Motion (CasJobs Version)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/SWEEPS_HSCV3P1_API/sweeps_hscv3p1_api.html">Hubble Source Catalog SWEEPS Proper Motion (API Version)</a></li>
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../HSC/HCV.html">Hubble Catalog of Variables (HCV) Queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/HCV_API/HCV_API_demo.html">Hubble Catalog of Variables Notebook (API version)</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../HSC/HCV_CASJOBS/HCV_casjobs_demo.html">Hubble Catalog of Variables Notebook (CasJobs version)</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Interactive Data Exploration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../browse_roman_observations/browse_roman_observations.html">How to Browse Roman Observations</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">How to Filter Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspect_long_tables/inspect_long_tables.html">How to Inspect Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../organize_widgets/organize_widgets.html">How to Organize Widgets with <code class="docutils literal notranslate"><span class="pre">jupyterlab-sidecar</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../organize_widgets_with_motorcycle/organize_widgets_with_motorcycle.html">How to Organize Widgets with <code class="docutils literal notranslate"><span class="pre">motorcycle</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overlay_non_roman_source_catalogs/overlay_non_roman_source_catalogs.html">How to Overlay non-Roman Source Catalogs into <code class="docutils literal notranslate"><span class="pre">mast-aladin</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sync_viewers/sync_viewers.html">How to Sync Viewers with <code class="docutils literal notranslate"><span class="pre">mast-aladin</span></code> and <code class="docutils literal notranslate"><span class="pre">jdaviz</span></code></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">IUE</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../IUE/exploring_UV_extinction_curves/exploring_UV_extinction_curves.html">Exploring UV Extinction Curves</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">JWST</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../JWST/download_by_program_id/download_by_program_id.html">Accessing JWST Proposal Data in astroquery.mast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../JWST/duplication_checking/duplication_checking.html">JWST Duplication Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../JWST/Engineering_Database_Retreival/EDB_Retrieval.html">JWST Engineering Data Retrieval</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../../JWST/SI_keyword_exoplanet_search/SI_keyword_exoplanet_search.html">JWST SI Keyword Search for Exoplanet Spectra</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../../JWST/MAST_metadata_search/MAST_metadata_search.html">Astroquery: Exploring Metadata from the James Webb Space Telescope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kepler</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Kepler/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/plotting_lightcurves/plotting_lightcurves.html">Using Kepler Data to Plot a Light Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/plotting_images_from_tpf/plotting_images_from_tpf.html">Plotting Images from Kepler Target Pixel Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/plotting_dvts/plotting_dvts.html">Read and Plot A Kepler Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/plotting_catalog_over_FFI/plotting_catalog_over_FFI.html">Plotting a Catalog over a Kepler Full Frame Image File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Kepler/lightkurve.html">Lightkurve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/lightkurve_analyzing_lc_products/lightkurve_analyzing_lc_products.html">Using <em>Kepler</em> Light Curve Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/lightkurve_analyzing_tpf_products/lightkurve_analyzing_tpf_products.html">Using <em>Kepler</em> Target Pixel File Products with Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/lightkurve_searching_for_data/lightkurve_searching_for_data.html">Searching for <em>Kepler</em>/<em>K2</em> and <em>TESS</em> Data Products Using Lightkurve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/lightkurve_custom_aperture_photometry/lightkurve_custom_aperture_photometry.html">Creating Your Own Light Curves using Custom Aperture Photometry</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/lightkurve_combining_multiple_quarters/lightkurve_combining_multiple_quarters.html">Combining Multiple Quarters of <em>Kepler</em> Data with Lightkurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/lightkurve_interactively_inspecting_TPFs_and_LCs/lightkurve_interactively_inspecting_TPFs_and_LCs.html">Interactively Inspecting Target Pixel Files and Light Curves</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Kepler/inst_noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/instrumental_noise_1_data_gaps_and_quality_flags/instrumental_noise_1_data_gaps_and_quality_flags.html">Data Gaps and Quality Flags</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/instrumental_noise_2_spurious_signals_and_time_sampling_effects/instrumental_noise_2_spurious_signals_and_time_sampling_effects.html">Spurious Signals and Time Sampling Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/instrumental_noise_3_seasonal_and_detector_effects/instrumental_noise_3_seasonal_and_detector_effects.html">Seasonal and Detector Effects</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/instrumental_noise_4_electronic_noise/instrumental_noise_4_electronic_noise.html">Electronic Noise</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Kepler/signals.html">Identifying Periodic Signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/identifying_transiting_planet_signals/identifying_transiting_planet_signals.html">Identifying Transiting Planet Signals in a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/measuring_a_rotation_period/measuring_a_rotation_period.html">Measuring and Removing a Rotation Period Signal from a <em>Kepler</em> Light Curve</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/visualizing_periodic_signals_using_a_river_plot/visualizing_periodic_signals_using_a_river_plot.html">Visualizing Periodic Signals Using a River Plot</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/verifying_the_location_of_a_signal/verifying_the_location_of_a_signal.html">Verifying the Location of a Signal in <em>Kepler</em> Pixel Data</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Kepler/periodograms.html">Periodograms &amp; Asteroseismology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/creating_periodograms/creating_periodograms.html">Creating Periodograms</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star/how_to_understand_and_manipulate_the_periodogram_of_an_oscillating_star.html">How to Understand and Manipulate the Periodogram of an Oscillating Star</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../Kepler/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology/how_to_estimate_a_stars_mass_and_radius_using_asteroseismology.html">How to Estimate a Star’s Mass and Radius Using Asteroseismology</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">K2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../K2/Lightcurve/Lightcurve.html">Beginner: Read and Plot A K2 Light Curve File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../K2/TPF/TPF.html">Beginner: Read and Display A K2 Target Pixel File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../K2/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Beginner: Read and Display a K2 Full Frame Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../K2/removing_instrumental_noise_using_pld/removing_instrumental_noise_using_pld.html">Removing Instrumental Noise from <em>K2</em> and <em>TESS</em> Light Curves Using Pixel Level Decorrelation (PLD)</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MCCM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../MCCM/FIMS-SPEAR/hyperspectral_healpix_maps/hyperspectral_healpix_maps.html">Working with FIMS-SPEAR Hyperspectral HEALPix Maps</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SDSS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../SDSS/sdss.html">Sloan Digital Sky Survey (SDSS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/MaNGA_HST_tutorial/MaNGA_HST_tutorial.html">Mapping Galaxy Properties with MaNGA + HST</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/APOGEE_TESS_tutorial/APOGEE_TESS_tutorial.html">Characterizing Variable Stars with APOGEE + TESS</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/eBOSS_JWST_tutorial/eBOSS_JWST_tutorial.html">Exploring High-Redshift Quasars with eBOSS and JWST</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/eBOSS_HST_hubbles_law/hubbles_law.html">Calculating the Hubble Constant with eBOSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/SDSS_LEGACY_IMAGING_cmd/cmd_diagram.html">Creating a Color-Magnitude Diagram for Messier 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/SDSS_LEGACY_IMAGING_galaxy_morphology/galaxy_morphology.html">Galaxy Morphology with SDSS and Astrocut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SDSS/SDSS_SEGUE_spectra/sdss_stellar_spectra.html">Exploring Stellar Spectra with SDSS SEGUE</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PanSTARRS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../PanSTARRS/panstarrs.html">Panoramic Survey Telescope and Rapid Response System (Pan-STARRS)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../PanSTARRS/PS1_DR2_TAP/PS1_DR2_TAP.html">MAST Table Access Protocol PanSTARRS 1 DR2 Demo</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../../PanSTARRS/PS1_image/PS1_image.html">Get Images from the PS1 Image Server</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../PanSTARRS/PS1_20_query_tutorials/panstarrs_20_query_tutorials.html">Example “20 queries” with PanSTARRS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../PanSTARRS/PS1_20_query_tutorials/PS1_20q_filtering_tutorial/PS1_20q_filtering_tutorial.html">PanSTARRS “20 queries” using MAST’s TAP service: Filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../PanSTARRS/PS1_20_query_tutorials/PS1_20q_query_cutouts_tutorial/PS1_20q_query_cutouts_tutorial.html">PanSTARRS “20 queries” using MAST’s TAP service: Queries with Cutout Visualizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../PanSTARRS/PS1_20_query_tutorials/PS1_20q_spatial_binning/PS1_20q_spatial_binning.html">PanSTARRS “20 queries” using MAST’s TAP service: Spatial Binning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../PanSTARRS/PS1_20_query_tutorials/PS1_20q_multiple_detection_tutorial/PS1_20q_multiple_detection_tutorial.html">PanSTARRS “20 queries” using MAST’s TAP service: Multiple detections</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PanSTARRS/PS1_query_chunking/PS1_query_chunking.html">Accessing MAST TAP services: How to chunk large / long queries</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Roman</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../Roman/Catalog_Access_Data_Quality_Cuts/catalog_access_data_quality_cuts.html">Accessing Roman Catalogs: Leveraging Ancillary Tables and Visualization to Apply Data Quality Cuts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TESS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../TESS/beginner.html">Beginner Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_astroquery_dv/beginner_astroquery_dv.html">Retrieve TESS Data Validation Products with Astroquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_how_to_use_dvt/beginner_how_to_use_dvt.html">Read and Plot A TESS Data Validation Timeseries File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_how_to_use_ffi/beginner_how_to_use_ffi.html">Read and Display a TESS Full Frame Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_how_to_use_lc/beginner_how_to_use_lc.html">Read and Plot A TESS Light Curve File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_how_to_use_tp/beginner_how_to_use_tp.html">Read and Display A TESS Target Pixel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_tess_exomast/beginner_tess_exomast.html">Exoplanet Data and TESS Light Curves Using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_tess_tap_search/beginner_tess_tap_search.html">Download MAST TESS Light Curves Within an FFI Footprint Using TAP</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_tic_search_hd209458/beginner_tic_search_hd209458.html">Search The TESS Input Catalog Centered On HD 209458.</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_tour_lc_tp/beginner_tour_lc_tp.html">A Tour of the Contents of the TESS 2-minute Cadence Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/beginner_tesscut_astroquery/beginner_tesscut_astroquery.html">Cutout of the TESS FFIs using Astrocut and Astroquery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../TESS/lc.html">Light Curves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/interm_gi_query/interm_gi_query.html">Intermediate:  Search and Download GI Program Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/interm_tasoc_lc/interm_tasoc_lc.html">Intermediate: Finding Flares and Variable Stars in TASOC Light Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/asteroid_rotation/asteroid_rotation.html">Finding the Rotation Curve of an Asteroid or Comet with TESScut and Lightkurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../TESS/FFIs.html">TESS FFIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/interm_tesscut_dss_overlay/interm_tesscut_dss_overlay.html">Intermediate: Overlay a Cutout of the TESS FFIs with DSS imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/interm_tesscut_requests/interm_tesscut_requests.html">Intermediate: Create TESS FFI Cutout using Python Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/making_tess_cubes_and_cutouts/making_tess_cubes_and_cutouts.html">Generating Cubes and Cutouts from TESS FFIs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../TESS/noise.html">Instrumental Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/interm_tess_prf_retrieve/interm_tess_prf_retrieve.html">Intermediate: Retrieve TESS Pixel Response Function Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../TESS/removing_scattered_light_using_regression/removing_scattered_light_using_regression.html">Removing Scattered Light from <em>TESS</em> Data Using the Lightkurve <code class="docutils literal notranslate"><span class="pre">RegressionCorrector</span></code></a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../Visualizations/mast_sky/mast_sky.html">MAST’S View of the Sky</a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A//github.com/spacetelescope/mast_notebooks&urlpath=lab/tree/mast_notebooks/notebooks/interactive_data_exploration/how_to/filter_long_tables/filter_long_tables.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/spacetelescope/mast_notebooks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/interactive_data_exploration/how_to/filter_long_tables/filter_long_tables.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../../_sources/notebooks/interactive_data_exploration/how_to/filter_long_tables/filter_long_tables.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>How to Filter Long Tables with mast-table</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-long-tables-with-mast-table">Filtering Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-mast-data">Retrieving MAST Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-mast-table">Creating a <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting-mast-table-columns">Sorting <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> Columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-filters-in-mast-table">Applying Filters in <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-the-filters-menu">Opening the filters menu</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-filters">Applying filters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-filters-as-match-any-or-match-all">Applying filters as match any or match all</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#closing-the-filters-menu">Closing the filters menu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a id="top"></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="how-to-filter-long-tables-with-mast-table">
+<h1>How to Filter Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code><a class="headerlink" href="#how-to-filter-long-tables-with-mast-table" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>This is a beginner tutorial on filtering long tables using <a class="reference external" href="https://github.com/spacetelescope/mast-table"><code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a>. We’ll cover the basics of creating <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> widgets and interacting with their data through filtering. By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand how to create <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> widgets.</p></li>
+<li><p>Know how to sort <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> columns.</p></li>
+<li><p>Be able to apply <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> filters to narrow results to a smaller subset.</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Introduction"><span class="xref myst">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#Imports"><span class="xref myst">Imports</span></a></p></li>
+<li><p><a class="reference internal" href="#Filtering-Long-Tables-with-%60mast-table%60"><span class="xref myst">Filtering Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Retrieving-MAST-Data"><span class="xref myst">Retrieving MAST Data</span></a></p></li>
+<li><p><a class="reference internal" href="#Creating-a-%60mast-table%60"><span class="xref myst">Creating a <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#Sorting-%60mast-table%60-Columns"><span class="xref myst">Sorting <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> Columns</span></a></p></li>
+<li><p><a class="reference internal" href="#Applying-Filters-in-%60mast-table%60"><span class="xref myst">Applying Filters in <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Opening-the-filters-menu"><span class="xref myst">Opening the filters menu</span></a></p></li>
+<li><p><a class="reference internal" href="#Applying-filters"><span class="xref myst">Applying filters</span></a></p></li>
+<li><p><a class="reference internal" href="#Applying-filters-as-match-any-or-match-all"><span class="xref myst">Applying filters as match any or match all</span></a></p></li>
+<li><p><a class="reference internal" href="#Closing-the-filters-menu"><span class="xref myst">Closing the filters menu</span></a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This tutorial demonstrates how to use <a class="reference external" href="https://github.com/spacetelescope/mast-table"><code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a> filtering functionality to easily refine query search results to a smaller subset of your choosing. <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> is an interactive table widget for displaying, exploring, and filtering tabular data, designed to support <a class="reference external" href="https://archive.stsci.edu/">Mikulski Archive for Space Telescopes (MAST)</a> query results. We use <a class="reference external" href="https://github.com/astropy/astroquery">astroquery</a> to retrieve data from MAST and then vizualize and filter the results with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code>. For more information about using <code class="docutils literal notranslate"><span class="pre">MastMissions</span></code>, see the notebook <a class="reference external" href="https://github.com/spacetelescope/mast_notebooks/blob/main/notebooks/multi_mission/missions_mast_search/missions_mast_search.ipynb"><code class="docutils literal notranslate"><span class="pre">missions_mast_search.ipynb</span></code></a>.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>We will leverage the <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> package to display and filter data, and we will use <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> to populate the table widgets with example data.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mast-table</span></code> to create filterable table widgets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">astroquery</span></code> for retrieving example data to view</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mast_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">MastTable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.mast</span><span class="w"> </span><span class="kn">import</span> <span class="n">MastMissions</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering-long-tables-with-mast-table">
+<h2>Filtering Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code><a class="headerlink" href="#filtering-long-tables-with-mast-table" title="Link to this heading">#</a></h2>
+<section id="retrieving-mast-data">
+<h3>Retrieving MAST Data<a class="headerlink" href="#retrieving-mast-data" title="Link to this heading">#</a></h3>
+<p>First, we will get example MAST data from <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> using the cell below. We are retrieving MAST data on <a class="reference external" href="https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-1/">Messier 1</a> from the <a class="reference external" href="https://www.stsci.edu/jwst">James Webb Space Telescope (JWST)</a>. By running the cell below, we can see the astroquery <code class="docutils literal notranslate"><span class="pre">results</span></code> table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create MastMissions object to search for JWST datasets</span>
+<span class="n">missions</span> <span class="o">=</span> <span class="n">MastMissions</span><span class="p">(</span><span class="n">mission</span><span class="o">=</span><span class="s1">'jwst'</span><span class="p">)</span>
+
+<span class="c1"># Query for Messier 1 ('M1')</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">missions</span><span class="o">.</span><span class="n">query_object</span><span class="p">(</span><span class="s1">'M1'</span><span class="p">)</span>
+
+<span class="c1"># Display the length of the astroquery results to compare</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"table length:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>table length: 249
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-a-mast-table">
+<h3>Creating a <code class="docutils literal notranslate"><span class="pre">mast-table</span></code><a class="headerlink" href="#creating-a-mast-table" title="Link to this heading">#</a></h3>
+<p>We will now create an instance of <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> using the cell below. We are displaying the widget in a sidecar in the bottom half of the screen.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a mast-table instance</span>
+<span class="n">mast_table</span> <span class="o">=</span> <span class="n">MastTable</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+<span class="c1"># Display the widget in sidecar split bottom</span>
+<span class="n">mast_table</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="s2">"sidecar:split-bottom"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+const prevIframe = document.getElementById("solara-jupyter-check");
+if(prevIframe)
+    prevIframe.remove();
+const iframe = document.createElement('iframe')
+iframe.setAttribute("src", "https://solara.dev/static/public/success.html?check=purejs&version=1.66.3");
+iframe.style.width = "0px";
+iframe.style.height = "0px";
+iframe.style.display = "none";
+iframe.id = "solara-jupyter-check";
+document.body.appendChild(iframe);
+            </script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "0a06faebecaf46249842f333e4f87a7f", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Now, looking at the table footer, we see the length of the <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> widget matches the length of the astroquery results table from the cell above.</p>
+</section>
+<section id="sorting-mast-table-columns">
+<h3>Sorting <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> Columns<a class="headerlink" href="#sorting-mast-table-columns" title="Link to this heading">#</a></h3>
+<p>Take a moment to look through the columns available in the table.</p>
+<p>Let’s say that you are specifically interested in knowing when the first observations of M1 were taken by JWST. Using the <code class="docutils literal notranslate"><span class="pre">date_obs</span></code> column, hover over the column name and you will see a sorting arrow appear, like the one below:</p>
+<a class="reference internal image-reference" href="notebooks/interactive_data_exploration/how_to/filter_long_tables/arrow_up.png"><img alt="notebooks/interactive_data_exploration/how_to/filter_long_tables/arrow_up.png" src="notebooks/interactive_data_exploration/how_to/filter_long_tables/arrow_up.png" style="width: 100px;" />
+</a>
+<p>Clicking once will sort the column descendingly, clicking a second time will sort the column ascendingly, and clicking for a third time will remove any applied sorting.</p>
+<p>Using column sorting, identify the earliest <code class="docutils literal notranslate"><span class="pre">date_obs</span></code> of M1 by JWST.</p>
+</section>
+<section id="applying-filters-in-mast-table">
+<h3>Applying Filters in <code class="docutils literal notranslate"><span class="pre">mast-table</span></code><a class="headerlink" href="#applying-filters-in-mast-table" title="Link to this heading">#</a></h3>
+<p>Consider the scenario you are now only interested in a specific subset of the data: mid-infrared data with small angular separation.</p>
+<p>Instead of needing to run a new query or filter the astroquery results table with masks, we can use the features built into <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> to filter the data to fit our needs!</p>
+<section id="opening-the-filters-menu">
+<h4>Opening the filters menu<a class="headerlink" href="#opening-the-filters-menu" title="Link to this heading">#</a></h4>
+<p>In the upper left corner of our <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> widget, we see a button labeled “Filters”. Clicking this button (shown below) opens a menu where we can filter our table down to a smaller subset.</p>
+<a class="reference internal image-reference" href="notebooks/interactive_data_exploration/how_to/filter_long_tables/filters_button.png"><img alt="notebooks/interactive_data_exploration/how_to/filter_long_tables/filters_button.png" src="notebooks/interactive_data_exploration/how_to/filter_long_tables/filters_button.png" style="width: 150px;" />
+</a>
+</section>
+<section id="applying-filters">
+<h4>Applying filters<a class="headerlink" href="#applying-filters" title="Link to this heading">#</a></h4>
+<p>Let’s start by filtering the data to only contain mid-infrared data.</p>
+<p>In the filters menu under “Add filter”, we see a dropdown selection for the column to apply a filter to. By scrolling through the options or typing in the column name, select the column <code class="docutils literal notranslate"><span class="pre">instrume</span></code>. We can then select <code class="docutils literal notranslate"><span class="pre">MIRI</span></code> from the dropdown selection menu for “Value” below. Your filters menu should now look like this:</p>
+<a class="reference internal image-reference" href="notebooks/interactive_data_exploration/how_to/filter_long_tables/filter_menu.png"><img alt="notebooks/interactive_data_exploration/how_to/filter_long_tables/filter_menu.png" src="notebooks/interactive_data_exploration/how_to/filter_long_tables/filter_menu.png" style="width: 200px;" />
+</a>
+<p>Finally, we can hit “Apply Filter” and see the length of the table change as the the filter is applied. We now only have <a class="reference external" href="https://science.nasa.gov/mission/webb/mid-infrared-instrument-miri/">MIRI (Mid-Infrared Instrument)</a> observations in our table.</p>
+<p>We also see the filter we just applied in the “Active filters” section. Click on the column name to expand the details and show exactly what filter is active!</p>
+<p>The second filter we want is a small angular separation.</p>
+<p>Following the same process, select the column of interest <code class="docutils literal notranslate"><span class="pre">ang_sep</span></code>. Since the column contains only floats, we now see buttons to pick an operator and an input box with a slider to set the filter value. Select the operator, then use either the input box or the slider to restrict the data to those with an angular separation less than or equal to 0.3’.</p>
+<p>Finally, hit “Apply Filter”, and we again see the length of the table change as the the filter is applied.</p>
+<p>We now see another filter appear in the “Active filters” section and can click on the column name to expand the details.</p>
+<p>Your table should now look like this:</p>
+<a class="reference internal image-reference" href="notebooks/interactive_data_exploration/how_to/filter_long_tables/filtered_table.png"><img alt="notebooks/interactive_data_exploration/how_to/filter_long_tables/filtered_table.png" src="notebooks/interactive_data_exploration/how_to/filter_long_tables/filtered_table.png" style="width: 600px;" />
+</a>
+</section>
+<section id="applying-filters-as-match-any-or-match-all">
+<h4>Applying filters as match any or match all<a class="headerlink" href="#applying-filters-as-match-any-or-match-all" title="Link to this heading">#</a></h4>
+<p>Now, let’s say we realized we don’t want to exclude near-infrared observations of M1. We are now interested in data that is either mid-infrared data <em>or</em> has small angular separation.</p>
+<p>In the upper right corner of our filters menu, we have a toggle <code class="docutils literal notranslate"><span class="pre">AND/OR</span></code> button, which controls if the active filters are applied as “match all” or “match any”.</p>
+<p>By toggling that to “or”, we are now filtering our data to anything that is either mid-infrared data <em>or</em> has small angular separation!</p>
+</section>
+<section id="closing-the-filters-menu">
+<h4>Closing the filters menu<a class="headerlink" href="#closing-the-filters-menu" title="Link to this heading">#</a></h4>
+<p>After applying these filters, we now want to be able to see more columns of the data, so we can again click on the “Filters” button to collapse the filters menu, and our <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> now takes up the full width of the notebook!</p>
+</section>
+</section>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author(s):</strong> Celia Parts <br>
+<strong>Keyword(s):</strong> Tutorial, mast-table, introduction <br>
+<strong>First published:</strong> November 2026 <br>
+<strong>Last updated:</strong> November 2026 <br></p>
+<hr class="docutils" />
+<p><a class="reference internal" href="#top"><span class="xref myst">Top of Page</span></a>
+<a class="reference internal" href="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png"><img alt="Space Telescope Logo" src="https://raw.githubusercontent.com/spacetelescope/style-guides/master/guides/images/stsci-logo.png" style="width: 200px;" /></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/interactive_data_exploration/how_to/filter_long_tables"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../browse_roman_observations/browse_roman_observations.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">How to Browse Roman Observations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../inspect_long_tables/inspect_long_tables.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">How to Inspect Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-long-tables-with-mast-table">Filtering Long Tables with <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-mast-data">Retrieving MAST Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-mast-table">Creating a <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting-mast-table-columns">Sorting <code class="docutils literal notranslate"><span class="pre">mast-table</span></code> Columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-filters-in-mast-table">Applying Filters in <code class="docutils literal notranslate"><span class="pre">mast-table</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-the-filters-menu">Opening the filters menu</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-filters">Applying filters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-filters-as-match-any-or-match-all">Applying filters as match any or match all</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#closing-the-filters-menu">Closing the filters menu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By STScI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
